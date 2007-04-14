@@ -203,6 +203,12 @@
 			404383AD0BD18806005A0943 /* PBXTextBookmark */ = 404383AD0BD18806005A0943 /* PBXTextBookmark */;
 			404383AE0BD18806005A0943 /* PBXTextBookmark */ = 404383AE0BD18806005A0943 /* PBXTextBookmark */;
 			404383AF0BD18806005A0943 /* PBXTextBookmark */ = 404383AF0BD18806005A0943 /* PBXTextBookmark */;
+			404383F40BD18D69005A0943 /* PBXTextBookmark */ = 404383F40BD18D69005A0943 /* PBXTextBookmark */;
+			404383F50BD18D69005A0943 /* PBXTextBookmark */ = 404383F50BD18D69005A0943 /* PBXTextBookmark */;
+			404383F60BD18D69005A0943 /* PBXTextBookmark */ = 404383F60BD18D69005A0943 /* PBXTextBookmark */;
+			404383F90BD18E4B005A0943 /* PBXTextBookmark */ = 404383F90BD18E4B005A0943 /* PBXTextBookmark */;
+			404383FA0BD18E4B005A0943 /* PBXTextBookmark */ = 404383FA0BD18E4B005A0943 /* PBXTextBookmark */;
+			404383FB0BD18E4B005A0943 /* PBXTextBookmark */ = 404383FB0BD18E4B005A0943 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 404028C30BCED5680064E8F6 /* Source Control */;
 		userBuildSettings = {
@@ -644,9 +650,9 @@
 	};
 	404382F90BD15D91005A0943 /* SDLImage.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {554, 462}}";
-			sepNavSelRange = "{535, 0}";
-			sepNavVisRect = "{{0, 276}, {459, 186}}";
+			sepNavIntBoundsRect = "{{0, 0}, {711, 462}}";
+			sepNavSelRange = "{581, 0}";
+			sepNavVisRect = "{{0, 33}, {711, 429}}";
 		};
 	};
 	404382FE0BD15E03005A0943 /* PBXBookmark */ = {
@@ -1106,6 +1112,66 @@
 			404383130BD16134005A0943 /* SDLImage.m:23 */,
 			4043839B0BD1814F005A0943 /* handlers.m:28 */,
 		);
+	};
+	404383F40BD18D69005A0943 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 404382820BD15887005A0943 /* handlers.m */;
+		name = "handlers.m: 29";
+		rLen = 0;
+		rLoc = 608;
+		rType = 0;
+		vrLen = 658;
+		vrLoc = 18;
+	};
+	404383F50BD18D69005A0943 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 404382840BD158A1005A0943 /* SDLScreen.m */;
+		name = "SDLScreen.m: 26";
+		rLen = 0;
+		rLoc = 422;
+		rType = 0;
+		vrLen = 455;
+		vrLoc = 0;
+	};
+	404383F60BD18D69005A0943 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 404382F90BD15D91005A0943 /* SDLImage.m */;
+		name = "SDLImage.m: 31";
+		rLen = 0;
+		rLoc = 581;
+		rType = 0;
+		vrLen = 571;
+		vrLoc = 18;
+	};
+	404383F90BD18E4B005A0943 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 404382820BD15887005A0943 /* handlers.m */;
+		name = "handlers.m: 29";
+		rLen = 0;
+		rLoc = 608;
+		rType = 0;
+		vrLen = 658;
+		vrLoc = 18;
+	};
+	404383FA0BD18E4B005A0943 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 404382840BD158A1005A0943 /* SDLScreen.m */;
+		name = "SDLScreen.m: 26";
+		rLen = 0;
+		rLoc = 422;
+		rType = 0;
+		vrLen = 455;
+		vrLoc = 0;
+	};
+	404383FB0BD18E4B005A0943 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 404382F90BD15D91005A0943 /* SDLImage.m */;
+		name = "SDLImage.m: 31";
+		rLen = 0;
+		rLoc = 581;
+		rType = 0;
+		vrLen = 571;
+		vrLoc = 18;
 	};
 	8D1107260486CEB800E47090 /* Mech */ = {
 		activeExec = 0;

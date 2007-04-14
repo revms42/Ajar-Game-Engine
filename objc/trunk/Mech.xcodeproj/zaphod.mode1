@@ -204,7 +204,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>404383A60BD187AC005A0943</string>
+						<string>404383F90BD18E4B005A0943</string>
 						<key>history</key>
 						<array>
 							<string>404383860BD18119005A0943</string>
@@ -244,7 +244,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>404383A70BD187AC005A0943</string>
+						<string>404383FA0BD18E4B005A0943</string>
 						<key>history</key>
 						<array>
 							<string>4043837A0BD180B5005A0943</string>
@@ -284,7 +284,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>404383A80BD187AC005A0943</string>
+						<string>404383FB0BD18E4B005A0943</string>
 						<key>history</key>
 						<array>
 							<string>404382FE0BD15E03005A0943</string>
@@ -384,21 +384,24 @@
 								<string>29B97315FDCFA39411CA2CEA</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>404382790BD157A8005A0943</string>
+								<string>19C28FACFE9D520D11CA2CBB</string>
+								<string>8D1107320486CEB800E47090</string>
+								<string>404382690BD15765005A0943</string>
+								<string>4043826F0BD15765005A0943</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>404383A20BD18799005A0943</string>
+								<string>404383F30BD18D69005A0943</string>
 								<string>1C37FAAC04509CD000000102</string>
-								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>21</integer>
-									<integer>20</integer>
-									<integer>19</integer>
+									<integer>28</integer>
+									<integer>27</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 199}, {246, 338}}</string>
+							<string>{{0, 290}, {246, 338}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -638,19 +641,18 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>404383A90BD187AC005A0943</string>
 		<string>404383970BD18143005A0943</string>
 		<string>404383980BD18143005A0943</string>
 		<string>404383950BD18143005A0943</string>
 		<string>404383940BD18143005A0943</string>
 		<string>404383150BD16153005A0943</string>
-		<string>404028BF0BCED5680064E8F6</string>
 		<string>1C0AD2B3069F1EA900FABCE6</string>
-		<string>/Users/zaphod/programming/objc/macchiatodoppio/objc/trunk/Mech.xcodeproj</string>
 		<string>4043837B0BD180B5005A0943</string>
-		<string>404382800BD15862005A0943</string>
 		<string>404382A90BD159F7005A0943</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>404382800BD15862005A0943</string>
+		<string>404028BF0BCED5680064E8F6</string>
+		<string>/Users/zaphod/programming/objc/macchiatodoppio/objc/trunk/Mech.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>-1 481 690 397 0 0 1440 878 </string>
@@ -669,8 +671,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -693,8 +693,12 @@
 							<string>218pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
+								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
+								<string>{{0, 93}, {500, 143}}</string>
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>

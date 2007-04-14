@@ -11,7 +11,6 @@
 		002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
 		002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A2C09D0888800EBEB88 /* SDLMain.m */; };
 		002F3A3F09D088BA00EBEB88 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A3E09D088BA00EBEB88 /* main.c */; };
-		4043827D0BD157F5005A0943 /* Photo 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4043827C0BD157F5005A0943 /* Photo 2.jpg */; };
 		404382830BD15887005A0943 /* handlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 404382820BD15887005A0943 /* handlers.m */; };
 		404382860BD158A1005A0943 /* SDLScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 404382840BD158A1005A0943 /* SDLScreen.m */; };
 		404382870BD158A1005A0943 /* SDLScreen.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 404382850BD158A1005A0943 /* SDLScreen.h */; };
@@ -19,6 +18,7 @@
 		404382FA0BD15D91005A0943 /* SDLImage.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 404382F80BD15D91005A0943 /* SDLImage.h */; };
 		404382FB0BD15D91005A0943 /* SDLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 404382F90BD15D91005A0943 /* SDLImage.m */; };
 		404383460BD1632A005A0943 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404383410BD1632A005A0943 /* SDL_image.framework */; };
+		404383E60BD189E5005A0943 /* mark.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 404383E50BD189E5005A0943 /* mark.jpg */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -50,7 +50,6 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Mech_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mech_Prefix.pch; sourceTree = "<group>"; };
-		4043827C0BD157F5005A0943 /* Photo 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Photo 2.jpg"; sourceTree = "<group>"; };
 		404382820BD15887005A0943 /* handlers.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = handlers.m; sourceTree = "<group>"; };
 		404382840BD158A1005A0943 /* SDLScreen.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SDLScreen.m; sourceTree = "<group>"; };
 		404382850BD158A1005A0943 /* SDLScreen.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SDLScreen.h; sourceTree = "<group>"; };
@@ -58,7 +57,7 @@
 		404382F80BD15D91005A0943 /* SDLImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLImage.h; sourceTree = "<group>"; };
 		404382F90BD15D91005A0943 /* SDLImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLImage.m; sourceTree = "<group>"; };
 		404383410BD1632A005A0943 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
-		404383DD0BD188DD005A0943 /* Photo 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Photo 2.jpg"; sourceTree = "<group>"; };
+		404383E50BD189E5005A0943 /* mark.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mark.jpg; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Mech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mech.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -157,8 +156,7 @@
 		404382790BD157A8005A0943 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				404383DD0BD188DD005A0943 /* Photo 2.jpg */,
-				4043827C0BD157F5005A0943 /* Photo 2.jpg */,
+				404383E50BD189E5005A0943 /* mark.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -187,6 +185,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				002F39FD09D0883400EBEB88 /* Copy Frameworks into .app bundle */,
+				404383F70BD18E40005A0943 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -219,11 +218,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4043827D0BD157F5005A0943 /* Photo 2.jpg in Resources */,
+				404383E60BD189E5005A0943 /* mark.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		404383F70BD18E40005A0943 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp *.jpg ";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
