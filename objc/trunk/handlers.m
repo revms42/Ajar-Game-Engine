@@ -26,7 +26,7 @@ bool shouldContinueHandlingEvents() {
 
 void init(SDL_Surface *scn) {
 	screen = [[SDLScreen alloc] initWithSurface: scn];
-	NSString *markFile = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"mark.jpeg"];
+	NSString *markFile = [[NSBundle mainBundle] pathForImageResource: @"mark.jpeg"];
 	SDLImage *mark = [[SDLImage alloc] initWithFile: markFile];
 	[mark drawOnScreen: screen];
 	[screen flip];

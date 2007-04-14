@@ -204,7 +204,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>407494FA0BD1951300BD0BFC</string>
+						<string>407495010BD1965000BD0BFC</string>
 						<key>history</key>
 						<array>
 							<string>404384190BD191F8005A0943</string>
@@ -244,7 +244,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>407494FB0BD1951300BD0BFC</string>
+						<string>407495020BD1965000BD0BFC</string>
 						<key>history</key>
 						<array>
 							<string>4043841A0BD191F8005A0943</string>
@@ -284,7 +284,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>407494FC0BD1951300BD0BFC</string>
+						<string>407495030BD1965000BD0BFC</string>
 						<key>history</key>
 						<array>
 							<string>4043841B0BD191F8005A0943</string>
@@ -398,7 +398,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 325}, {246, 338}}</string>
+							<string>{{0, 0}, {246, 338}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -646,8 +646,8 @@
 		<string>407494D40BD1922B00BD0BFC</string>
 		<string>404383150BD16153005A0943</string>
 		<string>4043837B0BD180B5005A0943</string>
-		<string>404382800BD15862005A0943</string>
 		<string>/Users/zaphod/programming/objc/macchiatodoppio/objc/trunk/Mech.xcodeproj</string>
+		<string>404382800BD15862005A0943</string>
 		<string>404382A90BD159F7005A0943</string>
 		<string>1C0AD2B3069F1EA900FABCE6</string>
 	</array>
