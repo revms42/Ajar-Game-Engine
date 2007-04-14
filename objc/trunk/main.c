@@ -11,6 +11,7 @@
 #include <math.h>
 
 #include "SDL.h"
+#include "handlers.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,8 +19,7 @@ int main(int argc, char *argv[])
 	SDL_Surface *screen;
 	Uint8  video_bpp = 0;
 	Uint32 videoflags = SDL_SWSURFACE;
-	int    done;
-        SDL_Event event;
+	SDL_Event event;
 
 	/* Initialize the SDL library */
 	if ( SDL_Init(initflags) < 0 ) {
@@ -36,28 +36,18 @@ int main(int argc, char *argv[])
 		SDL_Quit();
 		exit(2);
 	}
+	
+	init(screen);
 
-	done = 0;
-	while ( !done ) {
+	while ( shouldContinueHandlingEvents() ) {
 
 		/* Check for events */
 		while ( SDL_PollEvent(&event) ) {
-			switch (event.type) {
-
-				case SDL_MOUSEMOTION:
-					break;
-				case SDL_MOUSEBUTTONDOWN:
-					break;
-				case SDL_KEYDOWN:
-					/* Any keypress quits the app... */
-				case SDL_QUIT:
-					done = 1;
-					break;
-				default:
-					break;
-			}
+			handleEvent(&event);
 		}
 	}
+	
+	release();
 	
 	/* Clean up the SDL library */
 	SDL_Quit();

@@ -11,6 +11,14 @@
 		002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
 		002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A2C09D0888800EBEB88 /* SDLMain.m */; };
 		002F3A3F09D088BA00EBEB88 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A3E09D088BA00EBEB88 /* main.c */; };
+		4043827D0BD157F5005A0943 /* Photo 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4043827C0BD157F5005A0943 /* Photo 2.jpg */; };
+		404382830BD15887005A0943 /* handlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 404382820BD15887005A0943 /* handlers.m */; };
+		404382860BD158A1005A0943 /* SDLScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 404382840BD158A1005A0943 /* SDLScreen.m */; };
+		404382870BD158A1005A0943 /* SDLScreen.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 404382850BD158A1005A0943 /* SDLScreen.h */; };
+		404382890BD158AD005A0943 /* handlers.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 404382880BD158AD005A0943 /* handlers.h */; };
+		404382FA0BD15D91005A0943 /* SDLImage.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 404382F80BD15D91005A0943 /* SDLImage.h */; };
+		404382FB0BD15D91005A0943 /* SDLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 404382F90BD15D91005A0943 /* SDLImage.m */; };
+		404383460BD1632A005A0943 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404383410BD1632A005A0943 /* SDL_image.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -23,6 +31,9 @@
 			dstSubfolderSpec = 10;
 			files = (
 				002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks into .app bundle */,
+				404382870BD158A1005A0943 /* SDLScreen.h in Copy Frameworks into .app bundle */,
+				404382890BD158AD005A0943 /* handlers.h in Copy Frameworks into .app bundle */,
+				404382FA0BD15D91005A0943 /* SDLImage.h in Copy Frameworks into .app bundle */,
 			);
 			name = "Copy Frameworks into .app bundle";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -39,6 +50,15 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Mech_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mech_Prefix.pch; sourceTree = "<group>"; };
+		4043827C0BD157F5005A0943 /* Photo 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Photo 2.jpg"; sourceTree = "<group>"; };
+		404382820BD15887005A0943 /* handlers.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = handlers.m; sourceTree = "<group>"; };
+		404382840BD158A1005A0943 /* SDLScreen.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SDLScreen.m; sourceTree = "<group>"; };
+		404382850BD158A1005A0943 /* SDLScreen.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SDLScreen.h; sourceTree = "<group>"; };
+		404382880BD158AD005A0943 /* handlers.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = handlers.h; sourceTree = "<group>"; };
+		404382F80BD15D91005A0943 /* SDLImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLImage.h; sourceTree = "<group>"; };
+		404382F90BD15D91005A0943 /* SDLImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLImage.m; sourceTree = "<group>"; };
+		404383410BD1632A005A0943 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
+		404383DD0BD188DD005A0943 /* Photo 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Photo 2.jpg"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Mech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mech.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -50,6 +70,7 @@
 			files = (
 				002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				404383460BD1632A005A0943 /* SDL_image.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +89,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				404383410BD1632A005A0943 /* SDL_image.framework */,
 				002F39F909D0881F00EBEB88 /* SDL.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
@@ -94,6 +116,7 @@
 		29B97314FDCFA39411CA2CEA /* Mech */ = {
 			isa = PBXGroup;
 			children = (
+				4043827F0BD15844005A0943 /* SDLWrapper */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -115,6 +138,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				404382790BD157A8005A0943 /* Images */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -128,6 +152,28 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		404382790BD157A8005A0943 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				404383DD0BD188DD005A0943 /* Photo 2.jpg */,
+				4043827C0BD157F5005A0943 /* Photo 2.jpg */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		4043827F0BD15844005A0943 /* SDLWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				404382880BD158AD005A0943 /* handlers.h */,
+				404382820BD15887005A0943 /* handlers.m */,
+				404382840BD158A1005A0943 /* SDLScreen.m */,
+				404382850BD158A1005A0943 /* SDLScreen.h */,
+				404382F80BD15D91005A0943 /* SDLImage.h */,
+				404382F90BD15D91005A0943 /* SDLImage.m */,
+			);
+			name = SDLWrapper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				4043827D0BD157F5005A0943 /* Photo 2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +232,9 @@
 			files = (
 				002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */,
 				002F3A3F09D088BA00EBEB88 /* main.c in Sources */,
+				404382830BD15887005A0943 /* handlers.m in Sources */,
+				404382860BD158A1005A0943 /* SDLScreen.m in Sources */,
+				404382FB0BD15D91005A0943 /* SDLImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,12 +292,15 @@
 					/Library/Frameworks,
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
+				GCC_ONE_BYTE_BOOL = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(HOME)/Library/Frameworks/SDL.framework/Headers",
+					/Library/Frameworks/SDL_image.framework/Headers,
 					/Library/Frameworks/SDL.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
+					"$(HOME)/Library/Frameworks/SDL_image.framework/Headers",
 				);
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
@@ -262,12 +315,15 @@
 					/Library/Frameworks,
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
+				GCC_ONE_BYTE_BOOL = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(HOME)/Library/Frameworks/SDL.framework/Headers",
+					/Library/Frameworks/SDL_image.framework/Headers,
 					/Library/Frameworks/SDL.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
+					"$(HOME)/Library/Frameworks/SDL_image.framework/Headers",
 				);
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
