@@ -15,7 +15,7 @@ SDLScreen *screen;
 bool shouldContinue = TRUE;
 
 void handleEvent(SDL_Event *event) {
-	if(event->type == SDL_KEYDOWN) {
+	if(event->type == SDL_KEYDOWN && event->key.keysym.sym == SDLK_q) {
 		shouldContinue = FALSE;
 	}
 }
@@ -26,10 +26,12 @@ bool shouldContinueHandlingEvents() {
 
 void init(SDL_Surface *scn) {
 	screen = [[SDLScreen alloc] initWithSurface: scn];
-	SDLImage *mark = [[SDLImage alloc] initWithFile: [[NSBundle mainBundle] pathForResource:@"Photo 2" ofType:@"JPG"]];
+	NSString *markFile = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"mark.jpeg"];
+	SDLImage *mark = [[SDLImage alloc] initWithFile: markFile];
 	[mark drawOnScreen: screen];
 	[screen flip];
 	[mark release];
+	[markFile release];
 }
 
 void release() {

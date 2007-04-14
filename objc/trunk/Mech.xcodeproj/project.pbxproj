@@ -18,7 +18,7 @@
 		404382FA0BD15D91005A0943 /* SDLImage.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 404382F80BD15D91005A0943 /* SDLImage.h */; };
 		404382FB0BD15D91005A0943 /* SDLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 404382F90BD15D91005A0943 /* SDLImage.m */; };
 		404383460BD1632A005A0943 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404383410BD1632A005A0943 /* SDL_image.framework */; };
-		404383E60BD189E5005A0943 /* mark.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 404383E50BD189E5005A0943 /* mark.jpg */; };
+		404384140BD19085005A0943 /* mark.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 404383E50BD189E5005A0943 /* mark.jpeg */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -36,6 +36,15 @@
 				404382FA0BD15D91005A0943 /* SDLImage.h in Copy Frameworks into .app bundle */,
 			);
 			name = "Copy Frameworks into .app bundle";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4043840B0BD18FC2005A0943 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "*.jpeg";
+			dstSubfolderSpec = 7;
+			files = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -57,7 +66,8 @@
 		404382F80BD15D91005A0943 /* SDLImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLImage.h; sourceTree = "<group>"; };
 		404382F90BD15D91005A0943 /* SDLImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLImage.m; sourceTree = "<group>"; };
 		404383410BD1632A005A0943 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
-		404383E50BD189E5005A0943 /* mark.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mark.jpg; sourceTree = "<group>"; };
+		404383E50BD189E5005A0943 /* mark.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mark.jpeg; sourceTree = "<group>"; };
+		404384010BD18F40005A0943 /* mark.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mark.jpg; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Mech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mech.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -137,7 +147,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				404382790BD157A8005A0943 /* Images */,
+				404384010BD18F40005A0943 /* mark.jpg */,
+				404383E50BD189E5005A0943 /* mark.jpeg */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -151,14 +162,6 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		404382790BD157A8005A0943 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				404383E50BD189E5005A0943 /* mark.jpg */,
-			);
-			name = Images;
 			sourceTree = "<group>";
 		};
 		4043827F0BD15844005A0943 /* SDLWrapper */ = {
@@ -185,7 +188,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				002F39FD09D0883400EBEB88 /* Copy Frameworks into .app bundle */,
-				404383F70BD18E40005A0943 /* ShellScript */,
+				4043840B0BD18FC2005A0943 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -218,27 +221,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				404383E60BD189E5005A0943 /* mark.jpg in Resources */,
+				404384140BD19085005A0943 /* mark.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		404383F70BD18E40005A0943 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cp *.jpg ";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
