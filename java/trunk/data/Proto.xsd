@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schema targetNamespace="http://www.example.org/Proto" xmlns:pro="http://www.example.org/Proto" elementFormDefault="qualified">
-    <import namespace="http://www.w3.org/2000/svg" schemaLocation="http://www.w3.org/TR/2002/WD-SVG11-20020108/SVG.xsd"/>
-</schema>
