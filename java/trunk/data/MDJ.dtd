@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Stat EMPTY>
+<!ATTLIST Stat 
+ name CDATA #REQUIRED 
+ value CDATA #REQUIRED 
+ max CDATA #REQUIRED 
+ min CDATA #REQUIRED
+ nominal CDATA #REQUIRED
+ type (Byte|Short|Integer|Long|Float|Double) "Integer"
+ displayAttributeMapping CDATA #IMPLIED
+>
+<!ELEMENT Stats (Stat*)>
