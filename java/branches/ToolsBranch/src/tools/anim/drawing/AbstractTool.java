@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import tools.anim.IPaintMode;
 import tools.anim.ITool;
+import tools.anim.PaintCanvas;
 
 public abstract class AbstractTool<K> implements ITool<K> {
 	protected int button;
@@ -14,7 +15,15 @@ public abstract class AbstractTool<K> implements ITool<K> {
 	protected Point endPoint;
 	protected int modifiers;
 	protected boolean inProgress;
+	
+	public final PaintCanvas canvas;
+	public final IPaintMode palette;
 
+	public AbstractTool(PaintCanvas p, IPaintMode t){
+		canvas = p;
+		palette = t;
+	}
+	
 	@Override
 	public void paint(IPaintMode p, Graphics2D g, K... parameters) {
 		if((modifiers & MouseEvent.CTRL_DOWN_MASK) == 0){
@@ -92,6 +101,8 @@ public abstract class AbstractTool<K> implements ITool<K> {
 	
 	protected abstract void fill(Paint t, Graphics2D g, K... parameters);
 	
+	public abstract void handleMouse();
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		button = e.getButton();
@@ -99,6 +110,7 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = false;
+		handleMouse();
 	}
 
 	@Override
@@ -107,6 +119,7 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = true;
+		handleMouse();
 	}
 
 	@Override
@@ -115,6 +128,7 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = true;
+		handleMouse();
 	}
 
 	@Override
@@ -123,6 +137,7 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		startPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = true;
+		handleMouse();
 	}
 
 	@Override
@@ -131,6 +146,7 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = false;
+		handleMouse();
 	}
 
 	@Override
@@ -139,11 +155,13 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = true;
+		handleMouse();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		endPoint = e.getPoint();
+		modifiers = e.getModifiers();
+		handleMouse();
 	}
 }

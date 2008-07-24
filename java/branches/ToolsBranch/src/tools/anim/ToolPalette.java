@@ -30,13 +30,13 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		this.pc = pc;
 		
 		tools = new Vector<ITool<?>>();
-		tools.add(new ArcTool());
-		tools.add(new LineTool());
-		tools.add(new OvalTool());
-		tools.add(new PolygonTool());
-		tools.add(new RectangleTool());
-		tools.add(new RoundRectangleTool());
-		tools.add(new ShapeTool());
+		//tools.add(new ArcTool(pc,this));
+		tools.add(new LineTool(pc,this));
+		tools.add(new OvalTool(pc,this));
+		//tools.add(new PolygonTool(pc,this));
+		tools.add(new RectangleTool(pc,this));
+		//tools.add(new RoundRectangleTool(pc,this));
+		//tools.add(new ShapeTool(pc,this));
 		
 		//TODO: Add to a button menu.
 	}

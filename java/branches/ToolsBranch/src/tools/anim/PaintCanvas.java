@@ -7,8 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
@@ -30,8 +28,8 @@ public class PaintCanvas extends Canvas {
 	private final Stack<BufferedImage> undo;
 	private final Stack<BufferedImage> redo;
 	
-	private final BufferedImage display;
-	private final Graphics2D displayGraphics;
+	private final BufferedImage overlay;
+	public Graphics2D penGraphics;
 	
 	public PaintCanvas(BufferedImage image, Dimension tilesize){
 		this.image = image;
@@ -44,9 +42,8 @@ public class PaintCanvas extends Canvas {
 		undo = new Stack<BufferedImage>();
 		redo = new Stack<BufferedImage>();
 		
-		display = new BufferedImage(size.width,size.height,image.getType());
-		display.setData(image.getData());
-		displayGraphics = display.createGraphics();
+		overlay = new BufferedImage(tilesize.width,tilesize.height,image.getType());
+		penGraphics = overlay.createGraphics();
 	}
 	
 	public Paint getPenForeColor() {
@@ -84,6 +81,43 @@ public class PaintCanvas extends Canvas {
 		this.frame = new Point(0,0);
 		this.size = new Dimension(image.getWidth(),image.getHeight());
 	}
+	
+	public void pushChange(){
+		undo.push(image.getSubimage(0, 0, image.getWidth(), image.getHeight()));
+		
+		Graphics2D g = image.createGraphics();
+		penGraphics.finalize();
+		penGraphics.dispose();
+		
+		g.drawImage(overlay, null, frame.x*tilesize.width, frame.y*tilesize.height);
+		g.finalize();
+		g.dispose();
+		
+		penGraphics = overlay.createGraphics();
+		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
+	}
+	
+	public void undo(){
+		redo.push(image.getSubimage(0, 0, image.getWidth(), image.getHeight()));
+		
+		Graphics2D g = image.createGraphics();
+		g.drawImage(undo.pop(), null, 0, 0);
+		g.finalize();
+		g.dispose();
+		
+		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
+	}
+	
+	public void redo(){
+		undo.push(image.getSubimage(0, 0, image.getWidth(), image.getHeight()));
+		
+		Graphics2D g = image.createGraphics();
+		g.drawImage(redo.pop(), null, 0, 0);
+		g.finalize();
+		g.dispose();
+		
+		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
+	}
 
 	public Point getFrame() {
 		return frame;
@@ -104,9 +138,23 @@ public class PaintCanvas extends Canvas {
 		this.frame.y = y;
 	}
 
+	//TODO: Need to composite the two images.
 	public void paint(Graphics g){
 		super.paint(g);
-		g.drawImage(display, frame.x, frame.y, tilesize.width, tilesize.height, this);
+		g.drawImage(
+				image, 
+				frame.x*tilesize.width, 
+				frame.y*tilesize.height, 
+				tilesize.width, 
+				tilesize.height, 
+				this);
+		g.drawImage(
+				overlay, 
+				0, 
+				0, 
+				tilesize.width, 
+				tilesize.height, 
+				this);
 	}
 	
 	public void update(Graphics g){
