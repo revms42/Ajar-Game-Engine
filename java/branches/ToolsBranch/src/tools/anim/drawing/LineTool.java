@@ -9,7 +9,17 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import tools.anim.IPaintMode;
+import tools.anim.PaintCanvas;
+
 public class LineTool extends AbstractTool<Integer> {
+	
+
+	public LineTool(PaintCanvas p, IPaintMode t) {
+		super(p, t);
+		// TODO Auto-generated constructor stub
+	}
+
 	private ImageIcon icon;
 	
 	@Override
@@ -42,5 +52,20 @@ public class LineTool extends AbstractTool<Integer> {
 	public JPanel parametricPanel() {
 		// TODO Create Parametric Panel
 		return null;
+	}
+
+	@Override
+	public void handleMouse() {
+		paint(
+				this.palette,
+				canvas.penGraphics,
+				startPoint.x,
+				startPoint.y,
+				endPoint.x,
+				endPoint.y
+		);
+		if(!inProgress){
+			canvas.pushChange();
+		}
 	}
 }

@@ -10,7 +10,16 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import tools.anim.IPaintMode;
+import tools.anim.PaintCanvas;
+
 public class PolygonTool extends AbstractTool<Polygon> {
+
+	public PolygonTool(PaintCanvas p, IPaintMode t) {
+		super(p, t);
+		// TODO Auto-generated constructor stub
+	}
+
 	private ImageIcon icon;
 	
 	@Override
