@@ -103,6 +103,11 @@ public abstract class AbstractTool<K> implements ITool<K> {
 	
 	public abstract void handleMouse();
 	
+	private void doMouse(){
+		handleMouse();
+		canvas.repaint();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		button = e.getButton();
@@ -110,34 +115,33 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = false;
-		handleMouse();
+		doMouse();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		button = e.getButton();
-		endPoint = e.getPoint();
-		modifiers = e.getModifiers();
-		inProgress = true;
-		handleMouse();
+		if(e.getButton() != 0 && inProgress && startPoint != null){
+			endPoint = e.getPoint();
+			doMouse();
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		button = e.getButton();
-		endPoint = e.getPoint();
-		modifiers = e.getModifiers();
-		inProgress = true;
-		handleMouse();
+		if(e.getButton() != 0 && inProgress && startPoint != null){
+			endPoint = e.getPoint();
+			doMouse();
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		button = e.getButton();
 		startPoint = e.getPoint();
+		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = true;
-		handleMouse();
+		doMouse();
 	}
 
 	@Override
@@ -146,7 +150,7 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = false;
-		handleMouse();
+		doMouse();
 	}
 
 	@Override
@@ -155,13 +159,15 @@ public abstract class AbstractTool<K> implements ITool<K> {
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = true;
-		handleMouse();
+		doMouse();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		endPoint = e.getPoint();
-		modifiers = e.getModifiers();
-		handleMouse();
+		if(button != 0){
+			endPoint = e.getPoint();
+			modifiers = e.getModifiers();
+		}
+		doMouse();
 	}
 }

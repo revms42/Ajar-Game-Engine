@@ -1,8 +1,14 @@
 package tools.anim;
 
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.Paint;
+import java.awt.event.ActionEvent;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 
 import tools.anim.drawing.ArcTool;
@@ -26,8 +32,13 @@ public class ToolPalette extends JPanel implements IPaintMode {
 	
 	private int paintMode;
 	
-	public ToolPalette(PaintCanvas pc){
-		this.pc = pc;
+	public ToolPalette(PaintCanvas c){
+		this.pc = c;
+		
+		this.paintMode = IPaintMode.STROKE_FOREGROUND + IPaintMode.FILLED_BACKGROUND;
+		
+		this.fore = Color.BLACK;
+		this.back = Color.WHITE;
 		
 		tools = new Vector<ITool<?>>();
 		//tools.add(new ArcTool(pc,this));
@@ -38,7 +49,32 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		//tools.add(new RoundRectangleTool(pc,this));
 		//tools.add(new ShapeTool(pc,this));
 		
-		//TODO: Add to a button menu.
+		this.setLayout(new GridLayout(2,(int)Math.floor(tools.size()/2)));
+		for(int i = 0; i < tools.size(); i++){
+			final int j = i;
+			
+			this.add(new JButton(new AbstractAction(
+					tools.get(i).getButtonIcon().toString(),
+					tools.get(i).getButtonIcon()
+			){
+				private static final long serialVersionUID = 0L;
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					setSelectedTool(j);
+				}
+				
+			}));
+		}
+		this.add(new JButton(new AbstractAction("Color Picker"){
+			private static final long serialVersionUID = 6770715811822038513L;
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				fore = JColorChooser.showDialog(pc, "Color Chooser", Color.BLACK);
+			}
+			
+		}));
 	}
 	
 	public int getPaintMode(){
@@ -59,7 +95,9 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		return selectedTool;
 	}
 
-	public void setSelectedTool(ITool<?> selectedTool) {
+	public void setSelectedTool(int i) {
+		ITool<?> selectedTool = tools.get(i);
+		
 		pc.removeMouseListener(this.selectedTool);
 		
 		this.selectedTool = selectedTool;
