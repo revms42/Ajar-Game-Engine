@@ -1,22 +1,21 @@
 package tools.anim;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
+import javax.swing.JPanel;
+
 import org.display.ImageBoard;
 
-public class PaintCanvas extends Canvas {
+public class PaintCanvas extends JPanel {
 	private static final long serialVersionUID = -5152687597594926515L;
-
-	private Paint penForeColor;
-	private Paint penBackColor;
+	
+	private static final Color CLEAR = new Color(255,255,255,0);
 	
 	private ImageBoard board;
 	private BufferedImage image;
@@ -27,6 +26,9 @@ public class PaintCanvas extends Canvas {
 	
 	private final Stack<BufferedImage> undo;
 	private final Stack<BufferedImage> redo;
+	
+	private BufferedImage buffer;
+	private Graphics2D bufferGraphics;
 	
 	private final BufferedImage overlay;
 	public Graphics2D penGraphics;
@@ -44,30 +46,10 @@ public class PaintCanvas extends Canvas {
 		
 		overlay = new BufferedImage(tilesize.width,tilesize.height,image.getType());
 		penGraphics = overlay.createGraphics();
-	}
-	
-	public Paint getPenForeColor() {
-		return penForeColor;
-	}
-
-	public void setPenForeColor(Paint penForeColor) {
-		this.penForeColor = penForeColor;
-	}
-
-	public Paint getPenBackColor() {
-		return penBackColor;
-	}
-
-	public void setPenBackColor(Paint penBackColor) {
-		this.penBackColor = penBackColor;
-	}
-	
-	public Color getTransColor() {
-		return this.getBackground();
-	}
-	
-	public void setTransColor(Color transColor) {
-		this.setBackground(transColor);
+		penGraphics.setBackground(CLEAR);
+		penGraphics.clearRect(0, 0, 400, 400);
+		penGraphics.finalize();
+		penGraphics.dispose();
 	}
 
 	public BufferedImage getImage() {
@@ -94,7 +76,9 @@ public class PaintCanvas extends Canvas {
 		g.dispose();
 		
 		penGraphics = overlay.createGraphics();
+		penGraphics.setBackground(CLEAR);
 		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
+		revalidate();
 	}
 	
 	public void undo(){
@@ -105,6 +89,7 @@ public class PaintCanvas extends Canvas {
 		g.finalize();
 		g.dispose();
 		
+		penGraphics.setBackground(CLEAR);
 		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
 	}
 	
@@ -116,6 +101,7 @@ public class PaintCanvas extends Canvas {
 		g.finalize();
 		g.dispose();
 		
+		penGraphics.setBackground(CLEAR);
 		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
 	}
 
@@ -137,24 +123,44 @@ public class PaintCanvas extends Canvas {
 		this.frame.x = x;
 		this.frame.y = y;
 	}
-
-	//TODO: Need to composite the two images.
-	public void paint(Graphics g){
-		super.paint(g);
-		g.drawImage(
-				image, 
-				frame.x*tilesize.width, 
-				frame.y*tilesize.height, 
-				tilesize.width, 
-				tilesize.height, 
-				this);
-		g.drawImage(
-				overlay, 
+	//TODO: Figure out why this doesn't display between pushChanges.
+	protected void paintComponent(Graphics g){
+		if(buffer == null){
+			buffer = new BufferedImage(
+					tilesize.width,
+					tilesize.height,
+					BufferedImage.TYPE_4BYTE_ABGR
+			);
+		}
+		bufferGraphics = buffer.createGraphics();
+		
+		bufferGraphics.setBackground(CLEAR);
+		bufferGraphics.clearRect(0, 0, tilesize.width, tilesize.height);
+		bufferGraphics.drawImage(
+				image.getSubimage(frame.x, frame.y, tilesize.width, tilesize.height), 
+				null,
 				0, 
+				0);
+		
+		penGraphics.finalize();
+		penGraphics.dispose();
+		bufferGraphics.drawImage(
+				overlay,
+				null,
 				0, 
-				tilesize.width, 
-				tilesize.height, 
+				0);
+		
+		bufferGraphics.finalize();
+		bufferGraphics.dispose();
+		g.drawImage(
+				buffer,
+				0, 
+				0,
 				this);
+		
+		penGraphics = overlay.createGraphics();
+		penGraphics.setBackground(CLEAR);
+		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
 	}
 	
 	public void update(Graphics g){

@@ -62,8 +62,8 @@ public class OvalTool extends AbstractTool<Integer> {
 				canvas.penGraphics,
 				startPoint.x,
 				startPoint.y,
-				endPoint.x,
-				endPoint.y
+				endPoint.x - startPoint.x,
+				endPoint.y - startPoint.y
 		);
 		if(!inProgress){
 			canvas.pushChange();

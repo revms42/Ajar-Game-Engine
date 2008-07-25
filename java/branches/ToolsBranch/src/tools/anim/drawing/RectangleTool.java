@@ -43,7 +43,7 @@ public class RectangleTool extends AbstractTool<Integer> {
 			g.finalize();
 			g.dispose();
 			
-			icon = new ImageIcon(image,"Oval");
+			icon = new ImageIcon(image,"Rectangle");
 		}
 		
 		return icon;
