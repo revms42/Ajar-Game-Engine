@@ -27,11 +27,8 @@ public class PaintCanvas extends JPanel {
 	private final Stack<BufferedImage> undo;
 	private final Stack<BufferedImage> redo;
 	
-	private BufferedImage buffer;
+	private volatile BufferedImage buffer;
 	private Graphics2D bufferGraphics;
-	
-	private final BufferedImage overlay;
-	public Graphics2D penGraphics;
 	
 	public PaintCanvas(BufferedImage image, Dimension tilesize){
 		this.image = image;
@@ -44,12 +41,8 @@ public class PaintCanvas extends JPanel {
 		undo = new Stack<BufferedImage>();
 		redo = new Stack<BufferedImage>();
 		
-		overlay = new BufferedImage(tilesize.width,tilesize.height,image.getType());
-		penGraphics = overlay.createGraphics();
-		penGraphics.setBackground(CLEAR);
-		penGraphics.clearRect(0, 0, 400, 400);
-		penGraphics.finalize();
-		penGraphics.dispose();
+		buffer = new BufferedImage(tilesize.width,tilesize.height,image.getType());
+		bufferGraphics = buffer.createGraphics();
 	}
 
 	public BufferedImage getImage() {
@@ -64,20 +57,50 @@ public class PaintCanvas extends JPanel {
 		this.size = new Dimension(image.getWidth(),image.getHeight());
 	}
 	
+	public Graphics2D getDrawingGraphics(){
+		if(buffer == null){
+			buffer = new BufferedImage(
+					tilesize.width,
+					tilesize.height,
+					BufferedImage.TYPE_4BYTE_ABGR
+			);
+		}else{
+			bufferGraphics.finalize();
+			bufferGraphics.dispose();
+		}
+		
+		bufferGraphics = buffer.createGraphics();
+		bufferGraphics.setBackground(Color.WHITE);
+		bufferGraphics.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
+		
+		bufferGraphics.drawImage(
+				image.getSubimage(
+						frame.x*tilesize.width, 
+						frame.y*tilesize.height, 
+						image.getWidth(), 
+						image.getHeight()
+				),null,0,0
+		);
+		
+		return bufferGraphics;
+	}
+	
 	public void pushChange(){
-		undo.push(image.getSubimage(0, 0, image.getWidth(), image.getHeight()));
+		undo.push(
+				image.getSubimage(
+						0, 
+						0, 
+						image.getWidth(), 
+						image.getHeight()
+				)
+		);
 		
 		Graphics2D g = image.createGraphics();
-		penGraphics.finalize();
-		penGraphics.dispose();
+		bufferGraphics.finalize();
+		bufferGraphics.dispose();
 		
-		g.drawImage(overlay, null, frame.x*tilesize.width, frame.y*tilesize.height);
-		g.finalize();
-		g.dispose();
+		g.drawImage(buffer, null, frame.x*tilesize.width, frame.y*tilesize.height);
 		
-		penGraphics = overlay.createGraphics();
-		penGraphics.setBackground(CLEAR);
-		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
 		revalidate();
 	}
 	
@@ -89,8 +112,7 @@ public class PaintCanvas extends JPanel {
 		g.finalize();
 		g.dispose();
 		
-		penGraphics.setBackground(CLEAR);
-		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
+		revalidate();
 	}
 	
 	public void redo(){
@@ -101,8 +123,7 @@ public class PaintCanvas extends JPanel {
 		g.finalize();
 		g.dispose();
 		
-		penGraphics.setBackground(CLEAR);
-		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
+		revalidate();
 	}
 
 	public Point getFrame() {
@@ -125,47 +146,10 @@ public class PaintCanvas extends JPanel {
 	}
 	//TODO: Figure out why this doesn't display between pushChanges.
 	protected void paintComponent(Graphics g){
-		if(buffer == null){
-			buffer = new BufferedImage(
-					tilesize.width,
-					tilesize.height,
-					BufferedImage.TYPE_4BYTE_ABGR
-			);
-		}
-		bufferGraphics = buffer.createGraphics();
-		
-		bufferGraphics.setBackground(CLEAR);
-		bufferGraphics.clearRect(0, 0, tilesize.width, tilesize.height);
-		bufferGraphics.drawImage(
-				image.getSubimage(frame.x, frame.y, tilesize.width, tilesize.height), 
-				null,
-				0, 
-				0);
-		
-		penGraphics.finalize();
-		penGraphics.dispose();
-		bufferGraphics.drawImage(
-				overlay,
-				null,
-				0, 
-				0);
-		
 		bufferGraphics.finalize();
 		bufferGraphics.dispose();
-		g.drawImage(
-				buffer,
-				0, 
-				0,
-				this);
 		
-		penGraphics = overlay.createGraphics();
-		penGraphics.setBackground(CLEAR);
-		penGraphics.clearRect(0, 0, overlay.getWidth(), overlay.getHeight());
-	}
-	
-	public void update(Graphics g){
-		super.update(g);
-		paint(g);
+		g.drawImage(buffer, 0, 0, this);
 	}
 	
 	public ImageBoard getBoard(){
