@@ -62,8 +62,8 @@ public class RectangleTool extends AbstractTool<Integer> {
 				canvas.getDrawingGraphics(),
 				startPoint.x,
 				startPoint.y,
-				endPoint.x,
-				endPoint.y
+				endPoint.x - startPoint.x,
+				endPoint.y - startPoint.y
 		);
 		if(!inProgress){
 			canvas.pushChange();

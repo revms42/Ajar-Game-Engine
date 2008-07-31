@@ -4,13 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 public class MDAnimator extends JFrame {
 	private static final long serialVersionUID = 5927794594829398799L;
 	
+	private final JMenuBar menuBar;
 	private final PaintCanvas canvas;
 	private final ToolPalette tools;
 	
@@ -27,15 +32,21 @@ public class MDAnimator extends JFrame {
 				new Dimension(100,100)
 		);
 		tools = new ToolPalette(canvas);
+		
+		menuBar = new JMenuBar();
 	}
 	
 	public void init(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//TODO: Setup.
-		this.getRootPane().setLayout(new BorderLayout());
-		this.getRootPane().add(canvas,BorderLayout.CENTER);
-		this.getRootPane().add(tools,BorderLayout.WEST);
+		this.setLayout(new BorderLayout());
+		this.add(canvas,BorderLayout.CENTER);
+		this.add(tools,BorderLayout.WEST);
+		this.setMinimumSize(new Dimension(400,400));
+		
+		menuBar.add(createEditMenu());
+		this.setJMenuBar(menuBar);
 		
 		this.pack();
 		this.setVisible(true);
@@ -45,6 +56,29 @@ public class MDAnimator extends JFrame {
 	 */
 	public static void main(String[] args) {
 		(new MDAnimator()).init();
+	}
+	
+	private JMenu createEditMenu(){
+		JMenu edit = new JMenu("Edit");
+		
+		edit.add(new AbstractAction("Undo"){
+			private static final long serialVersionUID = 0L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canvas.undo();
+			}
+		});
+		edit.add(new AbstractAction("Redo"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				canvas.redo();
+			}
+		});
+		
+		return edit;
 	}
 
 }
