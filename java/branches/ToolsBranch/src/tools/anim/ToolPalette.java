@@ -99,10 +99,12 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		ITool<?> selectedTool = tools.get(i);
 		
 		pc.removeMouseListener(this.selectedTool);
+		pc.removeMouseMotionListener(this.selectedTool);
 		
 		this.selectedTool = selectedTool;
 		
 		pc.addMouseListener(selectedTool);
+		pc.addMouseMotionListener(selectedTool);
 	}
 
 	@Override

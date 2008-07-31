@@ -59,7 +59,7 @@ public class RectangleTool extends AbstractTool<Integer> {
 	public void handleMouse() {
 		paint(
 				this.palette,
-				canvas.penGraphics,
+				canvas.getDrawingGraphics(),
 				startPoint.x,
 				startPoint.y,
 				endPoint.x,

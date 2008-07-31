@@ -110,28 +110,28 @@ public abstract class AbstractTool<K> implements ITool<K> {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		button = e.getButton();
+		/*button = e.getButton();
 		startPoint = e.getPoint();
 		endPoint = e.getPoint();
 		modifiers = e.getModifiers();
 		inProgress = false;
-		doMouse();
+		doMouse();*/
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if(e.getButton() != 0 && inProgress && startPoint != null){
+		/*if(e.getButton() != 0 && inProgress && startPoint != null){
 			endPoint = e.getPoint();
 			doMouse();
-		}
+		}*/
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if(e.getButton() != 0 && inProgress && startPoint != null){
+		/*if(e.getButton() != 0 && inProgress && startPoint != null){
 			endPoint = e.getPoint();
 			doMouse();
-		}
+		}*/
 	}
 
 	@Override
@@ -164,10 +164,6 @@ public abstract class AbstractTool<K> implements ITool<K> {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if(button != 0){
-			endPoint = e.getPoint();
-			modifiers = e.getModifiers();
-		}
-		doMouse();
+		
 	}
 }
