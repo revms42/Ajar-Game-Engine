@@ -15,8 +15,6 @@ import org.display.ImageBoard;
 public class PaintCanvas extends JPanel {
 	private static final long serialVersionUID = -5152687597594926515L;
 	
-	private static final Color CLEAR = new Color(255,255,255,0);
-	
 	private ImageBoard board;
 	private BufferedImage image;
 	
@@ -24,8 +22,8 @@ public class PaintCanvas extends JPanel {
 	private Dimension size;
 	private Dimension tilesize;
 	
-	private final Stack<BufferedImage> undo;
-	private final Stack<BufferedImage> redo;
+	private final Stack<int[]> undo;
+	private final Stack<int[]> redo;
 	
 	private volatile BufferedImage buffer;
 	private Graphics2D bufferGraphics;
@@ -38,8 +36,8 @@ public class PaintCanvas extends JPanel {
 		frame = new Point(0,0);
 		size = new Dimension(image.getWidth(),image.getHeight());
 		
-		undo = new Stack<BufferedImage>();
-		redo = new Stack<BufferedImage>();
+		undo = new Stack<int[]>();
+		redo = new Stack<int[]>();
 		
 		buffer = new BufferedImage(tilesize.width,tilesize.height,image.getType());
 		bufferGraphics = buffer.createGraphics();
@@ -58,6 +56,12 @@ public class PaintCanvas extends JPanel {
 	}
 	
 	public Graphics2D getDrawingGraphics(){
+		rebuffer();
+		
+		return bufferGraphics;
+	}
+	
+	private void rebuffer(){
 		if(buffer == null){
 			buffer = new BufferedImage(
 					tilesize.width,
@@ -65,7 +69,6 @@ public class PaintCanvas extends JPanel {
 					BufferedImage.TYPE_4BYTE_ABGR
 			);
 		}else{
-			bufferGraphics.finalize();
 			bufferGraphics.dispose();
 		}
 		
@@ -81,18 +84,11 @@ public class PaintCanvas extends JPanel {
 						image.getHeight()
 				),null,0,0
 		);
-		
-		return bufferGraphics;
 	}
 	
 	public void pushChange(){
 		undo.push(
-				image.getSubimage(
-						0, 
-						0, 
-						image.getWidth(), 
-						image.getHeight()
-				)
+			image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth())
 		);
 		
 		Graphics2D g = image.createGraphics();
@@ -101,29 +97,66 @@ public class PaintCanvas extends JPanel {
 		
 		g.drawImage(buffer, null, frame.x*tilesize.width, frame.y*tilesize.height);
 		
-		revalidate();
+		rebuffer();
+		updateUI();
 	}
 	
 	public void undo(){
-		redo.push(image.getSubimage(0, 0, image.getWidth(), image.getHeight()));
-		
-		Graphics2D g = image.createGraphics();
-		g.drawImage(undo.pop(), null, 0, 0);
-		g.finalize();
-		g.dispose();
-		
-		revalidate();
+		if(!undo.isEmpty()){
+			redo.push(
+					image.getRGB(
+						0, 
+						0, 
+						image.getWidth(), 
+						image.getHeight(), 
+						null, 
+						0, 
+						image.getWidth()
+					)
+				);
+				
+				image.setRGB(
+						0, 
+						0, 
+						image.getWidth(), 
+						image.getHeight(), 
+						undo.pop(), 
+						0, 
+						image.getWidth()
+				);
+				
+				rebuffer();
+				updateUI();
+		}
 	}
 	
 	public void redo(){
-		undo.push(image.getSubimage(0, 0, image.getWidth(), image.getHeight()));
-		
-		Graphics2D g = image.createGraphics();
-		g.drawImage(redo.pop(), null, 0, 0);
-		g.finalize();
-		g.dispose();
-		
-		revalidate();
+		if(!redo.isEmpty()){
+			undo.push(
+					image.getRGB(
+						0, 
+						0, 
+						image.getWidth(), 
+						image.getHeight(), 
+						null, 
+						0, 
+						image.getWidth()
+					)
+				);
+				
+				image.setRGB(
+						0, 
+						0, 
+						image.getWidth(), 
+						image.getHeight(), 
+						redo.pop(), 
+						0, 
+						image.getWidth()
+				);
+				
+				rebuffer();
+				updateUI();
+		}
 	}
 
 	public Point getFrame() {
@@ -146,7 +179,6 @@ public class PaintCanvas extends JPanel {
 	}
 	//TODO: Figure out why this doesn't display between pushChanges.
 	protected void paintComponent(Graphics g){
-		bufferGraphics.finalize();
 		bufferGraphics.dispose();
 		
 		g.drawImage(buffer, 0, 0, this);
