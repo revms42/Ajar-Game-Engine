@@ -101,7 +101,7 @@ public abstract class AbstractTool<K> implements ITool<K> {
 	
 	public abstract void handleMouse();
 	
-	private void doMouse(){
+	protected void doMouse(){
 		handleMouse();
 		canvas.repaint();
 	}

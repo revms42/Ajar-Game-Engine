@@ -41,15 +41,14 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		this.back = Color.WHITE;
 		
 		tools = new Vector<ITool<?>>();
-		//tools.add(new ArcTool(pc,this));
+		tools.add(new ArcTool(pc,this));
 		tools.add(new LineTool(pc,this));
 		tools.add(new OvalTool(pc,this));
 		//tools.add(new PolygonTool(pc,this));
 		tools.add(new RectangleTool(pc,this));
 		//tools.add(new RoundRectangleTool(pc,this));
 		//tools.add(new ShapeTool(pc,this));
-		
-		this.setLayout(new GridLayout(2,(int)Math.floor(tools.size()/2)));
+		this.setLayout(new GridLayout((int)Math.floor((tools.size()/2)+1),2));
 		for(int i = 0; i < tools.size(); i++){
 			final int j = i;
 			
