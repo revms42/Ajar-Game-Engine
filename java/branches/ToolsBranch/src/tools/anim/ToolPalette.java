@@ -1,6 +1,8 @@
 package tools.anim;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Paint;
 import java.awt.event.ActionEvent;
@@ -46,11 +48,14 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		tools.add(new PolygonTool(pc,this));
 		tools.add(new RectangleTool(pc,this));
 		tools.add(new RoundRectangleTool(pc,this));
-		this.setLayout(new GridLayout((int)Math.floor((tools.size()/2)+1),2));
+		this.setLayout(new GridLayout(tools.size()+1,1));
+		
+		Dimension buttonsize = new Dimension(48,48);
+		
 		for(int i = 0; i < tools.size(); i++){
 			final int j = i;
 			
-			this.add(new JButton(new AbstractAction(
+			JButton button = new JButton(new AbstractAction(
 					tools.get(i).getButtonIcon().toString(),
 					tools.get(i).getButtonIcon()
 			){
@@ -61,9 +66,12 @@ public class ToolPalette extends JPanel implements IPaintMode {
 					setSelectedTool(j);
 				}
 				
-			}));
+			});
+			button.setSize(buttonsize);
+			button.setHideActionText(true);
+			this.add(button);
 		}
-		this.add(new JButton(new AbstractAction("Color Picker"){
+		this.add(new JButton(new AbstractAction("CP"){
 			private static final long serialVersionUID = 6770715811822038513L;
 			
 			@Override
