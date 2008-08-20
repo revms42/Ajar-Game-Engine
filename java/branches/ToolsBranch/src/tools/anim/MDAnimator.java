@@ -11,6 +11,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
 public class MDAnimator extends JFrame {
 	private static final long serialVersionUID = 5927794594829398799L;
@@ -41,8 +43,10 @@ public class MDAnimator extends JFrame {
 		
 		//TODO: Setup.
 		this.setLayout(new BorderLayout());
-		this.add(canvas,BorderLayout.CENTER);
-		this.add(tools,BorderLayout.WEST);
+		JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		sp.setRightComponent(new JScrollPane(canvas));
+		sp.setLeftComponent(tools);
+		this.add(sp,BorderLayout.CENTER);
 		this.setMinimumSize(new Dimension(400,400));
 		
 		menuBar.add(createEditMenu());
