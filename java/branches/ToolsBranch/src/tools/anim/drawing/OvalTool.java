@@ -38,8 +38,8 @@ public class OvalTool extends AbstractTool<Integer> {
 		if(icon == null){
 			BufferedImage image = new BufferedImage(24, 24, BufferedImage.TYPE_4BYTE_ABGR);
 			Graphics2D g = image.createGraphics();
-			fill(Color.LIGHT_GRAY,g,3,21,18,18);
-			draw(Color.BLACK,g,3,21,18,18);
+			fill(Color.LIGHT_GRAY,g,3,3,18,18);
+			draw(Color.BLACK,g,3,3,18,18);
 			g.finalize();
 			g.dispose();
 			

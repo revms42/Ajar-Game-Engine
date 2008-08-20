@@ -38,7 +38,7 @@ public class LineTool extends AbstractTool<Integer> {
 		if(icon == null){
 			BufferedImage image = new BufferedImage(24, 24, BufferedImage.TYPE_4BYTE_ABGR);
 			Graphics2D g = image.createGraphics();
-			fill(Color.LIGHT_GRAY,g,3,21,21,3);
+			fill(Color.BLACK,g,3,21,21,3);
 			g.finalize();
 			g.dispose();
 			
