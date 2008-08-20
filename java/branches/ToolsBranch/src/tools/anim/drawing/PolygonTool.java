@@ -3,6 +3,7 @@ package tools.anim.drawing;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
@@ -13,11 +14,13 @@ import javax.swing.JPanel;
 import tools.anim.IPaintMode;
 import tools.anim.PaintCanvas;
 
-public class PolygonTool extends AbstractTool<Polygon> {
+public class PolygonTool extends AbstractPolyClickTool<Polygon> {
 
+	private Polygon pgon;
+	
 	public PolygonTool(PaintCanvas p, IPaintMode t) {
 		super(p, t);
-		// TODO Auto-generated constructor stub
+		pgon = new Polygon();
 	}
 
 	private ImageIcon icon;
@@ -61,5 +64,28 @@ public class PolygonTool extends AbstractTool<Polygon> {
 	public JPanel parametricPanel() {
 		// TODO Create Parametric Panel
 		return null;
+	}
+
+	@Override
+	public void handleMouse() {
+		if(points != null && !points.isEmpty()){
+			pgon = new Polygon();
+			
+			for(Point p : points){
+				pgon.addPoint(p.x, p.y);
+			}
+			pgon.addPoint(endPoint.x, endPoint.y);
+			
+			paint(
+					this.palette,
+					canvas.getDrawingGraphics(),
+					pgon
+			);
+			
+			if(!inProgress){
+				canvas.pushChange();
+				points.clear();
+			}
+		}
 	}
 }

@@ -17,7 +17,6 @@ import tools.anim.drawing.OvalTool;
 import tools.anim.drawing.PolygonTool;
 import tools.anim.drawing.RectangleTool;
 import tools.anim.drawing.RoundRectangleTool;
-import tools.anim.drawing.ShapeTool;
 
 public class ToolPalette extends JPanel implements IPaintMode {
 	private static final long serialVersionUID = 1671516951583390782L;
@@ -44,10 +43,9 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		tools.add(new ArcTool(pc,this));
 		tools.add(new LineTool(pc,this));
 		tools.add(new OvalTool(pc,this));
-		//tools.add(new PolygonTool(pc,this));
+		tools.add(new PolygonTool(pc,this));
 		tools.add(new RectangleTool(pc,this));
 		tools.add(new RoundRectangleTool(pc,this));
-		//tools.add(new ShapeTool(pc,this));
 		this.setLayout(new GridLayout((int)Math.floor((tools.size()/2)+1),2));
 		for(int i = 0; i < tools.size(); i++){
 			final int j = i;
