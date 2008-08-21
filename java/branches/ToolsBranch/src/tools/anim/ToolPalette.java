@@ -9,10 +9,10 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 
 import tools.anim.drawing.ArcTool;
+import tools.anim.drawing.ColorPalette;
 import tools.anim.drawing.LineTool;
 import tools.anim.drawing.OvalTool;
 import tools.anim.drawing.PolygonTool;
@@ -51,10 +51,11 @@ public class ToolPalette extends JPanel implements IPaintMode {
 		
 		Dimension buttonsize = new Dimension(48,48);
 		
+		JButton button;
 		for(int i = 0; i < tools.size(); i++){
 			final int j = i;
 			
-			JButton button = new JButton(new AbstractAction(
+			button = new JButton(new AbstractAction(
 					tools.get(i).getButtonIcon().toString(),
 					tools.get(i).getButtonIcon()
 			){
@@ -70,15 +71,12 @@ public class ToolPalette extends JPanel implements IPaintMode {
 			button.setHideActionText(true);
 			this.add(button);
 		}
-		this.add(new JButton(new AbstractAction("CP"){
-			private static final long serialVersionUID = 6770715811822038513L;
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				fore = JColorChooser.showDialog(pc, "Color Chooser", Color.BLACK);
-			}
-			
-		}));
+		
+		ColorPalette palette = new ColorPalette(c,this);
+		button = new JButton(palette);
+		button.setIcon(palette.getIcon());
+		
+		this.add(button);
 	}
 	
 	public int getPaintMode(){

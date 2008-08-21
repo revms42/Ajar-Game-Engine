@@ -50,6 +50,7 @@ public class MDAnimator extends JFrame {
 		this.setMinimumSize(new Dimension(400,400));
 		
 		menuBar.add(createEditMenu());
+		menuBar.add(createViewMenu());
 		this.setJMenuBar(menuBar);
 		
 		this.pack();
@@ -83,6 +84,33 @@ public class MDAnimator extends JFrame {
 		});
 		
 		return edit;
+	}
+	
+	private JMenu createViewMenu(){
+		JMenu view = new JMenu("View");
+		
+		view.add(new AbstractAction("Zoom-in"){
+			private static final long serialVersionUID = 2L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//TODO: Implement zoom in.
+				System.out.println("NYI");
+			}
+			
+		});
+		view.add(new AbstractAction("Zoom-out"){
+			private static final long serialVersionUID = 2L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//TODO: Implement zoom out.
+				System.out.println("NYI");
+			}
+			
+		});
+		
+		return view;
 	}
 
 }
