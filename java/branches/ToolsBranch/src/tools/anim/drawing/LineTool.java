@@ -59,10 +59,10 @@ public class LineTool extends AbstractTool<Integer> {
 		paint(
 				this.palette,
 				canvas.getDrawingGraphics(),
-				startPoint.x,
-				startPoint.y,
-				endPoint.x,
-				endPoint.y
+				startPoint.x / canvas.getZoomLevel(),
+				startPoint.y / canvas.getZoomLevel(),
+				endPoint.x / canvas.getZoomLevel(),
+				endPoint.y / canvas.getZoomLevel()
 		);
 		if(!inProgress){
 			canvas.pushChange();

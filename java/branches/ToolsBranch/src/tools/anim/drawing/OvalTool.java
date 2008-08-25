@@ -60,10 +60,10 @@ public class OvalTool extends AbstractTool<Integer> {
 		paint(
 				this.palette,
 				canvas.getDrawingGraphics(),
-				startPoint.x,
-				startPoint.y,
-				endPoint.x - startPoint.x,
-				endPoint.y - startPoint.y
+				startPoint.x / canvas.getZoomLevel(),
+				startPoint.y / canvas.getZoomLevel(),
+				(endPoint.x - startPoint.x) / canvas.getZoomLevel(),
+				(endPoint.y - startPoint.y) / canvas.getZoomLevel()
 		);
 		if(!inProgress){
 			canvas.pushChange();

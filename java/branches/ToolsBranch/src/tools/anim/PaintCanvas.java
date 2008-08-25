@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
@@ -12,7 +14,9 @@ import javax.swing.JPanel;
 
 import org.display.ImageBoard;
 
-public class PaintCanvas extends JPanel {
+import tools.anim.view.IZoom;
+
+public class PaintCanvas extends JPanel implements IZoom {
 	private static final long serialVersionUID = -5152687597594926515L;
 	
 	private ImageBoard board;
@@ -28,6 +32,9 @@ public class PaintCanvas extends JPanel {
 	private volatile BufferedImage buffer;
 	private Graphics2D bufferGraphics;
 	
+	private int zoomLevel;
+	private AffineTransformOp rescaler;
+	
 	public PaintCanvas(BufferedImage image, Dimension tilesize){
 		this.image = image;
 		this.tilesize = tilesize;
@@ -35,6 +42,11 @@ public class PaintCanvas extends JPanel {
 		
 		frame = new Point(0,0);
 		size = new Dimension(image.getWidth(),image.getHeight());
+		zoomLevel = 1;
+		rescaler = new AffineTransformOp(
+				AffineTransform.getScaleInstance(zoomLevel,zoomLevel),
+				AffineTransformOp.TYPE_NEAREST_NEIGHBOR
+		);
 		
 		undo = new Stack<int[]>();
 		redo = new Stack<int[]>();
@@ -181,10 +193,48 @@ public class PaintCanvas extends JPanel {
 	protected void paintComponent(Graphics g){
 		bufferGraphics.dispose();
 		
-		g.drawImage(buffer, 0, 0, this);
+		if(rescaler.getTransform().getScaleX() != zoomLevel){
+			rescaler = new AffineTransformOp(
+					AffineTransform.getScaleInstance(zoomLevel,zoomLevel),
+					AffineTransformOp.TYPE_NEAREST_NEIGHBOR
+			);
+		}
+		
+		Graphics2D g2 = (Graphics2D) g;
+		//g.drawImage(buffer, 0, 0, this);
+		g2.drawImage(buffer, rescaler, 0, 0);
 	}
 	
 	public ImageBoard getBoard(){
 		return board;
+	}
+
+	@Override
+	public int getZoomLevel() {
+		return zoomLevel;
+	}
+
+	@Override
+	public void setZoomLevel(int level) {
+		//TODO: Need more intelligent handling of this.
+		if(level >= 1 && level <= 10){
+			zoomLevel = level;
+		}
+	}
+
+	@Override
+	public void zoomIn() {
+		//TODO: Need more intelligent handling of this.
+		if(zoomLevel < 10){
+			zoomLevel++;
+		}
+	}
+
+	@Override
+	public void zoomOut() {
+		//TODO: Need more intelligent handling of this.
+		if(zoomLevel > 2){
+			zoomLevel--;
+		}
 	}
 }

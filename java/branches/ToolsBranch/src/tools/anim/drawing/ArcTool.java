@@ -31,7 +31,12 @@ public class ArcTool extends AbstractTwoModeTool<Integer> {
 				g.drawRect(p[0],p[1],p[2],p[3]);
 			}else{
 				if(endPoint2 != null){
-					g.drawLine(p[0]+(p[2]/2),p[1]+(p[3]/2),endPoint2.x,endPoint2.y);
+					g.drawLine(
+							p[0]+(p[2]/2),
+							p[1]+(p[3]/2),
+							endPoint2.x / canvas.getZoomLevel(),
+							endPoint2.y / canvas.getZoomLevel()
+					);
 				}
 			}
 		}
@@ -71,16 +76,16 @@ public class ArcTool extends AbstractTwoModeTool<Integer> {
 			paint(
 					this.palette,
 					canvas.getDrawingGraphics(),
-					startPoint.x,
-					startPoint.y,
-					endPoint.x - startPoint.x,
-					endPoint.y - startPoint.y,
+					startPoint.x / canvas.getZoomLevel(),
+					startPoint.y / canvas.getZoomLevel(),
+					(endPoint.x - startPoint.x) / canvas.getZoomLevel(),
+					(endPoint.y - startPoint.y) / canvas.getZoomLevel(),
 					0,
 					360
 			);
 		}else{
-			double startNumer = Math.abs((startPoint2.y - ((startPoint.y + endPoint.y)/2)));
-			double startDenom = Math.abs((startPoint2.x - ((startPoint.x + endPoint.x)/2)));
+			double startNumer = Math.abs((startPoint2.y - ((startPoint.y + endPoint.y)/2))) / canvas.getZoomLevel();
+			double startDenom = Math.abs((startPoint2.x - ((startPoint.x + endPoint.x)/2))) / canvas.getZoomLevel();
 			
 			startDenom = startDenom==0 ? 1 : startDenom;
 			
@@ -119,10 +124,10 @@ public class ArcTool extends AbstractTwoModeTool<Integer> {
 			paint(
 					this.palette,
 					canvas.getDrawingGraphics(),
-					startPoint.x,
-					startPoint.y,
-					endPoint.x - startPoint.x,
-					endPoint.y - startPoint.y,
+					startPoint.x / canvas.getZoomLevel(),
+					startPoint.y / canvas.getZoomLevel(),
+					(endPoint.x - startPoint.x) / canvas.getZoomLevel(),
+					(endPoint.y - startPoint.y) / canvas.getZoomLevel(),
 					(int)angle,
 					extent
 

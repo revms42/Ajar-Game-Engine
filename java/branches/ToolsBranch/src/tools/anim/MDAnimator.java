@@ -94,8 +94,7 @@ public class MDAnimator extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO: Implement zoom in.
-				System.out.println("NYI");
+				canvas.zoomIn();
 			}
 			
 		});
@@ -104,8 +103,7 @@ public class MDAnimator extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO: Implement zoom out.
-				System.out.println("NYI");
+				canvas.zoomOut();
 			}
 			
 		});

@@ -72,9 +72,15 @@ public class PolygonTool extends AbstractPolyClickTool<Polygon> {
 			pgon = new Polygon();
 			
 			for(Point p : points){
-				pgon.addPoint(p.x, p.y);
+				pgon.addPoint(
+						p.x / canvas.getZoomLevel(), 
+						p.y / canvas.getZoomLevel()
+				);
 			}
-			pgon.addPoint(endPoint.x, endPoint.y);
+			pgon.addPoint(
+					endPoint.x / canvas.getZoomLevel(), 
+					endPoint.y / canvas.getZoomLevel()
+			);
 			
 			paint(
 					this.palette,

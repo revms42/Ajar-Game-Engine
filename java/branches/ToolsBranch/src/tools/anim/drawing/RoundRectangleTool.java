@@ -61,10 +61,10 @@ public class RoundRectangleTool extends AbstractTwoModeTool<Integer> {
 			paint(
 					this.palette,
 					canvas.getDrawingGraphics(),
-					startPoint.x,
-					startPoint.y,
-					endPoint.x - startPoint.x,
-					endPoint.y - startPoint.y,
+					startPoint.x / canvas.getZoomLevel(),
+					startPoint.y / canvas.getZoomLevel(),
+					(endPoint.x - startPoint.x) / canvas.getZoomLevel(),
+					(endPoint.y - startPoint.y) / canvas.getZoomLevel(),
 					0,
 					0
 			);
@@ -72,12 +72,18 @@ public class RoundRectangleTool extends AbstractTwoModeTool<Integer> {
 			paint(
 					this.palette,
 					canvas.getDrawingGraphics(),
-					startPoint.x,
-					startPoint.y,
-					endPoint.x - startPoint.x,
-					endPoint.y - startPoint.y,
-					(int)Math.abs(endPoint2.x-((startPoint.x + endPoint.x)/2)),
-					(int)Math.abs(endPoint2.y-((startPoint.y + endPoint.y)/2))
+					startPoint.x / canvas.getZoomLevel(),
+					startPoint.y / canvas.getZoomLevel(),
+					(endPoint.x - startPoint.x) / canvas.getZoomLevel(),
+					(endPoint.y - startPoint.y) / canvas.getZoomLevel(),
+					(int)Math.abs(
+							(endPoint2.x-((startPoint.x + endPoint.x)/2))
+							 /canvas.getZoomLevel()
+					 ),
+					(int)Math.abs(
+							(endPoint2.y-((startPoint.y + endPoint.y)/2))
+							/canvas.getZoomLevel()
+					 )
 	
 			);
 		}
