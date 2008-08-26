@@ -65,6 +65,8 @@ public class PaintCanvas extends JPanel implements IZoom {
 		
 		this.frame = new Point(0,0);
 		this.size = new Dimension(image.getWidth(),image.getHeight());
+		
+		repaint();
 	}
 	
 	public Graphics2D getDrawingGraphics(){
@@ -219,6 +221,7 @@ public class PaintCanvas extends JPanel implements IZoom {
 		//TODO: Need more intelligent handling of this.
 		if(level >= 1 && level <= 10){
 			zoomLevel = level;
+			repaint();
 		}
 	}
 
@@ -227,6 +230,7 @@ public class PaintCanvas extends JPanel implements IZoom {
 		//TODO: Need more intelligent handling of this.
 		if(zoomLevel < 10){
 			zoomLevel++;
+			repaint();
 		}
 	}
 
@@ -235,6 +239,7 @@ public class PaintCanvas extends JPanel implements IZoom {
 		//TODO: Need more intelligent handling of this.
 		if(zoomLevel > 2){
 			zoomLevel--;
+			repaint();
 		}
 	}
 }

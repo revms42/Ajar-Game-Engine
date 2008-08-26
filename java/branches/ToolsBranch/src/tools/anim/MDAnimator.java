@@ -8,7 +8,9 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -91,11 +93,13 @@ public class MDAnimator extends JFrame {
 					
 					if(choice == JFileChooser.APPROVE_OPTION){
 						holder = chooser.getSelectedFile();
-					}
-					
-					//TODO: Load the file.
+						
+						canvas.setImage(ImageIO.read(holder));
+					} 
 				}catch(HeadlessException he){
 					he.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
 		});
@@ -103,16 +107,41 @@ public class MDAnimator extends JFrame {
 			private static final long serialVersionUID = 6L;
 
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				try{
+					if(holder == null){
+						int choice = chooser.showSaveDialog(canvas);
+						
+						if(choice == JFileChooser.APPROVE_OPTION){
+							holder = chooser.getSelectedFile();
+						}else{
+							return;
+						}
+					}
+					
+					ImageIO.write(canvas.getImage(), "png", holder);
+				}catch(HeadlessException he){
+					he.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		file.add(new AbstractAction("Save As..."){
 			private static final long serialVersionUID = 7L;
 
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				try{
+					int choice = chooser.showSaveDialog(canvas);
+					
+					if(choice == JFileChooser.APPROVE_OPTION){
+						holder = chooser.getSelectedFile();
+						ImageIO.write(canvas.getImage(), "png", holder);
+					}
+				}catch(HeadlessException he){
+					he.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		file.add(new AbstractAction("Close"){
@@ -127,8 +156,7 @@ public class MDAnimator extends JFrame {
 			private static final long serialVersionUID = 9L;
 
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				System.exit(0);
 			}
 		});
 		
