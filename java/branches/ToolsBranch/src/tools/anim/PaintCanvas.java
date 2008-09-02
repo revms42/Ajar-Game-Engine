@@ -94,8 +94,8 @@ public class PaintCanvas extends JPanel implements IZoom {
 				image.getSubimage(
 						frame.x*tilesize.width, 
 						frame.y*tilesize.height, 
-						image.getWidth(), 
-						image.getHeight()
+						tilesize.width, 
+						tilesize.height
 				),null,0,0
 		);
 	}
@@ -190,6 +190,7 @@ public class PaintCanvas extends JPanel implements IZoom {
 		
 		this.frame.x = x;
 		this.frame.y = y;
+		repaint();
 	}
 	//TODO: Figure out why this doesn't display between pushChanges.
 	protected void paintComponent(Graphics g){
@@ -237,7 +238,7 @@ public class PaintCanvas extends JPanel implements IZoom {
 	@Override
 	public void zoomOut() {
 		//TODO: Need more intelligent handling of this.
-		if(zoomLevel > 2){
+		if(zoomLevel >= 2){
 			zoomLevel--;
 			repaint();
 		}
