@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -180,6 +181,46 @@ public class MDAnimator extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				canvas.redo();
+			}
+		});
+		edit.add(new AbstractAction("Frame Forward"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Point p = canvas.getFrame();
+				p.x++;
+				canvas.setFrame(p);
+			}
+		});
+		edit.add(new AbstractAction("Frame Back"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Point p = canvas.getFrame();
+				p.x--;
+				canvas.setFrame(p);
+			}
+		});
+		edit.add(new AbstractAction("Frame Down"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Point p = canvas.getFrame();
+				p.y++;
+				canvas.setFrame(p);
+			}
+		});
+		edit.add(new AbstractAction("Frame Up"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Point p = canvas.getFrame();
+				p.y--;
+				canvas.setFrame(p);
 			}
 		});
 		
