@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -13,12 +14,19 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
+import javax.swing.SpinnerNumberModel;
 
 public class MDAnimator extends JFrame {
 	private static final long serialVersionUID = 5927794594829398799L;
@@ -29,6 +37,9 @@ public class MDAnimator extends JFrame {
 	private final JFileChooser chooser;
 	
 	private File holder;
+	
+	private AbstractAction resetEditMenus;
+	private AbstractAction resetViewMenus;
 	
 	public MDAnimator(){
 		BufferedImage start = new BufferedImage(400,400,BufferedImage.TYPE_4BYTE_ABGR);
@@ -64,6 +75,8 @@ public class MDAnimator extends JFrame {
 		menuBar.add(createViewMenu());
 		this.setJMenuBar(menuBar);
 		
+		resetMenus();
+		
 		this.pack();
 		this.setVisible(true);
 	}
@@ -81,8 +94,52 @@ public class MDAnimator extends JFrame {
 			private static final long serialVersionUID = 4L;
 
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				JOptionPane pane = new JOptionPane();
+				pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
 				
+				JPanel panel = new JPanel();
+				panel.setLayout(new GridLayout(4,2));
+				
+				//Width x Height of Frame.
+				panel.add(new JLabel("Width"));
+				panel.add(new JLabel("Height"));
+				JSpinner width = new JSpinner(
+						new SpinnerNumberModel(0,Integer.MIN_VALUE,Integer.MAX_VALUE,1)
+				);
+				panel.add(width);
+				JSpinner height = new JSpinner(
+						new SpinnerNumberModel(0,Integer.MIN_VALUE,Integer.MAX_VALUE,1)
+				);
+				panel.add(height);
+				
+				//Number of actions, Number of frames.
+				panel.add(new JLabel("Num. Actions"));
+				panel.add(new JLabel("Num. Frames"));
+				JSpinner actions = new JSpinner(
+						new SpinnerNumberModel(0,Integer.MIN_VALUE,Integer.MAX_VALUE,1)
+				);
+				panel.add(actions);
+				JSpinner frames = new JSpinner(
+						new SpinnerNumberModel(0,Integer.MIN_VALUE,Integer.MAX_VALUE,1)
+				);
+				panel.add(frames);
+				
+				pane.add(panel);
+				
+				JDialog dialog = pane.createDialog("New Animation");//new JDialog();
+				dialog.setVisible(true);
+				
+				if((Integer)pane.getValue() == JOptionPane.OK_OPTION){
+					int w = (Integer)width.getValue();
+					int h = (Integer)height.getValue();
+					int a = (Integer)actions.getValue();
+					int f = (Integer)frames.getValue();
+					
+					canvas.newImage(new Dimension(w,h), f, a);
+					
+					canvas.flushStacks();
+					resetMenus();
+				}
 			}
 		});
 		file.add(new AbstractAction("Open"){
@@ -167,23 +224,36 @@ public class MDAnimator extends JFrame {
 	private JMenu createEditMenu(){
 		JMenu edit = new JMenu("Edit");
 		
-		edit.add(new AbstractAction("Undo"){
+		final JMenuItem undo = new JMenuItem("Undo");
+		final JMenuItem redo = new JMenuItem("Redo");
+		final JMenuItem fframe = new JMenuItem("Frame Forward");
+		final JMenuItem bframe = new JMenuItem("Frame Back");
+		final JMenuItem uframe = new JMenuItem("Frame Up");
+		final JMenuItem dframe = new JMenuItem("Frame Down");
+		
+		undo.setAction(new AbstractAction("Undo"){
 			private static final long serialVersionUID = 0L;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				canvas.undo();
+				
+				undo.setEnabled(canvas.canUndo());
+				redo.setEnabled(canvas.canRedo());
 			}
 		});
-		edit.add(new AbstractAction("Redo"){
+		redo.setAction(new AbstractAction("Redo"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				canvas.redo();
+				
+				undo.setEnabled(canvas.canUndo());
+				redo.setEnabled(canvas.canRedo());
 			}
 		});
-		edit.add(new AbstractAction("Frame Forward"){
+		fframe.setAction(new AbstractAction("Frame Forward"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -191,9 +261,12 @@ public class MDAnimator extends JFrame {
 				Point p = canvas.getFrame();
 				p.x++;
 				canvas.setFrame(p);
+				
+				fframe.setEnabled(canvas.canAdvanceXFrame());
+				bframe.setEnabled(canvas.canRetreatXFrame());
 			}
 		});
-		edit.add(new AbstractAction("Frame Back"){
+		bframe.setAction(new AbstractAction("Frame Back"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -201,9 +274,12 @@ public class MDAnimator extends JFrame {
 				Point p = canvas.getFrame();
 				p.x--;
 				canvas.setFrame(p);
+				
+				fframe.setEnabled(canvas.canAdvanceXFrame());
+				bframe.setEnabled(canvas.canRetreatXFrame());
 			}
 		});
-		edit.add(new AbstractAction("Frame Down"){
+		dframe.setAction(new AbstractAction("Frame Down"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -211,9 +287,12 @@ public class MDAnimator extends JFrame {
 				Point p = canvas.getFrame();
 				p.y++;
 				canvas.setFrame(p);
+				
+				dframe.setEnabled(canvas.canAdvanceYFrame());
+				uframe.setEnabled(canvas.canRetreatYFrame());
 			}
 		});
-		edit.add(new AbstractAction("Frame Up"){
+		uframe.setAction(new AbstractAction("Frame Up"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -221,8 +300,33 @@ public class MDAnimator extends JFrame {
 				Point p = canvas.getFrame();
 				p.y--;
 				canvas.setFrame(p);
+				
+				dframe.setEnabled(canvas.canAdvanceYFrame());
+				uframe.setEnabled(canvas.canRetreatYFrame());
 			}
 		});
+		
+		edit.add(undo);
+		edit.add(redo);
+		edit.add(fframe);
+		edit.add(bframe);
+		edit.add(dframe);
+		edit.add(uframe);
+		
+		resetEditMenus = new AbstractAction("Reset Edit Menus"){
+			private static final long serialVersionUID = 3077585976934400669L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				undo.setEnabled(canvas.canUndo());
+				redo.setEnabled(canvas.canRedo());
+				fframe.setEnabled(canvas.canAdvanceXFrame());
+				bframe.setEnabled(canvas.canRetreatXFrame());
+				dframe.setEnabled(canvas.canAdvanceYFrame());
+				uframe.setEnabled(canvas.canRetreatYFrame());
+			}
+			
+		};
 		
 		return edit;
 	}
@@ -230,26 +334,57 @@ public class MDAnimator extends JFrame {
 	private JMenu createViewMenu(){
 		JMenu view = new JMenu("View");
 		
-		view.add(new AbstractAction("Zoom-in"){
+		final JMenuItem in = new  JMenuItem("Zoom-in");
+		final JMenuItem out = new  JMenuItem("Zoom-out");
+		
+		in.setAction(new AbstractAction("Zoom-in"){
 			private static final long serialVersionUID = 2L;
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				canvas.zoomIn();
+				
+				in.setEnabled(canvas.canZoomIn());
+				out.setEnabled(canvas.canZoomOut());
 			}
 			
 		});
-		view.add(new AbstractAction("Zoom-out"){
+		out.setAction(new AbstractAction("Zoom-out"){
 			private static final long serialVersionUID = 3L;
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				canvas.zoomOut();
+				
+				in.setEnabled(canvas.canZoomIn());
+				out.setEnabled(canvas.canZoomOut());
 			}
 			
 		});
 		
+		view.add(in);
+		view.add(out);
+		
+		resetViewMenus = new AbstractAction("Reset View Menus"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				in.setEnabled(canvas.canZoomIn());
+				out.setEnabled(canvas.canZoomOut());
+			}
+		};
+		
 		return view;
+	}
+	
+	private void resetMenus(){
+		if(resetEditMenus != null){
+			resetEditMenus.actionPerformed(null);
+		}
+		if(resetViewMenus != null){
+			resetViewMenus.actionPerformed(null);
+		}
 	}
 
 }
