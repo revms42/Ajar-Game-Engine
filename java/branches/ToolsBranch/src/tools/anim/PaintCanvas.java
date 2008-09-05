@@ -54,6 +54,19 @@ public class PaintCanvas extends JPanel implements IZoom {
 		buffer = new BufferedImage(tilesize.width,tilesize.height,image.getType());
 		bufferGraphics = buffer.createGraphics();
 	}
+	
+	public void newImage(Dimension tilesize, int frames, int actions){
+		this.tilesize = tilesize;
+		
+		setImage(new BufferedImage(
+				tilesize.width * frames,
+				tilesize.height * actions,
+				BufferedImage.TYPE_4BYTE_ABGR
+		));
+		
+		buffer = new BufferedImage(tilesize.width,tilesize.height,image.getType());
+		bufferGraphics = buffer.createGraphics();
+	}
 
 	public BufferedImage getImage() {
 		return image;
@@ -172,6 +185,19 @@ public class PaintCanvas extends JPanel implements IZoom {
 				updateUI();
 		}
 	}
+	
+	public boolean canUndo(){
+		return !(undo.empty());
+	}
+	
+	public boolean canRedo(){
+		return !(redo.empty());
+	}
+	
+	public void flushStacks(){
+		undo.removeAllElements();
+		redo.removeAllElements();
+	}
 
 	public Point getFrame() {
 		return frame;
@@ -181,17 +207,35 @@ public class PaintCanvas extends JPanel implements IZoom {
 		int x = this.frame.x;
 		int y = this.frame.y;
 		
-		if(frame.x >= 0 && frame.x*tilesize.width <= size.width){
+		if(frame.x >= 0 && frame.x*tilesize.width < size.width){
 			x = frame.x;
 		}
-		if(frame.y >= 0 && frame.y*tilesize.height <= size.height){
+		if(frame.y >= 0 && frame.y*tilesize.height < size.height){
 			y = frame.y;
 		}
 		
 		this.frame.x = x;
 		this.frame.y = y;
+		rebuffer();
 		repaint();
 	}
+	
+	public boolean canAdvanceXFrame(){
+		return !((frame.x+1)*tilesize.width == size.width);
+	}
+	
+	public boolean canAdvanceYFrame(){
+		return !((frame.y+1)*tilesize.height == size.height);
+	}
+	
+	public boolean canRetreatXFrame(){
+		return !(frame.x == 0);
+	}
+	
+	public boolean canRetreatYFrame(){
+		return !(frame.y == 0);
+	}
+	
 	//TODO: Figure out why this doesn't display between pushChanges.
 	protected void paintComponent(Graphics g){
 		bufferGraphics.dispose();
@@ -242,5 +286,13 @@ public class PaintCanvas extends JPanel implements IZoom {
 			zoomLevel--;
 			repaint();
 		}
+	}
+	
+	public boolean canZoomIn(){
+		return !(zoomLevel == 10);
+	}
+	
+	public boolean canZoomOut(){
+		return !(zoomLevel == 1);
 	}
 }
