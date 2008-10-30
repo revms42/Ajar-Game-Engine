@@ -10,7 +10,7 @@ import space.model.ships.IComponent;
 public class ComponentTransferHandler extends TransferHandler {
 	private static final long serialVersionUID = -6955368264160235901L;
 	
-	private IComponent component;
+	private IComponent<?> component;
 	
 	public boolean canImport(TransferHandler.TransferSupport info) {
 		if (!info.isDataFlavorSupported(TransferableComponent.COMP_FLAVOR)) {
@@ -39,9 +39,9 @@ public class ComponentTransferHandler extends TransferHandler {
 		
 		// Get the string that is being dropped.
 		Transferable t = info.getTransferable();
-		IComponent data;
+		IComponent<?> data;
 		try {
-			data = (IComponent)t.getTransferData(TransferableComponent.COMP_FLAVOR);
+			data = (IComponent<?>)t.getTransferData(TransferableComponent.COMP_FLAVOR);
 		} 
 		catch (Exception e) { return false; }
 		
