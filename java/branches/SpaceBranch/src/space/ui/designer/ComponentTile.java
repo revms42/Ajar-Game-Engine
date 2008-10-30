@@ -4,17 +4,17 @@ import javax.swing.JPanel;
 
 import space.model.ships.IComponent;
 
-public class ComponentTile extends JPanel implements IComponentTransferer {
+public class ComponentTile<I,K> extends JPanel implements IComponentTransferer {
 	private static final long serialVersionUID = 434787520854392137L;
 	
-	private IComponent component;
+	private IComponent<?> component;
 
 	public ComponentTile(ComponentTransferHandler handler){
 		this.setTransferHandler(handler);
 	}
 	
 	@Override
-	public IComponent getSelectedComponent() {
+	public IComponent<?> getSelectedComponent() {
 		return component;
 	}
 
@@ -24,12 +24,12 @@ public class ComponentTile extends JPanel implements IComponentTransferer {
 	}
 
 	@Override
-	public void removeComponent(IComponent component) {
+	public void removeComponent(IComponent<?> component) {
 		component = null;
 	}
 
 	@Override
-	public void setSelectedComponent(IComponent component) {
+	public void setSelectedComponent(IComponent<?> component) {
 		this.component = component;
 	}
 
