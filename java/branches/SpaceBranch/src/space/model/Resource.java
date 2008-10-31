@@ -1,12 +1,14 @@
 package space.model;
 
+import java.awt.Color;
+
 public enum Resource {
 
 	//Goldschmidt classification
 	
-	PRODUCTION("Production"),
+	PRODUCTION("Production","Pro",false,Color.WHITE),
 	/* Gas loving elements: */
-	MINERAL1("Atmophile Elements", 
+	MINERAL1("Atmophile Elements","Atm",true,Color.CYAN,
 			Element.Ar,
 			Element.C,
 			Element.Kr,
@@ -17,7 +19,7 @@ public enum Resource {
 			Element.Rn,
 			Element.Xe),
 	/* Silicon loving elements: */
-	MINERAL2("Lithophile Elements", 
+	MINERAL2("Lithophile Elements","Lth",true,Color.YELLOW,
 			Element.Al, 
 			Element.At, 
 			Element.B, 
@@ -66,7 +68,7 @@ public enum Resource {
 			Element.Yb,
 			Element.Zr),
 	/* Iron loving elements: */
-	MINERAL3("Siderophile Elements", 
+	MINERAL3("Siderophile Elements","Sid",true,Color.RED,
 			Element.Au,
 			Element.Co,
 			Element.Fe,
@@ -81,7 +83,7 @@ public enum Resource {
 			Element.Rh,
 			Element.Ru),
 	/* Copper loving elements: */
-	MINERAL4("Chalcophile Elements", 
+	MINERAL4("Chalcophile Elements","Cha",true,Color.GREEN,
 			Element.Ag, 
 			Element.As, 
 			Element.Bi, 
@@ -100,7 +102,7 @@ public enum Resource {
 			Element.Te, 
 			Element.Tl, 
 			Element.Zn),
-	MINERAL5("Xenophile Elements",
+	MINERAL5("Xenophile Elements","Xen",false,Color.MAGENTA,
 			Element.Fr,
 			Element.Ra,
 			Element.Ac,
@@ -126,18 +128,32 @@ public enum Resource {
 			Element.Rg,
 			Element.Lz,
 			Element.Fv,
-			Element.Kn);
+			Element.Kn,
+			Element.Nx,
+			Element.Qx,
+			Element.Sx,
+			Element.Px,
+			Element.Xx,
+			Element.Zx);
 	
 	private final String name;
+	private final String shortName;
+	private final boolean natural;
+	private final Color color;
 	private final Element[] elements;
 	
 	private float ppm;
+	private float pWeight;
 	
-	private Resource(String name, Element... elements){
+	private Resource(String name, String shortName, boolean natural, Color color, Element... elements){
 		this.name = name;
 		this.elements = elements;
+		this.shortName = shortName;
+		this.natural = natural;
+		this.color = color;
 		
 		ppm = 0f;
+		pWeight = 0f;
 	}
 	
 	public String toString(){
@@ -152,6 +168,28 @@ public enum Resource {
 		}
 		
 		return ppm;
+	}
+	
+	public float partialWeight(){
+		if(pWeight == 0f && elements != null){
+			for(Element i : elements){
+				pWeight += (i.abundance*i.atomicWeight);
+			}
+		}
+		
+		return pWeight;
+	}
+	
+	public String shortName(){
+		return shortName;
+	}
+	
+	public boolean isNatural(){
+		return natural;
+	}
+	
+	public Color uiColor(){
+		return color;
 	}
 	
 	private enum Element {
@@ -271,11 +309,12 @@ public enum Resource {
 		Lz	(0.0f, 289.0f), //No stable isotope
 		Fv	(0.0f, 304.0f), //Island of stability candidate Ubn 120
 		Kn	(0.0f, 310.0f), //Island of stability candidate Ubh 126, aka "Kryptonite"
-		Nx	(0.0f, 0.0f), //Neutronium
-		Qx	(0.0f, 0.0f), //Quarkium
-		Sx	(0.0f, 0.0f), //Strangium
-		Px	(0.0f, 0.0f), //Preonium
-		Xx	(0.0f, 0.0f); //Singulanium
+		Nx	(0.0f, 1000.0f), //Neutronium
+		Qx	(0.0f, 3000.0f), //Quarkium
+		Sx	(0.0f, 60000.0f), //Strangium
+		Px	(0.0f, 1000000.0f), //Preonium
+		Xx	(0.0f, Float.MAX_VALUE), //Singulanium
+		Zx	(0.0f, Float.POSITIVE_INFINITY); //Unobtainium
 			
 		private final float abundance;
 		private final float atomicWeight;
