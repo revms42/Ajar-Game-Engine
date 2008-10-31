@@ -1,10 +1,9 @@
 package space.model.ships;
 
 import org.display.IDisplayable;
+import space.model.Resource;
 
 public interface IComponent<I> extends IDisplayable<I,String> {
-	
-	public static final String STAT_PRODUCTION_COST = "Production Cost";
-	
 
+	public int getCost(Resource resource);
 }

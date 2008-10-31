@@ -11,5 +11,9 @@ public class ComponentPanel extends JPanel {
 		super();
 		
 		infoPanel = new InfoPanel();
+		
+		//Component Tree by Type
+		//(^/v scrolling split pane)
+		//Info Panel
 	}
 }
