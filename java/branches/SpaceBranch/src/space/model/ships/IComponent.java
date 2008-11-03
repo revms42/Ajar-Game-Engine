@@ -6,4 +6,5 @@ import space.model.Resource;
 public interface IComponent<I> extends IDisplayable<I,String> {
 
 	public int getCost(Resource resource);
+	public String getDescription();
 }
