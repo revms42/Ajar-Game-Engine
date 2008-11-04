@@ -27,6 +27,7 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 	private final Stack<JLabel[]> recycle;
 	
 	private final JPanel icon;
+	private final JLabel name;
 	private final JLabel costPro;
 	private final JLabel costMin1;
 	private final JLabel costMin2;
@@ -54,6 +55,7 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 		recycle = new Stack<JLabel[]>();
 		
 		icon = new JPanel();
+		name = new JLabel();
 		JSeparator topRule = new JSeparator();
 		JLabel proName = new JLabel(Resource.PRODUCTION.shortName() + ": ");
 			proName.setForeground(Resource.PRODUCTION.uiColor().darker());
@@ -87,6 +89,7 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 		this.setLayout(layout);
 		
 		this.add(icon);
+		this.add(name);
 		this.add(topRule);
 		this.add(proName);this.add(costPro);
 		this.add(min1Name);this.add(costMin1);
@@ -98,6 +101,7 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 		this.add(description);
 		
 		//Icon
+		//Name
 		//-Rule-
 		//Production Cost:	#
 		//Mineral1 Cost:	#
@@ -111,9 +115,11 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 		
 		layout.putConstraint(SpringLayout.WEST, icon, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, icon, 5, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, name, 5, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, name, 5, SpringLayout.SOUTH, icon);
 		
 		layout.putConstraint(SpringLayout.WEST, topRule, 5, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, topRule, 5, SpringLayout.SOUTH, icon);
+		layout.putConstraint(SpringLayout.NORTH, topRule, 5, SpringLayout.SOUTH, name);
 		layout.putConstraint(SpringLayout.EAST, topRule, 5, SpringLayout.EAST, this);
 		
 		layout.putConstraint(SpringLayout.WEST, proName, 5, SpringLayout.WEST, this);
@@ -170,6 +176,8 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 		}
 		
 		if(component != null){
+			name.setText(component.getName());
+			
 			costPro.setText(component.getCost(Resource.PRODUCTION) + ".0");
 			costMin1.setText(component.getCost(Resource.MINERAL1) + ".0");
 			costMin2.setText(component.getCost(Resource.MINERAL2) + ".0");
@@ -255,6 +263,8 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 	public void valueChanged(TreeSelectionEvent arg0) {
 		if(arg0.getSource() instanceof IComponent){
 			select((IComponent<?>)arg0);
+		}else if(arg0.getPath().getLastPathComponent() instanceof IComponent){
+			select((IComponent<?>)arg0.getPath().getLastPathComponent());
 		}
 	}
 }
