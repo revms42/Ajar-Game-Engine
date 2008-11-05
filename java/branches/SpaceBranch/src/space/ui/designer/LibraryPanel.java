@@ -19,16 +19,15 @@ import space.model.ships.ComponentType;
 import space.model.ships.IComponent;
 import space.model.ships.IComponentType;
 
-public class ComponentPanel extends JPanel {
+public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 	private static final long serialVersionUID = -6642456222626622731L;
 
 	private final JTree componentTree;
-	private final InfoPanel infoPanel;
+	private final InfoPanel<I> infoPanel;
 	
-	private final HashMap<IComponent<?>,ImageIcon> components;
+	private final HashMap<IComponent<I>,ImageIcon> components;
 	
-	@SuppressWarnings("unchecked")
-	public ComponentPanel(List<IComponent<?>> components){
+	public LibraryPanel(List<IComponent<I>> components){
 		super();
 		
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Components");
@@ -55,9 +54,9 @@ public class ComponentPanel extends JPanel {
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		componentTree.setCellRenderer(new ComponentRenderer());
 		
-		this.components = new HashMap<IComponent<?>,ImageIcon>();
+		this.components = new HashMap<IComponent<I>,ImageIcon>();
 		
-		for(IComponent component : components){
+		for(IComponent<I> component : components){
 			BufferedImage bi = new BufferedImage(48,48,BufferedImage.TYPE_4BYTE_ABGR);
 			Graphics2D g2 = bi.createGraphics();
 			component.getDisplayFactory().display(component, g2);
@@ -72,7 +71,7 @@ public class ComponentPanel extends JPanel {
 			map.get(component.getType()).add(node);
 		}
 		
-		infoPanel = new InfoPanel();
+		infoPanel = new InfoPanel<I>();
 		
 		componentTree.addTreeSelectionListener(infoPanel);
 		
@@ -85,7 +84,7 @@ public class ComponentPanel extends JPanel {
 	private class ComponentNode extends DefaultMutableTreeNode {
 		private static final long serialVersionUID = -4014451241239223022L;
 
-		private ComponentNode(IComponent<?> component){
+		private ComponentNode(IComponent<I> component){
 			super(component);
 		}
 		
@@ -121,6 +120,26 @@ public class ComponentPanel extends JPanel {
 			
 			return this;
 		}
+	}
+	
+	@Override
+	public IComponent<I> getSelectedComponent() {
+		return infoPanel.getSelectedComponent();
+	}
+
+	@Override
+	public boolean isFinite() {
+		return infoPanel.isFinite();
+	}
+
+	@Override
+	public void removeComponent(IComponent<I> component) {
+		infoPanel.removeComponent(component);
+	}
+
+	@Override
+	public void setSelectedComponent(IComponent<I> component) {
+		infoPanel.setSelectedComponent(component);
 	}
 
 }

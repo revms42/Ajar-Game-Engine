@@ -20,7 +20,10 @@ import org.model.Stats;
 import space.model.Resource;
 import space.model.ships.IComponent;
 
-public class InfoPanel extends JPanel implements TreeSelectionListener {
+public class InfoPanel<I> 
+		extends JPanel 
+		implements TreeSelectionListener, IComponentTransferer<I> 
+{
 	private static final long serialVersionUID = 7574923042502794728L;
 	
 	private final Vector<String> exclusionList;
@@ -39,7 +42,7 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 	
 	private final SpringLayout layout;
 	
-	private IComponent<?> component;
+	private IComponent<I> component;
 	
 	public InfoPanel(){
 		super();
@@ -161,7 +164,7 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 		layout.putConstraint(SpringLayout.EAST, description, 5, SpringLayout.EAST, this);
 	}
 	
-	private void select(IComponent<?> component){
+	private void select(IComponent<I> component){
 		this.component = component;
 		
 		for(String key : displayList.keySet()){
@@ -259,12 +262,35 @@ public class InfoPanel extends JPanel implements TreeSelectionListener {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void valueChanged(TreeSelectionEvent arg0) {
 		if(arg0.getSource() instanceof IComponent){
-			select((IComponent<?>)arg0);
+			select((IComponent<I>)arg0);
 		}else if(arg0.getPath().getLastPathComponent() instanceof IComponent){
-			select((IComponent<?>)arg0.getPath().getLastPathComponent());
+			select((IComponent<I>)arg0.getPath().getLastPathComponent());
 		}
+	}
+
+	@Override
+	public IComponent<I> getSelectedComponent() {
+		return component;
+	}
+
+	@Override
+	public boolean isFinite() {
+		// TODO: This will need to be sorted eventually.
+		return false;
+	}
+
+	@Override
+	public void removeComponent(IComponent<I> component) {
+		// TODO: This will need to be sorted too.
+		select(null);
+	}
+
+	@Override
+	public void setSelectedComponent(IComponent<I> component) {
+		select(component);
 	}
 }
