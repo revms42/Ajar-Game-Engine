@@ -9,8 +9,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.SpringLayout;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
@@ -27,7 +27,7 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 	
 	private final HashMap<IComponent<I>,ImageIcon> components;
 	
-	public LibraryPanel(List<IComponent<I>> components){
+	public LibraryPanel(ComponentTransferHandler<I> handler, List<IComponent<I>> components){
 		super();
 		
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Components");
@@ -74,14 +74,30 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 		infoPanel = new InfoPanel<I>();
 		
 		componentTree.addTreeSelectionListener(infoPanel);
+		componentTree.setTransferHandler(handler);
+		componentTree.setDragEnabled(true);
+		this.setTransferHandler(handler);
 		
-		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JScrollPane cscroll = new JScrollPane(componentTree);
+		JScrollPane iscroll = new JScrollPane(infoPanel);
 		
-		split.setTopComponent(new JScrollPane(componentTree));
-		split.setBottomComponent(new JScrollPane(infoPanel));
+		SpringLayout manager = new SpringLayout();
+		this.setLayout(manager);
+		
+		this.add(iscroll);
+		this.add(cscroll);
+		
+		manager.putConstraint(SpringLayout.NORTH, cscroll, 5, SpringLayout.NORTH, this);
+		manager.putConstraint(SpringLayout.EAST, cscroll, -5, SpringLayout.EAST, this);
+		manager.putConstraint(SpringLayout.WEST, cscroll, 5, SpringLayout.WEST, this);
+		
+		manager.putConstraint(SpringLayout.WEST, iscroll, 5, SpringLayout.WEST, this);
+		manager.putConstraint(SpringLayout.NORTH, iscroll, 5, SpringLayout.SOUTH, cscroll);
+		manager.putConstraint(SpringLayout.EAST, iscroll, -5, SpringLayout.EAST, this);
+		manager.putConstraint(SpringLayout.SOUTH, iscroll, -5, SpringLayout.SOUTH, this);
 	}
 	
-	private class ComponentNode extends DefaultMutableTreeNode {
+	public class ComponentNode extends DefaultMutableTreeNode {
 		private static final long serialVersionUID = -4014451241239223022L;
 
 		private ComponentNode(IComponent<I> component){
@@ -90,7 +106,7 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 		
 	}
 	
-	private class ComponentRenderer extends DefaultTreeCellRenderer {
+	public class ComponentRenderer extends DefaultTreeCellRenderer {
 		private static final long serialVersionUID = 2497884517861401000L;
 		
 		public Component getTreeCellRendererComponent(
@@ -105,7 +121,7 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 			
 			super.getTreeCellRendererComponent(tree, value, sel,expanded, leaf, row,hasFocus);
 			
-			if (leaf) {
+			if (leaf && ((DefaultMutableTreeNode)value).getUserObject() instanceof IComponent){
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
 				IComponent<?> nodeInfo = (IComponent<?>)(node.getUserObject());
 				

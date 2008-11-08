@@ -1,12 +1,14 @@
 package space.ui.designer;
 
-import java.awt.Graphics;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -19,6 +21,7 @@ import org.model.Stats;
 
 import space.model.Resource;
 import space.model.ships.IComponent;
+import space.ui.designer.LibraryPanel.ComponentNode;
 
 public class InfoPanel<I> 
 		extends JPanel 
@@ -29,7 +32,9 @@ public class InfoPanel<I>
 	private final Vector<String> exclusionList;
 	private final Stack<JLabel[]> recycle;
 	
-	private final JPanel icon;
+	private BufferedImage bi;
+	private ImageIcon icon;
+	
 	private final JLabel name;
 	private final JLabel costPro;
 	private final JLabel costMin1;
@@ -47,6 +52,14 @@ public class InfoPanel<I>
 	public InfoPanel(){
 		super();
 		
+		this.setPreferredSize(new Dimension(100,320));
+		bi = new BufferedImage(
+				ComponentTile.TILE_SIZE.width,
+				ComponentTile.TILE_SIZE.height,
+				BufferedImage.TYPE_4BYTE_ABGR
+		);
+		icon = new ImageIcon(bi);
+		
 		exclusionList = new Vector<String>();
 		exclusionList.add(Resource.PRODUCTION.name());
 		exclusionList.add(Resource.MINERAL1.name());
@@ -57,8 +70,8 @@ public class InfoPanel<I>
 		
 		recycle = new Stack<JLabel[]>();
 		
-		icon = new JPanel();
 		name = new JLabel();
+		name.setIcon(icon);
 		JSeparator topRule = new JSeparator();
 		JLabel proName = new JLabel(Resource.PRODUCTION.shortName() + ": ");
 			proName.setForeground(Resource.PRODUCTION.uiColor().darker());
@@ -91,7 +104,6 @@ public class InfoPanel<I>
 		layout = new SpringLayout();
 		this.setLayout(layout);
 		
-		this.add(icon);
 		this.add(name);
 		this.add(topRule);
 		this.add(proName);this.add(costPro);
@@ -116,52 +128,50 @@ public class InfoPanel<I>
 		//Description
 		//Stats[]:			#
 		
-		layout.putConstraint(SpringLayout.WEST, icon, 5, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, icon, 5, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, name, 5, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, name, 5, SpringLayout.SOUTH, icon);
+		layout.putConstraint(SpringLayout.NORTH, name, 5, SpringLayout.NORTH, this);
 		
 		layout.putConstraint(SpringLayout.WEST, topRule, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, topRule, 5, SpringLayout.SOUTH, name);
-		layout.putConstraint(SpringLayout.EAST, topRule, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, topRule, -5, SpringLayout.EAST, this);
 		
 		layout.putConstraint(SpringLayout.WEST, proName, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, proName, 5, SpringLayout.SOUTH, topRule);
-		layout.putConstraint(SpringLayout.EAST, costPro, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, costPro, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, costPro, 0, SpringLayout.NORTH, proName);
 		
 		layout.putConstraint(SpringLayout.WEST, min1Name, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, min1Name, 5, SpringLayout.SOUTH, proName);
-		layout.putConstraint(SpringLayout.EAST, costMin1, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, costMin1, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, costMin1, 0, SpringLayout.NORTH, min1Name);
 		
 		layout.putConstraint(SpringLayout.WEST, min2Name, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, min2Name, 5, SpringLayout.SOUTH, min1Name);
-		layout.putConstraint(SpringLayout.EAST, costMin2, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, costMin2, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, costMin2, 0, SpringLayout.NORTH, min2Name);
 		
 		layout.putConstraint(SpringLayout.WEST, min3Name, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, min3Name, 5, SpringLayout.SOUTH, min2Name);
-		layout.putConstraint(SpringLayout.EAST, costMin3, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, costMin3, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, costMin3, 0, SpringLayout.NORTH, min3Name);
 		
 		layout.putConstraint(SpringLayout.WEST, min4Name, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, min4Name, 5, SpringLayout.SOUTH, min3Name);
-		layout.putConstraint(SpringLayout.EAST, costMin4, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, costMin4, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, costMin4, 0, SpringLayout.NORTH, min4Name);
 		
 		layout.putConstraint(SpringLayout.WEST, min5Name, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, min5Name, 5, SpringLayout.SOUTH, min4Name);
-		layout.putConstraint(SpringLayout.EAST, costMin5, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, costMin5, -5, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, costMin5, 0, SpringLayout.NORTH, min5Name);
 		
 		layout.putConstraint(SpringLayout.WEST, bottomRule, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, bottomRule, 5, SpringLayout.SOUTH, min5Name);
-		layout.putConstraint(SpringLayout.EAST, bottomRule, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, bottomRule, -5, SpringLayout.EAST, this);
 
 		layout.putConstraint(SpringLayout.WEST, description, 5, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH,description,5,SpringLayout.SOUTH,bottomRule);
-		layout.putConstraint(SpringLayout.EAST, description, 5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, description, -5, SpringLayout.EAST, this);
 	}
 	
 	private void select(IComponent<I> component){
@@ -250,25 +260,22 @@ public class InfoPanel<I>
 			costMin5.setText("0.0");
 		}
 		
-		this.invalidate();
-	}
-	
-	protected void paintChildren(Graphics g){
-		super.paintChildren(g);
+		Graphics2D g2 = bi.createGraphics();
+		g2.clearRect(0, 0, ComponentTile.TILE_SIZE.width, ComponentTile.TILE_SIZE.height);
+		component.getDisplayFactory().display(component, g2);
+		g2.finalize();
+		g2.dispose();
 		
-		if(component != null){
-			icon.setSize(component.getDisplayFactory().getImagePalette().getTileSize(null));
-			component.draw((Graphics2D)icon.getGraphics());
-		}
+		layout.layoutContainer(this);
+		updateUI();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void valueChanged(TreeSelectionEvent arg0) {
-		if(arg0.getSource() instanceof IComponent){
-			select((IComponent<I>)arg0);
-		}else if(arg0.getPath().getLastPathComponent() instanceof IComponent){
-			select((IComponent<I>)arg0.getPath().getLastPathComponent());
+		if(arg0.getPath().getLastPathComponent() instanceof ComponentNode){
+			ComponentNode n = (ComponentNode)arg0.getPath().getLastPathComponent();
+			select((IComponent)n.getUserObject());
 		}
 	}
 

@@ -1,8 +1,10 @@
 package space.ui.designer;
 
 import java.awt.datatransfer.Transferable;
+import java.util.Vector;
 
 import javax.swing.JComponent;
+import javax.swing.JTree;
 import javax.swing.TransferHandler;
 
 import space.model.ships.IComponent;
@@ -12,19 +14,50 @@ public class ComponentTransferHandler<I> extends TransferHandler {
 	
 	private IComponent<I> component;
 	
-	public boolean canImport(TransferHandler.TransferSupport info) {
-		if (!info.isDataFlavorSupported(TransferableComponent.COMP_FLAVOR)) {
-			return false;
+	private Vector<ICompPlacementEventListener> placementListener;
+	
+	public void addPlacementEventListener(ICompPlacementEventListener listener){
+		if(placementListener == null){
+			placementListener = new Vector<ICompPlacementEventListener>();
 		}
-		return true;
+		
+		placementListener.add(listener);
+	}
+	
+	public void removePlacementEventListener(ICompPlacementEventListener listener){
+		if(placementListener != null){
+			placementListener.remove(listener);
+		}
+	}
+	
+	public void removeAllPlacementEventListeners(){
+		if(placementListener != null){
+			placementListener.removeAllElements();
+		}
+	}
+	
+	public boolean canImport(TransferHandler.TransferSupport info) {
+		return info.isDataFlavorSupported(TransferableComponent.COMP_FLAVOR);
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected Transferable createTransferable(JComponent c) {
-		IComponentTransferer<I> source = (IComponentTransferer<I>)c;
-		component = source.getSelectedComponent();
-		
-		return new TransferableComponent(component);
+		if(c instanceof IComponentTransferer){
+			IComponentTransferer<I> source = (IComponentTransferer<I>)c;
+			component = source.getSelectedComponent();
+			
+			return new TransferableComponent(component);
+		}else if(c instanceof JTree){
+			JTree t = (JTree)c;
+			
+			Object o = t.getLastSelectedPathComponent();
+			if(o instanceof LibraryPanel.ComponentNode){
+				LibraryPanel.ComponentNode n = (LibraryPanel.ComponentNode)o;
+				return new TransferableComponent((IComponent)n.getUserObject());
+			}
+		}
+		System.out.println("Retrieval failed for + " + c);
+		return null;
 	}
 	
 	public int getSourceActions(JComponent c) {
@@ -49,6 +82,13 @@ public class ComponentTransferHandler<I> extends TransferHandler {
 		
 		destination.setSelectedComponent(data);
 		
+		if(placementListener != null){
+			CompPlacementEvent event = new CompPlacementEvent(info.getComponent(),0,data);
+			
+			for(ICompPlacementEventListener i : placementListener){
+				i.componentPlaced(event);
+			}
+		}
 		return true;
     }
 	

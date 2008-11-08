@@ -11,8 +11,7 @@ public class TransferableComponent implements Transferable{
 
 	private final IComponent<?> component;
 	
-	public final static DataFlavor COMP_FLAVOR = 
-		new DataFlavor(IComponent.class, "compFlavor");
+	public final static DataFlavor COMP_FLAVOR = ShipDesigner.COMP_FLAVOR;
 	
 	private final static DataFlavor[] flavors = {COMP_FLAVOR};
 	
