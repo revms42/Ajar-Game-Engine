@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 
-import space.model.ships.IComponent;
+import space.model.component.IComponent;
 
 public class ShipDesigner<I> extends JFrame {
 	private static final long serialVersionUID = 9207357928566998058L;

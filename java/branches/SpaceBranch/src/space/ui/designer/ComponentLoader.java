@@ -16,9 +16,9 @@ import org.model.Stats;
 import org.model.number.Number;
 
 import space.model.Resource;
-import space.model.ships.ComponentType;
-import space.model.ships.IComponent;
-import space.model.ships.IComponentType;
+import space.model.component.ComponentType;
+import space.model.component.IComponent;
+import space.model.component.IComponentType;
 
 public class ComponentLoader {
 

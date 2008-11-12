@@ -15,9 +15,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
-import space.model.ships.ComponentType;
-import space.model.ships.IComponent;
-import space.model.ships.IComponentType;
+import space.model.component.ComponentType;
+import space.model.component.IComponent;
+import space.model.component.IComponentType;
 
 public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 	private static final long serialVersionUID = -6642456222626622731L;

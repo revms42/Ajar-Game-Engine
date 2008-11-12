@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-import space.model.ships.IComponent;
+import space.model.component.IComponent;
 
 public class ComponentTile<I> extends JPanel implements IComponentTransferer<I> {
 	private static final long serialVersionUID = 434787520854392137L;

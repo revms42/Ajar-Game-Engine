@@ -5,7 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import space.model.ships.IComponent;
+import space.model.component.IComponent;
 
 public class TransferableComponent implements Transferable{
 

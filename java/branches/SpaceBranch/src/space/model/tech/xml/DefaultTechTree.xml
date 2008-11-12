@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:TechTree xmlns:tns="http://sourceforge.net/projects/macchiatodoppio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://sourceforge.net/projects/macchiatodoppio ../schema/TechTree.xsd ">
+  <tns:Component costAtm="0" costCha="0" costLth="0" costPro="0"
+  	costSid="0" costXen="0" description="" image="" mass="0" name=""
+  	signature="0" tech1="0" tech2="0" tech3="0" tech4="0" tech5="0"
+  	tech6="0" tech7="0" tech8="0" tns:hitpoints="0" hashCode="0"
+  	javaID="">
+  	<tns:Primary>
+  		<tns:Armor>
+  			<tns:Section />
+  		</tns:Armor>
+  	</tns:Primary>
+  </tns:Component>
+</tns:TechTree>
