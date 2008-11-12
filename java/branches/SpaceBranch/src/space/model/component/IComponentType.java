@@ -1,4 +1,4 @@
-package space.model.ships;
+package space.model.component;
 
 public interface IComponentType {
 	public String[] getAssociatedStats();

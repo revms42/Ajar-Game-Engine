@@ -1,4 +1,4 @@
-package space.model.ships;
+package space.model.component;
 
 import org.display.IDisplayable;
 import space.model.Resource;

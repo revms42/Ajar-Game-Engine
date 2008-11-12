@@ -20,7 +20,7 @@ import javax.swing.event.TreeSelectionListener;
 import org.model.Stats;
 
 import space.model.Resource;
-import space.model.ships.IComponent;
+import space.model.component.IComponent;
 import space.ui.designer.LibraryPanel.ComponentNode;
 
 public class InfoPanel<I> 

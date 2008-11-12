@@ -145,6 +145,8 @@ public enum Resource {
 	private float ppm;
 	private float pWeight;
 	
+	public final static Resource[] RESOURCES = {MINERAL1,MINERAL2,MINERAL3,MINERAL4,MINERAL5};
+	
 	private Resource(String name, String shortName, boolean natural, Color color, Element... elements){
 		this.name = name;
 		this.elements = elements;

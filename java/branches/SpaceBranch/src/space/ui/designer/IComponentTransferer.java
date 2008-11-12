@@ -1,6 +1,6 @@
 package space.ui.designer;
 
-import space.model.ships.IComponent;
+import space.model.component.IComponent;
 
 public interface IComponentTransferer<I> {
 

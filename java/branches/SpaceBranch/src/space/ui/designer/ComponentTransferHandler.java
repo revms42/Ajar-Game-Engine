@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
 
-import space.model.ships.IComponent;
+import space.model.component.IComponent;
 
 public class ComponentTransferHandler<I> extends TransferHandler {
 	private static final long serialVersionUID = -6955368264160235901L;
