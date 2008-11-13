@@ -114,5 +114,13 @@ public class Byte extends Number {
 		this.value = (byte)(Math.pow((double)this.value, o.doubleValue()));
 		return this;
 	}
-
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof java.lang.Number){
+			return value == ((java.lang.Number)o).byteValue();
+		}else{
+			return super.equals(o);
+		}
+	}
 }
