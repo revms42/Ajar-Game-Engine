@@ -17,4 +17,5 @@ public interface IMath extends Comparable<java.lang.Number>{
 	public Number power(java.lang.Number o);
 	public Number powerEq(java.lang.Number o);
 	
+	public boolean equals(Object o);
 }

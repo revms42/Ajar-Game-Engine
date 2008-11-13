@@ -204,4 +204,15 @@ public abstract class AbstractStat extends Number implements IStat {
 		value(value().powerEq(o));
 		return this;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof IStat){
+			return ((IStat)o).value().equals(value);
+		}else if(o instanceof java.lang.Number){
+			return value.equals(o);
+		}else{
+			return super.equals(o);
+		}
+	}
 }
