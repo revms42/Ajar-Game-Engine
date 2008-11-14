@@ -18,7 +18,7 @@ public class DesignPanel<I> extends JPanel implements ICompPlacementEventListene
 	
 	public DesignPanel(ComponentTransferHandler<I> transferer){
 		super();
-		this.setPreferredSize(new Dimension(400,400));
+		//this.setPreferredSize(new Dimension(400,400));
 		this.transferer = transferer;
 		
 		grid = new Vector<Vector<ComponentTile<I>>>();

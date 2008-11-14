@@ -1,6 +1,7 @@
 package space.ui.designer;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SpringLayout;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
@@ -87,14 +89,14 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 		this.add(iscroll);
 		this.add(cscroll);
 		
-		manager.putConstraint(SpringLayout.NORTH, cscroll, 5, SpringLayout.NORTH, this);
-		manager.putConstraint(SpringLayout.EAST, cscroll, -5, SpringLayout.EAST, this);
-		manager.putConstraint(SpringLayout.WEST, cscroll, 5, SpringLayout.WEST, this);
+		manager.putConstraint(SpringLayout.NORTH, cscroll, 0, SpringLayout.NORTH, this);
+		manager.putConstraint(SpringLayout.EAST, cscroll, 0, SpringLayout.EAST, this);
+		manager.putConstraint(SpringLayout.WEST, cscroll, 0, SpringLayout.WEST, this);
 		
-		manager.putConstraint(SpringLayout.WEST, iscroll, 5, SpringLayout.WEST, this);
+		manager.putConstraint(SpringLayout.WEST, iscroll, 0, SpringLayout.WEST, this);
 		manager.putConstraint(SpringLayout.NORTH, iscroll, 5, SpringLayout.SOUTH, cscroll);
-		manager.putConstraint(SpringLayout.EAST, iscroll, -5, SpringLayout.EAST, this);
-		manager.putConstraint(SpringLayout.SOUTH, iscroll, -5, SpringLayout.SOUTH, this);
+		manager.putConstraint(SpringLayout.EAST, iscroll, 0, SpringLayout.EAST, this);
+		manager.putConstraint(SpringLayout.SOUTH, iscroll, 0, SpringLayout.SOUTH, this);
 	}
 	
 	public class ComponentNode extends DefaultMutableTreeNode {
@@ -158,4 +160,11 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 		infoPanel.setSelectedComponent(component);
 	}
 
+	public Dimension getPreferredSize(){
+		return new Dimension(
+				componentTree.getPreferredSize().width + 3,
+				componentTree.getPreferredSize().height + 
+				infoPanel.getPreferredSize().height + 3
+		);
+	}
 }
