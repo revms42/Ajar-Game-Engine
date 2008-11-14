@@ -85,6 +85,7 @@
     		<element name="Section">
     			<complexType>
     				<attribute ref="tns:type"></attribute>
+    				<attribute name="rating" type="int"></attribute>
     			</complexType>
     		</element>
     	</sequence>
@@ -223,7 +224,14 @@
     		<element name="Stargate">
     			<complexType></complexType>
     		</element>
-    		<element name="MassAccelerator"><complexType></complexType></element>
+    		<element name="MassAccelerator">
+    			<complexType></complexType>
+    		</element>
+    		<element name="ConstructionDock">
+    			<complexType>
+    				<attribute name="width" type="int"></attribute>
+    				<attribute name="height" type="int"></attribute>
+    			</complexType></element>
     	</choice>
     	<attribute ref="tns:energy"></attribute>
     </complexType>
