@@ -68,7 +68,7 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 			
 			ComponentNode node = new ComponentNode(component);
 			
-			map.get(component.getType()).add(node);
+			map.get(component.getPrimaryType()).add(node);
 		}
 		
 		infoPanel = new InfoPanel<I>();
@@ -125,7 +125,7 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
 				IComponent<?> nodeInfo = (IComponent<?>)(node.getUserObject());
 				
-				if(nodeInfo.getType() != null){
+				if(nodeInfo.getPrimaryType() != null){
 					setText(nodeInfo.getName());
 				}
 				

@@ -2,6 +2,7 @@ package space.model.component;
 
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.util.Vector;
 
 import org.AbstractCharacter;
 import org.display.IDisplayContext;
@@ -17,6 +18,7 @@ public class DefaultComponent<I> extends AbstractCharacter<I,String> implements
 	private final String name;
 	private final String description;
 	private IComponentType type;
+	private Vector<IComponentType> secondary;
 	
 	public DefaultComponent(
 			String name,
@@ -28,6 +30,7 @@ public class DefaultComponent<I> extends AbstractCharacter<I,String> implements
 		super(stats, context, factory);
 		this.name = name;
 		this.description = description;
+		secondary = new Vector<IComponentType>();
 	}
 	
 	public DefaultComponent(String name, String description){
@@ -80,7 +83,7 @@ public class DefaultComponent<I> extends AbstractCharacter<I,String> implements
 	}
 
 	@Override
-	public IComponentType getType() {
+	public IComponentType getPrimaryType() {
 		return type;
 	}
 	
@@ -88,4 +91,16 @@ public class DefaultComponent<I> extends AbstractCharacter<I,String> implements
 		this.type = type;
 	}
 
+	@Override
+	public Vector<IComponentType> getSecondaryTypes() {
+		return secondary;
+	}
+
+	public void addSecondaryType(IComponentType newType) {
+		secondary.add(newType);
+	}
+	
+	public boolean hasSecondaryType(IComponentType stype){
+		return secondary.contains(stype);
+	}
 }

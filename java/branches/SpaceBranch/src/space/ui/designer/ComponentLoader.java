@@ -64,7 +64,7 @@ public class ComponentLoader {
 			}
 
 			@Override
-			public IComponentType getType() {
+			public IComponentType getPrimaryType() {
 				// TODO Auto-generated method stub
 				return ComponentType.MISC;
 			}
@@ -280,6 +280,12 @@ public class ComponentLoader {
 			
 			public IStats<String> clone(){
 				return this;
+			}
+
+			@Override
+			public Vector<IComponentType> getSecondaryTypes() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		});
 		

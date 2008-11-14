@@ -39,6 +39,7 @@ import space.model.Resource;
 import space.model.component.ComponentType;
 import space.model.component.DefaultComponent;
 import space.model.component.IComponent;
+import space.model.component.IComponentType;
 
 public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 	public final static String namespaceURI = 
@@ -120,7 +121,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		);
 		
 		String image = attrs.getNamedItem("image").getNodeValue();
-		
+		/*
 		addStat("mass","mass",component,attrs);
 		addStat("signature","signature",component,attrs);
 		addStat("hitpoints","hitpoints",component,attrs);
@@ -131,7 +132,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		
 		for(Technology tech : Technology.TECHS){
 			addStat(tech.getName(),tech.getName(),component,attrs);
-		}
+		}*/
 		
 		if(id != null){
 			String[] typeName = id.getNodeValue().split(".");
@@ -204,7 +205,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		
 		component.setDisplayFactory(factory);
 		
-		switch((ComponentType)component.getType()){
+		switch((ComponentType)component.getPrimaryType()){
 		case BAY:
 			if(directedContext == null){
 				directedContext = new DirectedCompContext();
@@ -262,60 +263,60 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 				
 				switch(type){
 				case ARMOR:
-					parseArmor(node,component);
+					parseArmor(node,component,isPrimary);
 					break;
 				case BAY:
 					if(id.length > 1){
-						parseBay(node,component,id[1]);
+						parseBay(node,component,id[1],isPrimary);
 					}else{
-						parseBay(node,component,null);
+						parseBay(node,component,null,isPrimary);
 					}
 					break;
 				case BULKHEAD:
-					parseBulkhead(node,component);
+					parseBulkhead(node,component,isPrimary);
 					break;
 				case CONDUIT:
-					parseConduit(node,component);
+					parseConduit(node,component,isPrimary);
 					break;
 				case ELECTRICAL:
 					if(id.length > 1){
-						parseElectrical(node,component,id[1]);
+						parseElectrical(node,component,id[1],isPrimary);
 					}else{
-						parseElectrical(node,component,null);
+						parseElectrical(node,component,null,isPrimary);
 					}
 					break;
 				case ENGINE:
 					if(id.length > 1){
-						parseEngine(node,component,id[1]);
+						parseEngine(node,component,id[1],isPrimary);
 					}else{
-						parseEngine(node,component,null);
+						parseEngine(node,component,null,isPrimary);
 					}
 					break;
 				case MECHANICAL:
 					if(id.length > 1){
-						parseMechanical(node,component,id[1]);
+						parseMechanical(node,component,id[1],isPrimary);
 					}else{
-						parseMechanical(node,component,null);
+						parseMechanical(node,component,null,isPrimary);
 					}
 					break;
 				case MISC:
-					parseMisc(node,component);
+					parseMisc(node,component,isPrimary);
 					break;
 				case ORBITAL:
 					if(id.length > 1){
-						parseOrbital(node,component,id[1]);
+						parseOrbital(node,component,id[1],isPrimary);
 					}else{
-						parseOrbital(node,component,null);
+						parseOrbital(node,component,null,isPrimary);
 					}
 					break;
 				case SHIELD:
-					parseShield(node,component);
+					parseShield(node,component,isPrimary);
 					break;
 				case WEAPON:
 					if(id.length > 1){
-						parseWeapon(node,component,id[1]);
+						parseWeapon(node,component,id[1],isPrimary);
 					}else{
-						parseWeapon(node,component,null);
+						parseWeapon(node,component,null,isPrimary);
 					}
 					break;
 				default:
@@ -325,38 +326,82 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		}
 	}
 	
-	private void parseWeapon(Node weapon, DefaultComponent<String> component, String subtype){
+	private void parseWeapon(
+			Node weapon, 
+			DefaultComponent<String> component, 
+			String subtype,
+			boolean isPrimary
+	){
+		addDefaultStats(ComponentType.WEAPON,component,weapon.getAttributes(),isPrimary);
+		
+		Node subNode = null;
+		for(int i = 0; i < weapon.getChildNodes().getLength(); i++){
+			Node node = weapon.getChildNodes().item(i);
+			
+			if(node.getNodeName().equalsIgnoreCase("Catagorey")){
+				subNode = node;
+				
+				if(subtype == null){
+					subtype = subNode.getFirstChild().getNodeName();
+				}
+			}else if(node.getNodeName().equalsIgnoreCase("DamageType")){
+				NamedNodeMap attrs = node.getAttributes();
+				
+				String type = attrs.getNamedItem("type").getNodeValue();
+				String power = attrs.getNamedItem("power").getNodeValue();
+				
+				if(isPrimary){
+					component.value(
+							IComponentType.STAT_DAMAGETYPE + "(" + type + ")", 
+							new Integer(power)
+					);
+				}else{
+					component.value(
+							"Secondary" + component.getSecondaryTypes().size() + "." +
+							IComponentType.STAT_DAMAGETYPE + "(" + type + ")", 
+							new Integer(power)
+					);
+				}
+			}
+		}
+		
+		if(subNode != null){
+			for(ComponentType.SubType stype : ComponentType.WEAPON.getSubTypes()){
+				if(stype.getName().equalsIgnoreCase(subtype)){
+					addDefaultStats(stype,component,subNode.getAttributes(),isPrimary);
+				}
+			}
+		}
+	}
+	
+	private void parseArmor(Node armor, DefaultComponent<String> component, boolean isPrimary){
 		
 	}
 	
-	private void parseArmor(Node armor, DefaultComponent<String> component){
+	private void parseShield(Node shield, DefaultComponent<String> component, boolean isPrimary){
 		
 	}
 	
-	private void parseShield(Node shield, DefaultComponent<String> component){
+	private void parseEngine(Node engine, DefaultComponent<String> component, String subtype, boolean isPrimary){
 		
 	}
 	
-	private void parseEngine(Node engine, DefaultComponent<String> component, String subtype){
+	private void parseBulkhead(Node bulkhead, DefaultComponent<String> component, boolean isPrimary){
 		
 	}
 	
-	private void parseBulkhead(Node bulkhead, DefaultComponent<String> component){
+	private void parseConduit(Node conduit, DefaultComponent<String> component, boolean isPrimary){
 		
 	}
 	
-	private void parseConduit(Node conduit, DefaultComponent<String> component){
-		
-	}
-	
-	private void parseBay(Node bay, DefaultComponent<String> component, String subtype){
+	private void parseBay(Node bay, DefaultComponent<String> component, String subtype, boolean isPrimary){
 		
 	}
 	
 	private void parseElectrical(
 			Node electrical, 
 			DefaultComponent<String> component, 
-			String subtype
+			String subtype, boolean isPrimary
 	){
 		
 	}
@@ -364,16 +409,16 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 	private void parseMechanical(
 			Node mechanical, 
 			DefaultComponent<String> component, 
-			String subtype
+			String subtype, boolean isPrimary
 	){
 		
 	}
 	
-	private void parseOrbital(Node orbital, DefaultComponent<String> component, String subtype){
+	private void parseOrbital(Node orbital, DefaultComponent<String> component, String subtype, boolean isPrimary){
 		
 	}
 	
-	private void parseMisc(Node misc, DefaultComponent<String> component){
+	private void parseMisc(Node misc, DefaultComponent<String> component, boolean isPrimary){
 		
 	}
 	
@@ -403,10 +448,46 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		map.removeNamedItem(nodeName);
 	}
 	
+	private void addDefaultStats(
+			IComponentType type, 
+			DefaultComponent<String> component, 
+			NamedNodeMap map,
+			boolean isPrimary
+	){
+		for(String stat : type.getAssociatedStats()){
+			Node node = map.getNamedItem(stat);
+			
+			Integer v;
+			if(node == null || node.getNodeValue().isEmpty()){
+				v = new Integer(0);
+			}else{
+				v = new Integer(node.getNodeValue());
+			}
+			
+			LinearStat lstat = new LinearStat(
+					v.intValue(),
+					Integer.MAX_VALUE,
+					0,
+					v.intValue()
+			);
+			
+			String name = null;
+			if(isPrimary){
+				name = stat;
+			}else{
+				name = "Secondary" + component.getSecondaryTypes().size() + "." + stat;
+			}
+			
+			if(name != null){
+				component.getStats().setStat(name, lstat);
+			}
+		}
+	}
+	
 	public class DirectedCompContext extends DefaultCompContext {
 		private final static String x = "tile-X";
 		private final static String y = "tile-Y";
-		
+		//TODO: Make the images via compositing as needed.
 		@Override
 		public Point getTile(IEntity<String> arg0) {
 			if(arg0.value(x) != null && arg0.value(y) != null){
