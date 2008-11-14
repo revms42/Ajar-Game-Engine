@@ -142,7 +142,6 @@
     				<enumeration value="carrier"></enumeration>
     				<enumeration value="cargo"></enumeration>
     				<enumeration value="colony"></enumeration>
-    				<enumeration value="construction"></enumeration>
     			</restriction>
     		</simpleType>
     	</attribute>

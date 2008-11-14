@@ -15,7 +15,7 @@ public enum ComponentType implements IComponentType {
 	SHIELD("Shields",new String[]{STAT_DAMAGETYPE,STAT_ENERGY,STAT_RATING}),
 	ENGINE("Engines",new String[]{STAT_ENERGY},EngineType.ENGINETYPES),
 	BULKHEAD("Bulkheads",new String[]{}),
-	CONDUIT("Conduits",new String[]{}),
+	CONDUIT("Conduits",new String[]{STAT_ENERGY}),
 	BAY("Bays",new String[]{STAT_ENERGY},BayType.BAYTYPES),
 	ELECTRICAL("Electrical",new String[]{STAT_ENERGY},ElectricalType.ELECTRICALTYPES),
 	MECHANICAL("Mechanical",new String[]{STAT_ENERGY},MechanicalType.MECHANICALTYPES),
@@ -47,11 +47,11 @@ public enum ComponentType implements IComponentType {
 		}
 		
 		for(String stat : stats){
-			if(stat == STAT_DAMAGETYPE || stat == STAT_RATING){
+			if(stat == STAT_POWER || stat == STAT_RATING){
 				for(Damage type : Damage.TYPES){
 					associatedStats.add(stat + "(" + type + ")");
 				}
-			}else{
+			}else if(stat != STAT_DAMAGETYPE){
 				associatedStats.add(stat);
 			}
 		}
@@ -280,8 +280,7 @@ public enum ComponentType implements IComponentType {
 				"mining(" + Resource.MINERAL1.shortName() + ")",
 				"mining(" + Resource.MINERAL2.shortName() + ")",
 				"mining(" + Resource.MINERAL3.shortName() + ")",
-				"mining(" + Resource.MINERAL4.shortName() + ")",
-				"mining(" + Resource.MINERAL5.shortName() + ")"),
+				"mining(" + Resource.MINERAL4.shortName() + ")"),
 		THRUSTER("Thrusters",STAT_AGILITY),
 		TERRAFORM("Terraforming",
 				"terraform(" + Environment.RADIATION.getName() + ")",
@@ -323,7 +322,7 @@ public enum ComponentType implements IComponentType {
 	}
 	
 	public enum OrbitalType implements SubType {
-		MASS_DRIVER("Mass Drivers"),
+		MASS_DRIVER("Mass Accelerator"),
 		STARGATE("Stargates"),
 		HYPERSPACE_NODE("Hyperspace Nodes"),
 		CONSTRUCTION("Ship Yards",STAT_WIDTH,STAT_HEIGHT);

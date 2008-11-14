@@ -40,6 +40,7 @@ import space.model.component.ComponentType;
 import space.model.component.DefaultComponent;
 import space.model.component.IComponent;
 import space.model.component.IComponentType;
+import space.model.planet.Environment;
 
 public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 	public final static String namespaceURI = 
@@ -342,7 +343,23 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 				subNode = node;
 				
 				if(subtype == null){
-					subtype = subNode.getFirstChild().getNodeName();
+					if(node.getNodeName().equalsIgnoreCase("Beam")){
+						subtype = "Beams";
+					}else if(node.getNodeName().equalsIgnoreCase("Cannon")){
+						subtype = "Cannons";
+					}else if(node.getNodeName().equalsIgnoreCase("Rockets")){
+						subtype = "Rockets";
+					}else if(node.getNodeName().equalsIgnoreCase("Torpeado")){
+						subtype = "Torpeados";
+					}else if(node.getNodeName().equalsIgnoreCase("Bomb")){
+						subtype = "Bombs";
+					}else if(node.getNodeName().equalsIgnoreCase("Mine")){
+						subtype = "Mines";
+					}else if(node.getNodeName().equalsIgnoreCase("Missile")){
+						subtype = "Missiles";
+					}else{
+						subtype = node.getNodeName();
+					}
 				}
 			}else if(node.getNodeName().equalsIgnoreCase("DamageType")){
 				NamedNodeMap attrs = node.getAttributes();
@@ -350,18 +367,14 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 				String type = attrs.getNamedItem("type").getNodeValue();
 				String power = attrs.getNamedItem("power").getNodeValue();
 				
-				if(isPrimary){
-					component.value(
-							IComponentType.STAT_DAMAGETYPE + "(" + type + ")", 
-							new Integer(power)
-					);
-				}else{
-					component.value(
-							"Secondary" + component.getSecondaryTypes().size() + "." +
-							IComponentType.STAT_DAMAGETYPE + "(" + type + ")", 
-							new Integer(power)
-					);
-				}
+				
+				setTypedStat(
+						component,
+						IComponentType.STAT_DAMAGETYPE,
+						type,
+						power,
+						isPrimary
+				);
 			}
 		}
 		
@@ -375,27 +388,174 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 	}
 	
 	private void parseArmor(Node armor, DefaultComponent<String> component, boolean isPrimary){
+		addDefaultStats(ComponentType.ARMOR,component,armor.getAttributes(),isPrimary);
 		
+		Node node;
+		NamedNodeMap attrs;
+		for(int i = 0; i < armor.getChildNodes().getLength(); i++){
+			node = armor.getChildNodes().item(i);
+			
+			if(node.getNodeName().equalsIgnoreCase("Section")){
+				attrs = node.getAttributes();
+				
+				if(
+					attrs.getNamedItem("type") != null && 
+					attrs.getNamedItem("rating") != null
+				){
+					String type = attrs.getNamedItem("type").getNodeValue();
+					String rating = attrs.getNamedItem("rating").getNodeValue();
+					
+					setTypedStat(
+							component,
+							IComponentType.STAT_DAMAGETYPE,
+							type,
+							rating,
+							isPrimary
+					);
+				}
+			}
+		}
 	}
 	
-	private void parseShield(Node shield, DefaultComponent<String> component, boolean isPrimary){
+	private void parseShield(
+			Node shield, 
+			DefaultComponent<String> component, 
+			boolean isPrimary
+	){
+		addDefaultStats(ComponentType.SHIELD,component,shield.getAttributes(),isPrimary);
 		
+		Node node;
+		NamedNodeMap attrs;
+		for(int i = 0; i < shield.getChildNodes().getLength(); i++){
+			node = shield.getChildNodes().item(i);
+			
+			if(node.getNodeName().equalsIgnoreCase("Capacity")){
+				attrs = node.getAttributes();
+				
+				if(
+					attrs.getNamedItem("type") != null && 
+					attrs.getNamedItem("hitpoints") != null
+				){
+					String type = attrs.getNamedItem("type").getNodeValue();
+					String rating = attrs.getNamedItem("hitpoints").getNodeValue();
+					
+					setTypedStat(
+							component,
+							IComponentType.STAT_DAMAGETYPE,
+							type,
+							rating,
+							isPrimary
+					);
+				}
+			}
+		}
 	}
 	
-	private void parseEngine(Node engine, DefaultComponent<String> component, String subtype, boolean isPrimary){
+	private void parseEngine(
+			Node engine, 
+			DefaultComponent<String> component, 
+			String subtype, 
+			boolean isPrimary
+	){
+		addDefaultStats(ComponentType.ENGINE,component,engine.getAttributes(),isPrimary);
 		
+		Node subNode = null;
+		for(int i = 0; i < engine.getChildNodes().getLength(); i++){
+			Node node = engine.getChildNodes().item(i);
+			
+			if(		node.getNodeName().equalsIgnoreCase("Warp") ||
+					node.getNodeName().equalsIgnoreCase("Hyperspace") ||
+					node.getNodeName().equalsIgnoreCase("Manuever")
+			){
+				subNode = node;
+				
+				if(subtype == null){
+					if(node.getNodeName().equalsIgnoreCase("Manuever")){
+						subtype = "Thrusters";
+					}else if(node.getNodeName().equalsIgnoreCase("Warp")){
+						subtype = "Warp Engines";
+					}else if(node.getNodeName().equalsIgnoreCase("Hyperspace")){
+						subtype = "Hyperspace Uplinks";
+					}else{
+						subtype = node.getNodeName();
+					}
+				}
+			}
+		}
+		
+		if(subNode != null){
+			for(ComponentType.SubType stype : ComponentType.ENGINE.getSubTypes()){
+				if(stype.getName().equalsIgnoreCase(subtype)){
+					addDefaultStats(stype,component,subNode.getAttributes(),isPrimary);
+				}
+			}
+		}
 	}
 	
-	private void parseBulkhead(Node bulkhead, DefaultComponent<String> component, boolean isPrimary){
-		
+	private void parseBulkhead(
+			Node bulkhead, 
+			DefaultComponent<String> component, 
+			boolean isPrimary
+	){
+		addDefaultStats(ComponentType.BULKHEAD,component,bulkhead.getAttributes(),isPrimary);
 	}
 	
-	private void parseConduit(Node conduit, DefaultComponent<String> component, boolean isPrimary){
-		
+	private void parseConduit(
+			Node conduit, 
+			DefaultComponent<String> component, 
+			boolean isPrimary
+	){
+		addDefaultStats(ComponentType.CONDUIT,component,conduit.getAttributes(),isPrimary);
 	}
 	
-	private void parseBay(Node bay, DefaultComponent<String> component, String subtype, boolean isPrimary){
+	private void parseBay(
+			Node bay, 
+			DefaultComponent<String> component, 
+			String subtype, 
+			boolean isPrimary
+	){
+		addDefaultStats(ComponentType.BAY,component,bay.getAttributes(),isPrimary);
 		
+		if(subtype == null){
+			subtype = bay.getAttributes().getNamedItem("type").getNodeValue();
+			
+			if(subtype.equalsIgnoreCase("assualt")){
+				subtype = "Assualt Berths";
+			}else if(subtype.equalsIgnoreCase("boarding")){
+				subtype = "Marine Berths";
+			}else if(subtype.equalsIgnoreCase("repair")){
+				subtype = "Repair Bays";
+			}else if(subtype.equalsIgnoreCase("carrier")){
+				subtype = "Carrier Berths";
+			}else if(subtype.equalsIgnoreCase("cargo")){
+				subtype = "Cargo Bays";
+			}else if(subtype.equalsIgnoreCase("colony")){
+				subtype = "Colonist Berths";
+			}
+		}
+		
+		NamedNodeMap attrs = bay.getAttributes();
+		attrs.removeNamedItem("type");
+		
+		for(ComponentType.SubType stype : ComponentType.BAY.getSubTypes()){
+			if(stype.getName().equalsIgnoreCase(subtype)){
+				addDefaultStats(stype,component,attrs,isPrimary);
+				
+				String max = attrs.getNamedItem("storage").getNodeValue();
+				
+				for(String name : stype.getAssociatedStats()){
+					if(isPrimary){
+						component.max(name, new Integer(max));
+					}else{
+						component.max(
+								"Secondary" + component.getSecondaryTypes().size() + "." +
+								name, new Integer(max)
+						);
+					}
+				}
+				break;
+			}
+		}
 	}
 	
 	private void parseElectrical(
@@ -403,7 +563,50 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			DefaultComponent<String> component, 
 			String subtype, boolean isPrimary
 	){
+		addDefaultStats(
+				ComponentType.ELECTRICAL,
+				component,
+				electrical.getAttributes(),
+				isPrimary
+		);
 		
+		Node subNode = null;
+		for(int i = 0; i < electrical.getChildNodes().getLength(); i++){
+			Node node = electrical.getChildNodes().item(i);
+			
+			if(		node.getNodeName().equalsIgnoreCase("Scanner") ||
+					node.getNodeName().equalsIgnoreCase("Cloak") ||
+					node.getNodeName().equalsIgnoreCase("Overcharger") ||
+					node.getNodeName().equalsIgnoreCase("Computer") ||
+					node.getNodeName().equalsIgnoreCase("CounterMeasures")
+			){
+				subNode = node;
+				
+				if(subtype == null){
+					if(node.getNodeName().equalsIgnoreCase("Scanner")){
+						subtype = "Scanners";
+					}else if(node.getNodeName().equalsIgnoreCase("Cloak")){
+						subtype = "Cloak";
+					}else if(node.getNodeName().equalsIgnoreCase("Overcharger")){
+						subtype = "Overchargers";
+					}else if(node.getNodeName().equalsIgnoreCase("Computer")){
+						subtype = "Computers";
+					}else if(node.getNodeName().equalsIgnoreCase("CounterMeasures")){
+						subtype = "Countermeasures";
+					}else{
+						subtype = node.getNodeName();
+					}
+				}
+			}
+		}
+		
+		if(subNode != null){
+			for(ComponentType.SubType stype : ComponentType.ELECTRICAL.getSubTypes()){
+				if(stype.getName().equalsIgnoreCase(subtype)){
+					addDefaultStats(stype,component,subNode.getAttributes(),isPrimary);
+				}
+			}
+		}	
 	}
 	
 	private void parseMechanical(
@@ -411,17 +614,150 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			DefaultComponent<String> component, 
 			String subtype, boolean isPrimary
 	){
+		addDefaultStats(
+				ComponentType.MECHANICAL,
+				component,
+				mechanical.getAttributes(),
+				isPrimary
+		);
 		
+		Node subNode = null;
+		for(int i = 0; i < mechanical.getChildNodes().getLength(); i++){
+			Node node = mechanical.getChildNodes().item(i);
+			
+			if(		node.getNodeName().equalsIgnoreCase("Thruster") ||
+					node.getNodeName().equalsIgnoreCase("Turret") ||
+					node.getNodeName().equalsIgnoreCase("RangeExtender") ||
+					node.getNodeName().equalsIgnoreCase("Overdrive") ||
+					node.getNodeName().equalsIgnoreCase("Terraformer") ||
+					node.getNodeName().equalsIgnoreCase("Miner")
+			){
+				subNode = node;
+				
+				if(subtype == null){
+					if(node.getNodeName().equalsIgnoreCase("Thruster")){
+						subtype = "Thrusters";
+					}else if(node.getNodeName().equalsIgnoreCase("Turret")){
+						subtype = "Turrets";
+					}else if(node.getNodeName().equalsIgnoreCase("RangeExtender")){
+						subtype = "Range Extenders";
+					}else if(node.getNodeName().equalsIgnoreCase("Overdrive")){
+						subtype = "Overdrivers";
+					}else if(node.getNodeName().equalsIgnoreCase("Terraformer")){
+						subtype = "Terraforming";
+					}else if(node.getNodeName().equalsIgnoreCase("Miner")){
+						subtype = "Mining Beams";
+					}else{
+						subtype = node.getNodeName();
+					}
+				}
+			}
+		}
+		
+		NamedNodeMap attrs = subNode.getAttributes();
+		if(subNode != null){
+			for(ComponentType.SubType stype : ComponentType.MECHANICAL.getSubTypes()){
+				if(stype.getName().equalsIgnoreCase(subtype)){
+					addDefaultStats(stype,component,attrs,isPrimary);
+					
+					if(stype == ComponentType.MechanicalType.MINING){
+						for(Resource res : Resource.RESOURCES){
+							if(res.isNatural()){
+								String name = "mining(" + res.shortName() + ")";
+								String value = attrs.getNamedItem(
+										res.shortName()).getNodeValue();
+								
+								if(isPrimary){
+									component.value(name, new Integer(value));
+								}else{
+									component.value(
+											"Secondary" + 
+											component.getSecondaryTypes().size() + "." +
+											name, new Integer(value)
+									);
+								}
+							}
+						}
+					}else if(stype == ComponentType.MechanicalType.TERRAFORM){
+						for(Environment env : Environment.ATTRIBUTES){
+							String name = "terraform(" + env.getName() + ")";
+							String value = attrs.getNamedItem(
+									env.getName()).getNodeValue();
+							
+							if(isPrimary){
+								component.value(name, new Integer(value));
+							}else{
+								component.value(
+										"Secondary" + 
+										component.getSecondaryTypes().size() + "." +
+										name, new Integer(value)
+								);
+							}
+						}
+					}
+				}
+			}
+		}	
 	}
 	
-	private void parseOrbital(Node orbital, DefaultComponent<String> component, String subtype, boolean isPrimary){
+	private void parseOrbital(
+			Node orbital, 
+			DefaultComponent<String> component, 
+			String subtype, 
+			boolean isPrimary
+	){
+		addDefaultStats(
+				ComponentType.ORBITAL,
+				component,
+				orbital.getAttributes(),
+				isPrimary
+		);
 		
+		Node subNode = null;
+		for(int i = 0; i < orbital.getChildNodes().getLength(); i++){
+			Node node = orbital.getChildNodes().item(i);
+			
+			if(		node.getNodeName().equalsIgnoreCase("HSTerminal") ||
+					node.getNodeName().equalsIgnoreCase("Stargate") ||
+					node.getNodeName().equalsIgnoreCase("MassAccelerator") ||
+					node.getNodeName().equalsIgnoreCase("ConstructionDock")
+			){
+				subNode = node;
+				
+				if(subtype == null){
+					if(node.getNodeName().equalsIgnoreCase("HSTerminal")){
+						subtype = "Hyperspace Nodes";
+					}else if(node.getNodeName().equalsIgnoreCase("Stargate")){
+						subtype = "Stargates";
+					}else if(node.getNodeName().equalsIgnoreCase("MassAccelerator")){
+						subtype = "Mass Accelerator";
+					}else if(node.getNodeName().equalsIgnoreCase("ConstructionDock")){
+						subtype = "Ship Yards";
+					}else{
+						subtype = node.getNodeName();
+					}
+				}
+			}
+		}
+		
+		if(subNode != null){
+			for(ComponentType.SubType stype : ComponentType.ORBITAL.getSubTypes()){
+				if(stype.getName().equalsIgnoreCase(subtype)){
+					addDefaultStats(stype,component,subNode.getAttributes(),isPrimary);
+				}
+			}
+		}
 	}
 	
 	private void parseMisc(Node misc, DefaultComponent<String> component, boolean isPrimary){
-		
+		addDefaultStats(
+				ComponentType.MISC,
+				component,
+				misc.getAttributes(),
+				isPrimary
+		);
 	}
-	
+	/*
 	private void addStat(
 			String name,
 			String nodeName,
@@ -447,7 +783,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		component.getStats().setStat(name, stat);
 		map.removeNamedItem(nodeName);
 	}
-	
+	*/
 	private void addDefaultStats(
 			IComponentType type, 
 			DefaultComponent<String> component, 
@@ -481,6 +817,23 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			if(name != null){
 				component.getStats().setStat(name, lstat);
 			}
+		}
+	}
+	
+	private void setTypedStat(
+			DefaultComponent<String> component,
+			String supertype,
+			String subtype,
+			String value,
+			boolean isPrimary
+	){
+		if(isPrimary){
+			component.value(supertype + "(" + subtype + ")", new Integer(value));
+		}else{
+			component.value(
+					"Secondary" + component.getSecondaryTypes().size() + "." +
+					supertype + "(" + subtype + ")", new Integer(value)
+			);
 		}
 	}
 	
