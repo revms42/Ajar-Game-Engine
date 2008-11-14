@@ -6,14 +6,17 @@
   	tech6="0" tech7="0" tech8="0" tns:hitpoints="0" hashCode="0"
   	javaID="">
   	<tns:Primary>
-  	
-  		<tns:Weapon tns:range="0" tns:energy="0">
-  			<tns:Catagory>
-  				<tns:Beam tns:firingarc="30" tns:reload="3"
-  					tns:accuracy="5" />
-  			</tns:Catagory>
-  			<tns:DamageType tns:type="beam" tns:power="160" />
-  		</tns:Weapon>
+  		<tns:Mechanical tns:energy="0">
+  			<tns:Thruster tns:agility="0" />
+  		</tns:Mechanical>
+  		
+  		
+  		
+  		
+  		
+  		
+
+  		
   		
   	</tns:Primary>
   </tns:Component>
