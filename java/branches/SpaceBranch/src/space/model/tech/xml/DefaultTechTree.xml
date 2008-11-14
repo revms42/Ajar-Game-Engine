@@ -20,4 +20,14 @@
   		
   	</tns:Primary>
   </tns:Component>
+  <tns:Component costAtm="0" tns:hitpoints="0" costLth="0" costCha="0"
+  	costSid="0" tech8="0" mass="0" image="" signature="0" tech7="0"
+  	tech6="0" tech5="0" costPro="0" tech4="0" costXen="0" tech3="0"
+  	tech2="0" description="" tech1="0" name="">
+  	<tns:Primary>
+  		<tns:Armor>
+  			<tns:Section rating="0" tns:type="explosive" />
+  		</tns:Armor>
+  	</tns:Primary>
+  </tns:Component>
 </tns:TechTree>

@@ -2,17 +2,31 @@ package space.ui.designer;
 
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import space.model.component.IComponent;
+import space.model.tech.XMLTechTreeLoader;
 
 public class ShipDesigner<I> extends JFrame {
 	private static final long serialVersionUID = 9207357928566998058L;
+	
+	private static String tree = "C:\\private\\SpaceBranch\\src\\space\\model\\tech\\xml\\DefaultTechTree.xml";
+	private static String schema = "C:\\private\\SpaceBranch\\src\\space\\model\\tech\\schema\\TechTree.xsd";
 	
 	public static DataFlavor COMP_FLAVOR;
 	
@@ -22,6 +36,7 @@ public class ShipDesigner<I> extends JFrame {
 	private final Vector<IComponent<I>> components;
 	
 	private final ComponentTransferHandler<I> transferer;
+	private final SpringLayout layout;
 	
 	protected ShipDesigner(Vector<IComponent<I>> components){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,23 +51,27 @@ public class ShipDesigner<I> extends JFrame {
 		componentPanel = new LibraryPanel<I>(transferer,components);
 		
 		JScrollPane dscroll = new JScrollPane(designPanel);
-		JScrollPane cscroll = new JScrollPane(componentPanel);
+		//JScrollPane cscroll = new JScrollPane(componentPanel);
 		
 		this.add(dscroll);
-		this.add(cscroll);
+		this.add(componentPanel);
 		
-		SpringLayout layout = new SpringLayout();
+		layout = new SpringLayout();
+		this.setLayout(layout);
 		
-		layout.putConstraint(SpringLayout.NORTH, cscroll, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, cscroll, -5, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, cscroll, -5, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.NORTH, componentPanel, 5, SpringLayout.NORTH, this.getContentPane());
+		layout.putConstraint(SpringLayout.SOUTH, componentPanel, -5, SpringLayout.SOUTH, this.getContentPane());
+		layout.putConstraint(SpringLayout.EAST, componentPanel, -5, SpringLayout.EAST, this.getContentPane());
 		
-		layout.putConstraint(SpringLayout.NORTH, dscroll, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, dscroll, 5, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, dscroll, -5, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, dscroll, -10, SpringLayout.WEST, cscroll);
+		layout.putConstraint(SpringLayout.NORTH, dscroll, 5, SpringLayout.NORTH, this.getContentPane());
+		layout.putConstraint(SpringLayout.WEST, dscroll, 5, SpringLayout.WEST, this.getContentPane());
+		layout.putConstraint(SpringLayout.SOUTH, dscroll, -5, SpringLayout.SOUTH, this.getContentPane());
+		layout.putConstraint(SpringLayout.EAST, dscroll, -5, SpringLayout.WEST, componentPanel);
 		
 		this.pack();
+		
+		System.out.println(designPanel.getSize());
+		System.out.println(componentPanel.getSize());
 	}
 	
 	/**
@@ -66,8 +85,29 @@ public class ShipDesigner<I> extends JFrame {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(-1);
 		}
+		/*File schemafile = new File(schema);
+		File treefile = new File(tree);
+		
+		XMLTechTreeLoader loader;
+		try {
+			loader = new XMLTechTreeLoader(schemafile);
+			
+			(new ShipDesigner<String>(loader.loadTree(treefile))).setVisible(true);
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(-1);
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(-1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(-1);
+		}*/
 		(new ShipDesigner<String>(ComponentLoader.loadComponents(null))).setVisible(true);
 	}
-
 }
