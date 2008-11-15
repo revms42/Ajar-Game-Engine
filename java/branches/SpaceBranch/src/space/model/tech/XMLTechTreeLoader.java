@@ -73,14 +73,44 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		Schema schema = sfact.newSchema(model);
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setSchema(schema);
+		factory.setIgnoringComments(true);
+		factory.setIgnoringElementContentWhitespace(true);
+		//factory.setSchema(schema);
 		
 		builder = factory.newDocumentBuilder();
 	}
 	
 	private boolean check(Node node, String type){
-		return	node.isDefaultNamespace(namespaceURI) && 
-				node.getNodeName().equalsIgnoreCase(type);
+		return  node.getNodeName().equalsIgnoreCase(type) || 
+				node.getNodeName().equalsIgnoreCase("tns:" + type);
+	}
+	
+	private Node getNextValid(NodeList list, String type){
+		for(int i = 0; i < list.getLength(); i++){
+			if(list.item(i).getNodeType() != Node.TEXT_NODE){
+				if(check(list.item(i),type)){
+					return list.item(i);
+				}
+			}
+		}
+		return null;
+	}
+	
+	private Node getNextValid(NodeList list, int start){
+		for(int i = start; i < list.getLength(); i++){
+			if(list.item(i).getNodeType() != Node.TEXT_NODE){
+				return list.item(i);
+			}
+		}
+		return null;
+	}
+	
+	private String getValue(NamedNodeMap map, String name){
+		Node node = map.getNamedItem(name);
+		if(node == null){
+			node = map.getNamedItem("tns:" + name);
+		}
+		return node.getNodeValue();
 	}
 	
 	@Override
@@ -100,7 +130,19 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 					parseComponent(child);
 				}
 			}
+		}else if(check(root,"TechTree")){
+			NodeList children = root.getFirstChild().getChildNodes();
+			
+			for(int i = 0; i < children.getLength(); i++){
+				Node child = children.item(i);
+				
+				if(check(child,componentnodename)){
+					parseComponent(child);
+				}
+			}
 		}
+		
+		System.out.println(components.size());
 		
 		return components;
 	}
@@ -135,25 +177,30 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			addStat(tech.getName(),tech.getName(),component,attrs);
 		}*/
 		
-		if(id != null){
+		if(id != null && id.getNodeValue().length() > 0){
 			String[] typeName = id.getNodeValue().split(".");
 			
 			NodeList nodes = entry.getChildNodes();
 			for(int i = 0; i < nodes.getLength(); i++){
-				if(nodes.item(i).getNodeName().equalsIgnoreCase("Primary")){
+				if(check(nodes.item(i),"Primary")){
 					parseComponentType(nodes.item(i),component,true,typeName);
 					break;
 				}
 			}
-		}else if(hashCode != null){
+		}else if(hashCode != null && hashCode.intValue() != 0){
 			//TODO: We don't support this yet.
 		}else{
 			NodeList nodes = entry.getChildNodes();
 			for(int i = 0; i < nodes.getLength(); i++){
-				if(nodes.item(i).getNodeName().equalsIgnoreCase("Primary")){
-					Node typeNode = nodes.item(i).getChildNodes().item(0);
+				if(check(nodes.item(i),"Primary")){
+					Node typeNode = getNextValid(nodes.item(i).getChildNodes(),0);
 					
-					parseComponentType(nodes.item(i),component,true,typeNode.getNodeName());
+					String typename = typeNode.getNodeName();
+					if(typename.startsWith("tns:")){
+						typename = typename.substring(4);
+					}
+					
+					parseComponentType(nodes.item(i),component,true,typename);
 					break;
 				}
 			}
@@ -161,10 +208,15 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		
 		NodeList nodes = entry.getChildNodes();
 		for(int i = 0; i < nodes.getLength(); i++){
-			if(nodes.item(i).getNodeName().equalsIgnoreCase("Secondary")){
-				Node typeNode = nodes.item(i).getChildNodes().item(0);
+			if(check(nodes.item(i),"Secondary")){
+				Node typeNode = getNextValid(nodes.item(i).getChildNodes(),(0));
 				
-				parseComponentType(nodes.item(i),component,false,typeNode.getNodeName());
+				String typename = typeNode.getNodeName();
+				if(typename.startsWith("tns:")){
+					typename = typename.substring(4);
+				}
+				
+				parseComponentType(nodes.item(i),component,false,typename);
 				break;
 			}
 		}
@@ -247,6 +299,9 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		} catch (URISyntaxException e1) {
 			e1.printStackTrace();
 			return null;
+		} catch (IllegalArgumentException e2){
+			e2.printStackTrace();
+			return null;
 		}
 	}
 
@@ -257,10 +312,15 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			String... id
 	){
 		for(ComponentType type : ComponentType.COMPONENTTYPES){
-			if(type.getName().equalsIgnoreCase(id[0])){
+			if(		type.getName().equalsIgnoreCase(id[0]) ||
+					(type.getName() + "s").equalsIgnoreCase(id[0])){
 				if(isPrimary){
 					component.setType(type);
+				}else{
+					component.addSecondaryType(type);
 				}
+				
+				node = getNextValid(node.getChildNodes(),0);
 				
 				switch(type){
 				case ARMOR:
@@ -395,19 +455,16 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		for(int i = 0; i < armor.getChildNodes().getLength(); i++){
 			node = armor.getChildNodes().item(i);
 			
-			if(node.getNodeName().equalsIgnoreCase("Section")){
+			if(check(node,"Section")){
 				attrs = node.getAttributes();
 				
-				if(
-					attrs.getNamedItem("type") != null && 
-					attrs.getNamedItem("rating") != null
-				){
-					String type = attrs.getNamedItem("type").getNodeValue();
-					String rating = attrs.getNamedItem("rating").getNodeValue();
-					
+				String type = getValue(attrs,"type");
+				String rating = getValue(attrs,"rating");
+				
+				if(type != null && rating != null){
 					setTypedStat(
 							component,
-							IComponentType.STAT_DAMAGETYPE,
+							IComponentType.STAT_RATING,
 							type,
 							rating,
 							isPrimary

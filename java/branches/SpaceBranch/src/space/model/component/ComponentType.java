@@ -39,17 +39,17 @@ public enum ComponentType implements IComponentType {
 		associatedStats.add(STAT_HITPOINTS);
 		
 		for(Resource r : Resource.RESOURCES){
-			associatedStats.add("cost" + r.name());
+			associatedStats.add("cost" + r.shortName());
 		}
 		
 		for(Technology t : Technology.TECHS){
-			associatedStats.add(t.name());
+			associatedStats.add(t.getName());
 		}
 		
 		for(String stat : stats){
 			if(stat == STAT_POWER || stat == STAT_RATING){
 				for(Damage type : Damage.TYPES){
-					associatedStats.add(stat + "(" + type + ")");
+					associatedStats.add(stat + "(" + type.getName() + ")");
 				}
 			}else if(stat != STAT_DAMAGETYPE){
 				associatedStats.add(stat);
