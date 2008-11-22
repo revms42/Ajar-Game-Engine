@@ -10,17 +10,18 @@ import space.model.tech.Technology;
 
 public enum ComponentType implements IComponentType {
 	
-	WEAPON("Weapons",new String[]{STAT_DAMAGETYPE,STAT_ENERGY,STAT_POWER},WeaponType.WEAPONTYPES),
+	WEAPON("Weapon",new String[]{STAT_DAMAGETYPE,STAT_ENERGY,STAT_POWER},WeaponType.WEAPONTYPES),
 	ARMOR("Armor",new String[]{STAT_DAMAGETYPE,STAT_RATING}),
-	SHIELD("Shields",new String[]{STAT_DAMAGETYPE,STAT_ENERGY,STAT_RATING}),
-	ENGINE("Engines",new String[]{STAT_ENERGY},EngineType.ENGINETYPES),
-	BULKHEAD("Bulkheads",new String[]{}),
-	CONDUIT("Conduits",new String[]{STAT_ENERGY}),
-	BAY("Bays",new String[]{STAT_ENERGY},BayType.BAYTYPES),
+	SHIELD("Shield",new String[]{STAT_DAMAGETYPE,STAT_ENERGY,STAT_RATING}),
+	ENGINE("Engine",new String[]{STAT_ENERGY},EngineType.ENGINETYPES),
+	BULKHEAD("Bulkhead",new String[]{}),
+	CONDUIT("Conduit",new String[]{STAT_ENERGY}),
+	BAY("Bay",new String[]{STAT_ENERGY},BayType.BAYTYPES),
 	ELECTRICAL("Electrical",new String[]{STAT_ENERGY},ElectricalType.ELECTRICALTYPES),
 	MECHANICAL("Mechanical",new String[]{STAT_ENERGY},MechanicalType.MECHANICALTYPES),
 	ORBITAL("Orbital",new String[]{STAT_ENERGY},OrbitalType.ORBITALTYPES),
-	MISC("Misc.",new String[]{STAT_ENERGY});
+	MISC("Misc.",new String[]{STAT_ENERGY}),
+	NULL("",new String[]{});
 	
 	public static ComponentType[] COMPONENTTYPES =
 		{WEAPON,ARMOR,SHIELD,ENGINE,BULKHEAD,CONDUIT,BAY,ELECTRICAL,MECHANICAL,ORBITAL,MISC};
@@ -78,19 +79,19 @@ public enum ComponentType implements IComponentType {
 	}
 	
 	public enum WeaponType implements SubType  {
-		BEAM(	"Beams",
+		BEAM(	"Beam",
 				STAT_FIRINGARC,
 				STAT_ACCURACY,
 				STAT_RELOAD
 		),
-		CANNON(	"Cannons",
+		CANNON(	"Cannon",
 				STAT_FIRINGARC,
 				STAT_ACCURACY,
 				STAT_RELOAD,
 				STAT_SPEED,
 				STAT_BURST
 		),
-		ROCKET(	"Rockets",
+		ROCKET(	"Rocket",
 				STAT_FIRINGARC,
 				STAT_ACCURACY,
 				STAT_RELOAD,
@@ -98,7 +99,7 @@ public enum ComponentType implements IComponentType {
 				STAT_BURST,
 				STAT_HITPOINTS
 		),
-		MISSILE("Missiles",
+		MISSILE("Missile",
 				STAT_FIRINGARC,
 				STAT_ACCURACY,
 				STAT_RELOAD,
@@ -107,7 +108,7 @@ public enum ComponentType implements IComponentType {
 				STAT_AGILITY,
 				STAT_HITPOINTS
 		),
-		TORPEADO("Torpeados",
+		TORPEADO("Torpeado",
 				STAT_FIRINGARC,
 				STAT_ACCURACY,
 				STAT_RELOAD,
@@ -115,11 +116,11 @@ public enum ComponentType implements IComponentType {
 				STAT_AGILITY,
 				STAT_HITPOINTS
 		),
-		BOMB(	"Bombs",
+		BOMB(	"Bomb",
 				STAT_ACCURACY,
 				STAT_HITPOINTS
 		),
-		MINE(	"Mines",
+		MINE(	"Mine",
 				STAT_RADIUS,
 				STAT_HITPOINTS
 		);
@@ -155,9 +156,9 @@ public enum ComponentType implements IComponentType {
 	}
 	
 	public enum EngineType implements SubType {
-		THRUSTER("Thrusters",STAT_SPEED,STAT_AGILITY),
-		WARP("Warp Engines",STAT_SPEED),
-		HYPERSPACE("Hyperspace Uplinks",STAT_SPEED);
+		THRUSTER("Thruster",STAT_SPEED,STAT_AGILITY),
+		WARP("Warp",STAT_SPEED),
+		HYPERSPACE("Hyperspace",STAT_SPEED);
 		
 		public static EngineType[] ENGINETYPES = 
 			{THRUSTER,WARP,HYPERSPACE};
@@ -190,7 +191,7 @@ public enum ComponentType implements IComponentType {
 	}
 	
 	public enum BayType implements SubType {
-		CARGO("Cargo Bays",
+		CARGO("Cargo",
 				Cargo.PEOPLE,
 				Cargo.MINERAL1,
 				Cargo.MINERAL2,
@@ -198,11 +199,11 @@ public enum ComponentType implements IComponentType {
 				Cargo.MINERAL4,
 				Cargo.MINERAL5
 		),
-		REPAIR("Repair Bays",Cargo.SHIPS),
-		CARRIER("Carrier Berths",Cargo.SHIPS),
-		BOARDING("Marine Berths",Cargo.MARINES),
-		COLONIZATION("Colonist Berths",Cargo.COLONISTS),
-		LANDING("Assualt Berths",Cargo.TROOPS);
+		REPAIR("Repair",Cargo.SHIPS),
+		CARRIER("Carrier",Cargo.SHIPS),
+		BOARDING("SpaceMarine",Cargo.MARINES),
+		COLONIZATION("Colonist",Cargo.COLONISTS),
+		LANDING("Assualt",Cargo.TROOPS);
 		
 		public static BayType[] BAYTYPES =
 			{CARGO,REPAIR,CARRIER,BOARDING,COLONIZATION,LANDING};
@@ -239,11 +240,11 @@ public enum ComponentType implements IComponentType {
 	}
 	
 	public enum ElectricalType implements SubType {
-		COMPUTER("Computers",STAT_POWER),
+		COMPUTER("Computer",STAT_POWER),
 		COUNTERMEASURES("Countermeasures",STAT_POWER),
 		CLOAK("Cloak",STAT_POWER),
-		SCANNER("Scanners",STAT_POWER,STAT_RANGE,STAT_RADIUS),
-		OVERCHARGER("Overchargers",STAT_POWER);
+		SCANNER("Scanner",STAT_POWER,STAT_RANGE,STAT_RADIUS),
+		OVERCHARGER("Overcharger",STAT_POWER);
 		
 		public static ElectricalType[] ELECTRICALTYPES =
 			{COMPUTER,COUNTERMEASURES,CLOAK,SCANNER,OVERCHARGER};
@@ -276,20 +277,20 @@ public enum ComponentType implements IComponentType {
 	}
 	
 	public enum MechanicalType implements SubType {
-		MINING("Mining Beams",
+		MINING("MiningBeams",
 				"mining(" + Resource.MINERAL1.shortName() + ")",
 				"mining(" + Resource.MINERAL2.shortName() + ")",
 				"mining(" + Resource.MINERAL3.shortName() + ")",
 				"mining(" + Resource.MINERAL4.shortName() + ")"),
 		THRUSTER("Thrusters",STAT_AGILITY),
-		TERRAFORM("Terraforming",
+		TERRAFORM("Terraformer",
 				"terraform(" + Environment.RADIATION.getName() + ")",
 				"terraform(" + Environment.TEMPERATURE.getName() + ")",
 				"terraform(" + Environment.ATMOSPHERE.getName() + ")",
 				"terraform(" + Environment.GRAVITY.getName() + ")"),
-		TURRET("Turrets",STAT_FIRINGARC),
-		EXTENDER("Range Extenders",STAT_RANGE),
-		OVERDRIVE("Overdrivers",STAT_SPEED);
+		TURRET("Turret",STAT_FIRINGARC),
+		EXTENDER("Extender",STAT_RANGE),
+		OVERDRIVE("Overdriver",STAT_SPEED);
 		
 		public static MechanicalType[] MECHANICALTYPES =
 			{MINING,THRUSTER,TERRAFORM,TURRET,EXTENDER,OVERDRIVE};
@@ -322,10 +323,10 @@ public enum ComponentType implements IComponentType {
 	}
 	
 	public enum OrbitalType implements SubType {
-		MASS_DRIVER("Mass Accelerator"),
-		STARGATE("Stargates"),
-		HYPERSPACE_NODE("Hyperspace Nodes"),
-		CONSTRUCTION("Ship Yards",STAT_WIDTH,STAT_HEIGHT);
+		MASS_DRIVER("MassAccelerator"),
+		STARGATE("Stargate"),
+		HYPERSPACE_NODE("HyperspaceNode"),
+		CONSTRUCTION("ShipYard",STAT_WIDTH,STAT_HEIGHT);
 		
 		public static OrbitalType[] ORBITALTYPES = 
 			{MASS_DRIVER,STARGATE,HYPERSPACE_NODE,CONSTRUCTION};

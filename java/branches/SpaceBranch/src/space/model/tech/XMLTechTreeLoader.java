@@ -35,6 +35,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import space.display.DisplayStats;
 import space.model.Resource;
 import space.model.component.ComponentType;
 import space.model.component.DefaultComponent;
@@ -109,6 +110,10 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		Node node = map.getNamedItem(name);
 		if(node == null){
 			node = map.getNamedItem("tns:" + name);
+			
+			if(node == null){
+				return null;
+			}
 		}
 		return node.getNodeValue();
 	}
@@ -183,6 +188,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			NodeList nodes = entry.getChildNodes();
 			for(int i = 0; i < nodes.getLength(); i++){
 				if(check(nodes.item(i),"Primary")){
+					addDefaultStats(ComponentType.NULL,component,entry.getAttributes(),true);
 					parseComponentType(nodes.item(i),component,true,typeName);
 					break;
 				}
@@ -199,7 +205,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 					if(typename.startsWith("tns:")){
 						typename = typename.substring(4);
 					}
-					
+					addDefaultStats(ComponentType.NULL,component,entry.getAttributes(),true);
 					parseComponentType(nodes.item(i),component,true,typename);
 					break;
 				}
@@ -215,7 +221,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 				if(typename.startsWith("tns:")){
 					typename = typename.substring(4);
 				}
-				
+				addDefaultStats(ComponentType.NULL,component,entry.getAttributes(),false);
 				parseComponentType(nodes.item(i),component,false,typename);
 				break;
 			}
@@ -287,20 +293,24 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 	}
 	
 	private BufferedImage loadImage(String uri){
-		try {
-			File file = new File(new URI(uri));
-			
+		if(uri != null && uri.length() != 0){
 			try {
-				return ImageIO.read(file);
-			} catch (IOException e) {
-				e.printStackTrace();
+				File file = new File(new URI(uri));
+				
+				try {
+					return ImageIO.read(file);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+				return null;
+			} catch (IllegalArgumentException e2){
+				e2.printStackTrace();
 				return null;
 			}
-		} catch (URISyntaxException e1) {
-			e1.printStackTrace();
-			return null;
-		} catch (IllegalArgumentException e2){
-			e2.printStackTrace();
+		}else{
 			return null;
 		}
 	}
@@ -312,8 +322,10 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			String... id
 	){
 		for(ComponentType type : ComponentType.COMPONENTTYPES){
-			if(		type.getName().equalsIgnoreCase(id[0]) ||
-					(type.getName() + "s").equalsIgnoreCase(id[0])){
+			boolean singular = type.getName().equalsIgnoreCase(id[0]);
+			boolean plural = (type.getName() + "s").equalsIgnoreCase(id[0]);
+			boolean member = (id[0] + "s").equalsIgnoreCase(type.getName());
+			if(singular||plural||member){
 				if(isPrimary){
 					component.setType(type);
 				}else{
@@ -605,7 +617,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 						component.max(name, new Integer(max));
 					}else{
 						component.max(
-								"Secondary" + component.getSecondaryTypes().size() + "." +
+								"Secondary" + component.getSecondaryTypes().size() + ":" +
 								name, new Integer(max)
 						);
 					}
@@ -729,7 +741,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 								}else{
 									component.value(
 											"Secondary" + 
-											component.getSecondaryTypes().size() + "." +
+											component.getSecondaryTypes().size() + ":" +
 											name, new Integer(value)
 									);
 								}
@@ -746,7 +758,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 							}else{
 								component.value(
 										"Secondary" + 
-										component.getSecondaryTypes().size() + "." +
+										component.getSecondaryTypes().size() + ":" +
 										name, new Integer(value)
 								);
 							}
@@ -848,13 +860,13 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			boolean isPrimary
 	){
 		for(String stat : type.getAssociatedStats()){
-			Node node = map.getNamedItem(stat);
+			String value = getValue(map,stat);
 			
 			Integer v;
-			if(node == null || node.getNodeValue().isEmpty()){
+			if(value == null || value == ""){
 				v = new Integer(0);
 			}else{
-				v = new Integer(node.getNodeValue());
+				v = new Integer(value);
 			}
 			
 			LinearStat lstat = new LinearStat(
@@ -868,7 +880,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			if(isPrimary){
 				name = stat;
 			}else{
-				name = "Secondary" + component.getSecondaryTypes().size() + "." + stat;
+				name = "Secondary" + component.getSecondaryTypes().size() + ":" + stat;
 			}
 			
 			if(name != null){
@@ -888,7 +900,7 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 			component.value(supertype + "(" + subtype + ")", new Integer(value));
 		}else{
 			component.value(
-					"Secondary" + component.getSecondaryTypes().size() + "." +
+					"Secondary" + component.getSecondaryTypes().size() + ":" +
 					supertype + "(" + subtype + ")", new Integer(value)
 			);
 		}
@@ -917,11 +929,8 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 		}
 	}
 	
-	public class DefaultCompContext implements IDisplayContext<String,String> {
-
-		private final static String xpos = "xpos";
-		private final static String ypos = "ypos";
-		private final static String rot = "rot";
+	public class DefaultCompContext implements IDisplayContext<String,String>,DisplayStats {
+		
 		protected Point tile;
 		
 		protected AffineTransformOp op;
@@ -945,8 +954,11 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 
 		@Override
 		public Point getPosition(IEntity<String> arg0) {
-			if(arg0.value(xpos) != null && arg0.value(ypos) != null){
-				return new Point(arg0.value(xpos).intValue(),arg0.value(ypos).intValue());
+			if(arg0.value(STAT_X_POS) != null && arg0.value(STAT_Y_POS) != null){
+				return new Point(
+						arg0.value(STAT_X_POS).intValue(),
+						arg0.value(STAT_Y_POS).intValue()
+				);
 			}else{
 				return null;
 			}
@@ -963,19 +975,19 @@ public class XMLTechTreeLoader implements ITechTreeLoader<File,String> {
 
 		@Override
 		public BufferedImageOp getTransform(IEntity<String> arg0) {
-			if(arg0.value(rot) != null){
+			if(arg0.value(STAT_ROTATION) != null){
 				if(op == null){
 					if(rotation == null){
 						rotation = AffineTransform.getRotateInstance(
-								arg0.value(rot).doubleValue()
+								arg0.value(STAT_ROTATION).doubleValue()
 						);
 					}else{
-						rotation.setToRotation(arg0.value(rot).doubleValue());
+						rotation.setToRotation(arg0.value(STAT_ROTATION).doubleValue());
 					}
 					
 					op = new AffineTransformOp(rotation,AffineTransformOp.TYPE_BILINEAR);
 				}else{
-					op.getTransform().setToRotation(arg0.value(rot).doubleValue());
+					op.getTransform().setToRotation(arg0.value(STAT_ROTATION).doubleValue());
 				}
 				
 				return op;

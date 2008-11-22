@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TechTree>
+	<Armors>
+		<Armor name="Rhino Hide Armor" mass="20" sig="10" hitpoints="100">
+			Armor as thick as a Rhino.
+			<TechReqs>
+				<Tech1>1</Tech1>
+			</TechReqs>
+			<Cost>
+				<Pro>10</Pro>
+				<Sid>6</Sid>
+			</Cost>
+			<Stats>
+				<Defense type="acid">10</Defense>
+				<Energy>10</Energy>
+			</Stats>
+			<Secondary type="shield">
+				<Stats>
+					<Rating type="energy">100</Rating>
+				</Stats>
+			</Secondary>
+		</Armor>
+	</Armors>
+</TechTree>
