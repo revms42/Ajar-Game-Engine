@@ -19,8 +19,11 @@ import javax.swing.event.TreeSelectionListener;
 
 import org.model.Stats;
 
+import space.display.DisplayStats;
 import space.model.Resource;
 import space.model.component.IComponent;
+import space.model.component.IComponentType;
+import space.model.tech.Technology;
 import space.ui.designer.LibraryPanel.ComponentNode;
 
 public class InfoPanel<I> 
@@ -48,6 +51,7 @@ public class InfoPanel<I>
 	private final SpringLayout layout;
 	
 	private IComponent<I> component;
+	private int maxSecondary = 0;
 	
 	public InfoPanel(){
 		super();
@@ -61,12 +65,23 @@ public class InfoPanel<I>
 		icon = new ImageIcon(bi);
 		
 		exclusionList = new Vector<String>();
-		exclusionList.add(Resource.PRODUCTION.name());
-		exclusionList.add(Resource.MINERAL1.name());
-		exclusionList.add(Resource.MINERAL2.name());
-		exclusionList.add(Resource.MINERAL3.name());
-		exclusionList.add(Resource.MINERAL4.name());
-		exclusionList.add(Resource.MINERAL5.name());
+		exclusionList.add("cost" + Resource.PRODUCTION.shortName());
+		exclusionList.add("cost" + Resource.MINERAL1.shortName());
+		exclusionList.add("cost" + Resource.MINERAL2.shortName());
+		exclusionList.add("cost" + Resource.MINERAL3.shortName());
+		exclusionList.add("cost" + Resource.MINERAL4.shortName());
+		exclusionList.add("cost" + Resource.MINERAL5.shortName());
+		exclusionList.add(DisplayStats.STAT_ROTATION);
+		exclusionList.add(DisplayStats.STAT_X_POS);
+		exclusionList.add(DisplayStats.STAT_Y_POS);
+		exclusionList.add(Technology.TECH1.getName());
+		exclusionList.add(Technology.TECH2.getName());
+		exclusionList.add(Technology.TECH3.getName());
+		exclusionList.add(Technology.TECH4.getName());
+		exclusionList.add(Technology.TECH5.getName());
+		exclusionList.add(Technology.TECH6.getName());
+		exclusionList.add(Technology.TECH7.getName());
+		exclusionList.add(Technology.TECH8.getName());
 		
 		recycle = new Stack<JLabel[]>();
 		
@@ -99,6 +114,7 @@ public class InfoPanel<I>
 			costMin5.setForeground(Resource.MINERAL5.uiColor().darker());
 		JSeparator bottomRule = new JSeparator();
 		description = new JTextArea("none");
+		description.setEditable(false);
 		displayList = new HashMap<String,JLabel[]>();
 		
 		layout = new SpringLayout();
@@ -190,6 +206,7 @@ public class InfoPanel<I>
 		
 		if(component != null){
 			name.setText(component.getName());
+			description.setText(component.getDescription());
 			
 			costPro.setText(component.getCost(Resource.PRODUCTION) + ".0");
 			costMin1.setText(component.getCost(Resource.MINERAL1) + ".0");
@@ -200,14 +217,48 @@ public class InfoPanel<I>
 			
 			Stats<String> stats  = (Stats<String>)component.getStats().clone();
 			Set<String> keys = stats.keySet();
+			
+			if(component.getSecondaryTypes().size() > maxSecondary){
+				for(int i = maxSecondary; i <= component.getSecondaryTypes().size(); i++){
+					String pre = "Secondary" + i + ":";
+					
+					exclusionList.add(pre + "cost" + Resource.PRODUCTION.shortName());
+					exclusionList.add(pre + "cost" + Resource.MINERAL1.shortName());
+					exclusionList.add(pre + "cost" + Resource.MINERAL2.shortName());
+					exclusionList.add(pre + "cost" + Resource.MINERAL3.shortName());
+					exclusionList.add(pre + "cost" + Resource.MINERAL4.shortName());
+					exclusionList.add(pre + "cost" + Resource.MINERAL5.shortName());
+					exclusionList.add(pre + DisplayStats.STAT_ROTATION);
+					exclusionList.add(pre + DisplayStats.STAT_X_POS);
+					exclusionList.add(pre + DisplayStats.STAT_Y_POS);
+					exclusionList.add(pre + Technology.TECH1.getName());
+					exclusionList.add(pre + Technology.TECH2.getName());
+					exclusionList.add(pre + Technology.TECH3.getName());
+					exclusionList.add(pre + Technology.TECH4.getName());
+					exclusionList.add(pre + Technology.TECH5.getName());
+					exclusionList.add(pre + Technology.TECH6.getName());
+					exclusionList.add(pre + Technology.TECH7.getName());
+					exclusionList.add(pre + Technology.TECH8.getName());
+					exclusionList.add(pre + IComponentType.STAT_MASS);
+					exclusionList.add(pre + IComponentType.STAT_HITPOINTS);
+					exclusionList.add(pre + IComponentType.STAT_SIGNATURE);
+				}
+				
+				maxSecondary=component.getSecondaryTypes().size();
+			}
 			keys.removeAll(exclusionList);
 			
 			String previous = null;
 			for(String key : keys){
-				JLabel[] labels = recycle.size() > 0 ? recycle.pop() : new JLabel[2];
+				JLabel[] labels = !recycle.isEmpty() ? recycle.pop():new JLabel[]{new JLabel(),new JLabel()};
 				
-				labels[0].setText(key + ":");
-				labels[1].setText(component.value(key).toString());
+				if(key.startsWith("Secondary")){
+					labels[0].setText("+" + key.split(":")[1] + ":");
+				}else{
+					labels[0].setText(key + ":");
+				}
+				int val = component.value(key).intValue();
+				labels[1].setText(val + ".0");
 				
 				this.add(labels[0]);
 				this.add(labels[1]);
@@ -224,7 +275,7 @@ public class InfoPanel<I>
 							description
 					);
 					layout.putConstraint(
-							SpringLayout.EAST, labels[1], 5, SpringLayout.EAST, this
+							SpringLayout.EAST, labels[1], -5, SpringLayout.EAST, this
 					);
 					layout.putConstraint(
 							SpringLayout.NORTH, labels[1], 0, SpringLayout.NORTH, labels[0]
@@ -241,7 +292,7 @@ public class InfoPanel<I>
 							displayList.get(previous)[0]
 					);
 					layout.putConstraint(
-							SpringLayout.EAST, labels[1], 5, SpringLayout.EAST, this
+							SpringLayout.EAST, labels[1], -5, SpringLayout.EAST, this
 					);
 					layout.putConstraint(
 							SpringLayout.NORTH, labels[1], 0, SpringLayout.NORTH, labels[0]
