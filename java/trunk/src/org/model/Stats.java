@@ -35,35 +35,6 @@ public class Stats<K> extends LinkedHashMap<K,IStat> implements IStats<K> {
 	public Stats(){
 		super();
 	}
-	/*
-	public int intValue(K key){
-		return get(key).intValue();
-	}
-	
-	public float floatValue(K key){
-		return get(key).floatValue();
-	}
-	
-	public double doubleValue(K key){
-		return get(key).doubleValue();
-	}
-	
-	public long longValue(K key){
-		return get(key).longValue();
-	}
-	
-	public short shortValue(K key){
-		return get(key).shortValue();
-	}
-	
-	public byte byteValue(K key){
-		return get(key).byteValue();
-	}
-		
-	public int compareTo(K key, Number value){
-		return get(key).compareTo(value);
-	}
-	*/
 	
 	public IStat getStat(K key){
 		return this.get(key);
@@ -74,36 +45,36 @@ public class Stats<K> extends LinkedHashMap<K,IStat> implements IStats<K> {
 	}
 	
 	public Number value(K key){
-		return get(key).value();
+		return containsKey(key) ? get(key).value() : null;
 	}
 
 	
 	public void value(K key, java.lang.Number number){
-		this.get(key).value(number);
+		if(containsKey(key)) this.get(key).value(number);
 	}
 	
 	public Number max(K key){
-		return get(key).max();
+		return containsKey(key) ? get(key).max() : null;
 	}
 	
 	public void max(K key, java.lang.Number number){
-		this.get(key).max(number);
+		if(containsKey(key)) this.get(key).max(number);
 	}
 	
 	public Number min(K key){
-		return get(key).min();
+		return containsKey(key) ? get(key).min() : null;
 	}
 	
 	public void min(K key, java.lang.Number number){
-		this.get(key).min(number);
+		if(containsKey(key)) this.get(key).min(number);
 	}
 	
 	public Number nominal(K key){
-		return get(key).nominal();
+		return containsKey(key) ? get(key).nominal() : null;
 	}
 	
 	public void nominal(K key, java.lang.Number number){
-		this.get(key).nominal(number);
+		if(containsKey(key)) this.get(key).nominal(number);
 	}
 	
 	public void reset(){
@@ -130,52 +101,52 @@ public class Stats<K> extends LinkedHashMap<K,IStat> implements IStats<K> {
 
 	@Override
 	public Number into(K key, java.lang.Number o) {
-		return this.get(key).into(o);
+		return containsKey(key) ? this.get(key).into(o) : null;
 	}
 
 	@Override
 	public Number minus(K key, java.lang.Number o) {
-		return this.get(key).minus(o);
+		return containsKey(key) ? this.get(key).minus(o) : null;
 	}
 
 	@Override
 	public Number times(K key, java.lang.Number o) {
-		return this.get(key).times(o);
+		return containsKey(key) ? this.get(key).times(o) : null;
 	}
 
 	@Override
 	public Number plus(K key, java.lang.Number o) {
-		return this.get(key).plus(o);
+		return containsKey(key) ? this.get(key).plus(o) : null;
 	}
 
 	@Override
 	public Number intoEq(K key, java.lang.Number o) {
-		return this.get(key).intoEq(o);
+		return containsKey(key) ? this.get(key).intoEq(o) : null;
 	}
 
 	@Override
 	public Number minusEq(K key, java.lang.Number o) {
-		return this.get(key).minusEq(o);
+		return containsKey(key) ? this.get(key).minusEq(o) : null;
 	}
 
 	@Override
 	public Number timesEq(K key, java.lang.Number o) {
-		return this.get(key).timesEq(o);
+		return containsKey(key) ? this.get(key).timesEq(o) : null;
 	}
 
 	@Override
 	public Number plusEq(K key, java.lang.Number o) {
-		return this.get(key).plusEq(o);
+		return containsKey(key) ? this.get(key).plusEq(o) : null;
 	}
 
 	@Override
 	public Number power(K key, java.lang.Number o) {
-		return this.get(key).power(o);
+		return containsKey(key) ? this.get(key).power(o) : null;
 	}
 
 	@Override
 	public Number powerEq(K key, java.lang.Number o) {
-		return this.get(key).powerEq(o);
+		return containsKey(key) ? this.get(key).powerEq(o) : null;
 	}
 	
 	
