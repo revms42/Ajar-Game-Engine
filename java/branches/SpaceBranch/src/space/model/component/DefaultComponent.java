@@ -89,7 +89,13 @@ public class DefaultComponent<I> extends AbstractCharacter<I,String> implements
 
 	@Override
 	public int getCost(Resource resource) {
-		return this.value("cost" + resource.shortName()).intValue();
+		Number n = this.value("cost" + resource.shortName());
+		
+		if(n == null){
+			return 0;
+		}else{
+			return n.intValue();
+		}
 	}
 
 	@Override

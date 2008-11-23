@@ -14,12 +14,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import space.model.component.IComponent;
+import space.model.tech.SimpleTechTreeLoader;
 import space.model.tech.XMLTechTreeLoader;
 
 public class ShipDesigner<I> extends JFrame {
 	private static final long serialVersionUID = 9207357928566998058L;
 	
-	private static String tree = "C:\\private\\SpaceBranch\\src\\space\\model\\tech\\xml\\DefaultTechTree.xml";
+	private static String tree = "/home/reverend/macchiatodoppio/SpaceBranch/src/space/model/tech/xml/SimpleTechTree.xml";
 	private static String schema = "C:\\private\\SpaceBranch\\src\\space\\model\\tech\\schema\\TechTree.xsd";
 	
 	public static DataFlavor COMP_FLAVOR;
@@ -77,11 +78,11 @@ public class ShipDesigner<I> extends JFrame {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		File schemafile = new File(schema);
+		//File schemafile = new File(schema);
 		File treefile = new File(tree);
 		
 		try {
-			XMLTechTreeLoader loader = new XMLTechTreeLoader(schemafile);
+			SimpleTechTreeLoader loader = new SimpleTechTreeLoader();
 			
 			(new ShipDesigner<String>(loader.loadTree(treefile))).setVisible(true);
 		} catch (SAXException e) {

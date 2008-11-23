@@ -3,7 +3,9 @@ package space.ui.designer;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
@@ -190,10 +192,12 @@ public class InfoPanel<I>
 		layout.putConstraint(SpringLayout.EAST, description, -5, SpringLayout.EAST, this);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void select(IComponent<I> component){
 		this.component = component;
 		
-		for(String key : displayList.keySet()){
+		HashMap<String,JLabel[]> clone = (HashMap<String,JLabel[]>)displayList.clone();
+		for(String key : clone.keySet()){
 			JLabel[] labels = displayList.remove(key);
 			
 			for(JLabel label : labels){
@@ -253,7 +257,9 @@ public class InfoPanel<I>
 				JLabel[] labels = !recycle.isEmpty() ? recycle.pop():new JLabel[]{new JLabel(),new JLabel()};
 				
 				if(key.startsWith("Secondary")){
-					labels[0].setText("+" + key.split(":")[1] + ":");
+					Integer gen = new Integer(key.split("Secondary")[1].split(":")[0]);
+					String type = component.getSecondaryTypes().get(gen.intValue()-1).getName();
+					labels[0].setText(type + " " + key.split(":")[1] + ":");
 				}else{
 					labels[0].setText(key + ":");
 				}
