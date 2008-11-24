@@ -4,7 +4,8 @@
 		<Armor name="Rhino Hide Armor" mass="20" sig="10" hitpoints="100" image="">
 			Armor as thick as a Rhino.
 			<TechReqs>
-				<tech1>1</tech1>
+				<MatSci>1</MatSci>
+				<AppPhys>1</AppPhys>
 			</TechReqs>
 			<Cost>
 				<Pro>10</Pro>
@@ -25,8 +26,9 @@
 		<Weapon name="X-Ray Laser" mass="10" sig="15" hitpoints="5" image="" type="Beam">
 			A laser that emits x-rays.
 			<TechReqs>
-				<tech1>2</tech1>
-				<tech2>2</tech2>
+				<CompSci>1</CompSci>
+				<AppPhys>2</AppPhys>
+				<ElecE>1</ElecE>
 			</TechReqs>
 			<Cost>
 				<Pro>12</Pro>
