@@ -25,4 +25,5 @@ public interface IComponentType {
 	
 	public Vector<String> getAssociatedStats();
 	public String getName();
+	public String getCatagoryName();
 }
