@@ -22,7 +22,7 @@
 		</Armor>
 	</Armors>
 	<Weapons>
-		<Weapon name="X-Ray Laser" mass="10" sig="15" hitpoints="5" image="">
+		<Weapon name="X-Ray Laser" mass="10" sig="15" hitpoints="5" image="" type="Beam">
 			A laser that emits x-rays.
 			<TechReqs>
 				<tech1>2</tech1>

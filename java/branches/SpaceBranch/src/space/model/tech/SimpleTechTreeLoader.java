@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -34,12 +33,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import space.display.DisplayStats;
-import space.model.Resource;
 import space.model.component.ComponentType;
 import space.model.component.DefaultComponent;
 import space.model.component.IComponent;
-import space.model.tech.XMLTechTreeLoader.DefaultCompContext;
-import space.model.tech.XMLTechTreeLoader.DirectedCompContext;
 
 public class SimpleTechTreeLoader implements ITechTreeLoader<File,String> {
 
@@ -107,6 +103,15 @@ public class SimpleTechTreeLoader implements ITechTreeLoader<File,String> {
 		
 		ComponentType type = parseComponentType(node.getNodeName());
 		component.setType(type);
+		
+		String subtype = getAttribute(node,"type");
+		if(subtype != null){
+			for(ComponentType.SubType stype : type.getSubTypes()){
+				if(subtype.equalsIgnoreCase(stype.getName())){
+					component.setType(stype);
+				}
+			}
+		}
 		
 		switch(type){
 		case BAY:
@@ -197,8 +202,9 @@ public class SimpleTechTreeLoader implements ITechTreeLoader<File,String> {
 	
 	private String getAttribute(Node root, String name){
 		NamedNodeMap map = root.getAttributes();
+		Node node = map.getNamedItem(name);
 		
-		return map.getNamedItem(name).getNodeValue();
+		return node != null ? node.getNodeValue() : null;
 	}
 
 	private ComponentType parseComponentType(String name){

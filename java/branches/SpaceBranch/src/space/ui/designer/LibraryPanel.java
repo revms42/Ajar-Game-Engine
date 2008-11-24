@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SpringLayout;
-import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
@@ -37,12 +36,12 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 			new HashMap<IComponentType,DefaultMutableTreeNode>();
 		
 		for(ComponentType type : ComponentType.COMPONENTTYPES){
-			DefaultMutableTreeNode a = new DefaultMutableTreeNode(type.getName());
+			DefaultMutableTreeNode a = new DefaultMutableTreeNode(type.getCatagoryName());
 			map.put(type,a);
 			
 			if(type.hasSubTypes()){
 				for(ComponentType.SubType sub : type.getSubTypes()){
-					DefaultMutableTreeNode b = new DefaultMutableTreeNode(sub.getName());
+					DefaultMutableTreeNode b = new DefaultMutableTreeNode(sub.getCatagoryName());
 					map.put(sub, b);
 					a.add(b);
 				}
