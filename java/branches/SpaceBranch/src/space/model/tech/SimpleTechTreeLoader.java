@@ -36,6 +36,7 @@ import space.display.DisplayStats;
 import space.model.component.ComponentType;
 import space.model.component.DefaultComponent;
 import space.model.component.IComponent;
+import space.model.component.IComponentType;
 
 public class SimpleTechTreeLoader implements ITechTreeLoader<File,String> {
 
@@ -95,9 +96,9 @@ public class SimpleTechTreeLoader implements ITechTreeLoader<File,String> {
 		
 		DefaultComponent<String> component = new DefaultComponent<String>(name,description);
 		
-		addStat("mass",getAttribute(node,"mass"),component);
-		addStat("signature",getAttribute(node,"sig"),component);
-		addStat("hitpoints",getAttribute(node,"hitpoints"),component);
+		addStat(IComponentType.STAT_MASS,getAttribute(node,"mass"),component);
+		addStat(IComponentType.STAT_SIGNATURE,getAttribute(node,"sig"),component);
+		addStat(IComponentType.STAT_HITPOINTS,getAttribute(node,"hitpoints"),component);
 		
 		parseComponentImage(getAttribute(node,"image"),component);
 		
