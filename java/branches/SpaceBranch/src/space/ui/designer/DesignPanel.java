@@ -3,6 +3,10 @@ package space.ui.designer;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
+import space.model.component.ComponentType;
+import space.model.component.IComponent;
+import space.model.component.IComponentType;
+
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -30,6 +34,49 @@ public class DesignPanel<I> extends JPanel implements ICompPlacementEventListene
 		manager = new SpringLayout();
 		this.setLayout(manager);
 		updateGrid(null);
+	}
+	
+	public Vector<Vector<IComponent<I>>> getShipMap(){
+		Vector<Vector<IComponent<I>>> map = new Vector<Vector<IComponent<I>>>();
+		
+		for(Vector<ComponentTile<I>> v : grid){
+			Vector<IComponent<I>> column = new Vector<IComponent<I>>();
+			
+			
+			for(ComponentTile<I> i : v){
+				column.add(i.getSelectedComponent());
+			}
+			map.add(column);
+		}
+		
+		return map;
+	}
+	
+	public boolean isShipValid(){
+		int powerProduced = 0;
+		int powerDraw = 0;
+		
+		boolean hasEngine = false;
+		
+		for(Vector<ComponentTile<I>> v : grid){
+			for(ComponentTile<I> i : v){
+				IComponent<I> comp = i.getSelectedComponent();
+				
+				if(comp.getPrimaryType() == ComponentType.ENGINE){
+					hasEngine = true;
+				}
+				
+				if(comp.getPrimaryType() != ComponentType.POWERPLANT){
+					powerProduced = powerProduced + comp.value(IComponentType.STAT_ENERGY).intValue();
+				}else{
+					if(comp.getStat(IComponentType.STAT_ENERGY) != null){
+						powerDraw = powerDraw + comp.value(IComponentType.STAT_ENERGY).intValue();
+					}
+				}
+			}
+		}
+		
+		return hasEngine && (powerDraw <= powerProduced);
 	}
 	
 	private boolean checkBoundries(ComponentTile<I> tile){
