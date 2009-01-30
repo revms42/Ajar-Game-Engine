@@ -59,18 +59,20 @@ public class DesignPanel<I> extends JPanel implements ICompPlacementEventListene
 		boolean hasEngine = false;
 		
 		for(Vector<ComponentTile<I>> v : grid){
-			for(ComponentTile<I> i : v){
+			for(ComponentTile<I> i : v){ 
 				IComponent<I> comp = i.getSelectedComponent();
 				
-				if(comp.getPrimaryType() == ComponentType.ENGINE){
-					hasEngine = true;
-				}
-				
-				if(comp.getPrimaryType() != ComponentType.POWERPLANT){
-					powerProduced = powerProduced + comp.value(IComponentType.STAT_ENERGY).intValue();
-				}else{
-					if(comp.getStat(IComponentType.STAT_ENERGY) != null){
-						powerDraw = powerDraw + comp.value(IComponentType.STAT_ENERGY).intValue();
+				if(comp != null){
+					if(comp.getPrimaryType() instanceof ComponentType.EngineType){
+						hasEngine = true;
+					}
+					
+					if(comp.getPrimaryType() == ComponentType.POWERPLANT){
+						powerProduced = powerProduced + comp.value(IComponentType.STAT_ENERGY).intValue();
+					}else{
+						if(comp.getStat(IComponentType.STAT_ENERGY) != null){
+							powerDraw = powerDraw + comp.value(IComponentType.STAT_ENERGY).intValue();
+						}
 					}
 				}
 			}
