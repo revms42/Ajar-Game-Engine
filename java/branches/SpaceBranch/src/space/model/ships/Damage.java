@@ -5,12 +5,12 @@ public enum Damage {
 	EXPLOSIVE("explosive"),
 	IMPACT("impact"),
 	PLASMA("plasma"),
-	BEAM("beam"),
+	ENERGY("energy"),
 	ACID("acid");
 	
 	private final String name;
 	
-	public final static Damage[] TYPES = {EXPLOSIVE,IMPACT,PLASMA,BEAM,ACID};
+	public final static Damage[] TYPES = {EXPLOSIVE,IMPACT,PLASMA,ENERGY,ACID};
 	
 	private Damage(String name){
 		this.name = name;

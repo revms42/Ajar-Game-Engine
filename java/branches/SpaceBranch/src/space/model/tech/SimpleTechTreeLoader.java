@@ -47,14 +47,14 @@ public class SimpleTechTreeLoader implements ITechTreeLoader<File,String> {
 	private ImagePalette<String> palette;
 	private DisplayFactory<String,String> factory;
 	
-	private final int[] d1x = {24,2,2,24};
-	private final int[] d1y = {24,11,35,46};
+	public final static int[] d1x = {24,2,2,24};
+	public final static int[] d1y = {24,11,35,46};
 	
-	private final int[] d2x = {24,2,24,46};
-	private final int[] d2y = {24,11,2,11};
+	public final static int[] d2x = {24,2,24,46};
+	public final static int[] d2y = {24,11,2,11};
 	
-	private final int[] d3x = {24,46,46,24};
-	private final int[] d3y = {24,11,35,46};
+	public final static int[] d3x = {24,46,46,24};
+	public final static int[] d3y = {24,11,35,46};
 	
 	private final DocumentBuilder builder;
 	
