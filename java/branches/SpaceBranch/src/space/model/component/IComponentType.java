@@ -20,8 +20,8 @@ public interface IComponentType {
 	public final static String STAT_ACCURACY = "accuracy";
 	public final static String STAT_RELOAD = "reload";
 	public final static String STAT_BURST = "burst";
-	public final static String STAT_WIDTH = "width";
-	public final static String STAT_HEIGHT = "height";
+	public final static String STAT_WIDTH = "bay width";
+	public final static String STAT_HEIGHT = "bay height";
 	
 	public Vector<String> getAssociatedStats();
 	public String getName();

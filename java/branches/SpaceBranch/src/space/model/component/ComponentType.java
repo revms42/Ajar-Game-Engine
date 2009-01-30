@@ -2,6 +2,7 @@ package space.model.component;
 
 import java.util.Vector;
 
+import space.model.Price;
 import space.model.Resource;
 import space.model.planet.Environment;
 import space.model.ships.Cargo;
@@ -115,8 +116,8 @@ public enum ComponentType implements IComponentType {
 		associatedStats.add(STAT_SIGNATURE);
 		associatedStats.add(STAT_HITPOINTS);
 		
-		for(Resource r : Resource.RESOURCES){
-			associatedStats.add("cost" + r.shortName());
+		for(Price r : Price.PRICES){
+			associatedStats.add(r.shortName());
 		}
 		
 		for(Technology t : Technology.TECHS){
