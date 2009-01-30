@@ -14,13 +14,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import space.model.component.IComponent;
+import space.model.tech.SimpleTechTreeGenerator;
 import space.model.tech.SimpleTechTreeLoader;
 
 public class ShipDesigner<I> extends JFrame {
 	private static final long serialVersionUID = 9207357928566998058L;
 	
 	//private static String tree = "/home/reverend/macchiatodoppio/SpaceBranch/src/space/model/tech/xml/SimpleTechTree.xml";
-	private static String tree = "C:\\private\\SpaceBranch\\src\\space\\model\\tech\\xml\\SimpleTechTree.xml";
+	private static String tree = "/home/mstockbridge/Projects/SpaceBranch/SpaceBranch/src/space/model/tech/xml/SimpleTechTree.xml";
 	
 	public static DataFlavor COMP_FLAVOR;
 	
@@ -81,18 +82,19 @@ public class ShipDesigner<I> extends JFrame {
 		File treefile = new File(tree);
 		
 		try {
-			SimpleTechTreeLoader loader = new SimpleTechTreeLoader();
+			//SimpleTechTreeLoader loader = new SimpleTechTreeLoader();
+			SimpleTechTreeGenerator loader = new SimpleTechTreeGenerator();
 			
 			(new ShipDesigner<String>(loader.loadTree(treefile))).setVisible(true);
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(-1);
-		} catch (ParserConfigurationException e) {
+		} /*catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(-1);
-		} catch (IOException e) {
+		}*/ catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(-1);

@@ -91,9 +91,9 @@ public class LibraryPanel<I> extends JPanel implements IComponentTransferer<I> {
 		manager.putConstraint(SpringLayout.NORTH, cscroll, 0, SpringLayout.NORTH, this);
 		manager.putConstraint(SpringLayout.EAST, cscroll, 0, SpringLayout.EAST, this);
 		manager.putConstraint(SpringLayout.WEST, cscroll, 0, SpringLayout.WEST, this);
+		manager.putConstraint(SpringLayout.SOUTH, cscroll, -5, SpringLayout.NORTH, iscroll);
 		
 		manager.putConstraint(SpringLayout.WEST, iscroll, 0, SpringLayout.WEST, this);
-		manager.putConstraint(SpringLayout.NORTH, iscroll, 5, SpringLayout.SOUTH, cscroll);
 		manager.putConstraint(SpringLayout.EAST, iscroll, 0, SpringLayout.EAST, this);
 		manager.putConstraint(SpringLayout.SOUTH, iscroll, 0, SpringLayout.SOUTH, this);
 	}

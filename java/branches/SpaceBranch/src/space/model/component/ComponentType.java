@@ -33,6 +33,12 @@ public enum ComponentType implements IComponentType {
 					STAT_RATING
 			}
 	),
+	POWERPLANT(	"Power Plant",
+				"Power Plants",
+				new String[]{
+					STAT_ENERGY
+				}
+	),
 	ENGINE(	"Engine",
 			"Engines",
 			new String[]{
@@ -87,7 +93,7 @@ public enum ComponentType implements IComponentType {
 	NULL("","",new String[]{});
 	
 	public static ComponentType[] COMPONENTTYPES =
-		{WEAPON,ARMOR,SHIELD,ENGINE,BULKHEAD,CONDUIT,BAY,ELECTRICAL,MECHANICAL,ORBITAL,MISC};
+		{WEAPON,ARMOR,SHIELD,ENGINE,BULKHEAD,CONDUIT,BAY,ELECTRICAL,POWERPLANT,MECHANICAL,ORBITAL,MISC};
 	
 	private final SubType[] subs;
 	private final String name;
