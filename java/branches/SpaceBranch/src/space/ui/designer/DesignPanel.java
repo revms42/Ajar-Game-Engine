@@ -52,6 +52,10 @@ public class DesignPanel<I> extends JPanel implements ICompPlacementEventListene
 		return map;
 	}
 	
+	public void setShipMap(Vector<Vector<IComponent<I>>> map){
+		//TODO: NYI
+	}
+	
 	public boolean isShipValid(){
 		int powerProduced = 0;
 		int powerDraw = 0;
