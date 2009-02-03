@@ -22,9 +22,9 @@ public class AnimationPanel extends JPanel implements IFrameListener, IAccountan
 	private BufferedImage buffer;
 	private Graphics2D g2;
 	
-	private Collection<IDisplayable<?,?>> displayables;
+	private Collection<? extends IDisplayable<?,?>> displayables;
 	private Vector<Vector<IDisplayable<?,?>>> displaymatrix;
-	private Collection<IEnvironment<?,?>> environments;
+	private Collection<? extends IEnvironment<?,?>> environments;
 	private IEnvironment<?,?> environment;
 	
 	private Rectangle screen;

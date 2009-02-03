@@ -21,7 +21,7 @@ public class AnimationWindow extends JWindow implements IFrameListener, IAccount
 	private BufferStrategy buffer;
 	private Graphics2D g2;
 	
-	private Collection<IDisplayable<?,?>> displayables;
+	private Collection<? extends IDisplayable<?,?>> displayables;
 	private Vector<Vector<IDisplayable<?,?>>> displaymatrix;
 	private IEnvironment<?,?> environment;
 	
