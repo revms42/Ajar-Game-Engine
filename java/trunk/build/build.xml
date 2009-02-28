@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir=".." default="build-src" name="macchiato-doppio">
+<project basedir=".." default="build" name="macchiato-doppio">
 	<property name="src" value="${basedir}/src"/>
 	<property name="bin" value="${basedir}/bin"/>
 	<property name="docs" value="${basedir}/doc"/>
@@ -18,6 +18,8 @@
 		
 		<echo message="revision ${revision}"/>
 	</target>
+	
+	<target name="build" depends="build-src,generate-api,make-dist-jar,make-development-jar"/>
 	
 	<target name="build-src">
 		<javac srcdir="${src}" destdir="${bin}" debug="on" includes="org/**" excludes="test/**"/>
@@ -39,21 +41,38 @@
 		>
 			<doctitle><![CDATA[<h1>Macchiato Doppio API</h1>]]></doctitle>
 			<bottom><![CDATA[<i>Copyright &#169; 2003 Matthew Stockbridge. All Rights Reserved.</i>]]></bottom>
-			<group title="Control Framework" packages="org.control.*"/>
-			<group title="Display Framework" packages="org.display.*"/>
-			<group title="Logic Framework" packages="org.interaction.*"/>
-			<group title="Object Model" packages="org.model.*"/>
+			<group title="Central Classes" packages="org"/>
+			<group title="Control Framework" packages="org.control"/>
+			<group title="Display Framework" packages="org.display"/>
+			<group title="Logic Framework" packages="org.interaction,org.interaction.*"/>
+			<group title="Object Model" packages="org.model,org.model.*"/>
 			<link href="http://java.sun.com./javase/6/docs/api/"/>
 		</javadoc>
 	</target>
 	
-	<target name="make-jar" depends="get-revision,build-src">
+	<target name="make-dist-jar" depends="get-revision,build-src">
 		<tstamp/>
 		<jar destfile="${dist}/MDJ.jar" basedir="${bin}" excludes="test/**" update="true">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
 				<section name="org">
-					<attribute name="Manifest-Version" value="1.0"/>
+					<attribute name="Implementation-Vendor" value="Matt Stockbridge"/>
+					<attribute name="Implementation-Title" value="org"/>
+					<attribute name="Implementation-Version" value="revision ${revision}, ${TODAY}"/>
+					<attribute name="Specification-Vendor" value="Matt Stockbridge"/>
+					<attribute name="Specification-Version" value="0.1alpha"/>
+					<attribute name="Specification-Title" value="MDJ Core"/>
+				</section>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="make-development-jar" depends="get-revision,build-src">
+		<tstamp/>
+		<jar destfile="${dist}/MDJ-dev.jar" basedir="${basedir}" includes="src/**,bin/**,doc/**,build/**" excludes="src/test/**,bin/test/**,**/.*">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<section name="org">
 					<attribute name="Implementation-Vendor" value="Matt Stockbridge"/>
 					<attribute name="Implementation-Title" value="org"/>
 					<attribute name="Implementation-Version" value="revision ${revision}, ${TODAY}"/>
