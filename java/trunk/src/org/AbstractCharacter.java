@@ -183,4 +183,44 @@ public abstract class AbstractCharacter<I,K>
 	public Number plus(K key, java.lang.Number o) {
 		return stats.plus(key, o);
 	}
+	
+	public Number into(K numerator, K denominator) {
+		return stats.into(numerator, denominator);
+	}
+
+	public Number intoEq(K target, K divisor) {
+		return stats.intoEq(target, divisor);
+	}
+
+	public Number minus(K first, K second) {
+		return stats.minus(first, second);
+	}
+
+	public Number minusEq(K target, K value) {
+		return stats.minusEq(target, value);
+	}
+
+	public Number plus(K first, K second) {
+		return stats.plus(first, second);
+	}
+
+	public Number plusEq(K target, K value) {
+		return stats.plusEq(target, value);
+	}
+
+	public Number power(K number, K power) {
+		return stats.plus(number, power);
+	}
+
+	public Number powerEq(K target, K power) {
+		return stats.powerEq(target, power);
+	}
+
+	public Number times(K first, K second) {
+		return stats.times(first, second);
+	}
+
+	public Number timesEq(K target, K value) {
+		return stats.timesEq(target, value);
+	}
 }

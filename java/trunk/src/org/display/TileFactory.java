@@ -17,8 +17,6 @@ public class TileFactory<I> implements ITileFactory<I> {
 	private volatile BufferedImageOp[] ops;
 	private volatile Point[] tiles;
 	
-	private volatile int refnum;
-	
 	public TileFactory(ImagePalette<I> palette){
 		this.palette = palette;
 	}
@@ -32,6 +30,10 @@ public class TileFactory<I> implements ITileFactory<I> {
 	}
 
 	@Override
+	/**
+	 * Note: This assumes that the tiles will start precisely on the margin.
+	 * 
+	 */
 	public synchronized void displayDepth(IEnvironment<I,?> environment, int depth,
 			Rectangle window, Graphics2D stage) {
 		if(stage != null){
@@ -39,22 +41,30 @@ public class TileFactory<I> implements ITileFactory<I> {
 			
 			board = context.getBoard(environment,depth);
 			tiles = context.getRange(environment, window, depth);
-			dimtiles = context.getTilesInWindow(window);
+			dimtiles = context.getTilesInWindow(environment, window, depth);
 			ops = context.getRangeTransform(environment, window, depth);
 			
 			tilesize = palette.getTileSize(board);
 			
-			for(int x = 0; x < dimtiles.width; x++){
-				for(int y = 0; y < dimtiles.height; y++){
+			BufferedImageOp op = null;
+			for(int y = 0,refnum=0; y < dimtiles.height && tiles.length > refnum; y++){
+				for(int x = 0; x < dimtiles.width && tiles.length > refnum; x++,refnum++){
+					if(ops != null && ops.length > refnum){
+						op = ops[refnum];
+					}else{
+						op = null;
+					}
 					
-					refnum = x + (dimtiles.width * y);
-					
-					stage.drawImage(
-							palette.get(board).getSubImage(tiles[refnum].x, tiles[refnum].y), 
-							ops[refnum], 
-							window.x + (tilesize.width * x), 
-							window.y + (tilesize.height * y)
-					);
+					Point tile = tiles[refnum];
+					if(tile != null){
+						stage.drawImage(
+								palette.get(board).getSubImage(tile.x, tile.y), 
+								op, 
+								window.x + (tilesize.width * x), 
+								window.y + (tilesize.height * y)
+						);
+					}
+
 				}
 			}
 		}
