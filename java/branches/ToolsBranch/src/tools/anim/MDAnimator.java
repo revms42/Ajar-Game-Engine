@@ -336,6 +336,7 @@ public class MDAnimator extends JFrame {
 		
 		final JMenuItem in = new  JMenuItem("Zoom-in");
 		final JMenuItem out = new  JMenuItem("Zoom-out");
+		final JMenuItem preview = new  JMenuItem("Preview");
 		
 		in.setAction(new AbstractAction("Zoom-in"){
 			private static final long serialVersionUID = 2L;
@@ -361,9 +362,19 @@ public class MDAnimator extends JFrame {
 			}
 			
 		});
+		preview.setAction(new AbstractAction("Preview"){
+			private static final long serialVersionUID = 4L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				canvas.preview();
+			}
+			
+		});
 		
 		view.add(in);
 		view.add(out);
+		view.add(preview);
 		
 		resetViewMenus = new AbstractAction("Reset View Menus"){
 			private static final long serialVersionUID = 1L;

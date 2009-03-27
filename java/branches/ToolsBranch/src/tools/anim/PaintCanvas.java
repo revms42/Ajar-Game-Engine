@@ -295,4 +295,18 @@ public class PaintCanvas extends JPanel implements IZoom {
 	public boolean canZoomOut(){
 		return !(zoomLevel == 1);
 	}
+	
+	public void preview(){
+		/*REDO this
+		 * while(canAdvanceXFrame()){
+			frame.x++;
+			setFrame(frame);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}*/
+	}
 }
