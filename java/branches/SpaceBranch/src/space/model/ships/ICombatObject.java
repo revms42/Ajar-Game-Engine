@@ -6,14 +6,14 @@ import java.util.Vector;
 import space.model.component.IComponent;
 import space.model.component.IComponentType;
 
-public interface ISpaceObject<I> {
+public interface ICombatObject<I> {
 	
-	public Vector<ISpaceObject<I>> getChildObjects();
-	public void addChildObject(ISpaceObject<I> child);
-	public void removeChildObject(ISpaceObject<I> child);
+	public Vector<ICombatObject<I>> getChildObjects();
+	public void addChildObject(ICombatObject<I> child);
+	public void removeChildObject(ICombatObject<I> child);
 	
-	public ISpaceObject<I> getParent();
-	public void setParent(ISpaceObject<I> parent);
+	public ICombatObject<I> getParent();
+	public void setParent(ICombatObject<I> parent);
 	
 	public IComponent<I> getComponentAt(Point p);
 	public Point locateComponent(IComponent<I> comp);
