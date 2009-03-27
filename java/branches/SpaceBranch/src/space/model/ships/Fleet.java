@@ -109,7 +109,7 @@ public class Fleet<I> extends AbstractCharacter<I,String> implements IMovable {
 	public double getHeading() {
 		Point p = getPosition();
 		Point t = waypoints.get(0).getTarget().getPosition();
-		return Math.atan2((t.getX() - p.getX()), (t.getY() - p.getY()));
+		return Math.atan2((t.getY() - p.getY()),(t.getX() - p.getX()));
 	}
 
 	public void removeDestination(TaskPoint dest) {

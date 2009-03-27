@@ -16,15 +16,15 @@ import space.display.DisplayStats;
 import space.model.component.IComponent;
 import space.model.component.IComponentType;
 
-public abstract class AbstractSpaceObject<I> extends AbstractCharacter<I,String> implements ISpaceObject<I>, DisplayStats {
+public abstract class AbstractSpaceObject<I> extends AbstractCharacter<I,String> implements ICombatObject<I>, DisplayStats {
 	protected final static int SCALE = 6;
 	
 	private final HashMap<IComponentType,Vector<IComponent<I>>> lists;
 	protected final Vector<Vector<IComponent<I>>> map;
 	private Shape outline;
 	
-	private ISpaceObject<I> parent;
-	private Vector<ISpaceObject<I>> children;
+	private ICombatObject<I> parent;
+	private Vector<ICombatObject<I>> children;
 	
 	public AbstractSpaceObject(Vector<Vector<IComponent<I>>> map, IStats<String> stats, IDisplayContext<I,String> context, IDisplayFactory<I,String> factory) {
 		super(stats, context, factory);
@@ -43,27 +43,27 @@ public abstract class AbstractSpaceObject<I> extends AbstractCharacter<I,String>
 		return 0;
 	}
 
-	public Vector<ISpaceObject<I>> getChildObjects(){
+	public Vector<ICombatObject<I>> getChildObjects(){
 		return children;
 	}
 	
-	public void addChildObject(ISpaceObject<I> child){
-		if(children == null) children = new Vector<ISpaceObject<I>>();
+	public void addChildObject(ICombatObject<I> child){
+		if(children == null) children = new Vector<ICombatObject<I>>();
 		
 		children.add(child);
 	}
 	
-	public void removeChildObject(ISpaceObject<I> child){
+	public void removeChildObject(ICombatObject<I> child){
 		if(children != null){
 			children.remove(child);
 		}
 	}
 	
-	public ISpaceObject<I> getParent(){
+	public ICombatObject<I> getParent(){
 		return parent;
 	}
 	
-	public void setParent(ISpaceObject<I> parent){
+	public void setParent(ICombatObject<I> parent){
 		this.parent = parent;
 	}
 	
