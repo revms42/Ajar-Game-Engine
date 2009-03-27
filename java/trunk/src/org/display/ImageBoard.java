@@ -14,7 +14,7 @@ public class ImageBoard {
 	}
 	
 	public BufferedImage getSubImage(int x, int y){
-		return board.getSubimage(x, y, tilesize.width, tilesize.height);
+		return board.getSubimage(x*tilesize.width, y*tilesize.height, tilesize.width, tilesize.height);
 	}
 	
 	public Dimension getTileSize(){

@@ -148,6 +148,46 @@ public class Stats<K> extends LinkedHashMap<K,IStat> implements IStats<K> {
 	public Number powerEq(K key, java.lang.Number o) {
 		return containsKey(key) ? this.get(key).powerEq(o) : null;
 	}
+
+	public Number into(K numerator, K denominator) {
+		return containsKey(numerator) && containsKey(denominator) ? this.get(numerator).into(this.get(denominator).value()) : null;
+	}
+
+	public Number intoEq(K target, K divisor) {
+		return containsKey(target) && containsKey(divisor) ? this.get(target).intoEq(this.get(divisor).value()) : null;
+	}
+
+	public Number minus(K first, K second) {
+		return containsKey(first) && containsKey(second) ? this.get(first).minus(this.get(second).value()) : null;
+	}
+
+	public Number minusEq(K target, K value) {
+		return containsKey(target) && containsKey(value) ? this.get(target).minusEq(this.get(value).value()) : null;
+	}
+
+	public Number plus(K first, K second) {
+		return containsKey(first) && containsKey(second) ? this.get(first).plus(this.get(second).value()) : null;
+	}
+
+	public Number plusEq(K target, K value) {
+		return containsKey(target) && containsKey(value) ? this.get(target).plusEq(this.get(value).value()) : null;
+	}
+
+	public Number power(K number, K power) {
+		return containsKey(number) && containsKey(power) ? this.get(number).power(this.get(power).value()) : null;
+	}
+
+	public Number powerEq(K target, K power) {
+		return containsKey(target) && containsKey(power) ? this.get(target).powerEq(this.get(power).value()) : null;
+	}
+
+	public Number times(K first, K second) {
+		return containsKey(first) && containsKey(second) ? this.get(first).times(this.get(second).value()) : null;
+	}
+
+	public Number timesEq(K target, K value) {
+		return containsKey(target) && containsKey(value) ? this.get(target).timesEq(this.get(value).value()) : null;
+	}
 	
 	
 }

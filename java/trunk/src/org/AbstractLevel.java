@@ -145,5 +145,99 @@ public abstract class AbstractLevel<I,K> implements IEnvironment<I,K>, IEntity<K
 	
 	@Override
 	public abstract AbstractLevel<I,K> clone();
+	
+	@Override
+	public int compareTo(IStats<K> object, K key) {
+		return stats.compareTo(object, key);
+	}
 
+	@Override
+	public Number into(K key, java.lang.Number o) {
+		return stats.into(key, o);
+	}
+
+	@Override
+	public Number intoEq(K key, java.lang.Number o) {
+		return stats.intoEq(key, o);
+	}
+
+	@Override
+	public Number minusEq(K key, java.lang.Number o) {
+		return stats.minusEq(key, o);
+	}
+
+	@Override
+	public Number timesEq(K key, java.lang.Number o) {
+		return stats.timesEq(key, o);
+	}
+
+	@Override
+	public Number plusEq(K key, java.lang.Number o) {
+		return stats.plusEq(key, o);
+	}
+
+	@Override
+	public Number minus(K key, java.lang.Number o) {
+		return stats.minus(key, o);
+	}
+
+	@Override
+	public Number times(K key, java.lang.Number o) {
+		return stats.times(key, o);
+	}
+
+	@Override
+	public Number power(K key, java.lang.Number o) {
+		return stats.power(key, o);
+	}
+
+	@Override
+	public Number powerEq(K key, java.lang.Number o) {
+		return stats.powerEq(key, o);
+	}
+	
+	@Override
+	public Number plus(K key, java.lang.Number o) {
+		return stats.plus(key, o);
+	}
+	
+	public Number into(K numerator, K denominator) {
+		return stats.into(numerator, denominator);
+	}
+
+	public Number intoEq(K target, K divisor) {
+		return stats.intoEq(target, divisor);
+	}
+
+	public Number minus(K first, K second) {
+		return stats.minus(first, second);
+	}
+
+	public Number minusEq(K target, K value) {
+		return stats.minusEq(target, value);
+	}
+
+	public Number plus(K first, K second) {
+		return stats.plus(first, second);
+	}
+
+	public Number plusEq(K target, K value) {
+		return stats.plusEq(target, value);
+	}
+
+	public Number power(K number, K power) {
+		return stats.plus(number, power);
+	}
+
+	public Number powerEq(K target, K power) {
+		return stats.powerEq(target, power);
+	}
+
+	public Number times(K first, K second) {
+		return stats.times(first, second);
+	}
+
+	public Number timesEq(K target, K value) {
+		return stats.timesEq(target, value);
+	}
 }

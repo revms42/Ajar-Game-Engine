@@ -23,18 +23,28 @@ public interface IStats<K> {
 	
 	public Number minus(K key, java.lang.Number o);
 	public Number minusEq(K key, java.lang.Number o);
+	public Number minus(K first, K second);
+	public Number minusEq(K target, K value);
 	
 	public Number plus(K key, java.lang.Number o);
 	public Number plusEq(K key, java.lang.Number o);
+	public Number plus(K first, K second);
+	public Number plusEq(K target, K value);
 	
 	public Number times(K key, java.lang.Number o);
 	public Number timesEq(K key, java.lang.Number o);
+	public Number times(K first, K second);
+	public Number timesEq(K target, K value);
 	
 	public Number into(K key, java.lang.Number o);
 	public Number intoEq(K key, java.lang.Number o);
+	public Number into(K numerator, K denominator);
+	public Number intoEq(K target, K divisor);
 	
 	public Number power(K key, java.lang.Number o);
 	public Number powerEq(K key, java.lang.Number o);
+	public Number power(K number, K power);
+	public Number powerEq(K target, K power);
 	
 	public void reset();
 	public IStats<K> clone();

@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 
 import org.display.IDisplayContext;
+import org.display.IDisplayable;
 import org.display.ImageBoard;
 import org.display.ImageOpPalette;
 import org.display.ImagePalette;
@@ -57,7 +58,7 @@ public class ShipContext implements FieldConstants, IDisplayContext<String,Strin
 	}
 	
 	@Override
-	public String getBoard(IEntity<String> subject) {
+	public String getBoard(IDisplayable<String,String> subject) {
 		return BOARD;
 	}
 
@@ -68,18 +69,18 @@ public class ShipContext implements FieldConstants, IDisplayContext<String,Strin
 	}
 
 	@Override
-	public Point getPosition(IEntity<String> subject) {
+	public Point getPosition(IDisplayable<String,String> subject) {
 		pos.setLocation(subject.value(X).intValue(), subject.value(Y).intValue());
 		return pos;
 	}
 
 	@Override
-	public Point getTile(IEntity<String> subject) {
+	public Point getTile(IDisplayable<String,String> subject) {
 		return tile;
 	}
 
 	@Override
-	public BufferedImageOp getTransform(IEntity<String> subject) {
+	public BufferedImageOp getTransform(IDisplayable<String,String> subject) {
 		rot = AffineTransform.getRotateInstance(subject.value(HEADING).doubleValue());
 		op = new AffineTransformOp(rot,AffineTransformOp.TYPE_BILINEAR);
 		return op;

@@ -117,7 +117,7 @@ public class TestBed extends JFrame {
 			private volatile Point position;
 			
 			@Override
-			public String getBoard(IEntity<String> subject) {
+			public String getBoard(IDisplayable<String,String> subject) {
 				return "foo";
 			}
 
@@ -127,7 +127,7 @@ public class TestBed extends JFrame {
 			}
 
 			@Override
-			public Point getPosition(IEntity<String> subject) {
+			public Point getPosition(IDisplayable<String,String> subject) {
 				if(position == null){
 					position = new Point();
 				}
@@ -139,12 +139,12 @@ public class TestBed extends JFrame {
 			}
 
 			@Override
-			public Point getTile(IEntity<String> subject) {
+			public Point getTile(IDisplayable<String,String> subject) {
 				return tile;
 			}
 
 			@Override
-			public BufferedImageOp getTransform(IEntity<String> subject) {
+			public BufferedImageOp getTransform(IDisplayable<String,String> subject) {
 				return null;
 			}
 
