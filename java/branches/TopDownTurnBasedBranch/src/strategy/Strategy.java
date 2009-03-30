@@ -186,7 +186,7 @@ public class Strategy extends JFrame implements IGameManifest {
 				subject.value(MapObjectStat.MAP_Y_DEST, objects[0].value(MapObjectStat.MAP_Y_POS));
 			}
 		}; ap.put("setDest", setDest);
-		
+		added map movement stat. needs to have actions that use the static methods to do pathfinding.
 		return ap;
 	}
 	

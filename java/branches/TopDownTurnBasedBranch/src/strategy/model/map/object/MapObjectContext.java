@@ -39,13 +39,13 @@ public class MapObjectContext implements IDisplayContext<String, StrategyStat> {
 		if(	subject.value(MapObjectStat.MAP_X_DEST) != null &&
 			!subject.value(MapObjectStat.MAP_X_DEST).equals(subject.value(MapObjectStat.MAP_X_POS))
 		){
-			x = subject.value(MapObjectStat.MAP_X_POS).compareTo(subject.value(MapObjectStat.MAP_X_DEST));
+			x = subject.value(MapObjectStat.MAP_X_DEST).compareTo(subject.value(MapObjectStat.MAP_X_POS));
 		}
 		
 		if(	subject.value(MapObjectStat.MAP_Y_DEST) != null &&
 			!subject.value(MapObjectStat.MAP_Y_DEST).equals(subject.value(MapObjectStat.MAP_Y_POS))
 		){
-			y = subject.value(MapObjectStat.MAP_Y_POS).compareTo(subject.value(MapObjectStat.MAP_Y_DEST));
+			y = subject.value(MapObjectStat.MAP_Y_DEST).compareTo(subject.value(MapObjectStat.MAP_Y_POS));
 		}
 		
 		if(x == 0 && y == 0){
