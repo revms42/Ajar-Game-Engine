@@ -58,7 +58,7 @@ public class Strategy extends JFrame implements IGameManifest {
 	private final MapObjectContext charContext;
 	
 	private final static int ANIMAX = 12;
-	private final static Dimension TILESIZE = new Dimension(24,24); 
+	private final static Dimension TILESIZE = new Dimension(48,48); 
 //	TODO: Load Map Files.
 	private final String[] mapFiles = new String[]{"/home/mstockbridge/Projects/TopDownTurnBasedBranch/src/strategy/temp/level.png"};
 //	TODO: Load Tile Painter's tile info.
