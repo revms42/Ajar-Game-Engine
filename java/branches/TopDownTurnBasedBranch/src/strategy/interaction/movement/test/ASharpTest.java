@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import strategy.Strategy;
 import strategy.interaction.movement.ASharp;
-import strategy.model.map.MapStat;
 import strategy.model.map.object.MapObject;
 import strategy.model.map.object.MapObjectStat;
 

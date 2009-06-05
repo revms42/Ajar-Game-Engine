@@ -13,7 +13,8 @@ public enum MapObjectStat implements StrategyStat {
 	MAP_TILE,
 	MAP_X_DEST,
 	MAP_Y_DEST,
-	MAP_PATH,
+	MAP_X_STEP,
+	MAP_Y_STEP,
 	MAP_FACING,
 	MAP_ANIM_FRAME,
 	Z_DEPTH;
@@ -32,7 +33,7 @@ public enum MapObjectStat implements StrategyStat {
 	public final static int MAP_FACE_W = 2;
 	public final static int MAP_FACE_S = 3;
 	
-	public static MapObjectStat[] STATS = {MAP_X_POS,MAP_Y_POS,MAP_X_DEST,MAP_Y_DEST,MAP_WIDTH,MAP_HEIGHT,MAP_TILE,MAP_FACING,Z_DEPTH,MAP_PATH};
+	public static MapObjectStat[] STATS = {MAP_X_POS,MAP_Y_POS,MAP_X_DEST,MAP_Y_DEST,MAP_WIDTH,MAP_HEIGHT,MAP_TILE,MAP_FACING,Z_DEPTH,MAP_X_STEP,MAP_Y_STEP};
 	
 	public static void initialize(int x_max, int y_max, int z_max, int x_min, int y_min, int z_min, int tile, int animax){
 		X_MAX = x_max;
@@ -65,8 +66,12 @@ public enum MapObjectStat implements StrategyStat {
 			return new LinearStat(0,ANIMATION_MAX,0,0);
 		case MAP_FACING:
 			return new LinearStat(MAP_FACE_N,MAP_FACE_S,MAP_FACE_E,MAP_FACE_N);
-		case MAP_PATH:
-			return new LinearStat(0,(X_MAX-X_MIN)*(Y_MAX-Y_MIN),0,0);
+		case MAP_X_STEP:
+			return new LinearStat(0,X_MAX,X_MIN,0);
+		case MAP_Y_STEP:
+			return new LinearStat(0,Y_MAX,Y_MIN,0);
+		case MAP_TILE:
+			return new LinearStat(1,1,0,0);
 		default:
 			return null;
 		}
