@@ -35,7 +35,7 @@ import strategy.display.DisplayCondition;
 import strategy.display.map.BattleMapContext;
 import strategy.interaction.MapCondition;
 import strategy.interaction.StrategyCondition;
-import strategy.interaction.movement.ASharp;
+import strategy.interaction.movement.AStar;
 import strategy.model.StrategyStat;
 import strategy.model.map.BattleMap;
 import strategy.model.map.MapStat;
@@ -58,7 +58,7 @@ public class Strategy extends JFrame implements IGameManifest {
 	private final MapObjectContext charContext;
 	
 	private final static int ANIMAX = 12;
-	private final static Dimension TILESIZE = new Dimension(48,48); 
+	private final static Dimension TILESIZE = new Dimension(24,24); 
 //	TODO: Load Map Files.
 	private final String[] mapFiles = new String[]{"/home/mstockbridge/Projects/TopDownTurnBasedBranch/src/strategy/temp/level.png"};
 //	TODO: Load Tile Painter's tile info.
@@ -135,7 +135,7 @@ public class Strategy extends JFrame implements IGameManifest {
 	private void loadConditions(ConditionPalette<StrategyCondition,String,StrategyStat> palette){
 		ActionPalette<String,StrategyStat> ap = loadActions();
 		
-		ASharp setDest = new ASharp(this); setDest.setActionPalette(ap); setDest.addAction("move");
+		AStar setDest = new AStar(this); setDest.setActionPalette(ap); setDest.addAction("move");
 		
 		palette.put(MapCondition.SET_DEST, setDest);
 		palette.put(DisplayCondition.UPDATE_DISPLAY, setDest);
