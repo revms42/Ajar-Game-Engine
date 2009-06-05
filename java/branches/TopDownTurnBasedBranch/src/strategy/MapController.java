@@ -35,7 +35,7 @@ public class MapController extends MouseAdapter implements IController<StrategyC
 	
 	public void mouseClicked(MouseEvent e){
 		events.add(e);
-		System.out.println(e.toString());
+		//System.out.println(e.toString());
 		super.mouseClicked(e);
 	}
 	

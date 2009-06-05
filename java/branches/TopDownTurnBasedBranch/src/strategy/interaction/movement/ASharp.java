@@ -10,6 +10,7 @@ import org.interaction.AbstractCondition;
 import org.interaction.IEntity;
 
 import strategy.model.StrategyStat;
+import strategy.model.map.object.MapObjectStat;
 /**
  * This is a *very* simple A* implementation. We assume mahattan movement and equal pathing costs over all terrain.
  * @author mstockbridge
@@ -84,7 +85,7 @@ public class ASharp extends AbstractCondition<String,StrategyStat>{
 				if(e.parent != null){
 					Tile n = e;
 					while(n != s){
-						path.add(n.p);
+						path.insertElementAt(n.p,0);
 						n = n.parent;
 					}
 					return true;
@@ -136,8 +137,36 @@ public class ASharp extends AbstractCondition<String,StrategyStat>{
 
 	@Override
 	public boolean isFullfilled(IEntity<StrategyStat> subject, IEntity<StrategyStat>... objects) {
-		// TODO Auto-generated method stub
-		return false;
+		if(objects != null && objects.length > 0){
+			Point start = new Point(
+					positionToTile(subject.value(MapObjectStat.MAP_X_POS).intValue()),
+					positionToTile(subject.value(MapObjectStat.MAP_Y_POS).intValue())
+			);
+			Point end = new Point(
+					positionToTile(objects[0].value(MapObjectStat.MAP_X_POS).intValue()),
+					positionToTile(objects[0].value(MapObjectStat.MAP_Y_POS).intValue())
+			);
+			
+			findPath(start,end);
+		}
+		
+		int dx = subject.minus(MapObjectStat.MAP_X_POS,MapObjectStat.MAP_X_DEST).intValue();
+		int dy = subject.minus(MapObjectStat.MAP_Y_POS,MapObjectStat.MAP_Y_DEST).intValue();
+		
+		if(dx != 0 || dy != 0 || !path.isEmpty()){
+			if(dx == 0 && dy == 0){
+				Point p = path.remove(0);
+				subject.value(MapObjectStat.MAP_X_DEST, p.x * MapObjectStat.TILE_SIZE);
+				subject.value(MapObjectStat.MAP_Y_DEST, p.y * MapObjectStat.TILE_SIZE);
+			}
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	private int positionToTile(int value){
+		return (int)Math.floor(value/MapObjectStat.TILE_SIZE);
 	}
 	
 	private boolean check(Point p){

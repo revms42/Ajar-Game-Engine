@@ -26,7 +26,6 @@ import org.display.ImageBoard;
 import org.display.ImagePalette;
 import org.display.TileFactory;
 import org.interaction.AbstractAction;
-import org.interaction.AbstractCondition;
 import org.interaction.ActionPalette;
 import org.interaction.ConditionPalette;
 import org.interaction.IEntity;
@@ -36,6 +35,7 @@ import strategy.display.DisplayCondition;
 import strategy.display.map.BattleMapContext;
 import strategy.interaction.MapCondition;
 import strategy.interaction.StrategyCondition;
+import strategy.interaction.movement.ASharp;
 import strategy.model.StrategyStat;
 import strategy.model.map.BattleMap;
 import strategy.model.map.MapStat;
@@ -68,7 +68,7 @@ public class Strategy extends JFrame implements IGameManifest {
 	
 	private final AnimationPanel display;
 
-	private Strategy(){
+	public Strategy(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		levels = new Vector<BattleMap>();
@@ -135,22 +135,10 @@ public class Strategy extends JFrame implements IGameManifest {
 	private void loadConditions(ConditionPalette<StrategyCondition,String,StrategyStat> palette){
 		ActionPalette<String,StrategyStat> ap = loadActions();
 		
-		AbstractCondition<String,StrategyStat> setDest = new AbstractCondition<String,StrategyStat>(this){
-			@Override
-			public boolean isFullfilled(IEntity<StrategyStat> subject, IEntity<StrategyStat>... objects) {
-				return objects != null;
-			}
-		}; setDest.setActionPalette(ap); setDest.addAction("setDest");
-		AbstractCondition<String,StrategyStat> move = new AbstractCondition<String,StrategyStat>(this){
-			@Override
-			public boolean isFullfilled(IEntity<StrategyStat> subject, IEntity<StrategyStat>... objects) {
-				return 	subject.minus(MapObjectStat.MAP_X_DEST, MapObjectStat.MAP_X_POS).intValue() != 0 ||
-						subject.minus(MapObjectStat.MAP_Y_DEST, MapObjectStat.MAP_Y_POS).intValue() != 0 ;
-			}
-		}; move.setActionPalette(ap); move.addAction("move");
+		ASharp setDest = new ASharp(this); setDest.setActionPalette(ap); setDest.addAction("move");
 		
 		palette.put(MapCondition.SET_DEST, setDest);
-		palette.put(DisplayCondition.UPDATE_DISPLAY, move);
+		palette.put(DisplayCondition.UPDATE_DISPLAY, setDest);
 	}
 	
 	private ActionPalette<String,StrategyStat> loadActions(){
@@ -159,11 +147,15 @@ public class Strategy extends JFrame implements IGameManifest {
 		AbstractAction<StrategyStat> move = new AbstractAction<StrategyStat>(this){
 			@Override
 			public void performAction(IEntity<StrategyStat> subject, IEntity<StrategyStat>... objects) {
+				int dx = 0;
+				int dy = 0;
 				if(Math.abs(subject.minus(MapObjectStat.MAP_X_DEST, MapObjectStat.MAP_X_POS).doubleValue())  > 12){
 					if(subject.value(MapObjectStat.MAP_X_POS).compareTo(subject.value(MapObjectStat.MAP_X_DEST)) > 0){
 						subject.minusEq(MapObjectStat.MAP_X_POS, 12);
+						dx = -1;
 					}else{
 						subject.plusEq(MapObjectStat.MAP_X_POS, 12);
+						dx = 1;
 					}
 				}else{
 					subject.value(MapObjectStat.MAP_X_POS, subject.value(MapObjectStat.MAP_X_DEST));
@@ -171,22 +163,26 @@ public class Strategy extends JFrame implements IGameManifest {
 				if(Math.abs(subject.minus(MapObjectStat.MAP_Y_DEST, MapObjectStat.MAP_Y_POS).doubleValue())  > 12){
 					if(subject.value(MapObjectStat.MAP_Y_POS).compareTo(subject.value(MapObjectStat.MAP_Y_DEST)) > 0){
 						subject.minusEq(MapObjectStat.MAP_Y_POS, 12);
+						dy = -1;
 					}else{
 						subject.plusEq(MapObjectStat.MAP_Y_POS, 12);
+						dy = 1;
 					}
 				}else{
 					subject.value(MapObjectStat.MAP_Y_POS, subject.value(MapObjectStat.MAP_Y_DEST));
 				}
+				
+				if(dx == 1 && dy == 0){
+					subject.value(MapObjectStat.MAP_FACING,MapObjectStat.MAP_FACE_E);
+				}else if(dx == 0 && dy == 1){
+					subject.value(MapObjectStat.MAP_FACING,MapObjectStat.MAP_FACE_S);
+				}else if(dx == -1 && dy == 0){
+					subject.value(MapObjectStat.MAP_FACING,MapObjectStat.MAP_FACE_W);
+				}else if(dx == 0 && dy == -1){
+					subject.value(MapObjectStat.MAP_FACING,MapObjectStat.MAP_FACE_N);
+				}
 			}
 		}; ap.put("move", move);
-		AbstractAction<StrategyStat> setDest = new AbstractAction<StrategyStat>(this){
-			@Override
-			public void performAction(IEntity<StrategyStat> subject, IEntity<StrategyStat>... objects) {
-				subject.value(MapObjectStat.MAP_X_DEST, objects[0].value(MapObjectStat.MAP_X_POS));
-				subject.value(MapObjectStat.MAP_Y_DEST, objects[0].value(MapObjectStat.MAP_Y_POS));
-			}
-		}; ap.put("setDest", setDest);
-		added map movement stat. needs to have actions that use the static methods to do pathfinding.
 		return ap;
 	}
 	
@@ -292,7 +288,7 @@ public class Strategy extends JFrame implements IGameManifest {
 		(new Strategy()).start();
 	}
 
-	private void start() {
+	public void start() {
 		this.add(display,BorderLayout.CENTER);
 		
 		this.pack();
