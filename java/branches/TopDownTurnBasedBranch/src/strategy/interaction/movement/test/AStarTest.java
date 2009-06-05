@@ -9,20 +9,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 import strategy.Strategy;
-import strategy.interaction.movement.ASharp;
+import strategy.interaction.movement.AStar;
 import strategy.model.map.object.MapObject;
 import strategy.model.map.object.MapObjectStat;
 
-public class ASharpTest {
+public class AStarTest {
 
 	public IGameManifest manifest;
-	public ASharp pather;
+	public AStar pather;
 	
 	@Before
 	public void setUp() throws Exception {
 		manifest = new Strategy();
 		((Strategy)manifest).start();
-		pather = new ASharp(manifest);
+		pather = new AStar(manifest);
 	}
 
 	@Test

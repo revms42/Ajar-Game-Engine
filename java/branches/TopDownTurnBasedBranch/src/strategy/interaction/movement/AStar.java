@@ -16,7 +16,7 @@ import strategy.model.map.object.MapObjectStat;
  * @author mstockbridge
  *
  */
-public class ASharp extends AbstractCondition<String,StrategyStat>{
+public class AStar extends AbstractCondition<String,StrategyStat>{
 	
 	private final Vector<Tile> open;
 	private final Vector<Tile> closed;
@@ -29,7 +29,7 @@ public class ASharp extends AbstractCondition<String,StrategyStat>{
 	
 	public final Vector<Point> path;
 	
-	public ASharp(IGameManifest manifest){
+	public AStar(IGameManifest manifest){
 		super(manifest);
 		
 		open = new Vector<Tile>();
