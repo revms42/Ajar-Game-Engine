@@ -153,7 +153,9 @@ public class AStar extends AbstractCondition<String,StrategyStat>{
 		int dx = subject.minus(MapObjectStat.MAP_X_POS,MapObjectStat.MAP_X_DEST).intValue();
 		int dy = subject.minus(MapObjectStat.MAP_Y_POS,MapObjectStat.MAP_Y_DEST).intValue();
 		
+		//If you're at your dest (dx = 0, dy = 0) and there's no more path return false.
 		if(dx != 0 || dy != 0 || !path.isEmpty()){
+			//If you've reached your dest then you must have more path to go. So get it.
 			if(dx == 0 && dy == 0){
 				Point p = path.remove(0);
 				subject.value(MapObjectStat.MAP_X_DEST, p.x * MapObjectStat.TILE_SIZE);
@@ -198,7 +200,7 @@ public class AStar extends AbstractCondition<String,StrategyStat>{
 	
 	private Tile fastFind(Point p){
 		if(p.x >= 0 && p.x < w && p.y >= 0 && p.y < h){
-			return all.get((p.y * h + p.x));
+			return all.get((p.y * w + p.x));
 		}else{
 			return null;
 		}
