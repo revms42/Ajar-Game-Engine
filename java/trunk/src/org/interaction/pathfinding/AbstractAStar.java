@@ -270,7 +270,7 @@ public abstract class AbstractAStar<A,K> extends AbstractCondition<A,K> {
 	 * @param subject
 	 * @param tile
 	 */
-	public abstract void setDest(IEntity<K> subject, ATile tile);
+	public abstract void setDest(IEntity<K> subject, ATile<K> tile);
 	
 	/**
 	 * Performs two seperate related actions based on the inputs. If an object is passed the algorithm
