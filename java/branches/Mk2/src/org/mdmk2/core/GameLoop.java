@@ -29,6 +29,16 @@ package org.mdmk2.core;
 
 import java.util.Vector;
 
+/**
+ * GameLoop is the primary loop for game updates. I performs all the gunt work
+ * as far as culling which things need to be updated, but is designed to hand
+ * off all the display and logic work to other classes (though you could just
+ * as easily implement {@link GameLoop.render(Node<R>)} and {@link GameLoop.logic(Node<R>)}
+ * to do it as well). GameLoop also handles game pause and frameskip.
+ * @author mstockbridge
+ * 15-May-10
+ * @param <R>	the "range" type parameter, indicating the format of the screen's view.
+ */
 public abstract class GameLoop<R> implements Runnable {
 
 	//Convert a nanosecond value to milliseconds.
