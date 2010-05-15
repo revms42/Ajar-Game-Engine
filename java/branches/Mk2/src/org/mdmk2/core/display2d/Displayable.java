@@ -28,7 +28,6 @@
 package org.mdmk2.core.display2d;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 
 /**
  * The Displayable class provides an interface for rendering.
@@ -41,8 +40,9 @@ public interface Displayable {
 	 * Calls on this object to display itself.
 	 * mstockbridge
 	 * May 4, 2010
-	 * @param 	g2				the {@link Graphics2D} context on which to display.
-	 * @param 	parentOffset	the {@link AffineTransform} of this <code>Displayable</code>'s parent.
+	 * @param 	g2	the {@link Graphics2D} context on which to display.
 	 */
-	public void display(Graphics2D g2, AffineTransform parentOffset);
+	public void display(Graphics2D g2);
+	
+
 }
