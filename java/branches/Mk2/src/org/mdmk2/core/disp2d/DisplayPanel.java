@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.display2d
+ * org.mdmk2.core.disp2d
  * DisplayPanel.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
@@ -25,7 +25,7 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.display2d;
+package org.mdmk2.core.disp2d;
 
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -59,7 +59,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	 * This implementation is based heavily on the one from "Killer Game Programming
 	 * with Java" by Andrew Davidson. Copyright 2005 O'Reilly Media, Inc., 0-596-00730-2.
 	 * TODO: This doesn't take into account any insets, etc....
-	 * @see org.mdmk2.core.display2d.DisplaySurface#blitToScreen()
+	 * @see org.mdmk2.core.disp2d.DisplaySurface#blitToScreen()
 	 */
 	public void blitToScreen() {
 		if(buffer != null){
@@ -82,21 +82,22 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.display2d.DisplaySurface#drawToBuffer(java.util.List)
+	 * @see org.mdmk2.core.disp2d.DisplaySurface#drawToBuffer(java.util.List)
 	 */
-	public void drawToBuffer(List<Displayable> nodes) {
+	public void drawToBuffer(List<? extends Displayable> nodes) {
 		Graphics2D bg = getBufferedSurface();
+		bg.clearRect(0, 0, getBufferWidth(), getBufferHeight());
 		for(Displayable node : nodes){
 			node.display(bg);
 		}
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.display2d.DisplaySurface#getBufferedSurface()
+	 * @see org.mdmk2.core.disp2d.DisplaySurface#getBufferedSurface()
 	 */
 	public Graphics2D getBufferedSurface() {
 		if(buffer == null){
-			buffer = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB, null);
+			buffer = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}
 		if(bufferGraphics == null ){
 			bufferGraphics = buffer.createGraphics();
@@ -104,5 +105,24 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 		
 		return bufferGraphics;
 	}
+	
+	/**
+	 * Gets the width of the back buffer.
+	 * mstockbridge
+	 * 15-May-10
+	 * @return	the width of the back buffer.
+	 */
+	public int getBufferWidth(){
+		return buffer.getWidth();
+	}
 
+	/**
+	 * Gets the heigth of the back buffer.
+	 * mstockbridge
+	 * 15-May-10
+	 * @return	the height of the back buffer.
+	 */
+	public int getBufferHeight(){
+		return buffer.getHeight();
+	}
 }
