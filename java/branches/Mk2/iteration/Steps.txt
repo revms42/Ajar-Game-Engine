@@ -1,10 +1,10 @@
->step 1: Display a static box.
-step 2: Make the box move, ricochette 
-step 3: Add static boxes, make sure the moving box bounces off them.
-step 4: Make the moving box user controllable.
+>step 1: Display a static circle.
+step 2: Make the circle move, ricochette 
+step 3: Add static boxes, make sure the moving circle bounces off them.
+step 4: Make the moving circle user controllable.
 step 5: Add tile based level
 step 6: Get level tiles from png.
-step 7: Animate the user's box using tile map. User should be animating even when not moving.
+step 7: Animate the user's circle using tile map. User should be animating even when not moving.
 step 8: Change user's color when he gets to a certain square in the level.
 step 9: Add enemy boxes. Game over when user touches one.
 step 10: Allow user to shoot. Animate bullet. Kill enemy when bullet touches.
