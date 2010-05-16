@@ -1,4 +1,4 @@
-step 1: Display a static box.
+>step 1: Display a static box.
 step 2: Make the box move, ricochette 
 step 3: Add static boxes, make sure the moving box bounces off them.
 step 4: Make the moving box user controllable.

@@ -37,7 +37,7 @@ import java.util.List;
  * 
  * @author mstockbridge
  * May 4, 2010
- *
+ * @param	<R>		the type parameter of the view range.
  */
 public interface Node<R> {
 

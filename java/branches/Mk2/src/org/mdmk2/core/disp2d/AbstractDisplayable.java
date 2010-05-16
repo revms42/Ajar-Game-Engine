@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.display2d
+ * org.mdmk2.core.disp2d
  * AbstractDisplayable.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
@@ -25,10 +25,11 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.display2d;
+package org.mdmk2.core.disp2d;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.Vector;
@@ -44,7 +45,7 @@ import org.mdmk2.core.Node;
  */
 public abstract class AbstractDisplayable implements Displayable, Node2d {
 
-	protected Rectangle[] boundingSurface;
+	protected Shape[] boundingSurface;
 	protected AffineTransform transform;
 	protected Vector<Node<Rectangle>> children;
 	protected Node2d parent;
@@ -53,7 +54,7 @@ public abstract class AbstractDisplayable implements Displayable, Node2d {
 		children = new Vector<Node<Rectangle>>();
 	}
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.display2d.Displayable#display(java.awt.Graphics2D, java.util.List, java.awt.geom.AffineTransform)
+	 * @see org.mdmk2.core.disp2d.Displayable#display(java.awt.Graphics2D, java.util.List, java.awt.geom.AffineTransform)
 	 */
 	public void display(Graphics2D g2) {
 		drawSelf(g2,getDrawTransform());
@@ -103,8 +104,12 @@ public abstract class AbstractDisplayable implements Displayable, Node2d {
 	 */
 	public boolean isInRange(Rectangle range) {
 		AffineTransform at = getDrawTransform();
-		for(Rectangle r : boundingSurface){
-			if(at.createTransformedShape(r).intersects(range)) return true;
+		for(Shape r : boundingSurface){
+			if(at != null){
+				if(at.createTransformedShape(r).intersects(range)) return true;
+			}else{
+				if(r.intersects(range)) return true;
+			}
 		}
 		return false;
 	}
@@ -138,7 +143,7 @@ public abstract class AbstractDisplayable implements Displayable, Node2d {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.mdmk2.core.display2d.Node2d#getDrawTransform()
+	 * @see org.mdmk2.core.disp2d.Node2d#getDrawTransform()
 	 */
 	public AffineTransform getDrawTransform(){
 		AffineTransform local = getTransform();
@@ -162,44 +167,44 @@ public abstract class AbstractDisplayable implements Displayable, Node2d {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.display2d.Node2d#getParent()
+	 * @see org.mdmk2.core.disp2d.Node2d#getParent()
 	 */
 	public Node2d getParent() {
 		return parent;
 	}
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.display2d.Node2d#setParent(org.mdmk2.core.Node)
+	 * @see org.mdmk2.core.disp2d.Node2d#setParent(org.mdmk2.core.Node)
 	 */
 	public void setParent(Node2d parent) {
 		this.parent = parent;
 	}
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.display2d.Node2d#hasParent()
+	 * @see org.mdmk2.core.disp2d.Node2d#hasParent()
 	 */
 	public boolean hasParent() {
 		return parent != null;
 	}
 	
 	/**
-	 * Returns any <code>Rectangles</code> currently defining the bounding surface
+	 * Returns any <code>Shapes</code> currently defining the bounding surface
 	 * being used in the <code>isInRange</code> method.
 	 * mstockbridge
 	 * 15-May-10
 	 * @return	the current bounding surface.
 	 */
-	public Rectangle[] getBoundingSurface() {
+	public Shape[] getBoundingSurface() {
 		return boundingSurface;
 	}
 	
 	/**
-	 * Sets the bounding surface to the supplied <code>Rectangle</code>(s), to be used
+	 * Sets the bounding surface to the supplied <code>Shape</code>(s), to be used
 	 * in the <code>isInRange</code> method.
 	 * mstockbridge
 	 * 15-May-10
-	 * @param	boundingSurface	one or more <code>Rectangle</code>s to be used as the
+	 * @param	boundingSurface	one or more <code>Shape</code>s to be used as the
 	 * 							bounding surface.
 	 */
-	public void setBoundingSurface(Rectangle... boundingSurface) {
+	public void setBoundingSurface(Shape... boundingSurface) {
 		this.boundingSurface = boundingSurface;
 	}
 

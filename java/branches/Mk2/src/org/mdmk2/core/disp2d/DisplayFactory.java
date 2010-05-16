@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) May 4, 2010 Matthew Stockbridge
+ * Copyright (C) 15-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.display
- * Displayable.java
+ * org.mdmk2.core.disp2d
+ * DisplayFactory.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,24 +25,31 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.display2d;
+package org.mdmk2.core.disp2d;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 /**
- * The Displayable class provides an interface for rendering.
+ * The DisplayFactory interface serves as a template for singleton classes that 
+ * <code>Displayable</code> objects can use to display themselves. These DisplayFactories
+ * are intended to be keyed to the classes they're meant to display (to ensure that the
+ * factories have access to the information they intend to).
  * @author mstockbridge
- * May 4, 2010
+ * 15-May-10
+ * @param	<O>		the type of the display operations.
+ * @param	<D>		the type of class that can be displayed by this DisplayFactory.
  */
-public interface Displayable {
+public interface DisplayFactory<O,D extends Displayable> {
 	
 	/**
-	 * Calls on this object to display itself.
+	 * Displays a displayable of type <code>D</code>.
 	 * mstockbridge
-	 * May 4, 2010
-	 * @param 	g2	the {@link Graphics2D} context on which to display.
+	 * 15-May-10
+	 * @param	displayable	the thing you want to display.
+	 * @param 	g2			the graphics context that you want to display on.
+	 * @param 	offset		where you want to display it.
+	 * @param 	ops			any misc. operations that need to be performed (can be null).
 	 */
-	public void display(Graphics2D g2);
-	
-
+	public void display(D displayable, Graphics2D g2, AffineTransform offset, O... ops);
 }
