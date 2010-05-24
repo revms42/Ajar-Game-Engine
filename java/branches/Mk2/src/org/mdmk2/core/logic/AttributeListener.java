@@ -27,14 +27,19 @@
  */
 package org.mdmk2.core.logic;
 
-import java.util.List;
-
 /**
  * @author mstockbridge
  * 16-May-10
  */
 public interface AttributeListener {
 
-	public <V> void attributeChanged(AttributeEvent<V> event);
-	public List<AttributeEventType> getTypes();
+	/**
+	 * Reports that an attribute has changed.
+	 * mstockbridge
+	 * 23-May-10
+	 * @param	event	the type of event which has occurred.
+	 * @param	attr	the Attribute that changed.
+	 * @param	actor	the Actor who fired this event (<code>null</code> indicates the event is from the specified Attribute).
+	 */
+	public void attributeChanged(AttributeEventType event, Attribute<?> attr, Entity entity);
 }

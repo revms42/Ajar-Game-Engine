@@ -32,10 +32,67 @@ package org.mdmk2.core.logic;
  * 16-May-10
  */
 public interface Attribute<V> {
-
+	/**
+	 * Returns the current value of this Attribute.
+	 * mstockbridge
+	 * 23-May-10
+	 * @return		the value of this Attribute.
+	 */
 	public V getValue();
-	public V setValue(V value);
 	
-	public void setAttributeListener(AttributeListener listener);
-	public void removeAttributeListener(AttributeListener listener);
+	/**
+	 * Sets the value of the Attribute, returning the actual value afterwards.
+	 * <p>
+	 * <b>Implementation Note:<b> Though not explicitly implemented due to the
+	 * nature of an Interface, every implementation of Attribute should always
+	 * fire an appropriate event to all registered listeners for any event type 
+	 * that this Attribute returns from the {@link Attribute.registeredEvents()}
+	 * method.
+	 * mstockbridge
+	 * 23-May-10
+	 * @param	value	the value to set this Attribute to.
+	 * @return			the actual value of this Attribute post-set.
+	 * @see				{@link Attribute.registeredEvents()}
+	 */
+	public V setValue(V value);
+
+	/**
+	 * Add a listener to this observer registered for the appropriate events.
+	 * Only those events which are registered by this Attribute will be added.
+	 * <p>
+	 * <b>Implementation Note:<b> Though not explicity implemented due to the 
+	 * nature of an Interface, if the type parameter is <code>null<code> the
+	 * listener should be registered for all event types returned from the
+	 * {@link Attribute.registeredEvents()} method.
+	 * mstockbridge
+	 * 23-May-10
+	 * @param	listener	the listener to add to this observer.
+	 * @param	type		the type of events to report on.
+	 * @return				the types of event registered if any events are registered.
+	 * @see					{@link Attribute.registeredEvent()}
+	 */
+	public AttributeEventType[] addAttributeListener(AttributeListener listener, AttributeEventType... type);
+	
+	/**
+	 * Removes a registered listener for specific event types.
+	 * Event types that aren't registered by this Attribute are ignored.
+	 * <p>
+	 * <b>Implementation Note:<b> Though not explicity implemented due to the 
+	 * nature of an Interface, every implementation of Attribute should always
+	 * recursively search for the specified listener and remove it if the supplied
+	 * type parameter is <code>null</code> or length zero.
+	 * mstockbridge
+	 * 23-May-10
+	 * @param	listener	the listener to remove from this observer.
+	 * @param	type		the type of event to stop reporting to the observer.
+	 */
+	public void removeAttributeListener(AttributeListener listener, AttributeEventType... type);
+	
+	/**
+	 * Returns an array of events that this ChangeObserver can report on.
+	 * mstockbridge
+	 * 23-May-10
+	 * @return	an array of AttributeEventTypes that this observer can report on.
+	 */
+	public AttributeEventType[] registeredEvents();
 }
