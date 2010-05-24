@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 16-May-10 Matthew Stockbridge
+ * Copyright (C) 23-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.logic
- * Statechart.java
+ * AttributeType.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -28,11 +28,9 @@
 package org.mdmk2.core.logic;
 
 /**
- * @author mstockbridge
- * 16-May-10
+ * @author reverend
+ * 23-May-10
  */
-public interface StateChart {
+public interface AttributeType<V> {
 
-	public <V> void attributeChanged(AttributeEvent<V> event);
-	
 }

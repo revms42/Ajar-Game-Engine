@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 16-May-10 Matthew Stockbridge
+ * Copyright (C) 23-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.disp2d
- * Sprite2d.java
+ * org.mdmk2.core.logic
+ * AbstractActor.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,30 +25,23 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.disp2d;
+package org.mdmk2.core.logic;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import org.mdmk2.core.logic.AttributeListener;
-import org.mdmk2.core.logic.AttributeType;
-import org.mdmk2.core.logic.Entity;
-import org.mdmk2.core.logic.Attribute;
-import org.mdmk2.core.logic.AttributeEventType;
-
 /**
  * @author mstockbridge
- * 16-May-10
+ * 23-May-10
  */
-public abstract class AbstractSprite2d extends AbstractDisplayable implements Entity {
-
+public class AbstractEntity implements Entity {
 	protected HashMap<AttributeEventType,Vector<AttributeListener>> listeners;
 	protected HashMap<AttributeType<?>,Attribute<?>> attributes;
 	protected Vector<AttributeEventType> registered;
 	protected boolean needsReRegister;
-
+	
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.logic.Entity#getValue(org.mdmk2.core.logic.AttributeType)
 	 */

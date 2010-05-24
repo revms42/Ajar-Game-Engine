@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.logic
- * AbstractAttributeEvent.java
+ * Actor.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,32 +27,15 @@
  */
 package org.mdmk2.core.logic;
 
+import java.util.Collection;
+
 /**
  * @author mstockbridge
  * 16-May-10
  */
-public abstract class AbstractAttributeEvent<V extends Comparable<V>> implements AttributeEvent<V> {
-
-	private final Actor source;
-	private final Attribute<V> attribute;
-	
-	public AbstractAttributeEvent(Actor source, Attribute<V> attribute){
-		this.source = source;
-		this.attribute = attribute;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.AttributeEventType#getSource()
-	 */
-	public Actor getSource() {
-		return source;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.AttributeEvent#getAttribute()
-	 */
-	public Attribute<V> getAttribute() {
-		return attribute;
-	}
-
+public interface Entity extends AttributeListener {
+	public <V> void addAttribute(AttributeType<V> type, Attribute<V> attribute);
+	public <V> Attribute<V> getAttribute(AttributeType<V> type);
+	public Collection<Attribute<?>> getAttributes();
+	public <V> Attribute<V> removeAttribute(AttributeType<V> type);
 }

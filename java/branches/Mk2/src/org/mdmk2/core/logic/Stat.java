@@ -28,7 +28,7 @@
 package org.mdmk2.core.logic;
 
 /**
- * @author reverend
+ * @author mstockbridge
  * 16-May-10
  */
 public interface Stat<V> extends Attribute<V> {
