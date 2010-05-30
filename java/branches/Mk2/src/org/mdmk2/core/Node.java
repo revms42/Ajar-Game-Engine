@@ -48,9 +48,9 @@ public interface Node<R> {
 	 */
 	public static enum UpdateType {
 		NO_UPDATE,
-		RENDER_ONLY,
+		DISPLAY_ONLY,
 		STATUS_ONLY,
-		RENDER_AND_STATUS;
+		DISPLAY_AND_STATUS;
 	}
 	
 	/**

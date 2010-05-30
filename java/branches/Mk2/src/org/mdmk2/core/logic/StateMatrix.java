@@ -49,7 +49,7 @@ public class StateMatrix<E extends Entity> {
 		return matrix.remove(arg0);
 	}
 	
-	public void performUpdate(E e, StateChange s){
+	public void performUpdate(Stated<E> e, StateChange s){
 		StateMap<E> sm = matrix.get(e.getState());
 		e.setState(sm.changeState(s));
 	}

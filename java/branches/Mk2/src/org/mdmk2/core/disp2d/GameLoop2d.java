@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1GameLoop.java
+ * org.mdmk2.core.disp2d
+ * GameLoop2d.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,40 +25,27 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step2;
+package org.mdmk2.core.disp2d;
 
 import java.awt.Rectangle;
-import java.util.Vector;
 
 import org.mdmk2.core.GameLoop;
 import org.mdmk2.core.Node;
-import org.mdmk2.core.disp2d.AbstractDisplayable;
-import org.mdmk2.core.disp2d.DisplayPanel;
-import org.mdmk2.core.logic.Updatable;
+import org.mdmk2.core.logic.Entity;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 30-May-10
  */
-public class Step2GameLoop extends GameLoop<Rectangle> {
-
-	private Vector<AbstractDisplayable> forDraw;
-	private final DisplayPanel panel;
+public abstract class GameLoop2d extends GameLoop<Rectangle> {
+	
+	protected DisplaySurface surface;
 	/**
 	 * @param displayRoot
 	 */
-	public Step2GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
+	public GameLoop2d(Node<Rectangle> displayRoot, DisplaySurface surface) {
 		super(displayRoot);
-		this.panel = panel;
-		forDraw = new Vector<AbstractDisplayable>();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#getRange()
-	 */
-	@Override
-	public Rectangle getRange() {
-		return panel.getVisibleRect();
+		this.surface = surface;
 	}
 
 	/* (non-Javadoc)
@@ -66,14 +53,8 @@ public class Step2GameLoop extends GameLoop<Rectangle> {
 	 */
 	@Override
 	public void logic() {
-		for(Node<Rectangle> r : this.needsStatusUpdate){
-			if(r instanceof Updatable){
-				Updatable u = (Updatable)r;
-				
-				if(u.readyForUpdate()){
-					u.update();
-				}
-			}
+		for(Entity e : needsStatusUpdate){
+			e.updateStatus();
 		}
 	}
 
@@ -82,14 +63,8 @@ public class Step2GameLoop extends GameLoop<Rectangle> {
 	 */
 	@Override
 	public void render() {
-		forDraw.removeAllElements();
-		for(Node<Rectangle> r : this.needsStatusUpdate){
-			if(r instanceof AbstractDisplayable){
-				forDraw.add((AbstractDisplayable)r);
-			}
-		}
-		panel.drawToBuffer(forDraw);
-		panel.blitToScreen();
+		surface.drawToBuffer(needsDisplayUpdate);
+		surface.blitToScreen();
 	}
 
 }

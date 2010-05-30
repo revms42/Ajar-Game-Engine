@@ -42,7 +42,7 @@ public interface Displayable {
 	 * May 4, 2010
 	 * @param 	g2	the {@link Graphics2D} context on which to display.
 	 */
-	public void display(Graphics2D g2);
+	public void updateDisplay(Graphics2D g2);
 	
 
 }
