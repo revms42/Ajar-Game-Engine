@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 16-May-10 Matthew Stockbridge
+ * Copyright (C) 29-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.logic
- * AttributeListener.java
+ * StateMap.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,19 +27,31 @@
  */
 package org.mdmk2.core.logic;
 
+import java.util.HashMap;
+
 /**
  * @author mstockbridge
- * 16-May-10
+ * 29-May-10
  */
-public interface AttributeListener {
+public class StateMap<E extends Entity> {
 
-	/**
-	 * Reports that an attribute has changed.
-	 * mstockbridge
-	 * 23-May-10
-	 * @param	event	the type of event which has occurred.
-	 * @param	attr	the Attribute that changed.
-	 * @param	actor	the Actor who fired this event (<code>null</code> indicates the event is from the specified Attribute).
-	 */
-	public void attributeChanged(AttributeEventType event, Attribute<?> attr, Entity entity);
+	public final EntityState<E> state;
+	protected final HashMap<StateChange,EntityState<E>> map;
+	
+	public StateMap(EntityState<E> state){
+		this.state = state;
+		map = new HashMap<StateChange,EntityState<E>>();
+	}
+
+	public EntityState<E> setStateChange(StateChange arg0, EntityState<E> arg1) {
+		return map.put(arg0, arg1);
+	}
+	
+	public EntityState<E> remove(StateChange sc){
+		return map.remove(sc);
+	}
+	
+	public EntityState<E> changeState(StateChange sc){
+		return map.get(sc);
+	}
 }

@@ -79,5 +79,11 @@ public class RootNode<R> implements Node<R> {
 	public void removeChild(Node<R> child) {
 		children.remove(child);
 	}
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.Node#needsUpdate()
+	 */
+	public org.mdmk2.core.Node.UpdateType needsUpdate() {
+		return UpdateType.RENDER_AND_STATUS;
+	}
 
 }

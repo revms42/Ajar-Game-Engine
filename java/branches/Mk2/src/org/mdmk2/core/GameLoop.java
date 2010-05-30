@@ -126,6 +126,7 @@ public abstract class GameLoop<R> implements Runnable {
 			
 			end = System.nanoTime();
 			updateInterval = end - start;
+			System.out.println(updateInterval/NANO_TO_MILLI);
 			sleepPeriod = (updatePeriod - updateInterval) - oversleepTime;
 			
 			if(sleepPeriod > 0){
@@ -171,7 +172,6 @@ public abstract class GameLoop<R> implements Runnable {
 	 * 					or under consideration for update. 
 	 */
 	protected void update(Node<R> root, R range){
-		needsUpdate.removeAllElements();
 		for(Node<R> node : root.getChildren()){
 			if(node.isInRange(range)){
 				needsUpdate.add(node);
@@ -187,6 +187,7 @@ public abstract class GameLoop<R> implements Runnable {
 			}
 			render();
 		}
+		needsUpdate.removeAllElements();
 	}
 	
 	/**

@@ -27,15 +27,10 @@
  */
 package org.mdmk2.core.logic;
 
-import java.util.Collection;
-
 /**
  * @author mstockbridge
  * 16-May-10
  */
-public interface Entity extends AttributeListener {
-	public <V> void addAttribute(AttributeType<V> type, Attribute<V> attribute);
-	public <V> Attribute<V> getAttribute(AttributeType<V> type);
-	public Collection<Attribute<?>> getAttributes();
-	public <V> Attribute<V> removeAttribute(AttributeType<V> type);
+public interface Entity {
+
 }

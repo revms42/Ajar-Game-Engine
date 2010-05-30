@@ -34,6 +34,7 @@ import org.mdmk2.core.GameLoop;
 import org.mdmk2.core.Node;
 import org.mdmk2.core.disp2d.AbstractDisplayable;
 import org.mdmk2.core.disp2d.DisplayPanel;
+import org.mdmk2.core.logic.Updatable;
 
 /**
  * @author mstockbridge
@@ -65,8 +66,15 @@ public class Step2GameLoop extends GameLoop<Rectangle> {
 	 */
 	@Override
 	public void logic() {
-		// TODO Auto-generated method stub
-
+		for(Node<Rectangle> r : this.needsUpdate){
+			if(r instanceof Updatable){
+				Updatable u = (Updatable)r;
+				
+				if(u.readyForUpdate()){
+					u.update();
+				}
+			}
+		}
 	}
 
 	/* (non-Javadoc)

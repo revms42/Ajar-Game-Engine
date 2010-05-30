@@ -28,7 +28,7 @@
 package org.mdmk2.core.logic;
 
 /**
- * @author reverend
+ * @author mstockbridge
  * 23-May-10
  */
 public interface AttributeType<V> {
