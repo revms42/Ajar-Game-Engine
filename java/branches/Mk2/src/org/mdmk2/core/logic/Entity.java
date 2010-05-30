@@ -33,4 +33,6 @@ package org.mdmk2.core.logic;
  */
 public interface Entity {
 
+	public void updateStatus();
+	
 }

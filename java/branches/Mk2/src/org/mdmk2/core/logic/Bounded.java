@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 16-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.logic
- * Stat.java
+ * Bounded.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -28,19 +28,10 @@
 package org.mdmk2.core.logic;
 
 /**
- * @author mstockbridge
- * 16-May-10
+ * @author reverend
+ * 30-May-10
  */
-public interface Stat<V> extends Attribute<V> {
-
-	public V getMax();
-	public V setMax(V value);
-	
-	public V getMin();
-	public V setMin(V value);
-	
-	public V getNominal();
-	public V setNominal(V value);
-	
-	public void reset();
+public interface Bounded<R> {
+	public boolean collidesWith(Bounded<R> r);
+	public R getCollisionBounds();
 }

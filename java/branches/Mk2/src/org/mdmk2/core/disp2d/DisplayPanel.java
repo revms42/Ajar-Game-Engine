@@ -88,7 +88,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 		Graphics2D bg = getBufferedSurface();
 		bg.clearRect(0, 0, getBufferWidth(), getBufferHeight());
 		for(Displayable node : nodes){
-			node.display(bg);
+			node.updateDisplay(bg);
 		}
 	}
 

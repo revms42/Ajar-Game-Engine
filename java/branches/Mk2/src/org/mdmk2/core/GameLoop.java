@@ -29,6 +29,9 @@ package org.mdmk2.core;
 
 import java.util.Vector;
 
+import org.mdmk2.core.disp2d.Displayable;
+import org.mdmk2.core.logic.Entity;
+
 /**
  * GameLoop is the primary loop for game updates. I performs all the gunt work
  * as far as culling which things need to be updated, but is designed to hand
@@ -65,11 +68,14 @@ public abstract class GameLoop<R> implements Runnable {
 	private long excess = 0L;
 	
 	protected final Node<R> displayRoot;
-	protected final Vector<Node<R>> needsUpdate;
+	protected final Vector<Entity> needsStatusUpdate;
+	//TODO: This prevents it from working in 3D, so it may need to come out later.
+	protected final Vector<Displayable> needsDisplayUpdate;
 	
 	public GameLoop(Node<R> displayRoot){
 		this.displayRoot = displayRoot;
-		needsUpdate = new Vector<Node<R>>();
+		needsStatusUpdate = new Vector<Entity>();
+		needsDisplayUpdate = new Vector<Displayable>();
 	}
 	
 	/**
@@ -174,7 +180,17 @@ public abstract class GameLoop<R> implements Runnable {
 	protected void update(Node<R> root, R range){
 		for(Node<R> node : root.getChildren()){
 			if(node.isInRange(range)){
-				needsUpdate.add(node);
+				Node.UpdateType ut = node.needsUpdate();
+				
+				if(ut != Node.UpdateType.NO_UPDATE){
+					
+					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.DISPLAY_ONLY) && node instanceof Entity){
+						needsStatusUpdate.add((Entity)node);
+					}
+					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.STATUS_ONLY) && node instanceof Displayable){
+						needsDisplayUpdate.add((Displayable)node);
+					}
+				}
 				
 				if(node.hasChildren()){
 					update(node,range);
@@ -187,7 +203,8 @@ public abstract class GameLoop<R> implements Runnable {
 			}
 			render();
 		}
-		needsUpdate.removeAllElements();
+		needsStatusUpdate.removeAllElements();
+		needsDisplayUpdate.removeAllElements();
 	}
 	
 	/**

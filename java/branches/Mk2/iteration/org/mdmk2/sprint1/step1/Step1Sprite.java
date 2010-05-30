@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
+import org.mdmk2.core.Node;
 import org.mdmk2.core.disp2d.AbstractDisplayable;
 
 /**
@@ -55,6 +56,12 @@ public class Step1Sprite extends AbstractDisplayable {
 		if(at == null) at = AffineTransform.getTranslateInstance(0, 0);
 		
 		Step1DisplayFactory.singleton.display(this, g2, at, color);
+	}
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.Node#needsUpdate()
+	 */
+	public org.mdmk2.core.Node.UpdateType needsUpdate() {
+		return Node.UpdateType.DISPLAY_ONLY;
 	}
 
 }

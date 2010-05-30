@@ -56,7 +56,7 @@ public abstract class AbstractDisplayable implements Displayable, Node2d {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.disp2d.Displayable#display(java.awt.Graphics2D, java.util.List, java.awt.geom.AffineTransform)
 	 */
-	public void display(Graphics2D g2) {
+	public void updateDisplay(Graphics2D g2) {
 		drawSelf(g2,getDrawTransform());
 	}
 	

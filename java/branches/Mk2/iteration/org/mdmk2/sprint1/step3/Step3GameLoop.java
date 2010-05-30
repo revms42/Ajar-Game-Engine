@@ -76,7 +76,7 @@ public class Step3GameLoop extends GameLoop<Rectangle> {
 	@Override
 	public void render() {
 		forDraw.removeAllElements();
-		for(Node<Rectangle> r : this.needsUpdate){
+		for(Node<Rectangle> r : this.needsStatusUpdate){
 			if(r instanceof AbstractDisplayable){
 				forDraw.add((AbstractDisplayable)r);
 			}
