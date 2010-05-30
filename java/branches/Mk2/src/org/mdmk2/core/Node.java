@@ -42,12 +42,32 @@ import java.util.List;
 public interface Node<R> {
 
 	/**
+	 * 
+	 * @author mstockbridge
+	 * 29-May-10
+	 */
+	public static enum UpdateType {
+		NO_UPDATE,
+		RENDER_ONLY,
+		STATUS_ONLY,
+		RENDER_AND_STATUS;
+	}
+	
+	/**
 	 * Determines whether this Node is can be updated or displayed based on the range
 	 * provided.
 	 * @param	range	the range currently in the "view" of the game. 
 	 * @return			whether this Node is current in the provided range.
 	 */
 	public boolean isInRange(R range);
+	
+	/**
+	 * Returns the type of update that this node requires.
+	 * mstockbridge
+	 * 29-May-10
+	 * @return	the type of update that this node requires.
+	 */
+	public UpdateType needsUpdate();
 	
 	/**
 	 * Returns <code>true</code> if this Node currently has any child Nodes.

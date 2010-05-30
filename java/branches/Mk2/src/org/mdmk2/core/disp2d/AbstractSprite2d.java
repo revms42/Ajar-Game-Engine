@@ -214,6 +214,7 @@ public abstract class AbstractSprite2d extends AbstractDisplayable implements En
 	 * @see org.mdmk2.core.logic.Entity#addAttribute(org.mdmk2.core.logic.AttributeType, org.mdmk2.core.logic.Attribute)
 	 */
 	public <V> void addAttribute(AttributeType<V> type, Attribute<V> attribute) {
+		if(attributes == null) attributes = new HashMap<AttributeType<?>,Attribute<?>>();
 		attributes.put(type, attribute);
 		needsReRegister = true;
 	}

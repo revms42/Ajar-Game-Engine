@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 29-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1Sprite.java
+ * org.mdmk2.core.logic
+ * StateMatrix.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,36 +25,32 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step2;
+package org.mdmk2.core.logic;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-
-import org.mdmk2.core.disp2d.AbstractSprite2d;
+import java.util.HashMap;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 29-May-10
  */
-public class Step2Sprite extends AbstractSprite2d {
+public class StateMatrix<E extends Entity> {
+
+	protected final HashMap<EntityState<E>,StateMap<E>> matrix;
 	
-	private final Color color;
-	
-	public Step2Sprite(Shape shape, Color color){
-		super();
-		this.color = color;
-		this.setBoundingSurface(shape);
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.AbstractDisplayable#drawSelf(java.awt.Graphics2D, java.awt.geom.AffineTransform)
-	 */
-	@Override
-	public void drawSelf(Graphics2D g2, AffineTransform at) {
-		if(at == null) at = AffineTransform.getTranslateInstance(0, 0);
-		
-		Step2DisplayFactory.singleton.display(this, g2, at, color);
+	public StateMatrix(){
+		matrix = new HashMap<EntityState<E>,StateMap<E>>();
 	}
 
+	public StateMap<E> put(StateMap<E> arg1) {
+		return matrix.put(arg1.state, arg1);
+	}
+
+	public StateMap<E> remove(Object arg0) {
+		return matrix.remove(arg0);
+	}
+	
+	public void performUpdate(E e, StateChange s){
+		StateMap<E> sm = matrix.get(e.getState());
+		e.setState(sm.changeState(s));
+	}
 }
