@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.sprint1.step3
- * Step3DisplayFactory.java
+ * Step3Matrix.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,34 +27,42 @@
  */
 package org.mdmk2.sprint1.step3;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import org.mdmk2.core.disp2d.DisplayFactory;
+import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.StateMatrix;
+import org.mdmk2.core.logic.StateWrapperNode;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 30-May-10
  */
-public class Step3DisplayFactory implements DisplayFactory<Color, Step3Sprite> {
+public class Step3Matrix extends StateMatrix<Step3Mover> {
 
-	public final static Step3DisplayFactory singleton;
+	private static Step3MovingState move;
 	
-	static {
-		singleton = new Step3DisplayFactory();
+	public Step3Matrix(StateWrapperNode wrapper){
+		super();
+		move = new Step3MovingState(wrapper);
+		Step3BounceState bounce = new Step3BounceState(wrapper);
+		
+		Step3MoveMap mmap = new Step3MoveMap(move);
+		mmap.setStateChange(Step3SpriteStates.MOVE, move);
+		mmap.setStateChange(Step3SpriteStates.BOUNCE_X, bounce);
+		mmap.setStateChange(Step3SpriteStates.BOUNCE_Y, bounce);
+		
+		Step3BounceMap bmap = new Step3BounceMap(bounce);
+		bmap.setStateChange(Step3SpriteStates.MOVE, move);
+		bmap.setStateChange(Step3SpriteStates.BOUNCE_X, move);
+		bmap.setStateChange(Step3SpriteStates.BOUNCE_Y, move);
+		
+		this.put(mmap);
+		this.put(bmap);
 	}
-	
-	private Step3DisplayFactory(){};
-	
+
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayFactory#display(org.mdmk2.core.disp2d.Displayable, java.awt.Graphics2D, java.awt.geom.AffineTransform, O[])
+	 * @see org.mdmk3.core.logic.StateMatrix#defaultState()
 	 */
-	public void display(Step3Sprite displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
-		Color foreground = g2.getColor();
-		if(ops != null && ops.length > 0) g2.setColor(ops[0]);
-		g2.fill(displayable.getCollisionBounds());
-		g2.setColor(foreground);
+	@Override
+	public EntityState<Step3Mover> defaultState() {
+		return move;
 	}
-
 }

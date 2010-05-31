@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step2
- * Step2GameLoop.java
+ * org.mdmk2.sprint1.step3
+ * Step3BounceState.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,35 +25,33 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step2;
+package org.mdmk2.sprint1.step3;
 
-import java.awt.Rectangle;
-
-import org.mdmk2.core.Node;
-import org.mdmk2.core.disp2d.DisplayPanel;
-import org.mdmk2.core.disp2d.GameLoop2d;
+import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.StateWrapperNode;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 30-May-10
  */
-public class Step2GameLoop extends GameLoop2d {
+public class Step3BounceState implements EntityState<Step3Mover> {
 	
-	private final DisplayPanel panel;
-	/**
-	 * @param displayRoot
-	 */
-	public Step2GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
-		super(displayRoot,panel);
-		this.panel = panel;
+	private final StateWrapperNode wrapper;
+	
+	public Step3BounceState(StateWrapperNode wrapper){
+		this.wrapper = wrapper;
 	}
-
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#getRange()
+	 * @see org.mdmk3.core.logic.EntityState#apply(org.mdmk3.core.logic.Entity)
 	 */
-	@Override
-	public Rectangle getRange() {
-		return panel.getVisibleRect();
+	public void apply(Step3Mover e) {
+		if(wrapper.allChanges().contains(Step3SpriteStates.BOUNCE_X)){
+			e.setDx(-e.getDx());
+		}
+		if(wrapper.allChanges().contains(Step3SpriteStates.BOUNCE_Y)){
+			e.setDy(-e.getDy());
+		}
+		wrapper.add(Step3SpriteStates.MOVE);
 	}
 
 }
