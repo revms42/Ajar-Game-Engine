@@ -28,7 +28,7 @@
 package org.mdmk2.core.logic;
 
 /**
- * @author reverend
+ * @author mstockbridge
  * 30-May-10
  */
 public interface Bounded<R> {

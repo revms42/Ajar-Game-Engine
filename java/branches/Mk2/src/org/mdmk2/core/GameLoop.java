@@ -72,6 +72,9 @@ public abstract class GameLoop<R> implements Runnable {
 	//TODO: This prevents it from working in 3D, so it may need to come out later.
 	protected final Vector<Displayable> needsDisplayUpdate;
 	
+	//Used to enable debugging messages.
+	public static boolean debug = false;
+	
 	public GameLoop(Node<R> displayRoot){
 		this.displayRoot = displayRoot;
 		needsStatusUpdate = new Vector<Entity>();
@@ -132,7 +135,7 @@ public abstract class GameLoop<R> implements Runnable {
 			
 			end = System.nanoTime();
 			updateInterval = end - start;
-			System.out.println(updateInterval/NANO_TO_MILLI);
+			if(debug)System.out.println(updateInterval/NANO_TO_MILLI);
 			sleepPeriod = (updatePeriod - updateInterval) - oversleepTime;
 			
 			if(sleepPeriod > 0){
@@ -158,6 +161,7 @@ public abstract class GameLoop<R> implements Runnable {
 				excess -= updatePeriod;
 				logic();
 				skips++;
+				if(debug)System.out.println("Skip!");
 			}
 		}
 		
@@ -183,11 +187,10 @@ public abstract class GameLoop<R> implements Runnable {
 				Node.UpdateType ut = node.needsUpdate();
 				
 				if(ut != Node.UpdateType.NO_UPDATE){
-					
-					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.DISPLAY_ONLY) && node instanceof Entity){
+					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.STATUS_ONLY) && node instanceof Entity){
 						needsStatusUpdate.add((Entity)node);
 					}
-					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.STATUS_ONLY) && node instanceof Displayable){
+					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.DISPLAY_ONLY) && node instanceof Displayable){
 						needsDisplayUpdate.add((Displayable)node);
 					}
 				}

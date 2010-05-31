@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1GameLoop.java
+ * org.mdmk2.sprint1.step2
+ * Step2Matrix.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,33 +27,42 @@
  */
 package org.mdmk2.sprint1.step2;
 
-import java.awt.Rectangle;
-
-import org.mdmk2.core.Node;
-import org.mdmk2.core.disp2d.DisplayPanel;
-import org.mdmk2.core.disp2d.GameLoop2d;
+import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.StateMatrix;
+import org.mdmk2.core.logic.StateWrapperNode;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 30-May-10
  */
-public class Step2GameLoop extends GameLoop2d {
+public class Step2Matrix extends StateMatrix<Step2Sprite> {
+
+	private static Step2MovingState move;
 	
-	private final DisplayPanel panel;
-	/**
-	 * @param displayRoot
-	 */
-	public Step2GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
-		super(displayRoot,panel);
-		this.panel = panel;
+	public Step2Matrix(StateWrapperNode wrapper){
+		super();
+		move = new Step2MovingState(wrapper);
+		Step2BounceState bounce = new Step2BounceState(wrapper);
+		
+		Step2MoveMap mmap = new Step2MoveMap(move);
+		mmap.setStateChange(Step2SpriteStates.MOVE, move);
+		mmap.setStateChange(Step2SpriteStates.BOUNCE_X, bounce);
+		mmap.setStateChange(Step2SpriteStates.BOUNCE_Y, bounce);
+		
+		Step2BounceMap bmap = new Step2BounceMap(bounce);
+		bmap.setStateChange(Step2SpriteStates.MOVE, move);
+		bmap.setStateChange(Step2SpriteStates.BOUNCE_X, move);
+		bmap.setStateChange(Step2SpriteStates.BOUNCE_Y, move);
+		
+		this.put(mmap);
+		this.put(bmap);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#getRange()
+	 * @see org.mdmk2.core.logic.StateMatrix#defaultState()
 	 */
 	@Override
-	public Rectangle getRange() {
-		return panel.getVisibleRect();
+	public EntityState<Step2Sprite> defaultState() {
+		return move;
 	}
-
 }

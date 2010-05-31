@@ -27,6 +27,7 @@
  */
 package org.mdmk2.core.disp2d;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -52,7 +53,6 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	
 	public DisplayPanel(){
 		super();
-		
 	}
 
 	/* (non-Javadoc)
@@ -86,7 +86,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	 */
 	public void drawToBuffer(List<? extends Displayable> nodes) {
 		Graphics2D bg = getBufferedSurface();
-		bg.clearRect(0, 0, getBufferWidth(), getBufferHeight());
+		if(nodes != null && nodes.size() > 0) bg.clearRect(0, 0, getBufferWidth(), getBufferHeight());
 		for(Displayable node : nodes){
 			node.updateDisplay(bg);
 		}
@@ -124,5 +124,15 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	 */
 	public int getBufferHeight(){
 		return buffer.getHeight();
+	}
+	
+	/*
+	 * This is here primarily to fix problems with intermittent display.
+	 * (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
+	protected void paintComponent(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		g2.drawImage(buffer, null, 0, 0);
 	}
 }

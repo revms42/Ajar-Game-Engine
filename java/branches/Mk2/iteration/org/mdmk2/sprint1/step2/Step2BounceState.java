@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1DisplayFactory.java
+ * org.mdmk2.sprint1.step2
+ * Step2BounceState.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,34 +27,31 @@
  */
 package org.mdmk2.sprint1.step2;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import org.mdmk2.core.disp2d.DisplayFactory;
+import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.StateWrapperNode;
 
 /**
- * @author mstockbridge
- * 15-May-10
+ * @author reverend
+ * 30-May-10
  */
-public class Step2DisplayFactory implements DisplayFactory<Color, Step2Sprite> {
+public class Step2BounceState implements EntityState<Step2Sprite> {
 	
-	public static final Step2DisplayFactory singleton;
+	private final StateWrapperNode wrapper;
 	
-	static {
-		singleton = new Step2DisplayFactory();
+	public Step2BounceState(StateWrapperNode wrapper){
+		this.wrapper = wrapper;
 	}
-
-	private Step2DisplayFactory(){};
-	
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayFactory#display(org.mdmk2.core.disp2d.Displayable, java.awt.Graphics2D, java.awt.geom.AffineTransform, O[])
+	 * @see org.mdmk2.core.logic.EntityState#apply(org.mdmk2.core.logic.Entity)
 	 */
-	public void display(Step2Sprite displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
-		Color foreground = g2.getColor();
-		if(ops != null && ops.length > 0) g2.setColor(ops[0]);
-		g2.fill(displayable.getCollisionBounds());
-		g2.setColor(foreground);
+	public void apply(Step2Sprite e) {
+		if(wrapper.allChanges().contains(Step2SpriteStates.BOUNCE_X)){
+			e.setDx(-e.getDx());
+		}
+		if(wrapper.allChanges().contains(Step2SpriteStates.BOUNCE_Y)){
+			e.setDy(-e.getDy());
+		}
+		wrapper.add(Step2SpriteStates.MOVE);
 	}
 
 }

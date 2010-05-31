@@ -76,4 +76,12 @@ public interface Node2d extends Node<Rectangle> {
 	 * @param	parent	the Node that claims this Node as it's child.
 	 */
 	public void setParent(Node2d parent);
+	
+	/**
+	 * Returns the offset this Node has from it's parent. 
+	 * mstockbridge
+	 * 30-May-10
+	 * @return
+	 */
+	public AffineTransform getTransform();
 }

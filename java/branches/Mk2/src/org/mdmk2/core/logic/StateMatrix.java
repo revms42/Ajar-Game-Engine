@@ -33,7 +33,7 @@ import java.util.HashMap;
  * @author mstockbridge
  * 29-May-10
  */
-public class StateMatrix<E extends Entity> {
+public abstract class StateMatrix<E extends Entity> {
 
 	protected final HashMap<EntityState<E>,StateMap<E>> matrix;
 	
@@ -53,4 +53,6 @@ public class StateMatrix<E extends Entity> {
 		StateMap<E> sm = matrix.get(e.getState());
 		e.setState(sm.changeState(s));
 	}
+	
+	public abstract EntityState<E> defaultState();
 }
