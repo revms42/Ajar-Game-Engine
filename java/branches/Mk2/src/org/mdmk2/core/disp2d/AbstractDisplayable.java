@@ -27,7 +27,6 @@
  */
 package org.mdmk2.core.disp2d;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -52,23 +51,8 @@ public abstract class AbstractDisplayable implements Displayable, Node2d {
 	
 	public AbstractDisplayable(){
 		children = new Vector<Node<Rectangle>>();
+		transform = AffineTransform.getTranslateInstance(0.0d, 0.0d);
 	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.Displayable#display(java.awt.Graphics2D, java.util.List, java.awt.geom.AffineTransform)
-	 */
-	public void updateDisplay(Graphics2D g2) {
-		drawSelf(g2,getDrawTransform());
-	}
-	
-	/**
-	 * Called by <code>display</code> to draw this AbstractDisplayable at the position specified by the AffineTransform
-	 * obtained from <code>getDrawTransform()</code>.
-	 * mstockbridge
-	 * 15-May-10
-	 * @param	g2	the <code>Graphics2D</code> object passed to <code>display</code>.
-	 * @param	at	the <code>AffineTransform</code> created by <code>getDrawTransform</code>.
-	 */
-	public abstract void drawSelf(Graphics2D g2, AffineTransform at);
 
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#addChild(org.mdmk2.core.Node)
@@ -129,16 +113,6 @@ public abstract class AbstractDisplayable implements Displayable, Node2d {
 	 */
 	public AffineTransform getTransform() {
 		return transform;
-	}
-
-	/**
-	 * Sets the local transform of this object relative to it's parent.
-	 * reverend
-	 * 15-May-10
-	 * @param	transform	this object's local transform.
-	 */
-	public void setTransform(AffineTransform transform) {
-		this.transform = transform;
 	}
 	
 	/*

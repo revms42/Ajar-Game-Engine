@@ -27,55 +27,28 @@
  */
 package org.mdmk2.core.disp2d;
 
+import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 
+import org.mdmk2.core.AbstractSprite;
 import org.mdmk2.core.logic.Bounded;
-import org.mdmk2.core.logic.Entity;
-import org.mdmk2.core.logic.EntityState;
-import org.mdmk2.core.logic.Stated;
 
 /**
  * @author mstockbridge
  * 16-May-10
  */
 public abstract class AbstractSprite2d<R extends Shape, E extends AbstractSprite2d<R,E>> 
-		extends AbstractDisplayable 
-		implements Entity, Stated<E>, Bounded<R> 
+		extends AbstractSprite<Rectangle,E,R> implements Displayable, Node2d
 {
-	private EntityState<E> currentState;
-	
-	private R collisionBounds;
-	
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Stated#getState()
+	private Node2d parent;
+	private AffineTransform transform;
+	/**
+	 * @param bounds
 	 */
-	public EntityState<E> getState() {
-		return currentState;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Stated#setState(org.mdmk2.core.logic.EntityState)
-	 */
-	public void setState(EntityState<E> s) {
-		this.currentState = s;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Entity#getCollisionBounds()
-	 */
-	public R getCollisionBounds() {
-		return collisionBounds;
-	}
-	
-	public void setCollisionBounds(R bounds) {
-		this.collisionBounds = bounds;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Entity#updateStatus()
-	 */
-	public void updateStatus() {
-		currentState.apply(thisAsE());
+	public AbstractSprite2d(R bounds) {
+		super(bounds);
+		transform = AffineTransform.getTranslateInstance(0.0d, 0.0d);
 	}
 	
 	protected abstract E thisAsE();
@@ -85,10 +58,60 @@ public abstract class AbstractSprite2d<R extends Shape, E extends AbstractSprite
 	 */
 	public boolean collidesWith(Bounded<R> r) {
 		R bounds = r.getCollisionBounds();
-		if(collisionBounds != null && bounds != null){
-			return collisionBounds.intersects(r.getCollisionBounds().getBounds2D());
+		if(bounds != null && bounds != null){
+			return bounds.intersects(r.getCollisionBounds().getBounds2D());
 		}else{
 			return false;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Node2d#getDrawTransform()
+	 */
+	public AffineTransform getDrawTransform() {
+		AffineTransform local = getTransform();
+		AffineTransform ret = null;
+		
+		if(hasParent()){
+			AffineTransform pt = getParent().getDrawTransform();
+			
+			if(pt != null){
+				ret = (AffineTransform) pt.clone();
+				
+				if(local != null){
+					ret.concatenate(local);
+				}
+			}
+		}else if(local != null){
+			ret = (AffineTransform) local.clone();
+		}
+		
+		return ret;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Node2d#getParent()
+	 */
+	public Node2d getParent() {
+		return parent;
+	}
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Node2d#setParent(org.mdmk2.core.Node)
+	 */
+	public void setParent(Node2d parent) {
+		this.parent = parent;
+	}
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Node2d#hasParent()
+	 */
+	public boolean hasParent() {
+		return parent != null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Node2d#getTransform()
+	 */
+	public AffineTransform getTransform() {
+		return transform;
 	}
 }

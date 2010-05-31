@@ -36,7 +36,7 @@ import org.mdmk2.core.Node;
 import org.mdmk2.core.disp2d.AbstractDisplayable;
 
 /**
- * @author reverend
+ * @author mstockbridge
  * 15-May-10
  */
 public class Step1Sprite extends AbstractDisplayable {
@@ -49,19 +49,19 @@ public class Step1Sprite extends AbstractDisplayable {
 		this.setBoundingSurface(shape);
 	}
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.AbstractDisplayable#drawSelf(java.awt.Graphics2D, java.awt.geom.AffineTransform)
-	 */
-	@Override
-	public void drawSelf(Graphics2D g2, AffineTransform at) {
-		if(at == null) at = AffineTransform.getTranslateInstance(0, 0);
-		
-		Step1DisplayFactory.singleton.display(this, g2, at, color);
-	}
-	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#needsUpdate()
 	 */
 	public org.mdmk2.core.Node.UpdateType needsUpdate() {
 		return Node.UpdateType.DISPLAY_ONLY;
+	}
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Displayable#updateDisplay(java.awt.Graphics2D)
+	 */
+	public void updateDisplay(Graphics2D g2) {
+		AffineTransform at = this.getDrawTransform();
+		if(at == null) at = AffineTransform.getTranslateInstance(0, 0);
+		
+		Step1DisplayFactory.singleton.display(this, g2, at, color);
 	}
 
 }

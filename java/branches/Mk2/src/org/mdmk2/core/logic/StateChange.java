@@ -32,5 +32,5 @@ package org.mdmk2.core.logic;
  * 29-May-10
  */
 public interface StateChange {
-
+	
 }

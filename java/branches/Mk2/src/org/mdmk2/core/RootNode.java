@@ -27,9 +27,6 @@
  */
 package org.mdmk2.core;
 
-import java.util.List;
-import java.util.Vector;
-
 
 /**
  * RootNode is a simple implementation of Node that acts as a lowest level node for a
@@ -38,46 +35,16 @@ import java.util.Vector;
  * 15-May-10
  * @param <R>	the type parameter of the view range.
  */
-public class RootNode<R> implements Node<R> {
-	
-	protected final Vector<Node<R>> children;
+public class RootNode<R> extends AbstractNode<R> {
 	
 	public RootNode(){
-		children = new Vector<Node<R>>();
+		super();
 	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#addChild(org.mdmk2.core.Node)
-	 */
-	public void addChild(Node<R> child) {
-		children.add(child);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#getChildren()
-	 */
-	public List<Node<R>> getChildren() {
-		return children;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#hasChildren()
-	 */
-	public boolean hasChildren() {
-		return children.size() != 0;
-	}
-
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#isInRange(java.lang.Object)
 	 */
 	public boolean isInRange(R range) {
 		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#removeChild(org.mdmk2.core.Node)
-	 */
-	public void removeChild(Node<R> child) {
-		children.remove(child);
 	}
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#needsUpdate()

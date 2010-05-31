@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1DisplayFactory.java
+ * org.mdmk2.core
+ * AbstractNode.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,36 +25,47 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step2;
+package org.mdmk2.core;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import org.mdmk2.core.disp2d.DisplayFactory;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 30-May-10
  */
-public class Step2DisplayFactory implements DisplayFactory<Color, Step2Sprite> {
-	
-	public static final Step2DisplayFactory singleton;
-	
-	static {
-		singleton = new Step2DisplayFactory();
-	}
+public abstract class AbstractNode<R> implements Node<R> {
 
-	private Step2DisplayFactory(){};
+	protected final Vector<Node<R>> children;
 	
+	public AbstractNode(){
+		children = new Vector<Node<R>>();
+	}
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayFactory#display(org.mdmk2.core.disp2d.Displayable, java.awt.Graphics2D, java.awt.geom.AffineTransform, O[])
+	 * @see org.mdmk2.core.Node#addChild(org.mdmk2.core.Node)
 	 */
-	public void display(Step2Sprite displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
-		Color foreground = g2.getColor();
-		if(ops != null && ops.length > 0) g2.setColor(ops[0]);
-		g2.fill(displayable.getCollisionBounds());
-		g2.setColor(foreground);
+	public void addChild(Node<R> child) {
+		children.add(child);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.Node#getChildren()
+	 */
+	public List<Node<R>> getChildren() {
+		return children;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.Node#hasChildren()
+	 */
+	public boolean hasChildren() {
+		return children.size() != 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.Node#removeChild(org.mdmk2.core.Node)
+	 */
+	public void removeChild(Node<R> child) {
+		children.remove(child);
+	}
 }

@@ -29,32 +29,104 @@ package org.mdmk2.sprint1.step2;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 
+import org.mdmk2.core.Node;
 import org.mdmk2.core.disp2d.AbstractSprite2d;
 
 /**
  * @author mstockbridge
  * 15-May-10
  */
-public class Step2Sprite extends AbstractSprite2d {
+public class Step2Sprite extends AbstractSprite2d<Area,Step2Sprite> {
 	
 	private final Color color;
+	private double x;
+	private double y;
+	protected final double maxX;
+	protected final double maxY;
+	private double dx;
+	private double dy;
 	
-	public Step2Sprite(Shape shape, Color color){
-		super();
+	public Step2Sprite(Area shape, Color color, double maxX, double maxY){
+		super(shape);
 		this.color = color;
-		this.setBoundingSurface(shape);
+		x = 50;
+		y = 0;
+		this.maxX = maxX;
+		this.maxY = maxY;
+		dx = 10;
+		dy = 10;
 	}
+	
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.AbstractDisplayable#drawSelf(java.awt.Graphics2D, java.awt.geom.AffineTransform)
+	 * @see org.mdmk2.core.disp2d.AbstractSprite2d#thisAsE()
 	 */
 	@Override
-	public void drawSelf(Graphics2D g2, AffineTransform at) {
+	protected Step2Sprite thisAsE() {
+		return this;
+	}
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.Node#needsUpdate()
+	 */
+	public org.mdmk2.core.Node.UpdateType needsUpdate() {
+		return Node.UpdateType.DISPLAY_AND_STATUS;
+	}
+	public double getDx() {
+		return dx;
+	}
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
+	public double getDy() {
+		return dy;
+	}
+	public void setDy(double dy) {
+		this.dy = dy;
+	}
+	public double getX() {
+		return x;
+	}
+	public double setX(double x) {
+		this.x = x;
+		return x;
+	}
+	public double getY() {
+		return y;
+	}
+	public double setY(double y) {
+		this.y = y;
+		return y;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.mdmk2.core.AbstractSprite#updateStatus()
+	 */
+	public void updateStatus() {
+		super.updateStatus();
+		this.getTransform().setToTranslation(getX(), getY());
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Displayable#updateDisplay(java.awt.Graphics2D)
+	 */
+	public void updateDisplay(Graphics2D g2) {
+		AffineTransform at = getDrawTransform();
 		if(at == null) at = AffineTransform.getTranslateInstance(0, 0);
 		
 		Step2DisplayFactory.singleton.display(this, g2, at, color);
 	}
-
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.Node#isInRange(java.lang.Object)
+	 */
+	public boolean isInRange(Rectangle range) {
+		return this.getCollisionBounds().intersects(range);
+	}
+	
+	public Area getCollisionBounds() {
+		return super.getCollisionBounds().createTransformedArea(this.getDrawTransform());
+	}
 }

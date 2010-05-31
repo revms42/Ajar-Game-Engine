@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1DisplayFactory.java
+ * org.mdmk2.core
+ * Sprite.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,36 +25,16 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step2;
+package org.mdmk2.core;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import org.mdmk2.core.disp2d.DisplayFactory;
+import org.mdmk2.core.logic.Bounded;
+import org.mdmk2.core.logic.Entity;
+import org.mdmk2.core.logic.Stated;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 30-May-10
  */
-public class Step2DisplayFactory implements DisplayFactory<Color, Step2Sprite> {
-	
-	public static final Step2DisplayFactory singleton;
-	
-	static {
-		singleton = new Step2DisplayFactory();
-	}
-
-	private Step2DisplayFactory(){};
-	
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayFactory#display(org.mdmk2.core.disp2d.Displayable, java.awt.Graphics2D, java.awt.geom.AffineTransform, O[])
-	 */
-	public void display(Step2Sprite displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
-		Color foreground = g2.getColor();
-		if(ops != null && ops.length > 0) g2.setColor(ops[0]);
-		g2.fill(displayable.getCollisionBounds());
-		g2.setColor(foreground);
-	}
+public interface Sprite<R,E extends Sprite,B> extends Node<R>, Entity, Stated<E>, Bounded<B> {
 
 }

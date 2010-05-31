@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 30-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1DisplayFactory.java
+ * org.mdmk2.core
+ * AbstractSprite.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,36 +25,52 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step2;
+package org.mdmk2.core;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import org.mdmk2.core.disp2d.DisplayFactory;
+import org.mdmk2.core.logic.EntityState;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 30-May-10
  */
-public class Step2DisplayFactory implements DisplayFactory<Color, Step2Sprite> {
-	
-	public static final Step2DisplayFactory singleton;
-	
-	static {
-		singleton = new Step2DisplayFactory();
-	}
+public abstract class AbstractSprite<R,E extends AbstractSprite,B> extends AbstractNode<R> implements Sprite<R,E,B> {
 
-	private Step2DisplayFactory(){};
+	private EntityState<E> state;
+
+	private B bounds;
+	
+	public AbstractSprite(B bounds){
+		this.bounds = bounds;
+	}
 	
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayFactory#display(org.mdmk2.core.disp2d.Displayable, java.awt.Graphics2D, java.awt.geom.AffineTransform, O[])
+	 * @see org.mdmk2.core.logic.Entity#updateStatus()
 	 */
-	public void display(Step2Sprite displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
-		Color foreground = g2.getColor();
-		if(ops != null && ops.length > 0) g2.setColor(ops[0]);
-		g2.fill(displayable.getCollisionBounds());
-		g2.setColor(foreground);
+	public void updateStatus() {
+		state.apply(thisAsE());
 	}
 
+	protected abstract E thisAsE();
+	
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.logic.Stated#getState()
+	 */
+	public EntityState<E> getState() {
+		return state;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.logic.Stated#setState(org.mdmk2.core.logic.EntityState)
+	 */
+	public void setState(EntityState<E> s) {
+		this.state = s;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.mdmk2.core.logic.Bounded#getCollisionBounds()
+	 */
+	public B getCollisionBounds(){
+		return bounds;
+	}
 }
