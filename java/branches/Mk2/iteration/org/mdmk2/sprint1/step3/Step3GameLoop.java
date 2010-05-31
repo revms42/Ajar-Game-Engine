@@ -28,29 +28,24 @@
 package org.mdmk2.sprint1.step3;
 
 import java.awt.Rectangle;
-import java.util.Vector;
 
-import org.mdmk2.core.GameLoop;
 import org.mdmk2.core.Node;
-import org.mdmk2.core.disp2d.AbstractDisplayable;
 import org.mdmk2.core.disp2d.DisplayPanel;
+import org.mdmk2.core.disp2d.GameLoop2d;
 
 /**
  * @author mstockbridge
  * 15-May-10
  */
-public class Step3GameLoop extends GameLoop<Rectangle> {
-
-	private final Vector<AbstractDisplayable> forDraw;
-	private final DisplayPanel panel;
+public class Step3GameLoop extends GameLoop2d {
 	
+	private final DisplayPanel panel;
 	/**
 	 * @param displayRoot
 	 */
 	public Step3GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
-		super(displayRoot);
+		super(displayRoot,panel);
 		this.panel = panel;
-		forDraw = new Vector<AbstractDisplayable>();
 	}
 
 	/* (non-Javadoc)
@@ -59,30 +54,6 @@ public class Step3GameLoop extends GameLoop<Rectangle> {
 	@Override
 	public Rectangle getRange() {
 		return panel.getVisibleRect();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#logic()
-	 */
-	@Override
-	public void logic() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#render()
-	 */
-	@Override
-	public void render() {
-		forDraw.removeAllElements();
-		for(Node<Rectangle> r : this.needsStatusUpdate){
-			if(r instanceof AbstractDisplayable){
-				forDraw.add((AbstractDisplayable)r);
-			}
-		}
-		panel.drawToBuffer(forDraw);
-		panel.blitToScreen();
 	}
 
 }

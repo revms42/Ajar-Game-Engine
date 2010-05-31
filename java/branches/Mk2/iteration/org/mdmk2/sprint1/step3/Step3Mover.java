@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 31-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step2
- * Step2GameLoop.java
+ * org.mdmk2.sprint1.step3
+ * Step3Mover.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,35 +25,53 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step2;
+package org.mdmk2.sprint1.step3;
 
-import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.geom.Area;
 
-import org.mdmk2.core.Node;
-import org.mdmk2.core.disp2d.DisplayPanel;
-import org.mdmk2.core.disp2d.GameLoop2d;
+import org.mdmk2.core.logic.EntityState;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 31-May-10
  */
-public class Step2GameLoop extends GameLoop2d {
+public class Step3Mover extends Step3Sprite<Step3Mover> {
+	private double dx;
+	private double dy;
 	
-	private final DisplayPanel panel;
-	/**
-	 * @param displayRoot
-	 */
-	public Step2GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
-		super(displayRoot,panel);
-		this.panel = panel;
+	public Step3Mover(Area shape, Color color, double x, double y){
+		super(shape,color,x,y);
+	}
+	
+	public void updateStatus(){
+		super.updateStatus();
+		this.getTransform().setToTranslation(getX(), getY());
+	}
+	
+	public double getDx() {
+		return dx;
+	}
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
+	public double getDy() {
+		return dy;
+	}
+	public void setDy(double dy) {
+		this.dy = dy;
+	}
+	
+	@Override
+	public void setState(EntityState<Step3Mover> s){
+		super.setState(s);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#getRange()
+	 * @see org.mdmk2.core.disp2d.AbstractSprite2d#thisAsE()
 	 */
 	@Override
-	public Rectangle getRange() {
-		return panel.getVisibleRect();
+	protected Step3Mover thisAsE() {
+		return this;
 	}
-
 }

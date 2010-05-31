@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1DisplayFactory.java
+ * org.mdmk2.sprint1.step2
+ * Step2DisplayFactory.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
