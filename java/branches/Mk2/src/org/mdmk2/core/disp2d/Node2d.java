@@ -30,7 +30,7 @@ package org.mdmk2.core.disp2d;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
-import org.mdmk2.core.Node;
+import org.mdmk2.core.node.Node;
 
 /**
  * Node2d provides additional methods to Node in order to provide classes in the display2d package
@@ -58,24 +58,7 @@ public interface Node2d extends Node<Rectangle> {
 	 */
 	public boolean hasParent();
 	
-	/**
-	 * Returns the Node that claims this Node as it's child.
-	 * <p>
-	 * Note: Technically a Node may be a child of any number of other Nodes, but
-	 * only one will be considered it's "parent".
-	 * mstockbridge
-	 * 15-May-10
-	 * @return	the Node that claims this Node as it's child.
-	 */
-	public Node2d getParent();
-	
-	/**
-	 * Sets the parent of this Node.
-	 * mstockbridge
-	 * 15-May-10
-	 * @param	parent	the Node that claims this Node as it's child.
-	 */
-	public void setParent(Node2d parent);
+
 	
 	/**
 	 * Returns the offset this Node has from it's parent. 

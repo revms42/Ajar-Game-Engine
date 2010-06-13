@@ -30,7 +30,7 @@ package org.mdmk2.sprint1.step3;
 import java.awt.Color;
 import java.awt.geom.Area;
 
-import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.State;
 
 /**
  * @author mstockbridge
@@ -63,7 +63,7 @@ public class Step3Mover extends Step3Sprite<Step3Mover> {
 	}
 	
 	@Override
-	public void setState(EntityState<Step3Mover> s){
+	public void setState(State<Step3Mover> s){
 		super.setState(s);
 	}
 

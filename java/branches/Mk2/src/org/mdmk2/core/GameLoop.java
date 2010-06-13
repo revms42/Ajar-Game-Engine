@@ -31,6 +31,7 @@ import java.util.Vector;
 
 import org.mdmk2.core.disp2d.Displayable;
 import org.mdmk2.core.logic.Entity;
+import org.mdmk2.core.node.Node;
 
 /**
  * GameLoop is the primary loop for game updates. I performs all the gunt work
@@ -186,11 +187,11 @@ public abstract class GameLoop<R> implements Runnable {
 			if(node.isInRange(range)){
 				Node.UpdateType ut = node.needsUpdate();
 				
-				if(ut != Node.UpdateType.NO_UPDATE){
-					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.STATUS_ONLY) && node instanceof Entity){
+				if(ut != org.mdmk2.core.node.NO_UPDATE){
+					if((ut == org.mdmk2.core.node.DISPLAY_AND_STATUS || ut == org.mdmk2.core.node.STATUS_ONLY) && node instanceof Entity){
 						needsStatusUpdate.add((Entity)node);
 					}
-					if((ut == Node.UpdateType.DISPLAY_AND_STATUS || ut == Node.UpdateType.DISPLAY_ONLY) && node instanceof Displayable){
+					if((ut == org.mdmk2.core.node.DISPLAY_AND_STATUS || ut == org.mdmk2.core.node.DISPLAY_ONLY) && node instanceof Displayable){
 						needsDisplayUpdate.add((Displayable)node);
 					}
 				}

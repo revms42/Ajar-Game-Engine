@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 29-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.logic
- * StateChange.java
+ * org.mdmk2.core.cull
+ * CullableImp.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,12 +25,46 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.logic;
+package org.mdmk2.core.cull;
+
+import org.mdmk2.core.Position;
 
 /**
  * @author mstockbridge
- * 29-May-10
+ * 13-Jun-10
  */
-public interface StateChange {
+public interface CullableImp<R> {
+
+
+	/**
+	 * Determines whether this Node is can be updated or displayed based on the range
+	 * provided.
+	 * @param	range	the range currently in the "view" of the game. 
+	 * @return			whether this Node is current in the provided range.
+	 */
+	public boolean isInRange(R range);
 	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public Position getRelativePosition();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @param pos
+	 */
+	public void setRelativePosition(Position pos);
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public Position getAbsolutePosition();
 }

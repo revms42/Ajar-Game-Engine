@@ -29,9 +29,9 @@ package org.mdmk2.sprint1.step2;
 
 import java.awt.Rectangle;
 
-import org.mdmk2.core.Node;
 import org.mdmk2.core.disp2d.DisplayPanel;
 import org.mdmk2.core.disp2d.GameLoop2d;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge

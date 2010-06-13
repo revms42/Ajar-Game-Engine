@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 23-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.logic
- * AttributeType.java
+ * StatedImp.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,10 +27,49 @@
  */
 package org.mdmk2.core.logic;
 
+import java.util.List;
+
 /**
  * @author mstockbridge
- * 23-May-10
+ * 13-Jun-10
  */
-public interface AttributeType<V> {
+public interface StatedImp<A extends Attributed> {
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 */
+	public void updateState();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @param action
+	 */
+	public void addAction(Action<A> action);
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public List<Action<A>> getActions();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public State<A> getState();
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @param s
+	 */
+	public void setState(State<A> s);
 
 }

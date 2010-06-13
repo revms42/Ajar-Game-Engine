@@ -27,7 +27,7 @@
  */
 package org.mdmk2.sprint1.step3;
 
-import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.State;
 import org.mdmk2.core.logic.StateMatrix;
 import org.mdmk2.core.logic.StateWrapperNode;
 
@@ -62,7 +62,7 @@ public class Step3Matrix extends StateMatrix<Step3Mover> {
 	 * @see org.mdmk3.core.logic.StateMatrix#defaultState()
 	 */
 	@Override
-	public EntityState<Step3Mover> defaultState() {
+	public State<Step3Mover> defaultState() {
 		return move;
 	}
 }

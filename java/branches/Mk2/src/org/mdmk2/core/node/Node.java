@@ -25,9 +25,11 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core;
+package org.mdmk2.core.node;
 
 import java.util.List;
+
+import org.mdmk2.core.cull.Cullable;
 
 /**
  * Nodes are the primary structures for object culling for both visual and logic operations.
@@ -39,35 +41,7 @@ import java.util.List;
  * May 4, 2010
  * @param	<R>		the type parameter of the view range.
  */
-public interface Node<R> {
-
-	/**
-	 * 
-	 * @author mstockbridge
-	 * 29-May-10
-	 */
-	public static enum UpdateType {
-		NO_UPDATE,
-		DISPLAY_ONLY,
-		STATUS_ONLY,
-		DISPLAY_AND_STATUS;
-	}
-	
-	/**
-	 * Determines whether this Node is can be updated or displayed based on the range
-	 * provided.
-	 * @param	range	the range currently in the "view" of the game. 
-	 * @return			whether this Node is current in the provided range.
-	 */
-	public boolean isInRange(R range);
-	
-	/**
-	 * Returns the type of update that this node requires.
-	 * mstockbridge
-	 * 29-May-10
-	 * @return	the type of update that this node requires.
-	 */
-	public UpdateType needsUpdate();
+public interface Node<R> extends Cullable<R> {
 	
 	/**
 	 * Returns <code>true</code> if this Node currently has any child Nodes.
@@ -93,5 +67,15 @@ public interface Node<R> {
 	 */
 	public List<Node<R>> getChildren();
 
+	/**
+	 * Returns the Node that claims this Node as it's child.
+	 * <p>
+	 * Note: Technically a Node may be a child of any number of other Nodes, but
+	 * only one will be considered it's "parent".
+	 * mstockbridge
+	 * 15-May-10
+	 * @return	the Node that claims this Node as it's child.
+	 */
+	public Node<R> getParent();
 
 }

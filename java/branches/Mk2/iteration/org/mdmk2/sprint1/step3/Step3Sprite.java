@@ -33,8 +33,8 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
-import org.mdmk2.core.Node;
 import org.mdmk2.core.disp2d.AbstractSprite2d;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
@@ -61,7 +61,7 @@ public abstract class Step3Sprite<E extends Step3Sprite<E>> extends AbstractSpri
 	 * @see org.mdmk2.core.Node#needsUpdate()
 	 */
 	public org.mdmk2.core.Node.UpdateType needsUpdate() {
-		return Node.UpdateType.DISPLAY_AND_STATUS;
+		return org.mdmk2.core.node.DISPLAY_AND_STATUS;
 	}
 
 	public double getX() {

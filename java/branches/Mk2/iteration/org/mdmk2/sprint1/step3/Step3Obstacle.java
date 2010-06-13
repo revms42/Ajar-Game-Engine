@@ -31,7 +31,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 
-import org.mdmk2.core.Node;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
@@ -54,7 +54,7 @@ public class Step3Obstacle extends Step3Sprite<Step3Obstacle> {
 	 * @see org.mdmk2.core.Node#needsUpdate()
 	 */
 	public org.mdmk2.core.Node.UpdateType needsUpdate() {
-		return Node.UpdateType.DISPLAY_ONLY;
+		return org.mdmk2.core.node.DISPLAY_ONLY;
 	}
 
 	public void updateDisplay(Graphics2D g2){

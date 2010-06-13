@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.disp2d
- * RootNode.java
+ * DisplayImp.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,32 +25,30 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core;
+package org.mdmk2.core.disp2d;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 /**
- * RootNode is a simple implementation of Node that acts as a lowest level node for a
- * content graph.
  * @author mstockbridge
- * 15-May-10
- * @param <R>	the type parameter of the view range.
+ * 13-Jun-10
  */
-public class RootNode<R> extends AbstractNode<R> {
-	
-	public RootNode(){
-		super();
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#isInRange(java.lang.Object)
-	 */
-	public boolean isInRange(R range) {
-		return true;
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#needsUpdate()
-	 */
-	public org.mdmk2.core.Node.UpdateType needsUpdate() {
-		return UpdateType.DISPLAY_AND_STATUS;
-	}
+public interface DisplayableImp {
 
+	/**
+	 * Calls on this object to display itself.
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @param 	g2	the {@link Graphics2D} context on which to display.
+	 */
+	public void updateDisplay(Graphics2D g2);
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public AffineTransform getTransform();
 }

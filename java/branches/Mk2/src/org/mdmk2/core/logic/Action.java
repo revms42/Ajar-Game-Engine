@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 29-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.logic
- * EntityState.java
+ * Action.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -29,9 +29,8 @@ package org.mdmk2.core.logic;
 
 /**
  * @author mstockbridge
- * 29-May-10
+ * 13-Jun-10
  */
-public interface EntityState<E extends Entity> {
+public interface Action<A extends Attributed> {
 
-	public void apply(E e);
 }

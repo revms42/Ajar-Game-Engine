@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 30-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core
- * AbstractNode.java
+ * org.mdmk2.core.disp2d
+ * AbstractSpriteFactory.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,47 +25,25 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core;
+package org.mdmk2.core.disp2d;
 
-import java.util.List;
-import java.util.Vector;
+import org.mdmk2.core.node.AbstractNodeFactory;
 
 /**
  * @author mstockbridge
- * 30-May-10
+ * 13-Jun-10
  */
-public abstract class AbstractNode<R> implements Node<R> {
+public abstract class AbstractSpriteFactory<R> {
 
-	protected final Vector<Node<R>> children;
+	private final AbstractNodeFactory<R> nFactory;
 	
-	public AbstractNode(){
-		children = new Vector<Node<R>>();
+	public AbstractSpriteFactory(AbstractNodeFactory<R> nFactory){
+		this.nFactory = nFactory;
 	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#addChild(org.mdmk2.core.Node)
-	 */
-	public void addChild(Node<R> child) {
-		children.add(child);
+	
+	public Sprite<R> createSprite(){
+		return new DefaultSprite<R>(nFactory.createNode(),createDisplayableImp());
 	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#getChildren()
-	 */
-	public List<Node<R>> getChildren() {
-		return children;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#hasChildren()
-	 */
-	public boolean hasChildren() {
-		return children.size() != 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.Node#removeChild(org.mdmk2.core.Node)
-	 */
-	public void removeChild(Node<R> child) {
-		children.remove(child);
-	}
+	
+	public abstract DisplayableImp createDisplayableImp();
 }
