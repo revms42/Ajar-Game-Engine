@@ -27,7 +27,7 @@
  */
 package org.mdmk2.sprint1.step3;
 
-import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.State;
 import org.mdmk2.core.logic.StateMap;
 
 /**
@@ -39,7 +39,7 @@ public class Step3MoveMap extends StateMap<Step3Mover> {
 	/**
 	 * @param state
 	 */
-	public Step3MoveMap(EntityState<Step3Mover> state) {
+	public Step3MoveMap(State<Step3Mover> state) {
 		super(state);
 	}
 

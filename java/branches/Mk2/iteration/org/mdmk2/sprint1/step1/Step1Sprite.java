@@ -32,14 +32,14 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
-import org.mdmk2.core.Node;
-import org.mdmk2.core.disp2d.AbstractDisplayable;
+import org.mdmk2.core.disp2d.DefaultSprite;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
  * 15-May-10
  */
-public class Step1Sprite extends AbstractDisplayable {
+public class Step1Sprite extends DefaultSprite {
 	
 	private final Color color;
 	
@@ -52,7 +52,7 @@ public class Step1Sprite extends AbstractDisplayable {
 	 * @see org.mdmk2.core.Node#needsUpdate()
 	 */
 	public org.mdmk2.core.Node.UpdateType needsUpdate() {
-		return Node.UpdateType.DISPLAY_ONLY;
+		return org.mdmk2.core.node.DISPLAY_ONLY;
 	}
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.disp2d.Displayable#updateDisplay(java.awt.Graphics2D)

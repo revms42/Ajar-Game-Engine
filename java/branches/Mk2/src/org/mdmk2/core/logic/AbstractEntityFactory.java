@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 29-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.logic
- * StateMap.java
+ * AbstractEntityFactory.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,31 +27,23 @@
  */
 package org.mdmk2.core.logic;
 
-import java.util.HashMap;
+import org.mdmk2.core.disp2d.AbstractSpriteFactory;
 
 /**
  * @author mstockbridge
- * 29-May-10
+ * 13-Jun-10
  */
-public class StateMap<E extends Entity> {
+public abstract class AbstractEntityFactory<R,A extends Attributed> {
 
-	public final EntityState<E> state;
-	protected final HashMap<StateChange,EntityState<E>> map;
+	private final AbstractSpriteFactory<R> sFactory;
 	
-	public StateMap(EntityState<E> state){
-		this.state = state;
-		map = new HashMap<StateChange,EntityState<E>>();
-	}
-
-	public EntityState<E> setStateChange(StateChange arg0, EntityState<E> arg1) {
-		return map.put(arg0, arg1);
+	public AbstractEntityFactory(AbstractSpriteFactory<R> sFactory){
+		this.sFactory = sFactory;
 	}
 	
-	public EntityState<E> remove(StateChange sc){
-		return map.remove(sc);
+	public Entity<R,A> createEntity(){
+		return new DefaultEntity<R,A>(sFactory.createSprite(),createStatedImp());
 	}
 	
-	public EntityState<E> changeState(StateChange sc){
-		return map.get(sc);
-	}
+	public abstract StatedImp<A> createStatedImp();
 }

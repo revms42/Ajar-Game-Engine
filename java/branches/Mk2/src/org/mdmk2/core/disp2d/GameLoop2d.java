@@ -30,8 +30,8 @@ package org.mdmk2.core.disp2d;
 import java.awt.Rectangle;
 
 import org.mdmk2.core.GameLoop;
-import org.mdmk2.core.Node;
 import org.mdmk2.core.logic.Entity;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge

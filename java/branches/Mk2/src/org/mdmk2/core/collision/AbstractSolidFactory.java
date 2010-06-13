@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 30-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.logic
- * Bounded.java
+ * org.mdmk2.core.collision
+ * AbstractSolidFactory.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,13 +25,26 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.logic;
+package org.mdmk2.core.collision;
+
+import org.mdmk2.core.logic.AbstractEntityFactory;
+import org.mdmk2.core.logic.Attributed;
 
 /**
  * @author mstockbridge
- * 30-May-10
+ * 13-Jun-10
  */
-public interface Bounded<R> {
-	public boolean collidesWith(Bounded<R> r);
-	public R getCollisionBounds();
+public abstract class AbstractSolidFactory<R, A extends Attributed> {
+
+	private final AbstractEntityFactory<R,A> eFactory;
+	
+	public AbstractSolidFactory(AbstractEntityFactory<R,A> eFactory){
+		this.eFactory = eFactory;
+	}
+	
+	public Solid<R,A> createSolid(){
+		return new DefaultSolid<R,A>(eFactory.createEntity(),createCollidableImp());
+	}
+	
+	public abstract CollidableImp<A> createCollidableImp();
 }

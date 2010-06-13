@@ -30,7 +30,7 @@ package org.mdmk2.core.disp2d;
 import java.awt.Graphics2D;
 import java.util.List;
 
-import org.mdmk2.core.Node;
+import org.mdmk2.core.node.Node;
 
 /**
  * DisplaySurface provides an interface for surfaces that will make display

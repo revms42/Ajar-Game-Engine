@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 15-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1GameLoop.java
+ * org.mdmk2.core.logic
+ * Attributed.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,34 +25,12 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step1;
-
-import java.awt.Rectangle;
-
-import org.mdmk2.core.disp2d.DisplayPanel;
-import org.mdmk2.core.disp2d.GameLoop2d;
-import org.mdmk2.core.node.Node;
+package org.mdmk2.core.logic;
 
 /**
  * @author mstockbridge
- * 15-May-10
+ * 13-Jun-10
  */
-public class Step1GameLoop extends GameLoop2d {
-	
-	private DisplayPanel panel;
-	/**
-	 * @param displayRoot
-	 */
-	public Step1GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
-		super(displayRoot,panel);
-		this.panel = panel;
-	}
+public interface Attributed {
 
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#getRange()
-	 */
-	@Override
-	public Rectangle getRange() {
-		return panel.getVisibleRect();
-	}
 }

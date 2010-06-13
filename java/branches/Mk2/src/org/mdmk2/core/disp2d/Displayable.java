@@ -28,6 +28,7 @@
 package org.mdmk2.core.disp2d;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 /**
  * The Displayable class provides an interface for rendering.
@@ -44,5 +45,19 @@ public interface Displayable {
 	 */
 	public void updateDisplay(Graphics2D g2);
 	
-
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public AffineTransform getTransform();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public DisplayableImp getDisplayableImp();
 }

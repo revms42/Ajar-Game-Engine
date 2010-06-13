@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 30-May-10 Matthew Stockbridge
+ * Copyright (C) 29-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core
- * AbstractSprite.java
+ * org.mdmk2.core.logic
+ * EntityState.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,52 +25,13 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core;
-
-import org.mdmk2.core.logic.EntityState;
+package org.mdmk2.core.logic;
 
 /**
  * @author mstockbridge
- * 30-May-10
+ * 29-May-10
  */
-public abstract class AbstractSprite<R,E extends AbstractSprite,B> extends AbstractNode<R> implements Sprite<R,E,B> {
+public interface State<A extends Attributed> {
 
-	private EntityState<E> state;
-
-	private B bounds;
-	
-	public AbstractSprite(B bounds){
-		this.bounds = bounds;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Entity#updateStatus()
-	 */
-	public void updateStatus() {
-		state.apply(thisAsE());
-	}
-
-	protected abstract E thisAsE();
-	
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Stated#getState()
-	 */
-	public EntityState<E> getState() {
-		return state;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Stated#setState(org.mdmk2.core.logic.EntityState)
-	 */
-	public void setState(EntityState<E> s) {
-		this.state = s;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Bounded#getCollisionBounds()
-	 */
-	public B getCollisionBounds(){
-		return bounds;
-	}
+	public State<A> perform(Action<A> e);
 }

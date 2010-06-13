@@ -27,14 +27,14 @@
  */
 package org.mdmk2.sprint1.step2;
 
-import org.mdmk2.core.logic.EntityState;
+import org.mdmk2.core.logic.State;
 import org.mdmk2.core.logic.StateWrapperNode;
 
 /**
  * @author reverend
  * 30-May-10
  */
-public class Step2BounceState implements EntityState<Step2Sprite> {
+public class Step2BounceState implements State<Step2Sprite> {
 	
 	private final StateWrapperNode wrapper;
 	

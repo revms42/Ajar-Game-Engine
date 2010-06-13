@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 30-May-10 Matthew Stockbridge
+ * Copyright (C) 13-Jun-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core
+ * org.mdmk2.core.disp2d
  * Sprite.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
@@ -25,16 +25,14 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core;
+package org.mdmk2.core.disp2d;
 
-import org.mdmk2.core.logic.Bounded;
-import org.mdmk2.core.logic.Entity;
-import org.mdmk2.core.logic.Stated;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
- * 30-May-10
+ * 13-Jun-10
  */
-public interface Sprite<R,E extends Sprite,B> extends Node<R>, Entity, Stated<E>, Bounded<B> {
+public interface Sprite<R> extends Node<R>, Displayable {
 
 }

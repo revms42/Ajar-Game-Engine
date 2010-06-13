@@ -27,11 +27,56 @@
  */
 package org.mdmk2.core.logic;
 
+import java.util.List;
+
 /**
  * @author mstockbridge
  * 30-May-10
  */
-public interface Stated<E extends Entity> {
-	public EntityState<E> getState();
-	public void setState(EntityState<E> s);
+public interface Stated<A extends Attributed> {
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 */
+	public void updateState();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @param action
+	 */
+	public void addAction(Action<A> action);
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public List<Action<A>> getActions();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public State<A> getState();
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @param s
+	 */
+	public void setState(State<A> s);
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public StatedImp<A> getStatedImp();
 }
