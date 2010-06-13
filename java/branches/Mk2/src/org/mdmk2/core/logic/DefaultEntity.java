@@ -104,4 +104,11 @@ public class DefaultEntity<R,A extends Attributed> extends DefaultSprite<R> impl
 		sImp.updateState();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.logic.Stated#needsStateUpdate()
+	 */
+	public boolean needsStateUpdate() {
+		return sImp.needsStateUpdate();
+	}
+
 }

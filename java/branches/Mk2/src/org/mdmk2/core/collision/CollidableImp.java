@@ -44,4 +44,12 @@ public interface CollidableImp<A extends Attributed> {
 	 * @return
 	 */
 	public Action<A> collideWith(Collidable<A> s);
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public boolean needsCollisionCheck();
 }

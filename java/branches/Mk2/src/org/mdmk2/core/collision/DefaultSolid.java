@@ -75,4 +75,11 @@ public class DefaultSolid<R,A extends Attributed> extends DefaultEntity<R,A> imp
 		return lImp.collideWith(s);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.collision.Collidable#needsCollisionCheck()
+	 */
+	public boolean needsCollisionCheck() {
+		return lImp.needsCollisionCheck();
+	}
+
 }

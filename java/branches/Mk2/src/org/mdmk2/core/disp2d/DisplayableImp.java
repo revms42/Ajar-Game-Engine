@@ -51,4 +51,12 @@ public interface DisplayableImp {
 	 * @return
 	 */
 	public AffineTransform getTransform();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public boolean needsDisplayUpdate();
 }
