@@ -29,8 +29,9 @@ package org.mdmk2.core;
 
 import java.util.Vector;
 
+import org.mdmk2.core.collision.Collidable;
 import org.mdmk2.core.disp2d.Displayable;
-import org.mdmk2.core.logic.Entity;
+import org.mdmk2.core.logic.Stated;
 import org.mdmk2.core.node.Node;
 
 /**
@@ -69,17 +70,19 @@ public abstract class GameLoop<R> implements Runnable {
 	private long excess = 0L;
 	
 	protected final Node<R> displayRoot;
-	protected final Vector<Entity> needsStatusUpdate;
+	protected final Vector<Stated<?>> needsStatusUpdate;
 	//TODO: This prevents it from working in 3D, so it may need to come out later.
 	protected final Vector<Displayable> needsDisplayUpdate;
+	protected final Vector<Collidable<?>> needsCollisionCheck;
 	
 	//Used to enable debugging messages.
 	public static boolean debug = false;
 	
 	public GameLoop(Node<R> displayRoot){
 		this.displayRoot = displayRoot;
-		needsStatusUpdate = new Vector<Entity>();
+		needsStatusUpdate = new Vector<Stated<?>>();
 		needsDisplayUpdate = new Vector<Displayable>();
+		needsCollisionCheck = new Vector<Collidable<?>>();
 	}
 	
 	/**
@@ -185,14 +188,25 @@ public abstract class GameLoop<R> implements Runnable {
 	protected void update(Node<R> root, R range){
 		for(Node<R> node : root.getChildren()){
 			if(node.isInRange(range)){
-				Node.UpdateType ut = node.needsUpdate();
-				
-				if(ut != org.mdmk2.core.node.NO_UPDATE){
-					if((ut == org.mdmk2.core.node.DISPLAY_AND_STATUS || ut == org.mdmk2.core.node.STATUS_ONLY) && node instanceof Entity){
-						needsStatusUpdate.add((Entity)node);
+				if(node instanceof Displayable){
+					Displayable d = (Displayable)node;
+					
+					if(d.needsDisplayUpdate()){
+						needsDisplayUpdate.add(d);
 					}
-					if((ut == org.mdmk2.core.node.DISPLAY_AND_STATUS || ut == org.mdmk2.core.node.DISPLAY_ONLY) && node instanceof Displayable){
-						needsDisplayUpdate.add((Displayable)node);
+				}
+				if(node instanceof Stated){
+					Stated<?> s = (Stated<?>)node;
+					
+					if(s.needsStateUpdate()){
+						needsStatusUpdate.add(s);
+					}
+				}
+				if(node instanceof Collidable){
+					Collidable<?> c = (Collidable<?>)node;
+					
+					if(c.needsCollisionCheck()){
+						needsCollisionCheck.add(c);
 					}
 				}
 				
@@ -204,13 +218,21 @@ public abstract class GameLoop<R> implements Runnable {
 		if(running){
 			if(!isPaused){
 				logic();
+				collision();
 			}
 			render();
 		}
 		needsStatusUpdate.removeAllElements();
 		needsDisplayUpdate.removeAllElements();
+		needsCollisionCheck.removeAllElements();
 	}
 	
+	/**
+	 * mstockbridge
+	 * 13-Jun-10
+	 */
+	public abstract void collision();
+
 	/**
 	 * Performs the rendering of {@link Node}s to the screen during
 	 * the {@link GameLoop.update(Node<R>,R)} call.

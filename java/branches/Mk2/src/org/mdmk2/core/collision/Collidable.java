@@ -52,4 +52,12 @@ public interface Collidable<A extends Attributed> {
 	 * @return
 	 */
 	public CollidableImp<A> getImplementation();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public boolean needsCollisionCheck();
 }

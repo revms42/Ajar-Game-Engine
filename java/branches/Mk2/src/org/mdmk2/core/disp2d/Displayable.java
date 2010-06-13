@@ -60,4 +60,12 @@ public interface Displayable {
 	 * @return
 	 */
 	public DisplayableImp getDisplayableImp();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public boolean needsDisplayUpdate();
 }

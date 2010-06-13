@@ -72,4 +72,11 @@ public interface StatedImp<A extends Attributed> {
 	 */
 	public void setState(State<A> s);
 
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public boolean needsStateUpdate();
 }

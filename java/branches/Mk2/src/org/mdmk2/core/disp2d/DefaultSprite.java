@@ -116,4 +116,11 @@ public class DefaultSprite<R> extends DefaultNode<R> implements Sprite<R> {
 		return dImp;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.disp2d.Displayable#needsDisplayUpdate()
+	 */
+	public boolean needsDisplayUpdate() {
+		return getDisplayableImp().needsDisplayUpdate();
+	}
+
 }
