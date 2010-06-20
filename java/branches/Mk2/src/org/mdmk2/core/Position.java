@@ -36,6 +36,12 @@ import java.awt.geom.Point2D;
  */
 public class Position {
 
+	public static enum ProjectionAxis {
+		X,
+		Y,
+		Z;
+	}
+	
 	private final static double F = 1.5d;
 	private final static long CARMACK = 0x5f3759df;
 	
@@ -213,5 +219,25 @@ public class Position {
 	    y  = y * ( F - ( x * y * y ) );
 
 	    return square * y;
+	}
+	
+	/**
+	 * Follows winding rules.
+	 * mstockbridge
+	 * 20-Jun-10
+	 * @param p
+	 * @return
+	 */
+	public Point2D.Double projection(ProjectionAxis p){
+		switch(p){
+		case X:
+			return new Point2D.Double(y,z);
+		case Y:
+			return new Point2D.Double(z,x);
+		case Z:
+			return new Point2D.Double(x,y);
+		default:
+			return null;
+		}
 	}
 }

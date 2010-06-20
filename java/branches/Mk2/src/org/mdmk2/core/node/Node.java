@@ -29,7 +29,8 @@ package org.mdmk2.core.node;
 
 import java.util.List;
 
-import org.mdmk2.core.cull.Cullable;
+import org.mdmk2.core.Position;
+import org.mdmk2.core.cull.CullingMethod;
 
 /**
  * Nodes are the primary structures for object culling for both visual and logic operations.
@@ -41,7 +42,55 @@ import org.mdmk2.core.cull.Cullable;
  * May 4, 2010
  * @param	<R>		the type parameter of the view range.
  */
-public interface Node<R> extends Cullable<R> {
+public interface Node<R> {
+
+	/**
+	 * Determines whether this Node is can be updated or displayed based on the range
+	 * provided.
+	 * @param	range	the range currently in the "view" of the game. 
+	 * @return			whether this Node is current in the provided range.
+	 */
+	public boolean isInRange(R range);
+	
+	/**
+	 * 
+	 * reverend
+	 * 20-Jun-10
+	 * @return
+	 */
+	public CullingMethod<R> getCullingMethod();
+	
+	/**
+	 * 
+	 * reverend
+	 * 20-Jun-10
+	 * @param method
+	 */
+	public void setCullingMethod(CullingMethod<R> method);
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public Position getRelativePosition();
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @param pos
+	 */
+	public void setRelativePosition(Position pos);
+	
+	/**
+	 * 
+	 * mstockbridge
+	 * 13-Jun-10
+	 * @return
+	 */
+	public Position getAbsolutePosition();
 	
 	/**
 	 * Returns <code>true</code> if this Node currently has any child Nodes.
