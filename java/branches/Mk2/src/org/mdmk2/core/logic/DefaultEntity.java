@@ -29,10 +29,11 @@ package org.mdmk2.core.logic;
 
 import java.util.List;
 
-import org.mdmk2.core.cull.CullableImp;
+import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.disp2d.DefaultSprite;
 import org.mdmk2.core.disp2d.DisplayableImp;
 import org.mdmk2.core.disp2d.Sprite;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
@@ -48,9 +49,19 @@ public class DefaultEntity<R,A extends Attributed> extends DefaultSprite<R> impl
 	 * @param dImp
 	 * @param sImp
 	 */
-	public DefaultEntity(CullableImp<R> cImp, DisplayableImp dImp, StatedImp<A> sImp){
+	public DefaultEntity(CullingMethod<R> cImp, DisplayableImp dImp, StatedImp<A> sImp){
 		super(cImp,dImp);
 		this.sImp = sImp;
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @param dImp
+	 * @param sImp
+	 */
+	public DefaultEntity(Node<R> node, DisplayableImp dImp, StatedImp<A> sImp){
+		this(node.getCullingMethod(),dImp,sImp);
 	}
 	
 	/**
@@ -59,7 +70,7 @@ public class DefaultEntity<R,A extends Attributed> extends DefaultSprite<R> impl
 	 * @param sImp
 	 */
 	public DefaultEntity(Sprite<R> sprite, StatedImp<A> sImp){
-		this(sprite.getCullableImp(),sprite.getDisplayableImp(),sImp);
+		this(sprite,sprite.getDisplayableImp(),sImp);
 	}
 	
 	/* (non-Javadoc)

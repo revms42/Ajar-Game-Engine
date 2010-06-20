@@ -31,7 +31,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
-import org.mdmk2.core.cull.CullableImp;
+import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.node.DefaultNode;
 import org.mdmk2.core.node.Node;
 
@@ -50,21 +50,26 @@ public class DefaultSprite<R> extends DefaultNode<R> implements Sprite<R> {
 	
 	/**
 	 * 
-	 * @param cImp
 	 * @param dImp
 	 */
-	public DefaultSprite(CullableImp<R> cImp, DisplayableImp dImp){
-		super(cImp);
+	public DefaultSprite(DisplayableImp dImp){
+		super();
+		this.dImp = dImp;
+	}
+	
+	public DefaultSprite(CullingMethod<R> method, DisplayableImp dImp){
+		super(method);
 		this.dImp = dImp;
 	}
 	
 	/**
 	 * 
-	 * @param node
+	 * @param prototype
 	 * @param dImp
 	 */
-	public DefaultSprite(Node<R> node, DisplayableImp dImp){
-		this(node.getCullableImp(),dImp);
+	public DefaultSprite(Node<R> prototype, DisplayableImp dImp){
+		super(prototype.getCullingMethod());
+		this.dImp = dImp;
 	}
 
 	/**
@@ -122,5 +127,4 @@ public class DefaultSprite<R> extends DefaultNode<R> implements Sprite<R> {
 	public boolean needsDisplayUpdate() {
 		return getDisplayableImp().needsDisplayUpdate();
 	}
-
 }

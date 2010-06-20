@@ -27,7 +27,7 @@
  */
 package org.mdmk2.core.disp2d;
 
-import org.mdmk2.core.node.AbstractNodeFactory;
+import org.mdmk2.core.node.AbstactNodeFactory;
 
 /**
  * @author mstockbridge
@@ -35,9 +35,9 @@ import org.mdmk2.core.node.AbstractNodeFactory;
  */
 public abstract class AbstractSpriteFactory<R> {
 
-	private final AbstractNodeFactory<R> nFactory;
+	private final AbstactNodeFactory<R> nFactory;
 	
-	public AbstractSpriteFactory(AbstractNodeFactory<R> nFactory){
+	public AbstractSpriteFactory(AbstactNodeFactory<R> nFactory){
 		this.nFactory = nFactory;
 	}
 	

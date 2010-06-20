@@ -27,13 +27,15 @@
  */
 package org.mdmk2.core.collision;
 
-import org.mdmk2.core.cull.CullableImp;
+import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.disp2d.DisplayableImp;
+import org.mdmk2.core.disp2d.Sprite;
 import org.mdmk2.core.logic.Action;
 import org.mdmk2.core.logic.Attributed;
 import org.mdmk2.core.logic.DefaultEntity;
 import org.mdmk2.core.logic.Entity;
 import org.mdmk2.core.logic.StatedImp;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
@@ -47,9 +49,30 @@ public class DefaultSolid<R,A extends Attributed> extends DefaultEntity<R,A> imp
 	 * @param dImp
 	 * @param sImp
 	 */
-	public DefaultSolid(CullableImp<R> cImp, DisplayableImp dImp, StatedImp<A> sImp, CollidableImp<A> lImp) {
+	public DefaultSolid(CullingMethod<R> cImp, DisplayableImp dImp, StatedImp<A> sImp, CollidableImp<A> lImp) {
 		super(cImp, dImp, sImp);
 		this.lImp = lImp;
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @param dImp
+	 * @param sImp
+	 * @param lImp
+	 */
+	public DefaultSolid(Node<R> node, DisplayableImp dImp, StatedImp<A> sImp, CollidableImp<A> lImp){
+		this(node.getCullingMethod(),dImp,sImp,lImp);
+	}
+	
+	/**
+	 * 
+	 * @param sprite
+	 * @param sImp
+	 * @param lImp
+	 */
+	public DefaultSolid(Sprite<R> sprite, StatedImp<A> sImp, CollidableImp<A> lImp){
+		this(sprite.getCullingMethod(),sprite.getDisplayableImp(),sImp,lImp);
 	}
 	
 	/**
@@ -58,7 +81,7 @@ public class DefaultSolid<R,A extends Attributed> extends DefaultEntity<R,A> imp
 	 * @param lImp
 	 */
 	public DefaultSolid(Entity<R,A> entity, CollidableImp<A> lImp){
-		this(entity.getCullableImp(),entity.getDisplayableImp(),entity.getStatedImp(), lImp);
+		this(entity.getCullingMethod(),entity.getDisplayableImp(),entity.getStatedImp(),lImp);
 	}
 
 	/* (non-Javadoc)

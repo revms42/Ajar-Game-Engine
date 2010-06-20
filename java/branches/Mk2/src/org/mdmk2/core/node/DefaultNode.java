@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core
- * AbstractNode.java
+ * DefaultNode.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.mdmk2.core.Position;
-import org.mdmk2.core.cull.CullableImp;
+import org.mdmk2.core.cull.CullingMethod;
 
 /**
  * @author mstockbridge
@@ -40,14 +40,17 @@ import org.mdmk2.core.cull.CullableImp;
 public class DefaultNode<R> implements Node<R> {
 
 	private final Vector<Node<R>> children;
-	private final CullableImp<R> cImp;
 	private Node<R> parent;
-	private Position pos;
+	private Position position;
+	private CullingMethod<R> method;
 	
-	public DefaultNode(CullableImp<R> cImp){
-		this.cImp = cImp;
-		this.pos = new Position();
+	public DefaultNode(){
 		children = new Vector<Node<R>>();
+	}
+	
+	public DefaultNode(CullingMethod<R> method){
+		this();
+		this.method = method;
 	}
 	
 	/* (non-Javadoc)
@@ -83,38 +86,54 @@ public class DefaultNode<R> implements Node<R> {
 	public Node<R> getParent() {
 		return this.parent;
 	}
+
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.cull.Cullable#getImplementation()
-	 */
-	public CullableImp<R> getCullableImp() {
-		return cImp;
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.cull.Cullable#getPosition()
-	 */
-	public Position getRelativePosition() {
-		return this.pos;
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.cull.Cullable#isInRange(java.lang.Object)
-	 */
-	public boolean isInRange(R range) {
-		return cImp.isInRange(range);
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.cull.Cullable#getAbsolutePosition()
+	 * @see org.mdmk2.core.node.Node#getAbsolutePosition()
 	 */
 	public Position getAbsolutePosition() {
-		if(getParent() != null){
-			return this.getRelativePosition().sum(getParent().getAbsolutePosition());
+		if(parent != null){
+			return parent.getRelativePosition().sum(getRelativePosition());
 		}else{
-			return this.getRelativePosition().clone();
+			return getRelativePosition();
 		}
 	}
+
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.cull.Cullable#setRelativePosition(org.mdmk2.core.Position)
+	 * @see org.mdmk2.core.node.Node#getRelativePosition()
+	 */
+	public Position getRelativePosition() {
+		return position;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.Node#isInRange(java.lang.Object)
+	 */
+	public boolean isInRange(R range){
+		if(method != null){
+			return method.isInRange(range, this);
+		}else{
+			return false;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.Node#setRelativePosition(org.mdmk2.core.Position)
 	 */
 	public void setRelativePosition(Position pos) {
-		this.pos = pos;
+		this.position = pos;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.Node#getCullingMethod()
+	 */
+	public CullingMethod<R> getCullingMethod() {
+		return method;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.Node#setCullingMethod(org.mdmk2.core.cull.CullingMethod)
+	 */
+	public void setCullingMethod(CullingMethod<R> method) {
+		this.method = method;
 	}
 }
