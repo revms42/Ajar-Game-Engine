@@ -40,5 +40,5 @@ public abstract class AbstractSolidFactory<R, A extends AttributedImp> extends A
 		return new DefaultSolid<R,A>(createCullingMethod(),createAttributedImp(),createDisplayableImp(),createStatedImp(),createCollidableImp());
 	}
 	
-	public abstract CollidableImp<A> createCollidableImp();
+	public abstract CollidableImp<R,A> createCollidableImp();
 }
