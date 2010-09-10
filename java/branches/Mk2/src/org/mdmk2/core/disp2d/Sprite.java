@@ -27,12 +27,13 @@
  */
 package org.mdmk2.core.disp2d;
 
-import org.mdmk2.core.node.Node;
+import org.mdmk2.core.attributed.AttributedImp;
+import org.mdmk2.core.attributed.AttributedNode;
 
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface Sprite<R> extends Node<R>, Displayable {
+public interface Sprite<R,A extends AttributedImp> extends AttributedNode<R,A>, Displayable {
 
 }

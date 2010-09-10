@@ -30,9 +30,9 @@ package org.mdmk2.core.disp2d;
 import java.awt.Rectangle;
 
 import org.mdmk2.core.GameLoop;
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.collision.Collidable;
 import org.mdmk2.core.collision.Solid;
-import org.mdmk2.core.logic.Attributed;
 import org.mdmk2.core.logic.Stated;
 import org.mdmk2.core.node.Node;
 
@@ -78,11 +78,11 @@ public abstract class GameLoop2d extends GameLoop<Rectangle> {
 	public void collision() {
 		for(int start = 0; start < needsCollisionCheck.size(); start++){
 			for(int i = start; i < needsCollisionCheck.size(); i++){
-				Collidable<Attributed> c = (Collidable<Attributed>) needsCollisionCheck.get(start);
-				Collidable<Attributed> d = (Collidable<Attributed>) needsCollisionCheck.get(i);
+				Collidable<AttributedImp> c = (Collidable<AttributedImp>) needsCollisionCheck.get(start);
+				Collidable<AttributedImp> d = (Collidable<AttributedImp>) needsCollisionCheck.get(i);
 				
 				if(c instanceof Solid){
-					Solid<Rectangle,Attributed> s = (Solid<Rectangle,Attributed>)c;
+					Solid<Rectangle,AttributedImp> s = (Solid<Rectangle,AttributedImp>)c;
 					
 					s.addAction(s.collideWith(d));
 				}else{

@@ -31,8 +31,10 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
+import org.mdmk2.core.attributed.AttributedImp;
+import org.mdmk2.core.attributed.AttributedNode;
+import org.mdmk2.core.attributed.DefaultAttributedNode;
 import org.mdmk2.core.cull.CullingMethod;
-import org.mdmk2.core.node.DefaultNode;
 import org.mdmk2.core.node.Node;
 
 /**
@@ -41,7 +43,7 @@ import org.mdmk2.core.node.Node;
  * 13-Jun-10
  * @param <R>
  */
-public class DefaultSprite<R> extends DefaultNode<R> implements Sprite<R> {
+public class DefaultSprite<R,A extends AttributedImp> extends DefaultAttributedNode<R,A> implements Sprite<R,A> {
 
 	private final DisplayableImp dImp;
 	
@@ -52,13 +54,13 @@ public class DefaultSprite<R> extends DefaultNode<R> implements Sprite<R> {
 	 * 
 	 * @param dImp
 	 */
-	public DefaultSprite(DisplayableImp dImp){
-		super();
+	public DefaultSprite(A aImp, DisplayableImp dImp){
+		super(aImp);
 		this.dImp = dImp;
 	}
 	
-	public DefaultSprite(CullingMethod<R> method, DisplayableImp dImp){
-		super(method);
+	public DefaultSprite(CullingMethod<R> method, A aImp, DisplayableImp dImp){
+		super(method,aImp);
 		this.dImp = dImp;
 	}
 	
@@ -67,9 +69,17 @@ public class DefaultSprite<R> extends DefaultNode<R> implements Sprite<R> {
 	 * @param prototype
 	 * @param dImp
 	 */
-	public DefaultSprite(Node<R> prototype, DisplayableImp dImp){
-		super(prototype.getCullingMethod());
+	public DefaultSprite(Node<R> prototype, A aImp, DisplayableImp dImp){
+		super(prototype.getCullingMethod(),aImp);
 		this.dImp = dImp;
+	}
+
+	/**
+	 * @param createAttributedNode
+	 * @param createDisplayableImp
+	 */
+	public DefaultSprite(AttributedNode<R,A> aNode, DisplayableImp dImp) {
+		this(aNode,aNode.getAttributes(),dImp);
 	}
 
 	/**
@@ -79,32 +89,7 @@ public class DefaultSprite<R> extends DefaultNode<R> implements Sprite<R> {
 	 * @return	the local <code>AffineTransform</code>
 	 */
 	public AffineTransform getTransform() {
-		return transform;
-	}
-	/*
-	 * TODO: Needs Review.
-	 */
-	/**
-	 * Returns any <code>Shapes</code> currently defining the bounding surface
-	 * being used in the <code>isInRange</code> method.
-	 * mstockbridge
-	 * 15-May-10
-	 * @return	the current bounding surface.
-	 */
-	public Shape[] getBoundingSurface() {
-		return boundingSurface;
-	}
-	
-	/**
-	 * Sets the bounding surface to the supplied <code>Shape</code>(s), to be used
-	 * in the <code>isInRange</code> method.
-	 * mstockbridge
-	 * 15-May-10
-	 * @param	boundingSurface	one or more <code>Shape</code>s to be used as the
-	 * 							bounding surface.
-	 */
-	public void setBoundingSurface(Shape... boundingSurface) {
-		this.boundingSurface = boundingSurface;
+		return getDisplayableImp().getTransform();
 	}
 
 	/* (non-Javadoc)

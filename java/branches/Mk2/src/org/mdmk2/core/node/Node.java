@@ -27,6 +27,7 @@
  */
 package org.mdmk2.core.node;
 
+import java.awt.Shape;
 import java.util.List;
 
 import org.mdmk2.core.Position;
@@ -127,4 +128,22 @@ public interface Node<R> {
 	 */
 	public Node<R> getParent();
 
+	/**
+	 * Returns any <code>Shapes</code> currently defining the bounding surface
+	 * being used in the <code>isInRange</code> method.
+	 * mstockbridge
+	 * 15-May-10
+	 * @return	the current bounding surface.
+	 */
+	public Shape[] getBoundingSurface();
+	
+	/**
+	 * Sets the bounding surface to the supplied <code>Shape</code>(s), to be used
+	 * in the <code>isInRange</code> method.
+	 * mstockbridge
+	 * 15-May-10
+	 * @param	boundingSurface	one or more <code>Shape</code>s to be used as the
+	 * 							bounding surface.
+	 */
+	public void setBoundingSurface(Shape... boundingSurface);
 }

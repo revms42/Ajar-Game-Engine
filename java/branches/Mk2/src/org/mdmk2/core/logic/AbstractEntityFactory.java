@@ -27,22 +27,17 @@
  */
 package org.mdmk2.core.logic;
 
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.disp2d.AbstractSpriteFactory;
 
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public abstract class AbstractEntityFactory<R,A extends Attributed> {
-
-	private final AbstractSpriteFactory<R> sFactory;
-	
-	public AbstractEntityFactory(AbstractSpriteFactory<R> sFactory){
-		this.sFactory = sFactory;
-	}
+public abstract class AbstractEntityFactory<R,A extends AttributedImp> extends AbstractSpriteFactory<R,A> {
 	
 	public Entity<R,A> createEntity(){
-		return new DefaultEntity<R,A>(sFactory.createSprite(),createStatedImp());
+		return new DefaultEntity<R,A>(createCullingMethod(),createAttributedImp(),createDisplayableImp(),createStatedImp());
 	}
 	
 	public abstract StatedImp<A> createStatedImp();

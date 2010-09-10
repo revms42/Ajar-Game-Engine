@@ -27,14 +27,14 @@
  */
 package org.mdmk2.core.collision;
 
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.logic.Action;
-import org.mdmk2.core.logic.Attributed;
 
 /**
  * @author reverend
  * 13-Jun-10
  */
-public interface CollidableImp<A extends Attributed> {
+public interface CollidableImp<A extends AttributedImp> {
 
 	/**
 	 * 
