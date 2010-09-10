@@ -73,7 +73,7 @@ public abstract class GameLoop<R> implements Runnable {
 	protected final Vector<Stated<?>> needsStatusUpdate;
 	//TODO: This prevents it from working in 3D, so it may need to come out later.
 	protected final Vector<Displayable> needsDisplayUpdate;
-	protected final Vector<Collidable<?>> needsCollisionCheck;
+	protected final Vector<Collidable<R,?>> needsCollisionCheck;
 	
 	//Used to enable debugging messages.
 	public static boolean debug = false;
@@ -82,7 +82,7 @@ public abstract class GameLoop<R> implements Runnable {
 		this.displayRoot = displayRoot;
 		needsStatusUpdate = new Vector<Stated<?>>();
 		needsDisplayUpdate = new Vector<Displayable>();
-		needsCollisionCheck = new Vector<Collidable<?>>();
+		needsCollisionCheck = new Vector<Collidable<R,?>>();
 	}
 	
 	/**
@@ -203,7 +203,8 @@ public abstract class GameLoop<R> implements Runnable {
 					}
 				}
 				if(node instanceof Collidable){
-					Collidable<?> c = (Collidable<?>)node;
+					@SuppressWarnings("unchecked")
+					Collidable<R,?> c = (Collidable<R,?>)node;
 					
 					if(c.needsCollisionCheck()){
 						needsCollisionCheck.add(c);

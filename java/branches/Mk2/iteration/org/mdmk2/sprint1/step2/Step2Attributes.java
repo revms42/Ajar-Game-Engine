@@ -35,4 +35,27 @@ import org.mdmk2.core.attributed.AttributedImp;
  */
 public class Step2Attributes implements AttributedImp {
 
+	private int xVel;
+	private int yVel;
+	
+	public Step2Attributes(){
+		xVel = 1;
+		yVel = 1;
+	}
+
+	public int getXVel() {
+		return xVel;
+	}
+
+	public int getYVel() {
+		return yVel;
+	}
+
+	public void setXVel(int xVel) {
+		this.xVel = xVel;
+	}
+
+	public void setYVel(int yVel) {
+		this.yVel = yVel;
+	}
 }
