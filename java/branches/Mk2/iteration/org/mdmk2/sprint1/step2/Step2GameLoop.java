@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.disp2d
- * Node2d.java
+ * org.mdmk2.sprint1.step2
+ * Step2GameLoop.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,46 +25,34 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.disp2d;
+package org.mdmk2.sprint1.step2;
 
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 
+import org.mdmk2.core.disp2d.DisplayPanel;
+import org.mdmk2.core.disp2d.GameLoop2d;
 import org.mdmk2.core.node.Node;
 
 /**
- * Node2d provides additional methods to Node in order to provide classes in the display2d package
- * to with methods to facilitate in display.
  * @author mstockbridge
  * 15-May-10
  */
-public interface Node2d extends Node<Rectangle> {
+public class Step2GameLoop extends GameLoop2d {
 	
+	private DisplayPanel panel;
 	/**
-	 * Creates a view offset transform for drawing by concatenating all AffineTransforms above
-	 * this Node by climbing the parent hierarchy. 
-	 * mstockbridge
-	 * 15-May-10
-	 * @return	a concatenated {@link AffineTransform} that contains the AffineTransform for
-	 * 			this Node as well as all this Node's parents.
+	 * @param displayRoot
 	 */
-	public AffineTransform getDrawTransform();
-	
-	/**
-	 * Returns <code>true</code> if this Node has no set parent.
-	 * mstockbridge
-	 * 15-May-10
-	 * @return	<code>true</code> if this Node has no set parent.
-	 */
-	public boolean hasParent();
-	
+	public Step2GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
+		super(displayRoot,panel);
+		this.panel = panel;
+	}
 
-	
-	/**
-	 * Returns the offset this Node has from it's parent. 
-	 * mstockbridge
-	 * 30-May-10
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.GameLoop#getRange()
 	 */
-	public AffineTransform getTransform();
+	@Override
+	public Rectangle getRange() {
+		return panel.getVisibleRect();
+	}
 }
