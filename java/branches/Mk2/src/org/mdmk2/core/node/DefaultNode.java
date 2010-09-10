@@ -27,6 +27,7 @@
  */
 package org.mdmk2.core.node;
 
+import java.awt.Shape;
 import java.util.List;
 import java.util.Vector;
 
@@ -43,9 +44,11 @@ public class DefaultNode<R> implements Node<R> {
 	private Node<R> parent;
 	private Position position;
 	private CullingMethod<R> method;
+	private Shape[] boundingSurface;
 	
 	public DefaultNode(){
 		children = new Vector<Node<R>>();
+		position = new Position(0.0d,0.0d,0.0d);
 	}
 	
 	public DefaultNode(CullingMethod<R> method){
@@ -135,5 +138,21 @@ public class DefaultNode<R> implements Node<R> {
 	 */
 	public void setCullingMethod(CullingMethod<R> method) {
 		this.method = method;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.Node#getBoundingSurface()
+	 */
+	@Override
+	public Shape[] getBoundingSurface() {
+		return boundingSurface;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.Node#setBoundingSurface(java.awt.Shape[])
+	 */
+	@Override
+	public void setBoundingSurface(Shape... boundingSurface) {
+		this.boundingSurface = boundingSurface;
 	}
 }

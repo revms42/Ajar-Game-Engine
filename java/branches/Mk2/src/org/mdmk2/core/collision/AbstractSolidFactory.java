@@ -27,23 +27,17 @@
  */
 package org.mdmk2.core.collision;
 
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.logic.AbstractEntityFactory;
-import org.mdmk2.core.logic.Attributed;
 
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public abstract class AbstractSolidFactory<R, A extends Attributed> {
-
-	private final AbstractEntityFactory<R,A> eFactory;
-	
-	public AbstractSolidFactory(AbstractEntityFactory<R,A> eFactory){
-		this.eFactory = eFactory;
-	}
+public abstract class AbstractSolidFactory<R, A extends AttributedImp> extends AbstractEntityFactory<R,A> {
 	
 	public Solid<R,A> createSolid(){
-		return new DefaultSolid<R,A>(eFactory.createEntity(),createCollidableImp());
+		return new DefaultSolid<R,A>(createCullingMethod(),createAttributedImp(),createDisplayableImp(),createStatedImp(),createCollidableImp());
 	}
 	
 	public abstract CollidableImp<A> createCollidableImp();

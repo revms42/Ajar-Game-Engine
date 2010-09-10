@@ -27,12 +27,13 @@
  */
 package org.mdmk2.core.logic;
 
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.disp2d.Sprite;
 
 /**
  * @author mstockbridge
  * 16-May-10
  */
-public interface Entity<R,A extends Attributed> extends Sprite<R>, Stated<A>{
+public interface Entity<R,A extends AttributedImp> extends Sprite<R,A>, Stated<A>{
 	
 }

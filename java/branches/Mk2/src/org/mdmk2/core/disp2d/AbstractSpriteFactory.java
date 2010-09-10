@@ -27,22 +27,17 @@
  */
 package org.mdmk2.core.disp2d;
 
-import org.mdmk2.core.node.AbstactNodeFactory;
+import org.mdmk2.core.attributed.AbstractAttributedNodeFactory;
+import org.mdmk2.core.attributed.AttributedImp;
 
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public abstract class AbstractSpriteFactory<R> {
-
-	private final AbstactNodeFactory<R> nFactory;
+public abstract class AbstractSpriteFactory<R,A extends AttributedImp> extends AbstractAttributedNodeFactory<R,A>{
 	
-	public AbstractSpriteFactory(AbstactNodeFactory<R> nFactory){
-		this.nFactory = nFactory;
-	}
-	
-	public Sprite<R> createSprite(){
-		return new DefaultSprite<R>(nFactory.createNode(),createDisplayableImp());
+	public Sprite<R,A> createSprite(){
+		return new DefaultSprite<R,A>(createCullingMethod(),createAttributedImp(),createDisplayableImp());
 	}
 	
 	public abstract DisplayableImp createDisplayableImp();

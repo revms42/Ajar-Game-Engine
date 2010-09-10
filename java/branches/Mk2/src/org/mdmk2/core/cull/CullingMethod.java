@@ -30,7 +30,7 @@ package org.mdmk2.core.cull;
 import org.mdmk2.core.node.Node;
 
 /**
- * @author reverend
+ * @author mstockbridge
  * 20-Jun-10
  */
 public interface CullingMethod<R> {

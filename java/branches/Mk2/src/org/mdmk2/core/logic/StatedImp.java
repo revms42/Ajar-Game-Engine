@@ -29,11 +29,13 @@ package org.mdmk2.core.logic;
 
 import java.util.List;
 
+import org.mdmk2.core.attributed.AttributedImp;
+
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface StatedImp<A extends Attributed> {
+public interface StatedImp<A extends AttributedImp> {
 	
 	/**
 	 * 

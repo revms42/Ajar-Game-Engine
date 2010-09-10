@@ -28,14 +28,13 @@
 package org.mdmk2.sprint1.step1;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.geom.Ellipse2D;
 
 import javax.swing.JFrame;
 
-import org.mdmk2.core.RootNode;
 import org.mdmk2.core.disp2d.DisplayPanel;
+import org.mdmk2.core.disp2d.Sprite;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
@@ -70,9 +69,8 @@ public class Step1 extends JFrame {
 	 */
 	public static void main(String[] args) {
 		Step1 step1 = (new Step1());
-		RootNode<Rectangle> root = new RootNode<Rectangle>();
-		Ellipse2D circle = new Ellipse2D.Double(0.0d,0.0d,20.0d,20.0d);
-		Step1Sprite sprite = new Step1Sprite(circle,Color.RED);
+		Node<Rectangle> root = Step1SpriteFactory.singleton.createNode();
+		Sprite<Rectangle,Step1Attributes> sprite = Step1SpriteFactory.singleton.createSprite();
 		sprite.getTransform().setToTranslation(10.0d, 10.0d);
 		root.addChild(sprite);
 		Step1GameLoop loop = new Step1GameLoop(root,step1.displayPanel);

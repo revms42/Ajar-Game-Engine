@@ -27,11 +27,13 @@
  */
 package org.mdmk2.core.logic;
 
+import org.mdmk2.core.attributed.AttributedImp;
+
 /**
  * @author mstockbridge
  * 29-May-10
  */
-public interface State<A extends Attributed> {
+public interface State<A extends AttributedImp> {
 
 	public State<A> perform(Action<A> e);
 }

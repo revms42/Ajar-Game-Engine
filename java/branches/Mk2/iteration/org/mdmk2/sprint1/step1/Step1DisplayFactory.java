@@ -31,13 +31,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-import org.mdmk2.core.disp2d.DisplayFactory;
+//import org.mdmk2.core.disp2d.DisplayFactory;
 
 /**
  * @author mstockbridge
  * 15-May-10
  */
-public class Step1DisplayFactory implements DisplayFactory<Color, Step1Sprite> {
+public class Step1DisplayFactory /*implements DisplayFactory<Color, Step1Sprite>*/ {
 	
 	public static final Step1DisplayFactory singleton;
 	
@@ -50,10 +50,10 @@ public class Step1DisplayFactory implements DisplayFactory<Color, Step1Sprite> {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.disp2d.DisplayFactory#display(org.mdmk2.core.disp2d.Displayable, java.awt.Graphics2D, java.awt.geom.AffineTransform, O[])
 	 */
-	public void display(Step1Sprite displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
+	public void display(Step1DisplayImp displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
 		Color foreground = g2.getColor();
 		if(ops != null && ops.length > 0) g2.setColor(ops[0]);
-		g2.fill(offset.createTransformedShape(displayable.getBoundingSurface()[0]));
+		g2.fill(offset.createTransformedShape(displayable.getShape()));
 		g2.setColor(foreground);
 	}
 
