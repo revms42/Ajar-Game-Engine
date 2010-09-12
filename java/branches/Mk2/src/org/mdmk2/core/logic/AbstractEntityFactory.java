@@ -37,8 +37,9 @@ import org.mdmk2.core.disp2d.AbstractSpriteFactory;
 public abstract class AbstractEntityFactory<R,A extends AttributedImp> extends AbstractSpriteFactory<R,A> {
 	
 	public Entity<R,A> createEntity(){
-		return new DefaultEntity<R,A>(createCullingMethod(),createAttributedImp(),createDisplayableImp(),createStatedImp());
+		A aImp = createAttributes();
+		return new DefaultEntity<R,A>(getCullingMethod(),createDisplayableImp(aImp),createStatedImp(aImp));
 	}
 	
-	public abstract StatedImp<A> createStatedImp();
+	public abstract StatedImp<A> createStatedImp(A aImp);
 }

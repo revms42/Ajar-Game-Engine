@@ -32,26 +32,27 @@ import java.util.List;
 import java.util.Vector;
 
 import org.mdmk2.core.Position;
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.cull.CullingMethod;
 
 /**
  * @author mstockbridge
  * 30-May-10
  */
-public class DefaultNode<R> implements Node<R> {
+public class DefaultNode<R,A extends AttributedImp> implements Node<R,A> {
 
-	private final Vector<Node<R>> children;
-	private Node<R> parent;
+	private final Vector<Node<R,A>> children;
+	private Node<R,A> parent;
 	private Position position;
-	private CullingMethod<R> method;
+	private CullingMethod<R,A> method;
 	private Shape[] boundingSurface;
 	
 	public DefaultNode(){
-		children = new Vector<Node<R>>();
+		children = new Vector<Node<R,A>>();
 		position = new Position(0.0d,0.0d,0.0d);
 	}
 	
-	public DefaultNode(CullingMethod<R> method){
+	public DefaultNode(CullingMethod<R,A> method){
 		this();
 		this.method = method;
 	}
@@ -59,14 +60,14 @@ public class DefaultNode<R> implements Node<R> {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#addChild(org.mdmk2.core.Node)
 	 */
-	public void addChild(Node<R> child) {
+	public void addChild(Node<R,A> child) {
 		children.add(child);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#getChildren()
 	 */
-	public List<Node<R>> getChildren() {
+	public List<Node<R,A>> getChildren() {
 		return children;
 	}
 
@@ -80,13 +81,13 @@ public class DefaultNode<R> implements Node<R> {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#removeChild(org.mdmk2.core.Node)
 	 */
-	public void removeChild(Node<R> child) {
+	public void removeChild(Node<R,A> child) {
 		children.remove(child);
 	}
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#getParent()
 	 */
-	public Node<R> getParent() {
+	public Node<R,A> getParent() {
 		return this.parent;
 	}
 
@@ -129,14 +130,14 @@ public class DefaultNode<R> implements Node<R> {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.node.Node#getCullingMethod()
 	 */
-	public CullingMethod<R> getCullingMethod() {
+	public CullingMethod<R,A> getCullingMethod() {
 		return method;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.node.Node#setCullingMethod(org.mdmk2.core.cull.CullingMethod)
 	 */
-	public void setCullingMethod(CullingMethod<R> method) {
+	public void setCullingMethod(CullingMethod<R,A> method) {
 		this.method = method;
 	}
 

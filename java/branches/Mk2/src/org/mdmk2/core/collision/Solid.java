@@ -34,6 +34,6 @@ import org.mdmk2.core.logic.Entity;
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface Solid<R,A extends AttributedImp> extends Entity<R,A>, Collidable<R,A> {
+public interface Solid<R,A extends AttributedImp> extends Entity<R,A>, Collidable<A> {
 
 }

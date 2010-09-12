@@ -49,7 +49,7 @@ public class Step1SpriteFactory extends AbstractSpriteFactory<Rectangle,Step1Att
 	}
 	
 	
-	private static class Step1CullingMethod implements CullingMethod<Rectangle> {
+	private static class Step1CullingMethod implements CullingMethod<Rectangle,Step1Attributes> {
 
 		private final static Step1CullingMethod singleton;
 		
@@ -63,7 +63,7 @@ public class Step1SpriteFactory extends AbstractSpriteFactory<Rectangle,Step1Att
 		 * @see org.mdmk2.core.cull.CullingMethod#isInRange(java.lang.Object, org.mdmk2.core.node.Node)
 		 */
 		@Override
-		public boolean isInRange(Rectangle range, Node<Rectangle> node) {
+		public boolean isInRange(Rectangle range, Node<Rectangle,Step1Attributes> node) {
 			return range.contains(node.getAbsolutePosition().getPosition());
 		}
 		
@@ -73,25 +73,24 @@ public class Step1SpriteFactory extends AbstractSpriteFactory<Rectangle,Step1Att
 	 * @see org.mdmk2.core.disp2d.AbstractSpriteFactory#createDisplayableImp()
 	 */
 	@Override
-	public DisplayableImp createDisplayableImp() {
-		Ellipse2D circle = new Ellipse2D.Double(0.0d,0.0d,20.0d,20.0d);
-		return new Step1DisplayImp(circle,Color.RED);
+	public DisplayableImp<Step1Attributes> createDisplayableImp(Step1Attributes a) {
+		return new Step1DisplayImp(a);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.attributed.AbstractAttributedNodeFactory#createAttributedImp()
+	 * @see org.mdmk2.core.node.AbstractNodeFactory#createCullingMethod(org.mdmk2.core.attributed.AttributedImp)
 	 */
 	@Override
-	public Step1Attributes createAttributedImp() {
-		return new Step1Attributes();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.node.AbstactNodeFactory#createCullingMethod()
-	 */
-	@Override
-	public CullingMethod<Rectangle> createCullingMethod() {
+	public CullingMethod<Rectangle, Step1Attributes> getCullingMethod() {
 		return Step1CullingMethod.singleton;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.attributed.AttributeFactory#createAttributes()
+	 */
+	public Step1Attributes createAttributes() {
+		Ellipse2D circle = new Ellipse2D.Double(0.0d,0.0d,20.0d,20.0d);
+		return new Step1Attributes(circle,Color.RED);
 	}
 
 }

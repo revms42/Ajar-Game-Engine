@@ -50,10 +50,10 @@ public class Step2DisplayFactory {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.disp2d.DisplayFactory#display(org.mdmk2.core.disp2d.Displayable, java.awt.Graphics2D, java.awt.geom.AffineTransform, O[])
 	 */
-	public void display(Step2SolidImp displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
+	public void display(Step2DisplayImp displayable, Graphics2D g2, AffineTransform offset, Color... ops) {
 		Color foreground = g2.getColor();
 		if(ops != null && ops.length > 0) g2.setColor(ops[0]);
-		g2.fill(offset.createTransformedShape(displayable.getShape()[0]));
+		g2.fill(offset.createTransformedShape(displayable.getShape()));
 		g2.setColor(foreground);
 	}
 

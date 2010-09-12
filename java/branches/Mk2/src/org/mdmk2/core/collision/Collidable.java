@@ -34,7 +34,7 @@ import org.mdmk2.core.logic.Action;
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface Collidable<R,A extends AttributedImp> {
+public interface Collidable<A extends AttributedImp> {
 
 	/**
 	 * 
@@ -43,7 +43,7 @@ public interface Collidable<R,A extends AttributedImp> {
 	 * @param s
 	 * @return
 	 */
-	public Action<A> collideWith(Collidable<R,A> s);
+	public Action collideWith(Collidable<A> s);
 	
 	/**
 	 * 
@@ -51,7 +51,7 @@ public interface Collidable<R,A extends AttributedImp> {
 	 * 13-Jun-10
 	 * @return
 	 */
-	public CollidableImp<R,A> getImplementation();
+	public CollidableImp<A> getImplementation();
 	
 	/**
 	 * 

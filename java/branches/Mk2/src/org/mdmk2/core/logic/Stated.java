@@ -50,14 +50,14 @@ public interface Stated<A extends AttributedImp> {
 	 * 13-Jun-10
 	 * @param action
 	 */
-	public void addAction(Action<A> action);
+	public void addAction(Action action);
 	/**
 	 * 
 	 * mstockbridge
 	 * 13-Jun-10
 	 * @return
 	 */
-	public List<Action<A>> getActions();
+	public List<Action> getActions();
 	
 	/**
 	 * 

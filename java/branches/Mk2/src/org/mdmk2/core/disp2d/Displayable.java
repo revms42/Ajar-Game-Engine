@@ -30,12 +30,14 @@ package org.mdmk2.core.disp2d;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
+import org.mdmk2.core.attributed.AttributedImp;
+
 /**
  * The Displayable class provides an interface for rendering.
  * @author mstockbridge
  * May 4, 2010
  */
-public interface Displayable {
+public interface Displayable<A extends AttributedImp> {
 	
 	/**
 	 * Calls on this object to display itself.
@@ -59,7 +61,7 @@ public interface Displayable {
 	 * 13-Jun-10
 	 * @return
 	 */
-	public DisplayableImp getDisplayableImp();
+	public DisplayableImp<A> getDisplayableImp();
 	
 	/**
 	 * 

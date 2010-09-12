@@ -31,6 +31,7 @@ import java.awt.Shape;
 import java.util.List;
 
 import org.mdmk2.core.Position;
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.cull.CullingMethod;
 
 /**
@@ -43,7 +44,7 @@ import org.mdmk2.core.cull.CullingMethod;
  * May 4, 2010
  * @param	<R>		the type parameter of the view range.
  */
-public interface Node<R> {
+public interface Node<R, A extends AttributedImp> {
 
 	/**
 	 * Determines whether this Node is can be updated or displayed based on the range
@@ -59,7 +60,7 @@ public interface Node<R> {
 	 * 20-Jun-10
 	 * @return
 	 */
-	public CullingMethod<R> getCullingMethod();
+	public CullingMethod<R,A> getCullingMethod();
 	
 	/**
 	 * 
@@ -67,7 +68,7 @@ public interface Node<R> {
 	 * 20-Jun-10
 	 * @param method
 	 */
-	public void setCullingMethod(CullingMethod<R> method);
+	public void setCullingMethod(CullingMethod<R,A> method);
 	
 	/**
 	 * 
@@ -103,19 +104,19 @@ public interface Node<R> {
 	 * Adds a child Node to this Node.
 	 * @param	child	the child Node to add under this Node.
 	 */
-	public void addChild(Node<R> child);
+	public void addChild(Node<R,A> child);
 	
 	/**
 	 * Removes a child Node from this Node.
 	 * @param	child	the child Node to be removed.
 	 */
-	public void removeChild(Node<R> child);
+	public void removeChild(Node<R,A> child);
 	
 	/**
 	 * Returns a {@link List} of the children of this Node.
 	 * @return	the list of children under this Node.
 	 */
-	public List<Node<R>> getChildren();
+	public List<Node<R,A>> getChildren();
 
 	/**
 	 * Returns the Node that claims this Node as it's child.
@@ -126,7 +127,7 @@ public interface Node<R> {
 	 * 15-May-10
 	 * @return	the Node that claims this Node as it's child.
 	 */
-	public Node<R> getParent();
+	public Node<R,A> getParent();
 
 	/**
 	 * Returns any <code>Shapes</code> currently defining the bounding surface

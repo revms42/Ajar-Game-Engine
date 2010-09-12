@@ -69,20 +69,20 @@ public abstract class GameLoop<R> implements Runnable {
 	//Amount of time left over from previous operations.
 	private long excess = 0L;
 	
-	protected final Node<R> displayRoot;
+	protected final Node<R,?> displayRoot;
 	protected final Vector<Stated<?>> needsStatusUpdate;
 	//TODO: This prevents it from working in 3D, so it may need to come out later.
 	protected final Vector<Displayable> needsDisplayUpdate;
-	protected final Vector<Collidable<R,?>> needsCollisionCheck;
+	protected final Vector<Collidable<?>> needsCollisionCheck;
 	
 	//Used to enable debugging messages.
 	public static boolean debug = false;
 	
-	public GameLoop(Node<R> displayRoot){
+	public GameLoop(Node<R,?> displayRoot){
 		this.displayRoot = displayRoot;
 		needsStatusUpdate = new Vector<Stated<?>>();
 		needsDisplayUpdate = new Vector<Displayable>();
-		needsCollisionCheck = new Vector<Collidable<R,?>>();
+		needsCollisionCheck = new Vector<Collidable<?>>();
 	}
 	
 	/**
@@ -185,8 +185,8 @@ public abstract class GameLoop<R> implements Runnable {
 	 * @param 	range	the <code>R</code> type "range", or area currently in view
 	 * 					or under consideration for update. 
 	 */
-	protected void update(Node<R> root, R range){
-		for(Node<R> node : root.getChildren()){
+	protected void update(Node<R,?> root, R range){
+		for(Node<R,?> node : root.getChildren()){
 			if(node.isInRange(range)){
 				if(node instanceof Displayable){
 					Displayable d = (Displayable)node;
@@ -204,7 +204,7 @@ public abstract class GameLoop<R> implements Runnable {
 				}
 				if(node instanceof Collidable){
 					@SuppressWarnings("unchecked")
-					Collidable<R,?> c = (Collidable<R,?>)node;
+					Collidable<?> c = (Collidable<?>)node;
 					
 					if(c.needsCollisionCheck()){
 						needsCollisionCheck.add(c);

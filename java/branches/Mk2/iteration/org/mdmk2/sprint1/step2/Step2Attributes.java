@@ -27,6 +27,10 @@
  */
 package org.mdmk2.sprint1.step2;
 
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+
 import org.mdmk2.core.attributed.AttributedImp;
 
 /**
@@ -37,10 +41,16 @@ public class Step2Attributes implements AttributedImp {
 
 	private int xVel;
 	private int yVel;
+	private final Shape shape;
+	private final Color color;
+	private AffineTransform at;
 	
-	public Step2Attributes(){
+	public Step2Attributes(Shape shape, Color color){
+		this.shape = shape;
+		this.color = color;
 		xVel = 1;
 		yVel = 1;
+		at = AffineTransform.getTranslateInstance(0.0d, 0.0d);
 	}
 
 	public int getXVel() {
@@ -57,5 +67,29 @@ public class Step2Attributes implements AttributedImp {
 
 	public void setYVel(int yVel) {
 		this.yVel = yVel;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public Shape getShape() {
+		return shape;
+	}
+	
+	public double getXPos(){
+		return at.getTranslateX();
+	}
+	
+	public double getYPos(){
+		return at.getTranslateY();
+	}
+	
+	public void setPosition(double x, double y){
+		at.setToTranslation(x, y);
+	}
+	
+	public AffineTransform getTransform(){
+		return at;
 	}
 }

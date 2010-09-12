@@ -27,6 +27,9 @@
  */
 package org.mdmk2.sprint1.step1;
 
+import java.awt.Color;
+import java.awt.Shape;
+
 import org.mdmk2.core.attributed.AttributedImp;
 
 /**
@@ -35,4 +38,19 @@ import org.mdmk2.core.attributed.AttributedImp;
  */
 public class Step1Attributes implements AttributedImp {
 
+	private final Shape shape;
+	private final Color c;
+	
+	public Step1Attributes(Shape shape, Color c){
+		this.shape = shape;
+		this.c = c;
+	}
+
+	public Shape getShape() {
+		return shape;
+	}
+
+	public Color getC() {
+		return c;
+	}
 }

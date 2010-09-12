@@ -30,7 +30,6 @@ package org.mdmk2.core.logic;
 import java.util.List;
 
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.attributed.AttributedNode;
 import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.disp2d.DefaultSprite;
 import org.mdmk2.core.disp2d.DisplayableImp;
@@ -51,8 +50,8 @@ public class DefaultEntity<R,A extends AttributedImp> extends DefaultSprite<R,A>
 	 * @param dImp
 	 * @param sImp
 	 */
-	public DefaultEntity(CullingMethod<R> cImp, A aImp, DisplayableImp dImp, StatedImp<A> sImp){
-		super(cImp,aImp,dImp);
+	public DefaultEntity(CullingMethod<R,A> cImp, DisplayableImp<A> dImp, StatedImp<A> sImp){
+		super(cImp,dImp);
 		this.sImp = sImp;
 	}
 	
@@ -62,18 +61,8 @@ public class DefaultEntity<R,A extends AttributedImp> extends DefaultSprite<R,A>
 	 * @param dImp
 	 * @param sImp
 	 */
-	public DefaultEntity(Node<R> node, A aImp, DisplayableImp dImp, StatedImp<A> sImp){
-		this(node.getCullingMethod(),aImp,dImp,sImp);
-	}
-	
-	/**
-	 * 
-	 * @param node
-	 * @param dImp
-	 * @param sImp
-	 */
-	public DefaultEntity(AttributedNode<R,A> node, DisplayableImp dImp, StatedImp<A> sImp){
-		this(node,node.getAttributes(),dImp,sImp);
+	public DefaultEntity(Node<R,A> node, DisplayableImp<A> dImp, StatedImp<A> sImp){
+		this(node.getCullingMethod(),dImp,sImp);
 	}
 	
 	/**
@@ -88,14 +77,14 @@ public class DefaultEntity<R,A extends AttributedImp> extends DefaultSprite<R,A>
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.logic.Stated#addAction(org.mdmk2.core.logic.Action)
 	 */
-	public void addAction(Action<A> action) {
+	public void addAction(Action action) {
 		sImp.addAction(action);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.logic.Stated#getActions()
 	 */
-	public List<Action<A>> getActions() {
+	public List<Action> getActions() {
 		return sImp.getActions();
 	}
 

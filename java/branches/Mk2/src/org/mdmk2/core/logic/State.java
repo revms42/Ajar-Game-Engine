@@ -35,5 +35,5 @@ import org.mdmk2.core.attributed.AttributedImp;
  */
 public interface State<A extends AttributedImp> {
 
-	public State<A> perform(Action<A> e);
+	public State<A> perform(StatedImp<A> subject, Action e);
 }

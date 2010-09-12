@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 20-Jun-10 Matthew Stockbridge
+ * Copyright (C) 11-Sep-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.node
- * AbstactNodeFactory.java
+ * org.mdmk2.sprint1.step2
+ * Step2BounceAction.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,19 +25,19 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.node;
+package org.mdmk2.sprint1.step2;
 
-import org.mdmk2.core.cull.CullingMethod;
+import org.mdmk2.core.logic.Action;
 
 /**
  * @author reverend
- * 20-Jun-10
+ * 11-Sep-10
  */
-public abstract class AbstactNodeFactory<R> {
-
-	public Node<R> createNode(){
-		return new DefaultNode<R>(createCullingMethod());
-	}
+public class Step2BounceAction implements Action {
 	
-	public abstract CullingMethod<R> createCullingMethod();
+	public final Step2ActionType type;
+	
+	public Step2BounceAction(Step2ActionType type){
+		this.type = type;
+	}
 }

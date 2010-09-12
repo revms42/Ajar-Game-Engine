@@ -43,7 +43,7 @@ public class Step1GameLoop extends GameLoop2d {
 	/**
 	 * @param displayRoot
 	 */
-	public Step1GameLoop(Node<Rectangle> displayRoot, DisplayPanel panel) {
+	public Step1GameLoop(Node<Rectangle,Step1Attributes> displayRoot, DisplayPanel panel) {
 		super(displayRoot,panel);
 		this.panel = panel;
 	}
