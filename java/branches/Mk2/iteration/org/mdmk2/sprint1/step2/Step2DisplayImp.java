@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.sprint1.step2
- * Step2SolidImp.java
+ * Step2DisplayImp.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,38 +27,29 @@
  */
 package org.mdmk2.sprint1.step2;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 
-import org.mdmk2.core.collision.Collidable;
-import org.mdmk2.core.collision.CollidableImp;
 import org.mdmk2.core.disp2d.DisplayableImp;
-import org.mdmk2.core.logic.Action;
 
 /**
  * @author mstockbridge
  * Sep 10, 2010
  */
-public class Step2SolidImp implements DisplayableImp, CollidableImp<Rectangle,Step2Attributes> {
+public class Step2DisplayImp implements DisplayableImp<Step2Attributes> {
 
-	private final Shape[] s;
-	private final Color c;
-	private AffineTransform at;
+	private Step2Attributes a;
 	
-	public Step2SolidImp(Color c, Shape... s){
-		this.s = s;
-		this.c = c;
+	public Step2DisplayImp(Step2Attributes a){
+		this.a = a;
 	}
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.disp2d.DisplayableImp#updateDisplay(java.awt.Graphics2D)
 	 */
 	@Override
 	public void updateDisplay(Graphics2D g2) {
-		Step2DisplayFactory.singleton.display(this, g2, getTransform(), c);
+		Step2DisplayFactory.singleton.display(this, g2, getTransform(), a.getColor());
 	}
 
 	/* (non-Javadoc)
@@ -66,8 +57,7 @@ public class Step2SolidImp implements DisplayableImp, CollidableImp<Rectangle,St
 	 */
 	@Override
 	public AffineTransform getTransform() {
-		if(at == null) at = AffineTransform.getTranslateInstance(0, 0);
-		return at;
+		return a.getTransform();
 	}
 
 	/* (non-Javadoc)
@@ -78,34 +68,13 @@ public class Step2SolidImp implements DisplayableImp, CollidableImp<Rectangle,St
 		return true;
 	}
 	
-	public Shape[] getShape(){
-		return s;
+	public Shape getShape(){
+		return a.getShape();
 	}
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.collision.CollidableImp#collideWith(org.mdmk2.core.collision.Collidable)
+	 * @see org.mdmk2.core.attributed.Attributed#getAttributes()
 	 */
-	@Override
-	public Action<Step2Attributes> collideWith(Collidable<Rectangle,Step2Attributes> s) {
-		Rectangle r = s.getImplementation().getCollisionSurface();
-		
-		if(r.intersectsLine((Line2D)this.s[1])){
-			
-		}else if(r.intersectsLine((Line2D)this.s[2])){
-			
-		}
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.collision.CollidableImp#needsCollisionCheck()
-	 */
-	@Override
-	public boolean needsCollisionCheck() {
-		return true;
-	}
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.collision.CollidableImp#getCollisionSurface()
-	 */
-	@Override
-	public Rectangle getCollisionSurface() {
-		return s[0].getBounds();
+	public Step2Attributes getAttributes() {
+		return a;
 	}
 }

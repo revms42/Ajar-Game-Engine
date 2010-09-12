@@ -27,6 +27,7 @@
  */
 package org.mdmk2.core.collision;
 
+import org.mdmk2.core.attributed.Attributed;
 import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.logic.Action;
 
@@ -34,7 +35,7 @@ import org.mdmk2.core.logic.Action;
  * @author reverend
  * 13-Jun-10
  */
-public interface CollidableImp<R,A extends AttributedImp> {
+public interface CollidableImp<A extends AttributedImp> extends Attributed<A> {
 
 	/**
 	 * 
@@ -43,7 +44,7 @@ public interface CollidableImp<R,A extends AttributedImp> {
 	 * @param s
 	 * @return
 	 */
-	public Action<A> collideWith(Collidable<R,A> s);
+	public Action collideWith(Collidable<A> s);
 	
 	/**
 	 * 
@@ -52,12 +53,4 @@ public interface CollidableImp<R,A extends AttributedImp> {
 	 * @return
 	 */
 	public boolean needsCollisionCheck();
-	
-	/**
-	 * 
-	 * mstockbridge
-	 * Sep 10, 2010
-	 * @return
-	 */
-	public R getCollisionSurface();
 }

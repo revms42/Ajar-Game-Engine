@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) Sep 9, 2010 Matthew Stockbridge
+ * Copyright (C) 11-Sep-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.attributed
- * AttributedNode.java
+ * org.mdmk2.sprint1.step2
+ * Step2ActionType.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,14 +25,15 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.attributed;
-
-import org.mdmk2.core.node.Node;
+package org.mdmk2.sprint1.step2;
 
 /**
- * @author mstockbridge
- * Sep 9, 2010
+ * @author reverend
+ * 11-Sep-10
  */
-public interface AttributedNode<R,A extends AttributedImp> extends Node<R>, Attributed<A> {
+public enum Step2ActionType {
 
+	BOUNCE_V,
+	BOUNCE_H;
+	
 }

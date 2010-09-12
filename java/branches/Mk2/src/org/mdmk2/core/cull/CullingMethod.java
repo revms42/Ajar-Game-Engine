@@ -27,13 +27,14 @@
  */
 package org.mdmk2.core.cull;
 
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
  * 20-Jun-10
  */
-public interface CullingMethod<R> {
+public interface CullingMethod<R, A extends AttributedImp> {
 
-	public boolean isInRange(R range, Node<R> node);
+	public boolean isInRange(R range, Node<R,A> node);
 }

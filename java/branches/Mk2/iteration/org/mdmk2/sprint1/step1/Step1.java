@@ -69,7 +69,7 @@ public class Step1 extends JFrame {
 	 */
 	public static void main(String[] args) {
 		Step1 step1 = (new Step1());
-		Node<Rectangle> root = Step1SpriteFactory.singleton.createNode();
+		Node<Rectangle,Step1Attributes> root = Step1SpriteFactory.singleton.createNode();
 		Sprite<Rectangle,Step1Attributes> sprite = Step1SpriteFactory.singleton.createSprite();
 		sprite.getTransform().setToTranslation(10.0d, 10.0d);
 		root.addChild(sprite);

@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 13-Jun-10 Matthew Stockbridge
+ * Copyright (C) 11-Sep-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.core.disp2d
- * DisplayImp.java
+ * org.mdmk2.core.attributed
+ * AbstractAttributeFactory.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,41 +25,13 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.core.disp2d;
-
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import org.mdmk2.core.attributed.Attributed;
-import org.mdmk2.core.attributed.AttributedImp;
+package org.mdmk2.core.attributed;
 
 /**
  * @author mstockbridge
- * 13-Jun-10
+ * 11-Sep-10
  */
-public interface DisplayableImp<A extends AttributedImp> extends Attributed<A>{
+public interface AttributeFactory<A extends AttributedImp> {
 
-	/**
-	 * Calls on this object to display itself.
-	 * mstockbridge
-	 * 13-Jun-10
-	 * @param 	g2	the {@link Graphics2D} context on which to display.
-	 */
-	public void updateDisplay(Graphics2D g2);
-	
-	/**
-	 * 
-	 * mstockbridge
-	 * 13-Jun-10
-	 * @return
-	 */
-	public AffineTransform getTransform();
-	
-	/**
-	 * 
-	 * mstockbridge
-	 * 13-Jun-10
-	 * @return
-	 */
-	public boolean needsDisplayUpdate();
+	public A createAttributes();
 }

@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) Sep 10, 2010 Matthew Stockbridge
+ * Copyright (C) 11-Sep-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * MDMk2
- * org.mdmk2.sprint1.step1
- * Step1DisplayImp.java
+ * org.mdmk2.sprint1.step2
+ * Step2CollidableImp.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,58 +25,55 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk2.sprint1.step1;
+package org.mdmk2.sprint1.step2;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
+import java.awt.Rectangle;
 
-import org.mdmk2.core.disp2d.DisplayableImp;
+import org.mdmk2.core.collision.Collidable;
+import org.mdmk2.core.collision.CollidableImp;
+import org.mdmk2.core.logic.Action;
 
 /**
- * @author mstockbridge
- * Sep 10, 2010
+ * @author reverend
+ * 11-Sep-10
  */
-public class Step1DisplayImp implements DisplayableImp<Step1Attributes> {
+public class Step2CollidableImp implements CollidableImp<Step2Attributes> {
+
+	private Step2Attributes a;
 	
-	private AffineTransform at;
-	private Step1Attributes a;
-	
-	public Step1DisplayImp(Step1Attributes a){
+	public Step2CollidableImp(Step2Attributes a){
 		this.a = a;
 	}
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayableImp#updateDisplay(java.awt.Graphics2D)
+	 * @see org.mdmk2.core.collision.CollidableImp#collideWith(org.mdmk2.core.collision.Collidable)
 	 */
-	@Override
-	public void updateDisplay(Graphics2D g2) {
-		Step1DisplayFactory.singleton.display(this, g2, getTransform(), a.getC());
+	public Action collideWith(Collidable<Step2Attributes> s) {
+		if(a.getShape().intersects(s.getImplementation().getAttributes().getShape().getBounds())){
+			return new Step2BounceAction(a,Step2ActionType.BOUNCE);
+		}else{
+			return new Step2BounceAction(a,Step2ActionType.MOVE);
+		}
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayableImp#getTransform()
+	 * @see org.mdmk2.core.collision.CollidableImp#getCollisionSurface()
 	 */
-	@Override
-	public AffineTransform getTransform() {
-		if(at == null) at = AffineTransform.getTranslateInstance(0, 0);
-		return at;
+	public Rectangle getCollisionSurface() {
+		return a.getShape().getBounds();
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplayableImp#needsDisplayUpdate()
+	 * @see org.mdmk2.core.collision.CollidableImp#needsCollisionCheck()
 	 */
-	@Override
-	public boolean needsDisplayUpdate() {
+	public boolean needsCollisionCheck() {
 		return true;
 	}
-	
-	public Shape getShape(){
-		return a.getShape();
-	}
+
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.attributed.Attributed#getAttributes()
 	 */
-	public Step1Attributes getAttributes() {
+	public Step2Attributes getAttributes() {
 		return a;
 	}
+
 }

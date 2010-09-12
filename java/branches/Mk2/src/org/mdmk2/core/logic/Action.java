@@ -27,12 +27,10 @@
  */
 package org.mdmk2.core.logic;
 
-import org.mdmk2.core.attributed.AttributedImp;
-
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface Action<A extends AttributedImp> {
-
+public interface Action {
+	
 }

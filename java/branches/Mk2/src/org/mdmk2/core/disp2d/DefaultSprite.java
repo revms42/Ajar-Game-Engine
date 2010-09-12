@@ -32,9 +32,8 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.attributed.AttributedNode;
-import org.mdmk2.core.attributed.DefaultAttributedNode;
 import org.mdmk2.core.cull.CullingMethod;
+import org.mdmk2.core.node.DefaultNode;
 import org.mdmk2.core.node.Node;
 
 /**
@@ -43,9 +42,9 @@ import org.mdmk2.core.node.Node;
  * 13-Jun-10
  * @param <R>
  */
-public class DefaultSprite<R,A extends AttributedImp> extends DefaultAttributedNode<R,A> implements Sprite<R,A> {
+public class DefaultSprite<R,A extends AttributedImp> extends DefaultNode<R,A> implements Sprite<R,A> {
 
-	private final DisplayableImp dImp;
+	private final DisplayableImp<A> dImp;
 	
 	protected Shape[] boundingSurface;
 	protected AffineTransform transform;
@@ -54,13 +53,13 @@ public class DefaultSprite<R,A extends AttributedImp> extends DefaultAttributedN
 	 * 
 	 * @param dImp
 	 */
-	public DefaultSprite(A aImp, DisplayableImp dImp){
-		super(aImp);
+	public DefaultSprite(DisplayableImp<A> dImp){
+		super();
 		this.dImp = dImp;
 	}
 	
-	public DefaultSprite(CullingMethod<R> method, A aImp, DisplayableImp dImp){
-		super(method,aImp);
+	public DefaultSprite(CullingMethod<R,A> method, DisplayableImp<A> dImp){
+		super(method);
 		this.dImp = dImp;
 	}
 	
@@ -69,17 +68,9 @@ public class DefaultSprite<R,A extends AttributedImp> extends DefaultAttributedN
 	 * @param prototype
 	 * @param dImp
 	 */
-	public DefaultSprite(Node<R> prototype, A aImp, DisplayableImp dImp){
-		super(prototype.getCullingMethod(),aImp);
+	public DefaultSprite(Node<R,A> prototype, DisplayableImp<A> dImp){
+		super(prototype.getCullingMethod());
 		this.dImp = dImp;
-	}
-
-	/**
-	 * @param createAttributedNode
-	 * @param createDisplayableImp
-	 */
-	public DefaultSprite(AttributedNode<R,A> aNode, DisplayableImp dImp) {
-		this(aNode,aNode.getAttributes(),dImp);
 	}
 
 	/**
@@ -102,7 +93,7 @@ public class DefaultSprite<R,A extends AttributedImp> extends DefaultAttributedN
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.disp2d.Displayable#getDisplayableImp()
 	 */
-	public DisplayableImp getDisplayableImp() {
+	public DisplayableImp<A> getDisplayableImp() {
 		return dImp;
 	}
 

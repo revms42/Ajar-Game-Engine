@@ -29,13 +29,14 @@ package org.mdmk2.core.logic;
 
 import java.util.List;
 
+import org.mdmk2.core.attributed.Attributed;
 import org.mdmk2.core.attributed.AttributedImp;
 
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface StatedImp<A extends AttributedImp> {
+public interface StatedImp<A extends AttributedImp> extends Attributed<A> {
 	
 	/**
 	 * 
@@ -50,14 +51,14 @@ public interface StatedImp<A extends AttributedImp> {
 	 * 13-Jun-10
 	 * @param action
 	 */
-	public void addAction(Action<A> action);
+	public void addAction(Action action);
 	/**
 	 * 
 	 * mstockbridge
 	 * 13-Jun-10
 	 * @return
 	 */
-	public List<Action<A>> getActions();
+	public List<Action> getActions();
 	
 	/**
 	 * 

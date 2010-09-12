@@ -46,7 +46,7 @@ public abstract class GameLoop2d extends GameLoop<Rectangle> {
 	/**
 	 * @param displayRoot
 	 */
-	public GameLoop2d(Node<Rectangle> displayRoot, DisplaySurface surface) {
+	public GameLoop2d(Node<Rectangle,?> displayRoot, DisplaySurface surface) {
 		super(displayRoot);
 		this.surface = surface;
 	}
@@ -78,8 +78,8 @@ public abstract class GameLoop2d extends GameLoop<Rectangle> {
 	public void collision() {
 		for(int start = 0; start < needsCollisionCheck.size(); start++){
 			for(int i = start; i < needsCollisionCheck.size(); i++){
-				Collidable<Rectangle,AttributedImp> c = (Collidable<Rectangle,AttributedImp>) needsCollisionCheck.get(start);
-				Collidable<Rectangle,AttributedImp> d = (Collidable<Rectangle,AttributedImp>) needsCollisionCheck.get(i);
+				Collidable<AttributedImp> c = (Collidable<AttributedImp>) needsCollisionCheck.get(start);
+				Collidable<AttributedImp> d = (Collidable<AttributedImp>) needsCollisionCheck.get(i);
 				
 				if(c instanceof Solid){
 					Solid<Rectangle,AttributedImp> s = (Solid<Rectangle,AttributedImp>)c;
