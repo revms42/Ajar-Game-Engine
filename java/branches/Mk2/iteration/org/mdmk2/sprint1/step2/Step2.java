@@ -70,7 +70,7 @@ public class Step2 extends JFrame {
 	public static void main(String[] args) {
 		Step2 step2 = (new Step2());
 		Node<Rectangle,Step2Attributes> root = Step2SpriteFactory.singleton.createNode();
-		Sprite<Rectangle,Step2Attributes> sprite = Step2SpriteFactory.singleton.createSprite();
+		Sprite<Rectangle,Step2Attributes> sprite = Step2SpriteFactory.singleton.createSolid();
 		sprite.getTransform().setToTranslation(10.0d, 10.0d);
 		root.addChild(sprite);
 		Step2GameLoop loop = new Step2GameLoop(root,step2.displayPanel);
