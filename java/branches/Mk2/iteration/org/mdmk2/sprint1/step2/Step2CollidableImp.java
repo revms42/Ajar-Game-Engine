@@ -27,8 +27,6 @@
  */
 package org.mdmk2.sprint1.step2;
 
-import java.awt.Rectangle;
-
 import org.mdmk2.core.collision.Collidable;
 import org.mdmk2.core.collision.CollidableImp;
 import org.mdmk2.core.logic.Action;
@@ -48,18 +46,13 @@ public class Step2CollidableImp implements CollidableImp<Step2Attributes> {
 	 * @see org.mdmk2.core.collision.CollidableImp#collideWith(org.mdmk2.core.collision.Collidable)
 	 */
 	public Action collideWith(Collidable<Step2Attributes> s) {
-		if(a.getShape().intersects(s.getImplementation().getAttributes().getShape().getBounds())){
-			return new Step2BounceAction(a,Step2ActionType.BOUNCE);
-		}else{
-			return new Step2BounceAction(a,Step2ActionType.MOVE);
+		if(a.getHTester().intersects(s.getImplementation().getAttributes().getCollisionSurface())){
+			return new Step2BounceAction(Step2ActionType.BOUNCE_H);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.collision.CollidableImp#getCollisionSurface()
-	 */
-	public Rectangle getCollisionSurface() {
-		return a.getShape().getBounds();
+		if(a.getVTester().intersects(s.getImplementation().getAttributes().getCollisionSurface())){
+			return new Step2BounceAction(Step2ActionType.BOUNCE_V);
+		}
+		return null;
 	}
 
 	/* (non-Javadoc)
