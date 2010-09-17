@@ -32,7 +32,7 @@ package org.mdmk2.sprint1.step2;
  * 11-Sep-10
  */
 public enum Step2ActionType {
-
+	BOUNCE_D,
 	BOUNCE_V,
 	BOUNCE_H;
 	

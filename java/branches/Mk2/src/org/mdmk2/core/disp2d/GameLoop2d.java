@@ -77,7 +77,7 @@ public abstract class GameLoop2d extends GameLoop<Rectangle> {
 	@Override
 	public void collision() {
 		for(int start = 0; start < needsCollisionCheck.size(); start++){
-			for(int i = start; i < needsCollisionCheck.size(); i++){
+			for(int i = start+1; i < needsCollisionCheck.size(); i++){
 				Collidable<AttributedImp> c = (Collidable<AttributedImp>) needsCollisionCheck.get(start);
 				Collidable<AttributedImp> d = (Collidable<AttributedImp>) needsCollisionCheck.get(i);
 				

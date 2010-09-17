@@ -77,7 +77,7 @@ public class Step2StatedImp implements StatedImp<Step2Attributes> {
 	 * @see org.mdmk2.core.logic.StatedImp#needsStateUpdate()
 	 */
 	public boolean needsStateUpdate() {
-		return !actions.isEmpty();
+		return true;
 	}
 
 	/* (non-Javadoc)

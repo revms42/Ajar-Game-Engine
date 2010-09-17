@@ -1,6 +1,6 @@
 /**
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 11-Sep-10 Matthew Stockbridge
+ * Copyright (C) 14-Sep-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.sprint1.step2
- * Step2GameState.java
+ * Step2Boundry.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,36 +27,48 @@
  */
 package org.mdmk2.sprint1.step2;
 
+import java.awt.Rectangle;
+
+import org.mdmk2.core.collision.Collidable;
+import org.mdmk2.core.collision.CollidableImp;
 import org.mdmk2.core.logic.Action;
-import org.mdmk2.core.logic.State;
-import org.mdmk2.core.logic.StatedImp;
+import org.mdmk2.core.node.DefaultNode;
 
 /**
  * @author reverend
- * 11-Sep-10
+ * 14-Sep-10
  */
-public class Step2GameState implements State<Step2Attributes> {
-
-	public State<Step2Attributes> perform(StatedImp<Step2Attributes> sImp, Action e) {
-		Step2Attributes subject = sImp.getAttributes();
-		if(e != null && e instanceof Step2BounceAction){
-			Step2BounceAction a = (Step2BounceAction)e;
-			
-			switch(a.type){
-			case BOUNCE_D:
-				subject.setYVel(-subject.getYVel());
-				subject.setXVel(-subject.getXVel());
-				break;
-			case BOUNCE_V:
-				subject.setYVel(-subject.getYVel());
-				break;
-			default:
-				subject.setXVel(-subject.getXVel());
-			}
-		}
-		
-		subject.setPosition(subject.getXPos()+subject.getXVel(), subject.getYPos()+subject.getYVel());
-		
-		return this;
+public class Step2Boundry extends DefaultNode<Rectangle,Step2Attributes> implements Collidable<Step2Attributes> {
+	
+	private final CollidableImp<Step2Attributes> atts;
+	
+	public Step2Boundry(CollidableImp<Step2Attributes> atts){
+		this.atts = atts;
 	}
+
+	public boolean isInRange(Rectangle range){
+		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.collision.Collidable#collideWith(org.mdmk2.core.collision.Collidable)
+	 */
+	public Action collideWith(Collidable<Step2Attributes> s) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.collision.Collidable#getImplementation()
+	 */
+	public CollidableImp<Step2Attributes> getImplementation() {
+		return atts;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.collision.Collidable#needsCollisionCheck()
+	 */
+	public boolean needsCollisionCheck() {
+		return true;
+	}
+
 }
