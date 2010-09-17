@@ -30,6 +30,7 @@ package org.mdmk2.sprint1.step2;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 
 import org.mdmk2.core.collision.AbstractSolidFactory;
 import org.mdmk2.core.collision.CollidableImp;
@@ -86,6 +87,14 @@ public class Step2SpriteFactory extends AbstractSolidFactory<Rectangle,Step2Attr
 		return new Step2Attributes(circle,Color.RED);
 	}
 
+	public static Step2Boundry createBoundry(Line2D line){
+		return new Step2Boundry(makeCollidableImp(createBoundryAtts(line)));
+	}
+	
+	public static Step2Attributes createBoundryAtts(Line2D line) {
+		return new Step2Attributes(line,null);
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.node.AbstractNodeFactory#createCullingMethod()
 	 */
@@ -99,6 +108,10 @@ public class Step2SpriteFactory extends AbstractSolidFactory<Rectangle,Step2Attr
 	 */
 	@Override
 	public CollidableImp<Step2Attributes> createCollidableImp(Step2Attributes aImp) {
+		return makeCollidableImp(aImp);
+	}
+	
+	public static CollidableImp<Step2Attributes> makeCollidableImp(Step2Attributes aImp) {
 		return new Step2CollidableImp(aImp);
 	}
 
@@ -107,7 +120,6 @@ public class Step2SpriteFactory extends AbstractSolidFactory<Rectangle,Step2Attr
 	 */
 	@Override
 	public StatedImp<Step2Attributes> createStatedImp(Step2Attributes aImp) {
-		// TODO Auto-generated method stub
 		return new Step2StatedImp(aImp);
 	}
 

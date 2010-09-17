@@ -47,6 +47,9 @@ public class Step2CollidableImp implements CollidableImp<Step2Attributes> {
 	 */
 	public Action collideWith(Collidable<Step2Attributes> s) {
 		if(a.getHTester().intersects(s.getImplementation().getAttributes().getCollisionSurface())){
+			if(a.getVTester().intersects(s.getImplementation().getAttributes().getCollisionSurface())){
+				return new Step2BounceAction(Step2ActionType.BOUNCE_D);
+			}
 			return new Step2BounceAction(Step2ActionType.BOUNCE_H);
 		}
 		if(a.getVTester().intersects(s.getImplementation().getAttributes().getCollisionSurface())){
