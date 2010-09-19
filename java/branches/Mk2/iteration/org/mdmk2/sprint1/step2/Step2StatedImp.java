@@ -91,8 +91,13 @@ public class Step2StatedImp implements StatedImp<Step2Attributes> {
 	 * @see org.mdmk2.core.logic.StatedImp#updateState()
 	 */
 	public void updateState() {
-		for(Action a : actions){
-			state = state.perform(this,a);
+		if(actions.size() > 0){
+			for(Action a : actions){
+				state = state.perform(this,a);
+			}
+			actions.removeAllElements();
+		}else{
+			state.perform(this, null);
 		}
 	}
 

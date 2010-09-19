@@ -30,7 +30,7 @@ package org.mdmk2.sprint1.step2;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import org.mdmk2.core.collision.AbstractSolidFactory;
 import org.mdmk2.core.collision.CollidableImp;
@@ -87,11 +87,11 @@ public class Step2SpriteFactory extends AbstractSolidFactory<Rectangle,Step2Attr
 		return new Step2Attributes(circle,Color.RED);
 	}
 
-	public static Step2Boundry createBoundry(Line2D line){
+	public static Step2Boundry createBoundry(Rectangle2D line){
 		return new Step2Boundry(makeCollidableImp(createBoundryAtts(line)));
 	}
 	
-	public static Step2Attributes createBoundryAtts(Line2D line) {
+	public static Step2Attributes createBoundryAtts(Rectangle2D line) {
 		return new Step2Attributes(line,null);
 	}
 	

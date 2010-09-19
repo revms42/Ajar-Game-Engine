@@ -33,6 +33,7 @@ import org.mdmk2.core.GameLoop;
 import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.collision.Collidable;
 import org.mdmk2.core.collision.Solid;
+import org.mdmk2.core.logic.Action;
 import org.mdmk2.core.logic.Stated;
 import org.mdmk2.core.node.Node;
 
@@ -84,7 +85,8 @@ public abstract class GameLoop2d extends GameLoop<Rectangle> {
 				if(c instanceof Solid){
 					Solid<Rectangle,AttributedImp> s = (Solid<Rectangle,AttributedImp>)c;
 					
-					s.addAction(s.collideWith(d));
+					Action a = s.collideWith(d);
+					if(a != null) s.addAction(a);
 				}else{
 					c.collideWith(d);
 				}

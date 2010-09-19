@@ -28,7 +28,6 @@
 package org.mdmk2.sprint1.step2;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
@@ -60,8 +59,8 @@ public class Step2Attributes implements AttributedImp {
 			new Line2D.Double(width/2,0,width/2,height)
 		};
 		
-		xVel = 1;
-		yVel = 1;
+		xVel = 2;
+		yVel = 2;
 		at = AffineTransform.getTranslateInstance(0.0d, 0.0d);
 	}
 
@@ -86,7 +85,7 @@ public class Step2Attributes implements AttributedImp {
 	}
 
 	public Shape getShape() {
-		return shape;
+		return AffineTransform.getTranslateInstance(1, 1).createTransformedShape(shape);
 	}
 	
 	public double getXPos(){
@@ -105,15 +104,15 @@ public class Step2Attributes implements AttributedImp {
 		return at;
 	}
 	
-	public Line2D getHTester(){
-		return testers[0];
+	public Shape getHTester(){
+		return at.createTransformedShape(testers[0]);
 	}
 	
-	public Line2D getVTester(){
-		return testers[1];
+	public Shape getVTester(){
+		return at.createTransformedShape(testers[1]);
 	}
 	
-	public Rectangle getCollisionSurface() {
-		return shape.getBounds();
+	public Shape getCollisionSurface() {
+		return at.createTransformedShape(shape.getBounds());
 	}
 }

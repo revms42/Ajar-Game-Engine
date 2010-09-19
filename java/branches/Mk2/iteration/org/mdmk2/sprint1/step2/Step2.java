@@ -30,7 +30,7 @@ package org.mdmk2.sprint1.step2;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
 
@@ -73,16 +73,17 @@ public class Step2 extends JFrame {
 		Step2 step2 = (new Step2());
 		Node<Rectangle,Step2Attributes> root = Step2SpriteFactory.singleton.createNode();
 		Sprite<Rectangle,Step2Attributes> sprite = Step2SpriteFactory.singleton.createSolid();
-		sprite.getTransform().setToTranslation(10.0d, 10.0d);
+		sprite.getTransform().setToTranslation(0.0d, 0.0d);
 		root.addChild(sprite);
 		
 		Dimension d = step2.displayPanel.getSize();
 		
-		root.addChild(Step2SpriteFactory.createBoundry(new Line2D.Double(0,0,0,d.height)));
-		root.addChild(Step2SpriteFactory.createBoundry(new Line2D.Double(0,0,d.width,0)));
-		root.addChild(Step2SpriteFactory.createBoundry(new Line2D.Double(0,d.height,d.width,d.height)));
-		root.addChild(Step2SpriteFactory.createBoundry(new Line2D.Double(d.width,0,d.width,d.height)));
+		root.addChild(Step2SpriteFactory.createBoundry(new Rectangle2D.Double(0,0,1,d.height)));
+		root.addChild(Step2SpriteFactory.createBoundry(new Rectangle2D.Double(0,0,d.width,1)));
+		root.addChild(Step2SpriteFactory.createBoundry(new Rectangle2D.Double(0,d.height,d.width,1)));
+		root.addChild(Step2SpriteFactory.createBoundry(new Rectangle2D.Double(d.width,0,1,d.height)));
 		Step2GameLoop loop = new Step2GameLoop(root,step2.displayPanel);
+		loop.setUpdatePeriod(10);
 		
 		Thread t = new Thread(loop);
 		
