@@ -34,11 +34,11 @@ import org.mdmk2.core.logic.AbstractEntityFactory;
  * @author mstockbridge
  * 13-Jun-10
  */
-public abstract class AbstractSolidFactory<R, A extends AttributedImp> extends AbstractEntityFactory<R,A> {
+public abstract class AbstractSolidFactory<A extends AttributedImp> extends AbstractEntityFactory<A> {
 	
-	public Solid<R,A> createSolid(){
+	public Solid<A> createSolid(){
 		A aImp = createAttributes();
-		return new DefaultSolid<R,A>(getCullingMethod(),createDisplayableImp(aImp),createStatedImp(aImp),createCollidableImp(aImp));
+		return new DefaultSolid<A>(aImp,createDisplayableImp(aImp),createStatedImp(aImp),createCollidableImp(aImp));
 	}
 	
 	public abstract CollidableImp<A> createCollidableImp(A aImp);

@@ -34,7 +34,7 @@ import org.mdmk2.core.node.Node;
  * @author mstockbridge
  * 20-Jun-10
  */
-public interface CullingMethod<R, A extends AttributedImp> {
+public interface CullingSurface<A extends AttributedImp> {
 
-	public boolean isInRange(R range, Node<R,A> node);
+	public boolean isInRange(Node<A> node);
 }

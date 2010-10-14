@@ -30,7 +30,6 @@ package org.mdmk2.core.logic;
 import java.util.List;
 
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.disp2d.DefaultSprite;
 import org.mdmk2.core.disp2d.DisplayableImp;
 import org.mdmk2.core.disp2d.Sprite;
@@ -40,7 +39,7 @@ import org.mdmk2.core.node.Node;
  * @author mstockbridge
  * 13-Jun-10
  */
-public class DefaultEntity<R,A extends AttributedImp> extends DefaultSprite<R,A> implements Entity<R,A> {
+public class DefaultEntity<A extends AttributedImp> extends DefaultSprite<A> implements Entity<A> {
 	
 	private final StatedImp<A> sImp;
 	
@@ -50,8 +49,8 @@ public class DefaultEntity<R,A extends AttributedImp> extends DefaultSprite<R,A>
 	 * @param dImp
 	 * @param sImp
 	 */
-	public DefaultEntity(CullingMethod<R,A> cImp, DisplayableImp<A> dImp, StatedImp<A> sImp){
-		super(cImp,dImp);
+	public DefaultEntity(A attributes, DisplayableImp<A> dImp, StatedImp<A> sImp){
+		super(attributes,dImp);
 		this.sImp = sImp;
 	}
 	
@@ -61,8 +60,8 @@ public class DefaultEntity<R,A extends AttributedImp> extends DefaultSprite<R,A>
 	 * @param dImp
 	 * @param sImp
 	 */
-	public DefaultEntity(Node<R,A> node, DisplayableImp<A> dImp, StatedImp<A> sImp){
-		this(node.getCullingMethod(),dImp,sImp);
+	public DefaultEntity(Node<A> node, DisplayableImp<A> dImp, StatedImp<A> sImp){
+		this(node.getAttributes(),dImp,sImp);
 	}
 	
 	/**
@@ -70,7 +69,7 @@ public class DefaultEntity<R,A extends AttributedImp> extends DefaultSprite<R,A>
 	 * @param sprite
 	 * @param sImp
 	 */
-	public DefaultEntity(Sprite<R,A> sprite, StatedImp<A> sImp){
+	public DefaultEntity(Sprite<A> sprite, StatedImp<A> sImp){
 		this(sprite,sprite.getDisplayableImp(),sImp);
 	}
 	

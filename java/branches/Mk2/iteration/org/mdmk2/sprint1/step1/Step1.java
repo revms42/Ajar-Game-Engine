@@ -28,7 +28,6 @@
 package org.mdmk2.sprint1.step1;
 
 import java.awt.BorderLayout;
-import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
@@ -69,11 +68,12 @@ public class Step1 extends JFrame {
 	 */
 	public static void main(String[] args) {
 		Step1 step1 = (new Step1());
-		Node<Rectangle,Step1Attributes> root = Step1SpriteFactory.singleton.createNode();
-		Sprite<Rectangle,Step1Attributes> sprite = Step1SpriteFactory.singleton.createSprite();
+		Node<Step1Attributes> root = Step1SpriteFactory.singleton.createNode();
+		Sprite<Step1Attributes> sprite = Step1SpriteFactory.singleton.createSprite();
 		sprite.getTransform().setToTranslation(10.0d, 10.0d);
 		root.addChild(sprite);
 		Step1GameLoop loop = new Step1GameLoop(root,step1.displayPanel);
+		loop.setCullingSurface(new Step1CullingSurface(step1.displayPanel));
 		
 		Thread t = new Thread(loop);
 		

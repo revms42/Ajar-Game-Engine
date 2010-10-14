@@ -31,8 +31,8 @@ import java.awt.Shape;
 import java.util.List;
 
 import org.mdmk2.core.Position;
+import org.mdmk2.core.attributed.Attributed;
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.cull.CullingMethod;
 
 /**
  * Nodes are the primary structures for object culling for both visual and logic operations.
@@ -44,31 +44,7 @@ import org.mdmk2.core.cull.CullingMethod;
  * May 4, 2010
  * @param	<R>		the type parameter of the view range.
  */
-public interface Node<R, A extends AttributedImp> {
-
-	/**
-	 * Determines whether this Node is can be updated or displayed based on the range
-	 * provided.
-	 * @param	range	the range currently in the "view" of the game. 
-	 * @return			whether this Node is current in the provided range.
-	 */
-	public boolean isInRange(R range);
-	
-	/**
-	 * 
-	 * reverend
-	 * 20-Jun-10
-	 * @return
-	 */
-	public CullingMethod<R,A> getCullingMethod();
-	
-	/**
-	 * 
-	 * reverend
-	 * 20-Jun-10
-	 * @param method
-	 */
-	public void setCullingMethod(CullingMethod<R,A> method);
+public interface Node<A extends AttributedImp> extends Attributed<A> {
 	
 	/**
 	 * 
@@ -104,19 +80,19 @@ public interface Node<R, A extends AttributedImp> {
 	 * Adds a child Node to this Node.
 	 * @param	child	the child Node to add under this Node.
 	 */
-	public void addChild(Node<R,A> child);
+	public void addChild(Node<A> child);
 	
 	/**
 	 * Removes a child Node from this Node.
 	 * @param	child	the child Node to be removed.
 	 */
-	public void removeChild(Node<R,A> child);
+	public void removeChild(Node<A> child);
 	
 	/**
 	 * Returns a {@link List} of the children of this Node.
 	 * @return	the list of children under this Node.
 	 */
-	public List<Node<R,A>> getChildren();
+	public List<Node<A>> getChildren();
 
 	/**
 	 * Returns the Node that claims this Node as it's child.
@@ -127,7 +103,7 @@ public interface Node<R, A extends AttributedImp> {
 	 * 15-May-10
 	 * @return	the Node that claims this Node as it's child.
 	 */
-	public Node<R,A> getParent();
+	public Node<A> getParent();
 
 	/**
 	 * Returns any <code>Shapes</code> currently defining the bounding surface

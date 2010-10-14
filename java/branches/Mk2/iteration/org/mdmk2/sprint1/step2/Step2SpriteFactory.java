@@ -28,46 +28,23 @@
 package org.mdmk2.sprint1.step2;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.mdmk2.core.collision.AbstractSolidFactory;
 import org.mdmk2.core.collision.CollidableImp;
-import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.logic.StatedImp;
-import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
  * Sep 9, 2010
  */
-public class Step2SpriteFactory extends AbstractSolidFactory<Rectangle,Step2Attributes> {
+public class Step2SpriteFactory extends AbstractSolidFactory<Step2Attributes> {
 
 	public static final Step2SpriteFactory singleton;
 	
 	static {
 		singleton = new Step2SpriteFactory();
-	}
-	
-	private static class Step2CullingMethod implements CullingMethod<Rectangle,Step2Attributes> {
-
-		private final static Step2CullingMethod singleton;
-		
-		static {
-			singleton = new Step2CullingMethod();
-		}
-		
-		private Step2CullingMethod(){};
-		
-		/* (non-Javadoc)
-		 * @see org.mdmk2.core.cull.CullingMethod#isInRange(java.lang.Object, org.mdmk2.core.node.Node)
-		 */
-		@Override
-		public boolean isInRange(Rectangle range, Node<Rectangle,Step2Attributes> node) {
-			return range.contains(node.getAbsolutePosition().getPosition());
-		}
-		
 	}
 	
 	/* (non-Javadoc)
@@ -93,14 +70,6 @@ public class Step2SpriteFactory extends AbstractSolidFactory<Rectangle,Step2Attr
 	
 	public static Step2Attributes createBoundryAtts(Rectangle2D line) {
 		return new Step2Attributes(line,null);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.node.AbstractNodeFactory#createCullingMethod()
-	 */
-	@Override
-	public CullingMethod<Rectangle,Step2Attributes> getCullingMethod() {
-		return Step2CullingMethod.singleton;
 	}
 
 	/* (non-Javadoc)

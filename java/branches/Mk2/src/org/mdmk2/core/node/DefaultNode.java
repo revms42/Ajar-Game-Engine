@@ -33,41 +33,36 @@ import java.util.Vector;
 
 import org.mdmk2.core.Position;
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.cull.CullingMethod;
 
 /**
  * @author mstockbridge
  * 30-May-10
  */
-public class DefaultNode<R,A extends AttributedImp> implements Node<R,A> {
+public class DefaultNode<A extends AttributedImp> implements Node<A> {
 
-	private final Vector<Node<R,A>> children;
-	private Node<R,A> parent;
+	private final Vector<Node<A>> children;
+	private Node<A> parent;
 	private Position position;
-	private CullingMethod<R,A> method;
 	private Shape[] boundingSurface;
+	private final A attributes;
 	
-	public DefaultNode(){
-		children = new Vector<Node<R,A>>();
+	public DefaultNode(A attributes){
+		children = new Vector<Node<A>>();
 		position = new Position(0.0d,0.0d,0.0d);
-	}
-	
-	public DefaultNode(CullingMethod<R,A> method){
-		this();
-		this.method = method;
+		this.attributes = attributes;
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#addChild(org.mdmk2.core.Node)
 	 */
-	public void addChild(Node<R,A> child) {
+	public void addChild(Node<A> child) {
 		children.add(child);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#getChildren()
 	 */
-	public List<Node<R,A>> getChildren() {
+	public List<Node<A>> getChildren() {
 		return children;
 	}
 
@@ -81,13 +76,13 @@ public class DefaultNode<R,A extends AttributedImp> implements Node<R,A> {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#removeChild(org.mdmk2.core.Node)
 	 */
-	public void removeChild(Node<R,A> child) {
+	public void removeChild(Node<A> child) {
 		children.remove(child);
 	}
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.Node#getParent()
 	 */
-	public Node<R,A> getParent() {
+	public Node<A> getParent() {
 		return this.parent;
 	}
 
@@ -110,35 +105,10 @@ public class DefaultNode<R,A extends AttributedImp> implements Node<R,A> {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.node.Node#isInRange(java.lang.Object)
-	 */
-	public boolean isInRange(R range){
-		if(method != null){
-			return method.isInRange(range, this);
-		}else{
-			return false;
-		}
-	}
-
-	/* (non-Javadoc)
 	 * @see org.mdmk2.core.node.Node#setRelativePosition(org.mdmk2.core.Position)
 	 */
 	public void setRelativePosition(Position pos) {
 		this.position = pos;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.node.Node#getCullingMethod()
-	 */
-	public CullingMethod<R,A> getCullingMethod() {
-		return method;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.node.Node#setCullingMethod(org.mdmk2.core.cull.CullingMethod)
-	 */
-	public void setCullingMethod(CullingMethod<R,A> method) {
-		this.method = method;
 	}
 
 	/* (non-Javadoc)
@@ -155,5 +125,13 @@ public class DefaultNode<R,A extends AttributedImp> implements Node<R,A> {
 	@Override
 	public void setBoundingSurface(Shape... boundingSurface) {
 		this.boundingSurface = boundingSurface;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.attributed.Attributed#getAttributes()
+	 */
+	@Override
+	public A getAttributes() {
+		return attributes;
 	}
 }

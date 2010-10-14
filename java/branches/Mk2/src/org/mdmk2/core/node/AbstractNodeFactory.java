@@ -29,17 +29,14 @@ package org.mdmk2.core.node;
 
 import org.mdmk2.core.attributed.AttributeFactory;
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.cull.CullingMethod;
 
 /**
  * @author reverend
  * 20-Jun-10
  */
-public abstract class AbstractNodeFactory<R,A extends AttributedImp> implements AttributeFactory<A> {
+public abstract class AbstractNodeFactory<A extends AttributedImp> implements AttributeFactory<A> {
 
-	public Node<R,A> createNode(){
-		return new DefaultNode<R,A>(getCullingMethod());
+	public Node<A> createNode(){
+		return new DefaultNode<A>(createAttributes());
 	}
-	
-	public abstract CullingMethod<R,A> getCullingMethod();
 }
