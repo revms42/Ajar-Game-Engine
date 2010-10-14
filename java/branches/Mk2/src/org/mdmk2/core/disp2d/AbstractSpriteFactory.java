@@ -34,11 +34,11 @@ import org.mdmk2.core.attributed.AttributedImp;
  * @author mstockbridge
  * 13-Jun-10
  */
-public abstract class AbstractSpriteFactory<R,A extends AttributedImp> extends AbstractNodeFactory<R,A>{
+public abstract class AbstractSpriteFactory<A extends AttributedImp> extends AbstractNodeFactory<A>{
 	
-	public Sprite<R,A> createSprite(){
+	public Sprite<A> createSprite(){
 		A aImp = createAttributes();
-		return new DefaultSprite<R,A>(getCullingMethod(),createDisplayableImp(aImp));
+		return new DefaultSprite<A>(aImp,createDisplayableImp(aImp));
 	}
 	
 	public abstract DisplayableImp<A> createDisplayableImp(A aImp);

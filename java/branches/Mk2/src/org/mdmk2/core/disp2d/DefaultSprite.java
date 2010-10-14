@@ -32,7 +32,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.node.DefaultNode;
 import org.mdmk2.core.node.Node;
 
@@ -42,7 +41,7 @@ import org.mdmk2.core.node.Node;
  * 13-Jun-10
  * @param <R>
  */
-public class DefaultSprite<R,A extends AttributedImp> extends DefaultNode<R,A> implements Sprite<R,A> {
+public class DefaultSprite<A extends AttributedImp> extends DefaultNode<A> implements Sprite<A> {
 
 	private final DisplayableImp<A> dImp;
 	
@@ -53,13 +52,8 @@ public class DefaultSprite<R,A extends AttributedImp> extends DefaultNode<R,A> i
 	 * 
 	 * @param dImp
 	 */
-	public DefaultSprite(DisplayableImp<A> dImp){
-		super();
-		this.dImp = dImp;
-	}
-	
-	public DefaultSprite(CullingMethod<R,A> method, DisplayableImp<A> dImp){
-		super(method);
+	public DefaultSprite(A attributes, DisplayableImp<A> dImp){
+		super(attributes);
 		this.dImp = dImp;
 	}
 	
@@ -68,8 +62,8 @@ public class DefaultSprite<R,A extends AttributedImp> extends DefaultNode<R,A> i
 	 * @param prototype
 	 * @param dImp
 	 */
-	public DefaultSprite(Node<R,A> prototype, DisplayableImp<A> dImp){
-		super(prototype.getCullingMethod());
+	public DefaultSprite(Node<A> prototype, DisplayableImp<A> dImp){
+		super(prototype.getAttributes());
 		this.dImp = dImp;
 	}
 

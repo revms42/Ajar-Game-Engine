@@ -38,11 +38,12 @@ import org.mdmk2.core.node.DefaultNode;
  * @author reverend
  * 14-Sep-10
  */
-public class Step2Boundry extends DefaultNode<Rectangle,Step2Attributes> implements Collidable<Step2Attributes> {
+public class Step2Boundry extends DefaultNode<Step2Attributes> implements Collidable<Step2Attributes> {
 	
 	private final CollidableImp<Step2Attributes> atts;
 	
 	public Step2Boundry(CollidableImp<Step2Attributes> atts){
+		super(null);
 		this.atts = atts;
 	}
 

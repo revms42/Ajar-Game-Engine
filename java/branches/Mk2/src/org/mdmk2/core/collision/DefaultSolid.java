@@ -28,7 +28,6 @@
 package org.mdmk2.core.collision;
 
 import org.mdmk2.core.attributed.AttributedImp;
-import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.disp2d.DisplayableImp;
 import org.mdmk2.core.disp2d.Sprite;
 import org.mdmk2.core.logic.Action;
@@ -41,7 +40,7 @@ import org.mdmk2.core.node.Node;
  * @author mstockbridge
  * 13-Jun-10
  */
-public class DefaultSolid<R,A extends AttributedImp> extends DefaultEntity<R,A> implements Solid<R,A> {
+public class DefaultSolid<A extends AttributedImp> extends DefaultEntity<A> implements Solid<A> {
 
 	private final CollidableImp<A> lImp;
 	/**
@@ -49,8 +48,8 @@ public class DefaultSolid<R,A extends AttributedImp> extends DefaultEntity<R,A> 
 	 * @param dImp
 	 * @param sImp
 	 */
-	public DefaultSolid(CullingMethod<R,A> cImp, DisplayableImp<A> dImp, StatedImp<A> sImp, CollidableImp<A> lImp) {
-		super(cImp, dImp, sImp);
+	public DefaultSolid(A atts, DisplayableImp<A> dImp, StatedImp<A> sImp, CollidableImp<A> lImp) {
+		super(atts, dImp, sImp);
 		this.lImp = lImp;
 	}
 	
@@ -61,8 +60,8 @@ public class DefaultSolid<R,A extends AttributedImp> extends DefaultEntity<R,A> 
 	 * @param sImp
 	 * @param lImp
 	 */
-	public DefaultSolid(Node<R,A> node, DisplayableImp<A> dImp, StatedImp<A> sImp, CollidableImp<A> lImp){
-		this(node.getCullingMethod(),dImp,sImp,lImp);
+	public DefaultSolid(Node<A> node, DisplayableImp<A> dImp, StatedImp<A> sImp, CollidableImp<A> lImp){
+		this(node.getAttributes(),dImp,sImp,lImp);
 	}
 	
 	/**
@@ -71,7 +70,7 @@ public class DefaultSolid<R,A extends AttributedImp> extends DefaultEntity<R,A> 
 	 * @param sImp
 	 * @param lImp
 	 */
-	public DefaultSolid(Sprite<R,A> sprite, StatedImp<A> sImp, CollidableImp<A> lImp){
+	public DefaultSolid(Sprite<A> sprite, StatedImp<A> sImp, CollidableImp<A> lImp){
 		this(sprite,sprite.getDisplayableImp(),sImp,lImp);
 	}
 	
@@ -80,7 +79,7 @@ public class DefaultSolid<R,A extends AttributedImp> extends DefaultEntity<R,A> 
 	 * @param entity
 	 * @param lImp
 	 */
-	public DefaultSolid(Entity<R,A> entity, CollidableImp<A> lImp){
+	public DefaultSolid(Entity<A> entity, CollidableImp<A> lImp){
 		this(entity,entity.getStatedImp(),lImp);
 	}
 

@@ -29,7 +29,9 @@ package org.mdmk2.core;
 
 import java.util.Vector;
 
+import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.collision.Collidable;
+import org.mdmk2.core.cull.CullingSurface;
 import org.mdmk2.core.disp2d.Displayable;
 import org.mdmk2.core.logic.Stated;
 import org.mdmk2.core.node.Node;
@@ -44,7 +46,7 @@ import org.mdmk2.core.node.Node;
  * 15-May-10
  * @param <R>	the "range" type parameter, indicating the format of the screen's view.
  */
-public abstract class GameLoop<R> implements Runnable {
+public abstract class GameLoop<A extends AttributedImp> implements Runnable {
 
 	//Convert a nanosecond value to milliseconds.
 	private static final long NANO_TO_MILLI = 1000000L;
@@ -69,31 +71,22 @@ public abstract class GameLoop<R> implements Runnable {
 	//Amount of time left over from previous operations.
 	private long excess = 0L;
 	
-	protected final Node<R,?> displayRoot;
-	protected final Vector<Stated<?>> needsStatusUpdate;
+	protected final Node<A> displayRoot;
+	protected final Vector<Stated<A>> needsStatusUpdate;
 	//TODO: This prevents it from working in 3D, so it may need to come out later.
-	protected final Vector<Displayable> needsDisplayUpdate;
-	protected final Vector<Collidable<?>> needsCollisionCheck;
+	protected final Vector<Displayable<A>> needsDisplayUpdate;
+	protected final Vector<Collidable<A>> needsCollisionCheck;
+	private CullingSurface<A> cullingSurface;
 	
 	//Used to enable debugging messages.
 	public static boolean debug = false;
 	
-	public GameLoop(Node<R,?> displayRoot){
+	public GameLoop(Node<A> displayRoot){
 		this.displayRoot = displayRoot;
-		needsStatusUpdate = new Vector<Stated<?>>();
-		needsDisplayUpdate = new Vector<Displayable>();
-		needsCollisionCheck = new Vector<Collidable<?>>();
+		needsStatusUpdate = new Vector<Stated<A>>();
+		needsDisplayUpdate = new Vector<Displayable<A>>();
+		needsCollisionCheck = new Vector<Collidable<A>>();
 	}
-	
-	/**
-	 * Returns the current "range" in consideration. e.g. for 2D display
-	 * based on a Swing component, this would probably be a {@link Rectangle}
-	 * representing the displayable area.
-	 * mstockbridge
-	 * May 10, 2010
-	 * @return	an <code>R</code> representation of the range.
-	 */
-	public abstract R getRange();
 	
 	/**
 	 * Returns the whether the game is paused.
@@ -135,7 +128,7 @@ public abstract class GameLoop<R> implements Runnable {
 	public void run() {
 		start = System.nanoTime();
 		while(running){
-			update(displayRoot, getRange());
+			update(displayRoot, getCullingSurface());
 			
 			end = System.nanoTime();
 			updateInterval = end - start;
@@ -185,26 +178,26 @@ public abstract class GameLoop<R> implements Runnable {
 	 * @param 	range	the <code>R</code> type "range", or area currently in view
 	 * 					or under consideration for update. 
 	 */
-	protected void update(Node<R,?> root, R range){
-		for(Node<R,?> node : root.getChildren()){
-			if(node.isInRange(range)){
+	@SuppressWarnings("unchecked")
+	protected void update(Node<A> root, CullingSurface<A> culler){
+		for(Node<A> node : root.getChildren()){
+			if(culler.isInRange(node)){
 				if(node instanceof Displayable){
-					Displayable d = (Displayable)node;
+					Displayable<A> d = (Displayable<A>)node;
 					
 					if(d.needsDisplayUpdate()){
 						needsDisplayUpdate.add(d);
 					}
 				}
 				if(node instanceof Stated){
-					Stated<?> s = (Stated<?>)node;
+					Stated<A> s = (Stated<A>)node;
 					
 					if(s.needsStateUpdate()){
 						needsStatusUpdate.add(s);
 					}
 				}
 				if(node instanceof Collidable){
-					@SuppressWarnings("unchecked")
-					Collidable<?> c = (Collidable<?>)node;
+					Collidable<A> c = (Collidable<A>)node;
 					
 					if(c.needsCollisionCheck()){
 						needsCollisionCheck.add(c);
@@ -212,7 +205,7 @@ public abstract class GameLoop<R> implements Runnable {
 				}
 				
 				if(node.hasChildren()){
-					update(node,range);
+					update(node,culler);
 				}
 			}
 		}
@@ -268,5 +261,19 @@ public abstract class GameLoop<R> implements Runnable {
 	 */
 	public void setUpdatePeriod(long updatePeriod) {
 		this.updatePeriod = updatePeriod * NANO_TO_MILLI;
+	}
+
+	/**
+	 * @param cullingSurface the cullingSurface to set
+	 */
+	public void setCullingSurface(CullingSurface<A> cullingSurface) {
+		this.cullingSurface = cullingSurface;
+	}
+
+	/**
+	 * @return the cullingSurface
+	 */
+	public CullingSurface<A> getCullingSurface() {
+		return cullingSurface;
 	}
 }

@@ -34,6 +34,6 @@ import org.mdmk2.core.node.Node;
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface Sprite<R,A extends AttributedImp> extends Node<R,A>, Displayable<A> {
+public interface Sprite<A extends AttributedImp> extends Node<A>, Displayable<A> {
 
 }

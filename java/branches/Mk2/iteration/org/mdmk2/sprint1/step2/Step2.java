@@ -29,7 +29,6 @@ package org.mdmk2.sprint1.step2;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
@@ -71,8 +70,8 @@ public class Step2 extends JFrame {
 	 */
 	public static void main(String[] args) {
 		Step2 step2 = (new Step2());
-		Node<Rectangle,Step2Attributes> root = Step2SpriteFactory.singleton.createNode();
-		Sprite<Rectangle,Step2Attributes> sprite = Step2SpriteFactory.singleton.createSolid();
+		Node<Step2Attributes> root = Step2SpriteFactory.singleton.createNode();
+		Sprite<Step2Attributes> sprite = Step2SpriteFactory.singleton.createSolid();
 		sprite.getTransform().setToTranslation(0.0d, 0.0d);
 		root.addChild(sprite);
 		
@@ -83,6 +82,7 @@ public class Step2 extends JFrame {
 		root.addChild(Step2SpriteFactory.createBoundry(new Rectangle2D.Double(0,d.height,d.width,1)));
 		root.addChild(Step2SpriteFactory.createBoundry(new Rectangle2D.Double(d.width,0,1,d.height)));
 		Step2GameLoop loop = new Step2GameLoop(root,step2.displayPanel);
+		loop.setCullingSurface(new Step2CullingSurface(step2.displayPanel));
 		loop.setUpdatePeriod(10);
 		
 		Thread t = new Thread(loop);

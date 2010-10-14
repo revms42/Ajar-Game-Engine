@@ -28,45 +28,21 @@
 package org.mdmk2.sprint1.step1;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 
-import org.mdmk2.core.cull.CullingMethod;
 import org.mdmk2.core.disp2d.AbstractSpriteFactory;
 import org.mdmk2.core.disp2d.DisplayableImp;
-import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
  * Sep 9, 2010
  */
-public class Step1SpriteFactory extends AbstractSpriteFactory<Rectangle,Step1Attributes> {
+public class Step1SpriteFactory extends AbstractSpriteFactory<Step1Attributes> {
 
 	public static final Step1SpriteFactory singleton;
 	
 	static {
 		singleton = new Step1SpriteFactory();
-	}
-	
-	
-	private static class Step1CullingMethod implements CullingMethod<Rectangle,Step1Attributes> {
-
-		private final static Step1CullingMethod singleton;
-		
-		static {
-			singleton = new Step1CullingMethod();
-		}
-		
-		private Step1CullingMethod(){};
-		
-		/* (non-Javadoc)
-		 * @see org.mdmk2.core.cull.CullingMethod#isInRange(java.lang.Object, org.mdmk2.core.node.Node)
-		 */
-		@Override
-		public boolean isInRange(Rectangle range, Node<Rectangle,Step1Attributes> node) {
-			return range.contains(node.getAbsolutePosition().getPosition());
-		}
-		
 	}
 	
 	/* (non-Javadoc)
@@ -75,14 +51,6 @@ public class Step1SpriteFactory extends AbstractSpriteFactory<Rectangle,Step1Att
 	@Override
 	public DisplayableImp<Step1Attributes> createDisplayableImp(Step1Attributes a) {
 		return new Step1DisplayImp(a);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.node.AbstractNodeFactory#createCullingMethod(org.mdmk2.core.attributed.AttributedImp)
-	 */
-	@Override
-	public CullingMethod<Rectangle, Step1Attributes> getCullingMethod() {
-		return Step1CullingMethod.singleton;
 	}
 
 	/* (non-Javadoc)

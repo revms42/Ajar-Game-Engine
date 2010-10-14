@@ -27,8 +27,6 @@
  */
 package org.mdmk2.sprint1.step2;
 
-import java.awt.Rectangle;
-
 import org.mdmk2.core.disp2d.DisplayPanel;
 import org.mdmk2.core.disp2d.GameLoop2d;
 import org.mdmk2.core.node.Node;
@@ -37,22 +35,26 @@ import org.mdmk2.core.node.Node;
  * @author mstockbridge
  * 15-May-10
  */
-public class Step2GameLoop extends GameLoop2d {
+public class Step2GameLoop extends GameLoop2d<Step2Attributes> {
 	
 	private DisplayPanel panel;
 	/**
 	 * @param displayRoot
 	 */
-	public Step2GameLoop(Node<Rectangle,?> displayRoot, DisplayPanel panel) {
+	public Step2GameLoop(Node<Step2Attributes> displayRoot, DisplayPanel panel) {
 		super(displayRoot,panel);
+		this.setPanel(panel);
+	}
+	/**
+	 * @param panel the panel to set
+	 */
+	public void setPanel(DisplayPanel panel) {
 		this.panel = panel;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.GameLoop#getRange()
+	/**
+	 * @return the panel
 	 */
-	@Override
-	public Rectangle getRange() {
-		return panel.getVisibleRect();
+	public DisplayPanel getPanel() {
+		return panel;
 	}
 }
