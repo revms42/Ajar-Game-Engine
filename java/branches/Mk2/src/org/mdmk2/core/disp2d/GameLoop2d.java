@@ -43,11 +43,11 @@ import org.mdmk2.core.node.Node;
  */
 public abstract class GameLoop2d extends GameLoop<Rectangle> {
 	
-	protected DisplaySurface surface;
+	protected DisplaySurface2d surface;
 	/**
 	 * @param displayRoot
 	 */
-	public GameLoop2d(Node<Rectangle,?> displayRoot, DisplaySurface surface) {
+	public GameLoop2d(Node<Rectangle,?> displayRoot, DisplaySurface2d surface) {
 		super(displayRoot);
 		this.surface = surface;
 	}

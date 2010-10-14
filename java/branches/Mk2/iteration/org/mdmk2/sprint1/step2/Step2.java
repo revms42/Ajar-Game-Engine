@@ -53,7 +53,7 @@ public class Step2 extends JFrame {
 	
 	private Step2(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Step1: Static Display");
+		this.setTitle("Step2: Moving Display");
 		this.displayPanel = new DisplayPanel();
 		
 		displayPanel.setSize(600, 600);

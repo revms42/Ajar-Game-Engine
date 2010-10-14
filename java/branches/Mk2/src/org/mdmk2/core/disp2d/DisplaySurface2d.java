@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk2.core.disp2d
- * DisplaySurface.java
+ * DisplaySurface2d.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -33,12 +33,12 @@ import java.util.List;
 import org.mdmk2.core.node.Node;
 
 /**
- * DisplaySurface provides an interface for surfaces that will make display
+ * DisplaySurface2d provides an interface for surfaces that will make display
  * updates.
  * @author mstockbridge
  * 15-May-10
  */
-public interface DisplaySurface {
+public interface DisplaySurface2d {
 
 	/**
 	 * Returns the {@link Graphics2D} display context of the buffered surface for the
@@ -50,7 +50,7 @@ public interface DisplaySurface {
 	public Graphics2D getBufferedSurface();
 	
 	/**
-	 * Calls on this DisplaySurface to render the {@link List} of nodes. Typically,
+	 * Calls on this DisplaySurface2d to render the {@link List} of nodes. Typically,
 	 * this will be called from an implementation of {@link GameLoop}.
 	 * mstockbridge
 	 * 15-May-10
@@ -62,7 +62,7 @@ public interface DisplaySurface {
 	public void drawToBuffer(List<? extends Displayable> nodes);
 	
 	/**
-	 * Called after {@link DisplaySurface.drawToBuffer(List)} to instruct this display
+	 * Called after {@link DisplaySurface2d.drawToBuffer(List)} to instruct this display
 	 * surface that the display update is complete and the buffer is ready to be blitted
 	 * to the screen.
 	 * mstockbridge

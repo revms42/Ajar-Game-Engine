@@ -36,12 +36,12 @@ import java.util.List;
 import javax.swing.JPanel;
 
 /**
- * DisplayPanel is meant as a simple implementation of the {@link DisplaySurface} interface,
+ * DisplayPanel is meant as a simple implementation of the {@link DisplaySurface2d} interface,
  * with methods tailored toward speedy rendering.
  * @author mstockbridge
  * 15-May-10
  */
-public class DisplayPanel extends JPanel implements DisplaySurface {
+public class DisplayPanel extends JPanel implements DisplaySurface2d {
 
 	/**
 	 * 
@@ -59,7 +59,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	 * This implementation is based heavily on the one from "Killer Game Programming
 	 * with Java" by Andrew Davidson. Copyright 2005 O'Reilly Media, Inc., 0-596-00730-2.
 	 * TODO: This doesn't take into account any insets, etc....
-	 * @see org.mdmk2.core.disp2d.DisplaySurface#blitToScreen()
+	 * @see org.mdmk2.core.disp2d.DisplaySurface2d#blitToScreen()
 	 */
 	public void blitToScreen() {
 		if(buffer != null){
@@ -82,7 +82,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplaySurface#drawToBuffer(java.util.List)
+	 * @see org.mdmk2.core.disp2d.DisplaySurface2d#drawToBuffer(java.util.List)
 	 */
 	public void drawToBuffer(List<? extends Displayable> nodes) {
 		Graphics2D bg = getBufferedSurface();
@@ -93,7 +93,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.mdmk2.core.disp2d.DisplaySurface#getBufferedSurface()
+	 * @see org.mdmk2.core.disp2d.DisplaySurface2d#getBufferedSurface()
 	 */
 	public Graphics2D getBufferedSurface() {
 		if(buffer == null){
