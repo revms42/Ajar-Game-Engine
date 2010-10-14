@@ -34,48 +34,53 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mdmk2.core.GameLoop;
+import org.mdmk2.core.attributed.AttributedImp;
+import org.mdmk2.core.cull.CullingSurface;
 import org.mdmk2.core.node.Node;
 
 /**
  * @author mstockbridge
  * Jun 4, 2010
  */
-public abstract class NodeCullingTest<E extends Node<R>,R> extends GameLoop<R>{
+public abstract class NodeCullingTest<A extends AttributedImp> extends GameLoop<A>{
+	private final CullingSurface<A> cullingSurface;
+	
 	/**
 	 * @param displayRoot
 	 */
-	public NodeCullingTest(Node<R> displayRoot) {
+	public NodeCullingTest(Node<A> displayRoot, CullingSurface<A> cullingSurface) {
 		super(displayRoot);
+		this.cullingSurface = cullingSurface;
 	}
 
-	public R range;
+	public A range;
 	
-	public Node<R> firstWhollyIn;
-	public Node<R> firstPartiallyIn;
-	public Node<R> firstOutside;
+	public Node<A> firstWhollyIn;
+	public Node<A> firstPartiallyIn;
+	public Node<A> firstOutside;
 	
-	public Node<R> secondWhollyIn;
-	public Node<R> secondPartiallyIn;
-	public Node<R> secondOutside;
+	public Node<A> secondWhollyIn;
+	public Node<A> secondPartiallyIn;
+	public Node<A> secondOutside;
 	
-	public Node<R> thirdWhollyIn;
-	public Node<R> thirdPartiallyIn;
-	public Node<R> thirdOutside;
+	public Node<A> thirdWhollyIn;
+	public Node<A> thirdPartiallyIn;
+	public Node<A> thirdOutside;
 	
 	public boolean logicCalled;
 	public boolean renderCalled;
 	
-	protected abstract E createFirstWhollyIn();
-	protected abstract E createFirstPartiallyIn();
-	protected abstract E createFirstOutside();
+	protected abstract Node<A> createFirstWhollyIn();
+	protected abstract Node<A> createFirstPartiallyIn();
+	protected abstract Node<A> createFirstOutside();
 	
-	protected abstract E createSecondWhollyIn();
-	protected abstract E createSecondPartiallyIn();
-	protected abstract E createSecondOutside();
+	protected abstract Node<A> createSecondWhollyIn();
+	protected abstract Node<A> createSecondPartiallyIn();
+	protected abstract Node<A> createSecondOutside();
 	
-	protected abstract E createThirdWhollyIn();
-	protected abstract E createThirdPartiallyIn();
-	protected abstract E createThirdOutside();
+	protected abstract Node<A> createThirdWhollyIn();
+	protected abstract Node<A> createThirdPartiallyIn();
+	protected abstract Node<A> createThirdOutside();
 	
 	/**
 	 * mstockbridge
@@ -228,15 +233,15 @@ public abstract class NodeCullingTest<E extends Node<R>,R> extends GameLoop<R>{
 	}
 
 	public void callUpdate(){
-		this.update(this.displayRoot, range);
+		this.update(this.displayRoot,getCullingSurface());
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.GameLoop#getRange()
 	 */
 	@Override
-	public R getRange() {
-		return range;
+	public CullingSurface<A> getCullingSurface(){
+		return cullingSurface;
 	}
 
 	/* (non-Javadoc)
