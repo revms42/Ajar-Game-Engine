@@ -29,12 +29,13 @@ package org.mdmk2.core.collision;
 
 import org.mdmk2.core.attributed.AttributedImp;
 import org.mdmk2.core.logic.Action;
+import org.mdmk2.core.node.NodeDecorator;
 
 /**
  * @author mstockbridge
  * 13-Jun-10
  */
-public interface Collidable<A extends AttributedImp> {
+public interface Collidable<A extends AttributedImp> extends NodeDecorator<A> {
 
 	/**
 	 * 

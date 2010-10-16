@@ -31,13 +31,14 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 import org.mdmk2.core.attributed.AttributedImp;
+import org.mdmk2.core.node.NodeDecorator;
 
 /**
  * The Displayable class provides an interface for rendering.
  * @author mstockbridge
  * May 4, 2010
  */
-public interface Displayable<A extends AttributedImp> {
+public interface Displayable<A extends AttributedImp> extends NodeDecorator<A> {
 	
 	/**
 	 * Calls on this object to display itself.
