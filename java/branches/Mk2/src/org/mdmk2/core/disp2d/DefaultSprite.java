@@ -97,4 +97,12 @@ public class DefaultSprite<A extends AttributedImp> extends DefaultNode<A> imple
 	public boolean needsDisplayUpdate() {
 		return getDisplayableImp().needsDisplayUpdate();
 	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.NodeDecorator#getNode()
+	 */
+	@Override
+	public Node<A> getNode() {
+		return this;
+	}
 }

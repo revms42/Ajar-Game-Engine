@@ -33,6 +33,7 @@ import org.mdmk2.core.collision.Collidable;
 import org.mdmk2.core.collision.CollidableImp;
 import org.mdmk2.core.logic.Action;
 import org.mdmk2.core.node.DefaultNode;
+import org.mdmk2.core.node.Node;
 
 /**
  * @author reverend
@@ -70,6 +71,14 @@ public class Step2Boundry extends DefaultNode<Step2Attributes> implements Collid
 	 */
 	public boolean needsCollisionCheck() {
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mdmk2.core.node.NodeDecorator#getNode()
+	 */
+	@Override
+	public Node<Step2Attributes> getNode() {
+		return this;
 	}
 
 }

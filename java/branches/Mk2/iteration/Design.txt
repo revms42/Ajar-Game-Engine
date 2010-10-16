@@ -11,4 +11,15 @@ parents, it may be more effective to have the "area" determine what's inside it.
 -Collision-
 With a culled set of nodes it should be easy to determine which are capable of collision interaction. From there the method must 
 be a reduction interaction, i.e. the first node is tested against the rest of the list complete, the second against all starting 
-with the third, etc.... 
+with the third, etc....
+
+-Structure-
+There will probably need to be a two-way parent-child relationship between nodes. The parent->child behavior is necessary for 
+culling etc..., and the child->parent is necessary for things like spawning, etc.... In addition, there should probably be a 
+universal "root" node (rather than a relative one) for the purposes of directly accessing the highest level node (e.g. spawning
+a new unit in global space).
+Since all the interfaces regarding different aspects are separate, for the purposes of certain types of interaction it's 
+necessary to include the "NodeDecorator" interface, which provides for getting the node proper given the decorator in question.
+This raises an interesting question: Since the decorators themselves are bridges, should all the decorators merely extend from
+Node? Is there an advantage to having the NodeDecorator interface or not?
+ 

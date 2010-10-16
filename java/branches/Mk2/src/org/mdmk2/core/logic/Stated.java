@@ -30,12 +30,13 @@ package org.mdmk2.core.logic;
 import java.util.List;
 
 import org.mdmk2.core.attributed.AttributedImp;
+import org.mdmk2.core.node.NodeDecorator;
 
 /**
  * @author mstockbridge
  * 30-May-10
  */
-public interface Stated<A extends AttributedImp> {
+public interface Stated<A extends AttributedImp> extends NodeDecorator<A> {
 	
 	/**
 	 * 
