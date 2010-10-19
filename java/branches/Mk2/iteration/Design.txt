@@ -22,4 +22,6 @@ Since all the interfaces regarding different aspects are separate, for the purpo
 necessary to include the "NodeDecorator" interface, which provides for getting the node proper given the decorator in question.
 This raises an interesting question: Since the decorators themselves are bridges, should all the decorators merely extend from
 Node? Is there an advantage to having the NodeDecorator interface or not?
+This leads to another question: Currently all the implementations are, themselves, attributed. Do they really need to be, or 
+should they instead refer to the node that they're supposed to be implementing?
  

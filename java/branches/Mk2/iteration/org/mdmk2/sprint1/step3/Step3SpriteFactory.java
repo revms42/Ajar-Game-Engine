@@ -65,7 +65,8 @@ public class Step3SpriteFactory extends AbstractSolidFactory<Step3Attributes> {
 	}
 
 	public static Step3Boundry createBoundry(Rectangle2D line){
-		return new Step3Boundry(makeCollidableImp(createBoundryAtts(line)));
+		Step3Attributes atts = createBoundryAtts(line);
+		return new Step3Boundry(atts,makeCollidableImp(atts));
 	}
 	
 	public static Step3Attributes createBoundryAtts(Rectangle2D line) {

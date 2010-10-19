@@ -43,8 +43,8 @@ public class Step2Boundry extends DefaultNode<Step2Attributes> implements Collid
 	
 	private final CollidableImp<Step2Attributes> atts;
 	
-	public Step2Boundry(CollidableImp<Step2Attributes> atts){
-		super(null);
+	public Step2Boundry(Step2Attributes a, CollidableImp<Step2Attributes> atts){
+		super(a);
 		this.atts = atts;
 	}
 

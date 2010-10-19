@@ -28,6 +28,7 @@
 package org.mdmk2.sprint1.step3;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 
 import org.mdmk2.core.collision.Collidable;
 import org.mdmk2.core.collision.CollidableImp;
@@ -40,39 +41,44 @@ import org.mdmk2.core.logic.Action;
 public class Step3CollidableImp implements CollidableImp<Step3Attributes> {
 
 	private Step3Attributes a;
+	private AffineTransform trans;
 	
 	public Step3CollidableImp(Step3Attributes a){
 		this.a = a;
+		trans = AffineTransform.getTranslateInstance(0, 0);
 	}
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.collision.CollidableImp#collideWith(org.mdmk2.core.collision.Collidable)
 	 */
 	public Action collideWith(Collidable<Step3Attributes> s) {
-		Rectangle collSurf = s.getImplementation().getAttributes().getCollisionSurface().getBounds();
-		boolean testH = a.getHTester().intersects(collSurf);
-		boolean testV = a.getVTester().intersects(collSurf);
-		if(testH){
-			if(testV){
-				return new Step3BounceAction(Step3ActionType.BOUNCE_D);
-			}
+		trans = AffineTransform.getTranslateInstance(getAttributes().getXVel(), getAttributes().getYVel());
+		Rectangle collSurf = s.getNode().getAttributes().getCollisionSurface().getBounds();
+		int ret = 0;
+		ret = trans.createTransformedShape(getAttributes().getHTester()).intersects(collSurf) ? ret + 1 : ret;
+		ret = trans.createTransformedShape(getAttributes().getVTester()).intersects(collSurf) ? ret + 2 : ret;
+		
+		switch(ret){
+		case 1:
 			return new Step3BounceAction(Step3ActionType.BOUNCE_H);
-		}
-		if(testV){
+		case 2:
 			return new Step3BounceAction(Step3ActionType.BOUNCE_V);
+		case 3:
+			return new Step3BounceAction(Step3ActionType.BOUNCE_D);
+		default:
+			return null;
 		}
-		return null;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.collision.CollidableImp#needsCollisionCheck()
 	 */
 	public boolean needsCollisionCheck() {
 		return true;
 	}
-
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.attributed.Attributed#getAttributes()
 	 */
+	@Override
 	public Step3Attributes getAttributes() {
 		return a;
 	}
