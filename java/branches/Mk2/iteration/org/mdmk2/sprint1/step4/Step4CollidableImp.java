@@ -59,11 +59,11 @@ public class Step4CollidableImp implements CollidableImp<Step4Attributes> {
 		
 		switch(ret){
 		case 1:
-			return new Step4BounceAction(Step4ActionType.BOUNCE_H);
+			return new Step4Action(Step4ActionType.BOUNCE_H);
 		case 2:
-			return new Step4BounceAction(Step4ActionType.BOUNCE_V);
+			return new Step4Action(Step4ActionType.BOUNCE_V);
 		case 3:
-			return new Step4BounceAction(Step4ActionType.BOUNCE_D);
+			return new Step4Action(Step4ActionType.BOUNCE_D);
 		default:
 			return null;
 		}

@@ -33,6 +33,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
 
+import org.mdmk2.core.collision.Solid;
 import org.mdmk2.core.disp2d.DisplayPanel;
 import org.mdmk2.core.disp2d.Sprite;
 import org.mdmk2.core.node.Node;
@@ -71,9 +72,11 @@ public class Step4 extends JFrame {
 	public static void main(String[] args) {
 		Step4 Step4 = (new Step4());
 		Node<Step4Attributes> root = Step4SpriteFactory.singleton.createNode();
-		Sprite<Step4Attributes> sprite = Step4SpriteFactory.singleton.createSolid();
+		Solid<Step4Attributes> sprite = Step4SpriteFactory.singleton.createSolid();
 		sprite.getTransform().setToTranslation(0.0d, 0.0d);
 		root.addChild(sprite);
+		
+		Step4.addKeyListener((Step4StatedImp)sprite.getStatedImp());
 		
 		Sprite<Step4Attributes> sprite2 = Step4SpriteFactory.createBox(new Rectangle2D.Double(0,0,100,100));
 		sprite2.getTransform().setToTranslation(200.0d, 300.0d);

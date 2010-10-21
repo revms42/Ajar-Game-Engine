@@ -33,11 +33,11 @@ import org.mdmk2.core.logic.Action;
  * @author reverend
  * 11-Sep-10
  */
-public class Step4BounceAction implements Action {
+public class Step4Action implements Action {
 	
 	public final Step4ActionType type;
 	
-	public Step4BounceAction(Step4ActionType type){
+	public Step4Action(Step4ActionType type){
 		this.type = type;
 	}
 }
