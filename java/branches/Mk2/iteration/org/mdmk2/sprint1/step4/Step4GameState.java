@@ -39,24 +39,74 @@ public class Step4GameState implements State<Step4Attributes> {
 
 	public State<Step4Attributes> perform(StatedImp<Step4Attributes> sImp, Action e) {
 		Step4Attributes subject = sImp.getAttributes();
-		if(e != null && e instanceof Step4BounceAction){
-			Step4BounceAction a = (Step4BounceAction)e;
+		if(e != null && e instanceof Step4Action){
+			Step4Action a = (Step4Action)e;
 			
 			switch(a.type){
 			case BOUNCE_D:
 				subject.setYVel(-subject.getYVel());
 				subject.setXVel(-subject.getXVel());
+				
+				decrimentX(subject);
+				
+				decrimentY(subject);
 				break;
 			case BOUNCE_V:
 				subject.setYVel(-subject.getYVel());
+				
+				decrimentY(subject);
+				break;
+			case BOUNCE_H:
+				subject.setXVel(-subject.getXVel());
+				
+				decrimentX(subject);
+				break;
+			case KEY_UP:
+				subject.setYVel(subject.getYVel() - 1);
+				break;
+			case KEY_DOWN:
+				subject.setYVel(subject.getYVel() + 1);
+				break;
+			case KEY_LEFT:
+				subject.setXVel(subject.getXVel() - 1);
+				break;
+			case KEY_RIGHT:
+				subject.setXVel(subject.getXVel() + 1);
 				break;
 			default:
-				subject.setXVel(-subject.getXVel());
+				break;
 			}
 		}
+
 		
 		subject.setPosition(subject.getXPos()+subject.getXVel(), subject.getYPos()+subject.getYVel());
 		
 		return this;
+	}
+
+	/**
+	 * mstockbr
+	 * Oct 21, 2010
+	 * @param subject
+	 */
+	private void decrimentY(Step4Attributes subject) {
+		if(subject.getYVel() > 0){
+			subject.setYVel(subject.getYVel() - 1);
+		}else if(subject.getYVel() < 0){
+			subject.setYVel(subject.getYVel() + 1);
+		}
+	}
+
+	/**
+	 * mstockbr
+	 * Oct 21, 2010
+	 * @param subject
+	 */
+	private void decrimentX(Step4Attributes subject) {
+		if(subject.getXVel() > 0){
+			subject.setXVel(subject.getXVel() - 1);
+		}else if(subject.getXVel() < 0){
+			subject.setXVel(subject.getXVel() + 1);
+		}
 	}
 }

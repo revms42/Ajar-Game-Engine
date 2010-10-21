@@ -34,6 +34,9 @@ package org.mdmk2.sprint1.step4;
 public enum Step4ActionType {
 	BOUNCE_D,
 	BOUNCE_V,
-	BOUNCE_H;
-	
+	BOUNCE_H,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_LEFT,
+	KEY_RIGHT;
 }

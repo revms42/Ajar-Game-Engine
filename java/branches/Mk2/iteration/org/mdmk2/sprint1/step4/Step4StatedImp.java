@@ -27,6 +27,8 @@
  */
 package org.mdmk2.sprint1.step4;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.Vector;
 
@@ -38,11 +40,16 @@ import org.mdmk2.core.logic.StatedImp;
  * @author reverend
  * 11-Sep-10
  */
-public class Step4StatedImp implements StatedImp<Step4Attributes> {
+public class Step4StatedImp implements StatedImp<Step4Attributes>, KeyListener {
 
 	private Step4Attributes imp;
 	private Vector<Action> actions;
 	private State<Step4Attributes> state;
+	
+	private boolean up;
+	private boolean down;
+	private boolean right;
+	private boolean left;
 	/**
 	 * @param imp
 	 */
@@ -91,6 +98,11 @@ public class Step4StatedImp implements StatedImp<Step4Attributes> {
 	 * @see org.mdmk2.core.logic.StatedImp#updateState()
 	 */
 	public void updateState() {
+		if(up) actions.add(new Step4Action(Step4ActionType.KEY_UP));
+		if(down) actions.add(new Step4Action(Step4ActionType.KEY_DOWN));
+		if(left) actions.add(new Step4Action(Step4ActionType.KEY_LEFT));
+		if(right) actions.add(new Step4Action(Step4ActionType.KEY_RIGHT));
+		
 		if(actions.size() > 0){
 			for(Action a : actions){
 				state = state.perform(this,a);
@@ -106,6 +118,61 @@ public class Step4StatedImp implements StatedImp<Step4Attributes> {
 	 */
 	public Step4Attributes getAttributes() {
 		return imp;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		switch(arg0.getKeyCode()){
+		case KeyEvent.VK_UP:
+			up = true;
+			break;
+		case KeyEvent.VK_DOWN:
+			down = true;
+			break;
+		case KeyEvent.VK_LEFT:
+			left = true;
+			break;
+		case KeyEvent.VK_RIGHT:
+			right = true;
+			break;
+		default:
+			break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		switch(arg0.getKeyCode()){
+		case KeyEvent.VK_UP:
+			up = false;
+			break;
+		case KeyEvent.VK_DOWN:
+			down = false;
+			break;
+		case KeyEvent.VK_LEFT:
+			left = false;
+			break;
+		case KeyEvent.VK_RIGHT:
+			right = false;
+			break;
+		default:
+			break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
