@@ -73,10 +73,12 @@ public class Step4Attributes implements AttributedImp {
 	}
 
 	public void setXVel(int xVel) {
+		if(xVel > 10) xVel = 10;
 		this.xVel = xVel;
 	}
 
 	public void setYVel(int yVel) {
+		if(yVel > 10) yVel = 10;
 		this.yVel = yVel;
 	}
 

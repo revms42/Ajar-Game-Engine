@@ -64,13 +64,9 @@ public class Step4SpriteFactory extends AbstractSolidFactory<Step4Attributes> {
 		return new Step4Attributes(circle,Color.RED);
 	}
 
-	public static Step4Boundry createBoundry(Rectangle2D line){
-		Step4Attributes atts = createBoundryAtts(line);
-		return new Step4Boundry(atts,makeCollidableImp(atts));
-	}
-	
-	public static Step4Attributes createBoundryAtts(Rectangle2D line) {
-		return new Step4Attributes(line,null);
+	public static Step4RootNode createRootNode(Rectangle2D area){
+		Step4Attributes atts = createBoxAtts(area);
+		return new Step4RootNode(atts,new Step4RootCollidableImp(atts));
 	}
 
 	public static Step4Box createBox(Rectangle2D box){
