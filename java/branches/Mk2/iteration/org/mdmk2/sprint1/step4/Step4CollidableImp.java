@@ -41,7 +41,7 @@ import org.mdmk2.core.logic.Action;
 public class Step4CollidableImp implements CollidableImp<Step4Attributes> {
 
 	private Step4Attributes a;
-	private AffineTransform trans;
+	protected AffineTransform trans;
 	
 	public Step4CollidableImp(Step4Attributes a){
 		this.a = a;
@@ -53,6 +53,7 @@ public class Step4CollidableImp implements CollidableImp<Step4Attributes> {
 	public Action collideWith(Collidable<Step4Attributes> s) {
 		trans = AffineTransform.getTranslateInstance(getAttributes().getXVel(), getAttributes().getYVel());
 		Rectangle collSurf = s.getNode().getAttributes().getCollisionSurface().getBounds();
+		
 		int ret = 0;
 		ret = trans.createTransformedShape(getAttributes().getHTester()).intersects(collSurf) ? ret + 1 : ret;
 		ret = trans.createTransformedShape(getAttributes().getVTester()).intersects(collSurf) ? ret + 2 : ret;
