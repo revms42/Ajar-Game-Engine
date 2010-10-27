@@ -35,14 +35,12 @@ import org.mdmk2.core.logic.StatedImp;
  * @author reverend
  * 11-Sep-10
  */
-public class Step4GameState implements State<Step4Attributes> {
+public enum Step4GameState implements State<Step4Attributes> {
 
-	public State<Step4Attributes> perform(StatedImp<Step4Attributes> sImp, Action e) {
-		Step4Attributes subject = sImp.getAttributes();
-		if(e != null && e instanceof Step4Action){
-			Step4Action a = (Step4Action)e;
-			
-			switch(a.type){
+	RICOCHET_V{
+		public State<Step4Attributes> getNextState(StatedImp<Step4Attributes> sImp, Step4Action e){
+			Step4Attributes subject = sImp.getAttributes();
+			switch(e.type){
 			case BOUNCE_D:
 				subject.setYVel(-subject.getYVel());
 				subject.setXVel(-subject.getXVel());
@@ -50,38 +48,138 @@ public class Step4GameState implements State<Step4Attributes> {
 				decrimentX(subject);
 				
 				decrimentY(subject);
-				break;
-			case BOUNCE_V:
-				subject.setYVel(-subject.getYVel());
-				
-				decrimentY(subject);
-				break;
+				return RICOCHET_D;
 			case BOUNCE_H:
 				subject.setXVel(-subject.getXVel());
 				
 				decrimentX(subject);
-				break;
+				return RICOCHET_D;
 			case KEY_UP:
-				subject.setYVel(subject.getYVel() - 1);
-				break;
+				if(subject.getYVel() < 0){
+					subject.setYVel(subject.getYVel() - 1);
+				}
+				return RICOCHET_V;
 			case KEY_DOWN:
-				subject.setYVel(subject.getYVel() + 1);
-				break;
+				if(subject.getYVel() > 0){
+					subject.setYVel(subject.getYVel() + 1);
+				}
+				return RICOCHET_V;
 			case KEY_LEFT:
 				subject.setXVel(subject.getXVel() - 1);
-				break;
+				return RICOCHET_V;
 			case KEY_RIGHT:
 				subject.setXVel(subject.getXVel() + 1);
-				break;
+				return RICOCHET_V;
 			default:
-				break;
+				return RICOCHET_V;
 			}
 		}
-
-		
-		subject.setPosition(subject.getXPos()+subject.getXVel(), subject.getYPos()+subject.getYVel());
-		
-		return this;
+	},
+	RICOCHET_H{
+		public State<Step4Attributes> getNextState(StatedImp<Step4Attributes> sImp, Step4Action e){
+			Step4Attributes subject = sImp.getAttributes();
+			switch(e.type){
+			case BOUNCE_D:
+				subject.setYVel(-subject.getYVel());
+				subject.setXVel(-subject.getXVel());
+				
+				decrimentX(subject);
+				
+				decrimentY(subject);
+				return RICOCHET_D;
+			case BOUNCE_V:
+				subject.setYVel(-subject.getYVel());
+				
+				decrimentY(subject);
+				return RICOCHET_D;
+			case KEY_UP:
+				subject.setYVel(subject.getYVel() - 1);
+				return RICOCHET_H;
+			case KEY_DOWN:
+				subject.setYVel(subject.getYVel() + 1);
+				return RICOCHET_H;
+			case KEY_LEFT:
+				if(subject.getXVel() < 0){
+					subject.setXVel(subject.getXVel() - 1);
+				}
+				return RICOCHET_H;
+			case KEY_RIGHT:
+				if(subject.getXVel() > 0){
+					subject.setXVel(subject.getXVel() + 1);
+				}
+				return RICOCHET_H;
+			default:
+				return RICOCHET_H;
+			}
+		}
+	},
+	RICOCHET_D{
+		public State<Step4Attributes> getNextState(StatedImp<Step4Attributes> sImp, Step4Action e){
+			return RICOCHET_D;
+		}
+	},
+	NORMAL{
+		public State<Step4Attributes> getNextState(StatedImp<Step4Attributes> sImp, Step4Action e){
+			Step4Attributes subject = sImp.getAttributes();
+			switch(e.type){
+			case BOUNCE_D:
+				subject.setYVel(-subject.getYVel());
+				subject.setXVel(-subject.getXVel());
+				
+				decrimentX(subject);
+				
+				decrimentY(subject);
+				return RICOCHET_D;
+			case BOUNCE_V:
+				subject.setYVel(-subject.getYVel());
+				
+				decrimentY(subject);
+				return RICOCHET_V;
+			case BOUNCE_H:
+				subject.setXVel(-subject.getXVel());
+				
+				decrimentX(subject);
+				return RICOCHET_H;
+			case KEY_UP:
+				subject.setYVel(subject.getYVel() - 1);
+				return NORMAL;
+			case KEY_DOWN:
+				subject.setYVel(subject.getYVel() + 1);
+				return NORMAL;
+			case KEY_LEFT:
+				subject.setXVel(subject.getXVel() - 1);
+				return NORMAL;
+			case KEY_RIGHT:
+				subject.setXVel(subject.getXVel() + 1);
+				return NORMAL;
+			default:
+				return NORMAL;
+			}
+		}
+	};
+	
+	public State<Step4Attributes> perform(StatedImp<Step4Attributes> sImp, Action e) {
+		Step4Attributes subject = sImp.getAttributes();
+		if(e != null || e instanceof Step4Action){
+			Step4Action a = (Step4Action)e;
+			State<Step4Attributes> nextState = getNextState(sImp,a);
+			
+			double newX = subject.getXPos() + a.xBump;
+			double newY = subject.getYPos() + a.yBump;
+			
+			subject.setPosition(newX, newY);
+			
+			if(sImp.getActions().indexOf(e) == (sImp.getActions().size() - 1)){
+				subject.setPosition(subject.getXPos()+subject.getXVel(), subject.getYPos()+subject.getYVel());
+				return NORMAL;
+			}else{
+				subject.setPosition(subject.getXPos()+subject.getXVel(), subject.getYPos()+subject.getYVel());
+				return nextState;
+			}
+		}else{
+			subject.setPosition(subject.getXPos()+subject.getXVel(), subject.getYPos()+subject.getYVel());
+			return this;
+		}
 	}
 
 	/**
@@ -89,7 +187,7 @@ public class Step4GameState implements State<Step4Attributes> {
 	 * Oct 21, 2010
 	 * @param subject
 	 */
-	private void decrimentY(Step4Attributes subject) {
+	protected void decrimentY(Step4Attributes subject) {
 		if(subject.getYVel() > 0){
 			subject.setYVel(subject.getYVel() - 1);
 		}else if(subject.getYVel() < 0){
@@ -102,11 +200,13 @@ public class Step4GameState implements State<Step4Attributes> {
 	 * Oct 21, 2010
 	 * @param subject
 	 */
-	private void decrimentX(Step4Attributes subject) {
+	protected void decrimentX(Step4Attributes subject) {
 		if(subject.getXVel() > 0){
 			subject.setXVel(subject.getXVel() - 1);
 		}else if(subject.getXVel() < 0){
 			subject.setXVel(subject.getXVel() + 1);
 		}
 	}
+	
+	protected abstract State<Step4Attributes> getNextState(StatedImp<Step4Attributes> sImp, Step4Action e);
 }

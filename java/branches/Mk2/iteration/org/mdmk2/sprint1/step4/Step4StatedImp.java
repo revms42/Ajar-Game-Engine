@@ -56,7 +56,7 @@ public class Step4StatedImp implements StatedImp<Step4Attributes>, KeyListener {
 	public Step4StatedImp(Step4Attributes imp) {
 		this.imp = imp;
 		actions = new Vector<Action>();
-		state = new Step4GameState();
+		state = Step4GameState.NORMAL;
 	}
 
 	/* (non-Javadoc)

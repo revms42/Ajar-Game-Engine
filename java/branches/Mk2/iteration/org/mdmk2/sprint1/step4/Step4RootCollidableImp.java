@@ -47,6 +47,7 @@ public class Step4RootCollidableImp extends Step4CollidableImp {
 		super(a);
 	}
 
+	//This could be a whole hell of a lot easier I think.
 	public Action collideWith(Collidable<Step4Attributes> s) {
 		if(s instanceof Stated){
 			@SuppressWarnings("unchecked")
@@ -56,29 +57,48 @@ public class Step4RootCollidableImp extends Step4CollidableImp {
 			trans = AffineTransform.getTranslateInstance(a.getXVel(), a.getYVel());
 			
 			Rectangle2D bounds = this.getAttributes().getCollisionSurface().getBounds2D();
+			Rectangle2D ball = s.getImplementation().getAttributes().getCollisionSurface().getBounds2D();
 			
-			Rectangle2D hRect = trans.createTransformedShape(a.getHTester()).getBounds2D();
-			Rectangle2D vRect = trans.createTransformedShape(a.getVTester()).getBounds2D();
-			
-			int ret = 0;
-			ret = (bounds.outcode(hRect.getMinX(),hRect.getMinY()) + bounds.outcode(hRect.getMaxX(),hRect.getMaxY())) > 0 ?
-					ret + 1 : ret;
-			
-			ret = (bounds.outcode(vRect.getMinX(),vRect.getMinY()) + bounds.outcode(vRect.getMaxX(),vRect.getMaxY())) > 0 ?
-					ret + 2 : ret;
-			
-			switch(ret){
-			case 1:
-				ss.addAction(new Step4Action(Step4ActionType.BOUNCE_H));
-				return null;
-			case 2:
-				ss.addAction(new Step4Action(Step4ActionType.BOUNCE_V));
-				return null;
-			case 3:
-				ss.addAction(new Step4Action(Step4ActionType.BOUNCE_D));
-				return null;
-			default:
-				return null;
+			if(ball.getMaxX() > bounds.getMaxX()){
+				double xBump = bounds.getMaxX() - ball.getMaxX();
+				if(ball.getMaxY() > bounds.getMaxY()){
+					double yBump = bounds.getMaxY() - ball.getMaxY();
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_D,xBump,yBump));
+					return null;
+				}else if(ball.getMinY() < bounds.getMinY()){
+					double yBump = bounds.getMinY() - ball.getMinY();
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_D,xBump,yBump));
+					return null;
+				}else{
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_H,xBump,0));
+					return null;
+				}
+			}else if(ball.getMinX() < bounds.getMinX()){
+				double xBump = bounds.getMinX() - ball.getMinX();
+				if(ball.getMaxY() > bounds.getMaxY()){
+					double yBump = bounds.getMaxY() - ball.getMaxY();
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_D,xBump,yBump));
+					return null;
+				}else if(ball.getMinY() < bounds.getMinY()){
+					double yBump = bounds.getMinY() - ball.getMinY();
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_D,xBump,yBump));
+					return null;
+				}else{
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_H,xBump,0));
+					return null;
+				}
+			}else{
+				if(ball.getMaxY() > bounds.getMaxY()){
+					double yBump = bounds.getMaxY() - ball.getMaxY();
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_V,0,yBump));
+					return null;
+				}else if(ball.getMinY() < bounds.getMinY()){
+					double yBump = bounds.getMinY() - ball.getMinY();
+					ss.addAction(new Step4Action(Step4ActionType.BOUNCE_V,0,yBump));
+					return null;
+				}else{
+					return null;
+				}
 			}
 		}else{
 			return null;

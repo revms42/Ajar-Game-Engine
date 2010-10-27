@@ -30,7 +30,6 @@ package org.mdmk2.sprint1.step4;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 
 import org.mdmk2.core.attributed.AttributedImp;
 
@@ -41,27 +40,19 @@ import org.mdmk2.core.attributed.AttributedImp;
 public class Step4Attributes implements AttributedImp {
 
 	private int xVel;
+	private final double xMax;
 	private int yVel;
+	private final double yMax;
 	private final Shape shape;
-	private final Line2D[] testers;
 	private final Color color;
 	private AffineTransform at;
 	
 	public Step4Attributes(Shape shape, Color color){
 		this.shape = shape;
 		this.color = color;
-		
-		int width = shape.getBounds().width;
-		int height = shape.getBounds().height;
-		
-		testers = new Line2D[]{
-			new Line2D.Double(0,height/2,width,height/2),
-			new Line2D.Double(width/2,0,width/2,height)
-		};
-		
-		xVel = 2;
-		yVel = 2;
 		at = AffineTransform.getTranslateInstance(0.0d, 0.0d);
+		xMax = shape.getBounds2D().getWidth() / 2;
+		yMax = shape.getBounds2D().getHeight() / 2;
 	}
 
 	public int getXVel() {
@@ -73,12 +64,12 @@ public class Step4Attributes implements AttributedImp {
 	}
 
 	public void setXVel(int xVel) {
-		if(xVel > 10) xVel = 10;
+		if(xVel > xMax) xVel = (int)xMax;
 		this.xVel = xVel;
 	}
 
 	public void setYVel(int yVel) {
-		if(yVel > 10) yVel = 10;
+		if(yVel > yMax) yVel = (int)yMax;
 		this.yVel = yVel;
 	}
 
@@ -104,14 +95,6 @@ public class Step4Attributes implements AttributedImp {
 	
 	public AffineTransform getTransform(){
 		return at;
-	}
-	
-	public Shape getHTester(){
-		return at.createTransformedShape(testers[0]);
-	}
-	
-	public Shape getVTester(){
-		return at.createTransformedShape(testers[1]);
 	}
 	
 	public Shape getCollisionSurface() {

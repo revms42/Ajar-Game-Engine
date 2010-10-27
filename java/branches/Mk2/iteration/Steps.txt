@@ -1,7 +1,7 @@
 >step 1: Display a static circle.
 >step 2: Make the circle move, ricochette 
 >step 3: Add static boxes, make sure the moving circle bounces off them.
-step 4: Make the moving circle user controllable.
+>step 4: Make the moving circle user controllable. (note: a little more could be done here, but fulfills the criteria nicely).
 step 5: Add tile based level
 step 6: Get level tiles from png.
 step 7: Animate the user's circle using tile map. User should be animating even when not moving.
