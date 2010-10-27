@@ -36,8 +36,18 @@ import org.mdmk2.core.logic.Action;
 public class Step4Action implements Action {
 	
 	public final Step4ActionType type;
+	public final double xBump;
+	public final double yBump;
 	
 	public Step4Action(Step4ActionType type){
 		this.type = type;
+		this.xBump = 0;
+		this.yBump = 0;
+	}
+	
+	public Step4Action(Step4ActionType type, double xBump, double yBump){
+		this.type = type;
+		this.xBump = xBump;
+		this.yBump = yBump;
 	}
 }

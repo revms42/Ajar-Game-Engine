@@ -27,8 +27,8 @@
  */
 package org.mdmk2.sprint1.step4;
 
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import org.mdmk2.core.collision.Collidable;
 import org.mdmk2.core.collision.CollidableImp;
@@ -52,20 +52,30 @@ public class Step4CollidableImp implements CollidableImp<Step4Attributes> {
 	 */
 	public Action collideWith(Collidable<Step4Attributes> s) {
 		trans = AffineTransform.getTranslateInstance(getAttributes().getXVel(), getAttributes().getYVel());
-		Rectangle collSurf = s.getNode().getAttributes().getCollisionSurface().getBounds();
+		Rectangle2D collSurf = s.getNode().getAttributes().getCollisionSurface().getBounds2D();
 		
-		int ret = 0;
-		ret = trans.createTransformedShape(getAttributes().getHTester()).intersects(collSurf) ? ret + 1 : ret;
-		ret = trans.createTransformedShape(getAttributes().getVTester()).intersects(collSurf) ? ret + 2 : ret;
+		Rectangle2D ball = trans.createTransformedShape(getAttributes().getCollisionSurface()).getBounds2D();
 		
-		switch(ret){
-		case 1:
-			return new Step4Action(Step4ActionType.BOUNCE_H);
-		case 2:
-			return new Step4Action(Step4ActionType.BOUNCE_V);
-		case 3:
-			return new Step4Action(Step4ActionType.BOUNCE_D);
-		default:
+		if(ball.intersects(collSurf)){
+			int outcode = collSurf.outcode(ball.getCenterX(),ball.getCenterY());
+			//The single unit pushes here just give a little extra umph and prevent sticking.
+			switch(outcode){
+				case Rectangle2D.OUT_LEFT: //1
+					return new Step4Action(Step4ActionType.BOUNCE_H,-1,0);
+				case Rectangle2D.OUT_TOP: //2
+					return new Step4Action(Step4ActionType.BOUNCE_V,0,-1);
+				case Rectangle2D.OUT_LEFT + Rectangle2D.OUT_TOP: //3
+					return new Step4Action(Step4ActionType.BOUNCE_D,-1,-1);
+				case Rectangle2D.OUT_RIGHT: //4
+					return new Step4Action(Step4ActionType.BOUNCE_H,1,0);
+				case Rectangle2D.OUT_RIGHT + Rectangle2D.OUT_TOP: //6
+					return new Step4Action(Step4ActionType.BOUNCE_D,1,-1);
+				case Rectangle2D.OUT_BOTTOM: //8
+					return new Step4Action(Step4ActionType.BOUNCE_V,0,1);
+				default: //9+
+					return new Step4Action(Step4ActionType.BOUNCE_D,1,1);
+			}
+		}else{
 			return null;
 		}
 	}
