@@ -8,7 +8,7 @@ import org.mdmk3.core.DefaultNode;
 import org.mdmk3.core.Node;
 import org.mdmk3.core.loader.Converter;
 
-public class Step6Converter implements Converter<Color, Step6Attributes> {
+public class Step6Converter implements Converter<Integer, Step6Attributes> {
 
 	private Dimension tileSize;
 	
@@ -19,10 +19,10 @@ public class Step6Converter implements Converter<Color, Step6Attributes> {
 		this.tileSize = tileSize;
 	}
 	@Override
-	public Node<Step6Attributes> toNode(Color value) {
+	public Node<Step6Attributes> toNode(Integer value) {
 		Step6Attributes atts = null;
-		if(value != null){
-			atts = new Step6Attributes(new Rectangle(tileSize), Step6ObjectType.BOX,value);
+		if(value != null && value != Color.BLACK.getRGB()){
+			atts = new Step6Attributes(new Rectangle(tileSize), Step6ObjectType.BOX,new Color(value));
 			
 			return new Step6DisplayDecorator(new Step6BouncingDecorator(new DefaultNode<Step6Attributes>(atts)));
 		}else{

@@ -32,7 +32,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import org.mdmk3.core.DefaultNode;
@@ -49,14 +53,8 @@ public class Step6 extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final Color[] map =	{
-		null,		Color.RED, 		null,			null,			null,			Color.YELLOW,
-		null,		Color.RED,		null,			null,			null,			Color.YELLOW,
-		null,		null,			null,			Color.GREEN,	null,			Color.YELLOW,
-		null,		null,			null,			Color.GREEN,	null,			Color.YELLOW,
-		Color.RED,	null,			null,			Color.GREEN,	Color.YELLOW,	Color.YELLOW,
-		Color.RED,	Color.MAGENTA,	Color.MAGENTA,	Color.GREEN,	Color.GREEN,	Color.YELLOW
-	};
+	private final static String mapPath = "iteration/org/mdmk3/sprint1/step6/level/level.png";
+	private static BufferedImage map;
 
 	private final DisplayPanel displayPanel;
 	
@@ -93,8 +91,16 @@ public class Step6 extends JFrame {
 		step6.addKeyListener(new Step6Entity(new Step6BouncingDecorator(new Step6DisplayDecorator(sprite))));
 		root.addChild(sprite);
 		
+		try {
+			File path = new File(mapPath);
+			map = ImageIO.read(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 		Step6Converter converter = new Step6Converter();
-		converter.setTileSize(new Dimension(100,100));
+		converter.setTileSize(new Dimension(10,10));
 		
 		Step6MapLoader loader = new Step6MapLoader();
 		loader.setConverter(converter);
@@ -107,7 +113,7 @@ public class Step6 extends JFrame {
 		root.addChild(box);
 		*/
 		
-		root.addChild(loader.loadFromArray(map, 6));
+		root.addChild(loader.loadFromImage(map));
 		
 		Step6GameLoop loop = new Step6GameLoop(root,step6.displayPanel);
 		loop.setDisplayableClass(Step6DisplayDecorator.class);
