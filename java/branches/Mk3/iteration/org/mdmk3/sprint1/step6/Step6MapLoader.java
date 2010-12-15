@@ -1,14 +1,13 @@
 package org.mdmk3.sprint1.step6;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 
 import org.mdmk3.core.DefaultNode;
 import org.mdmk3.core.Node;
-import org.mdmk3.core.loader.TileMapLoader;
+import org.mdmk3.core.loader.ImageMapLoader;
 
-public class Step6MapLoader extends TileMapLoader<Color,Step6Attributes> {
+public class Step6MapLoader extends ImageMapLoader<Step6Attributes> {
 
 	@Override
 	public void initializePosition(Node<Step6Attributes> node, int x, int y) {
