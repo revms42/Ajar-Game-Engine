@@ -7,6 +7,8 @@ import org.mdmk3.core.Node;
 
 public abstract class TileMapLoader<D,A extends Attributes> {
 
+
+	
 	private Converter<D,A> converter;
 	
 	public Converter<D, A> getConverter() {
@@ -25,9 +27,12 @@ public abstract class TileMapLoader<D,A extends Attributes> {
 				
 				Node<A> node = converter.toNode(i);
 				
-				initializePosition(node,x,y);
-				
-				arrayNodes.add(node);
+				if(node != null){
+					if(!(node instanceof NullTileNode)){
+						initializePosition(node,x,y);
+					}
+					arrayNodes.add(node);
+				}
 			}
 		}
 		

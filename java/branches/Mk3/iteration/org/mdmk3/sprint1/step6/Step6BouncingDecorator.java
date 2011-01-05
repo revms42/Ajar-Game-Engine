@@ -1,14 +1,15 @@
 package org.mdmk3.sprint1.step6;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 
 import org.mdmk3.core.Node;
-import org.mdmk3.core.collision.AbstractCollidable;
 import org.mdmk3.core.collision.Collidable;
+import org.mdmk3.core.loader.MergingCollidable;
 import org.mdmk3.core.logic.Action;
 
-public class Step6BouncingDecorator extends AbstractCollidable<Step6Attributes> {
+public class Step6BouncingDecorator extends MergingCollidable<Step6Attributes> {
 
 	protected AffineTransform trans;
 	
@@ -16,7 +17,7 @@ public class Step6BouncingDecorator extends AbstractCollidable<Step6Attributes> 
 		super(node);
 		trans = AffineTransform.getTranslateInstance(0, 0);
 	}
-	public int call = 0;
+	
 	@Override
 	public Action collideWith(Collidable<Step6Attributes> s) {
 		if(hasCapability(Step6Entity.class)){
@@ -102,6 +103,37 @@ public class Step6BouncingDecorator extends AbstractCollidable<Step6Attributes> 
 	@Override
 	public boolean needsCollisionCheck() {
 		return true;
+	}
+
+	@Override
+	public boolean canMergeWith(MergingCollidable<Step6Attributes> target) {
+		return target.getAttributes().getType() == this.getAttributes().getType();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.mdmk3.core.loader.MergingCollidable#merge(org.mdmk3.core.Node, org.mdmk3.core.loader.MergingCollidable<A>[])
+	 * 
+	 * This assumes if A.canMergeWith(B) == true and A.canMergeWith(C) == true then B.canMergeWith(C) can never be false.
+	 */
+	@Override
+	public void merge(Node<Step6Attributes> parent, MergingCollidable<Step6Attributes>... children) {
+		for(MergingCollidable<Step6Attributes> child : children){
+			if(!canMergeWith(child)){
+				return;
+			}
+		}
+		
+		Step6Attributes atts = parent.getAttributes();
+		Area a = new Area(atts.getCollisionSurface());
+		
+		for(MergingCollidable<Step6Attributes> child : children){
+			a.add(new Area(child.getAttributes().getCollisionSurface()));
+			child.removeDecorator(Step6BouncingDecorator.class);
+		}
+		
+		atts.setShape(a);
+		new Step6BouncingDecorator(parent);
 	}
 
 }
