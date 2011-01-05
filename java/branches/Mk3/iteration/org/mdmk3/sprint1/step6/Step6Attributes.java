@@ -43,7 +43,8 @@ public class Step6Attributes implements Attributes {
 
 	private int xVel;
 	private int yVel;
-	private final Shape shape;
+	private Shape shape;
+
 	private final Color color;
 	private AffineTransform at;
 	
@@ -87,6 +88,10 @@ public class Step6Attributes implements Attributes {
 
 	public Shape getShape() {
 		return AffineTransform.getTranslateInstance(1, 1).createTransformedShape(shape);
+	}
+	
+	public void setShape(Shape shape) {
+		this.shape = shape;
 	}
 	
 	public double getXPos(){
