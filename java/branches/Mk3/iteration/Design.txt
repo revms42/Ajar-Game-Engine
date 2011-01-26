@@ -12,6 +12,20 @@ parents, it may be more effective to have the "area" determine what's inside it.
 With a culled set of nodes it should be easy to determine which are capable of collision interaction. From there the method must 
 be a reduction interaction, i.e. the first node is tested against the rest of the list complete, the second against all starting 
 with the third, etc....
+Furthermore, when dealing with tile-maps you're liable to have large chunks of collidable area. The loader should be able to "add"
+those areas together, applying them to the domains, rather than the individual tiles. This can be done with the same step that sets
+up the domains.
+
+-Image Mappers-
+There needs to be an easy way to get image maps into and out of the engine. They should take as an argument a single variable and 
+spit out the appropriate image. They should be easy to use and hook up to display classes, and their should be default display classes
+that use them. The image maps themselves should be self-contained, non-abstract entities that hold a map for parsing. These are 
+the principle members of a mapper, which is abstract. Mappers should be able to be constructed of other mappers as well, which means
+that there may need to be an "ImageSupplier" interface that both can implement. This will allow the much covetted int32->set+palette+
+tile functionality.
+There also needs to be some intelligence built into the system so that images are cached by the things that use them so that they 
+don't have to be fetched every time. There should also be a way that the coder can specify, on load, which sequences will be used, so 
+that the image sets can be paired down and only those in active use used.
 
 -Structure-
 There will probably need to be a two-way parent-child relationship between nodes. The parent->child behavior is necessary for 
