@@ -1,4 +1,4 @@
-package org.mdmk3.sprint1.step7;
+package org.mdmk3.sprint1.step8;
 
 import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
@@ -8,22 +8,22 @@ import org.mdmk3.core.Node;
 import org.mdmk3.core.loader.ImageMapLoader;
 import org.mdmk3.core.loader.NullTileNode;
 
-public class Step7MapLoader extends ImageMapLoader<Step7Attributes> {
+public class Step8MapLoader extends ImageMapLoader<Step8Attributes> {
 
 	@Override
-	public void initializePosition(Node<Step7Attributes> node, int x, int y) {
-		Dimension d = ((Step7Converter)this.getConverter()).getTileSize();
+	public void initializePosition(Node<Step8Attributes> node, int x, int y) {
+		Dimension d = ((Step8Converter)this.getConverter()).getTileSize();
 		
 		node.getAttributes().setPosition(x * d.width, y * d.height);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Node<Step7Attributes> createDomainNode(
-			Node<Step7Attributes> first, 
-			Node<Step7Attributes> second, 
-			Node<Step7Attributes> third,
-			Node<Step7Attributes> fourth)
+	public Node<Step8Attributes> createDomainNode(
+			Node<Step8Attributes> first, 
+			Node<Step8Attributes> second, 
+			Node<Step8Attributes> third,
+			Node<Step8Attributes> fourth)
 	{
 		if(first == null && second == null && third == null && fourth == null) return null;
 		
@@ -46,29 +46,29 @@ public class Step7MapLoader extends ImageMapLoader<Step7Attributes> {
 					height
 			);
 		
-		Step7Attributes atts = new Step7Attributes(null,Step7ObjectType.DOMAIN);
+		Step8Attributes atts = new Step8Attributes(null,Step8ObjectType.DOMAIN);
 		atts.setBounds(bounds);
 		
 		if(emptyFirst && emptySecond && emptyThird && emptyFourth){
-			return new NullTileNode<Step7Attributes>(atts);
+			return new NullTileNode<Step8Attributes>(atts);
 		}else{
-			DefaultNode<Step7Attributes> node = new DefaultNode<Step7Attributes>(atts);
+			DefaultNode<Step8Attributes> node = new DefaultNode<Step8Attributes>(atts);
 			if(!emptyFirst)node.addChild(first);
 			if(!emptySecond) node.addChild(second);
 			if(!emptyThird) node.addChild(third);
 			if(!emptyFourth) node.addChild(fourth);
 			
 			if(!(emptyFirst || emptySecond || emptyThird || emptyFourth)){
-				boolean mergeFirst = first.hasCapability(Step7BouncingDecorator.class);
-				boolean mergeSecond = second != null && second.hasCapability(Step7BouncingDecorator.class);
-				boolean mergeThird = third != null && third.hasCapability(Step7BouncingDecorator.class);
-				boolean mergeFourth = fourth != null && fourth.hasCapability(Step7BouncingDecorator.class);
+				boolean mergeFirst = first.hasCapability(Step8BouncingDecorator.class);
+				boolean mergeSecond = second != null && second.hasCapability(Step8BouncingDecorator.class);
+				boolean mergeThird = third != null && third.hasCapability(Step8BouncingDecorator.class);
+				boolean mergeFourth = fourth != null && fourth.hasCapability(Step8BouncingDecorator.class);
 				
 				if(mergeFirst && mergeSecond && mergeThird && mergeFourth){
-					Step7BouncingDecorator bFirst = first.getDecorator(Step7BouncingDecorator.class);
-					Step7BouncingDecorator bSecond = second.getDecorator(Step7BouncingDecorator.class);
-					Step7BouncingDecorator bThird = third.getDecorator(Step7BouncingDecorator.class);
-					Step7BouncingDecorator bFourth = fourth.getDecorator(Step7BouncingDecorator.class);
+					Step8BouncingDecorator bFirst = first.getDecorator(Step8BouncingDecorator.class);
+					Step8BouncingDecorator bSecond = second.getDecorator(Step8BouncingDecorator.class);
+					Step8BouncingDecorator bThird = third.getDecorator(Step8BouncingDecorator.class);
+					Step8BouncingDecorator bFourth = fourth.getDecorator(Step8BouncingDecorator.class);
 					
 					bFirst.merge(node, bSecond, bThird, bFourth);
 				}

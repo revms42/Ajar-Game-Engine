@@ -158,7 +158,7 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 			int skips = 0;
 			while((excess > updatePeriod) && (skips < MAX_FRAMESKIP)){
 				excess -= updatePeriod;
-				logic();
+				frameSkipUpdate(displayRoot, getCullingSurface());
 				skips++;
 				if(debug)System.out.println("Skip!");
 			}
@@ -194,10 +194,35 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 		needsCollisionCheck.removeAllElements();
 	}
 	
+	protected void frameSkipUpdate(Node<A> root, CullingSurface<A> culler){
+		assessFrameSkipUpdate(root,culler);
+		if(running){
+			if(!isPaused){
+				logic();
+				collision();
+			}
+		}
+		needsStatusUpdate.removeAllElements();
+		needsCollisionCheck.removeAllElements();
+	}
+	
 	protected void assessUpdate(Node<A> root, CullingSurface<A> culler){
 		for(Node<A> node : root.getChildren()){
 			if(culler.isInRange(node)){
 				checkDisplayUpdate(node);
+				checkStateUpdate(node);
+				checkCollisionUpdate(node);
+				
+				if(node.hasChildren()){
+					assessUpdate(node,culler);
+				}
+			}
+		}
+	}
+	
+	protected void assessFrameSkipUpdate(Node<A> root, CullingSurface<A> culler){
+		for(Node<A> node : root.getChildren()){
+			if(culler.isInRange(node)){
 				checkStateUpdate(node);
 				checkCollisionUpdate(node);
 				

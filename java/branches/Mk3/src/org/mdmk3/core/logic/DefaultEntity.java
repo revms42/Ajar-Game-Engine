@@ -60,8 +60,8 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 				state = state.perform(this,a);
 			}
 			actions.removeAllElements();
-		}else{
-			state = state.perform(this, null);
 		}
+		state = state.perform(this, null);
+		
 	}
 }

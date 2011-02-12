@@ -23,12 +23,12 @@ public class Step5Entity extends DefaultEntity<Step5Attributes> implements KeyLi
 	}
 	
 	public void updateState(){
-		if(up || down || right || left) addAction(Step5ActionType.MOVE);
+		super.updateState();
+		//if(up || down || right || left) addAction(Step5ActionType.MOVE);
 		if(up) addAction(Step5ActionType.ACCELL_YNEG);
 		if(down)addAction(Step5ActionType.ACCELL_YPOS);
 		if(right)addAction(Step5ActionType.ACCELL_XPOS);
 		if(left) addAction(Step5ActionType.ACCELL_XNEG);
-		super.updateState();
 	}
 
 	/* (non-Javadoc)

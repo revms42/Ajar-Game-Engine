@@ -1,4 +1,4 @@
-package org.mdmk3.sprint1.step7;
+package org.mdmk3.sprint1.step8;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -9,18 +9,18 @@ import org.mdmk3.core.collision.Collidable;
 import org.mdmk3.core.loader.MergingCollidable;
 import org.mdmk3.core.logic.Action;
 
-public class Step7BouncingDecorator extends MergingCollidable<Step7Attributes> {
+public class Step8BouncingDecorator extends MergingCollidable<Step8Attributes> {
 
 	protected AffineTransform trans;
 	
-	public Step7BouncingDecorator(Node<Step7Attributes> node) {
+	public Step8BouncingDecorator(Node<Step8Attributes> node) {
 		super(node);
 		trans = AffineTransform.getTranslateInstance(0, 0);
 	}
 	
 	@Override
-	public Action collideWith(Collidable<Step7Attributes> s) {
-		if(hasCapability(Step7Entity.class)){
+	public Action collideWith(Collidable<Step8Attributes> s) {
+		if(hasCapability(Step8Entity.class)){
 			trans.setToTranslation(getAttributes().getXVel(), getAttributes().getYVel());
 			
 			Rectangle2D bounds = s.getAttributes().getCollisionSurface().getBounds2D();
@@ -52,48 +52,48 @@ public class Step7BouncingDecorator extends MergingCollidable<Step7Attributes> {
 		}
 	}
 
-	private Step7ActionType outcodeBounce(Rectangle2D bounds, Rectangle2D ball){
+	private Step8ActionType outcodeBounce(Rectangle2D bounds, Rectangle2D ball){
 		int outcode = bounds.outcode(ball.getCenterX(),ball.getCenterY());
 		switch(outcode){
 			case Rectangle2D.OUT_LEFT: //1
-				return Step7ActionType.BOUNCE_H;
+				return Step8ActionType.BOUNCE_H;
 			case Rectangle2D.OUT_TOP: //2
-				return Step7ActionType.BOUNCE_V;
+				return Step8ActionType.BOUNCE_V;
 			case Rectangle2D.OUT_LEFT + Rectangle2D.OUT_TOP: //3
-				return Step7ActionType.BOUNCE_D;
+				return Step8ActionType.BOUNCE_D;
 			case Rectangle2D.OUT_RIGHT: //4
-				return Step7ActionType.BOUNCE_H;
+				return Step8ActionType.BOUNCE_H;
 			case Rectangle2D.OUT_RIGHT + Rectangle2D.OUT_TOP: //6
-				return Step7ActionType.BOUNCE_D;
+				return Step8ActionType.BOUNCE_D;
 			case Rectangle2D.OUT_BOTTOM: //8
-				return Step7ActionType.BOUNCE_V;
+				return Step8ActionType.BOUNCE_V;
 			default: //9+
-				return Step7ActionType.BOUNCE_D;
+				return Step8ActionType.BOUNCE_D;
 		}
 	}
 	
-	private Step7ActionType boundryBounce(Rectangle2D bounds, Rectangle2D ball){
+	private Step8ActionType boundryBounce(Rectangle2D bounds, Rectangle2D ball){
 		if(ball.getMaxX() > bounds.getMaxX()){
 			if(ball.getMaxY() > bounds.getMaxY()){
-				return Step7ActionType.BOUNCE_D;
+				return Step8ActionType.BOUNCE_D;
 			}else if(ball.getMinY() < bounds.getMinY()){
-				return Step7ActionType.BOUNCE_D;
+				return Step8ActionType.BOUNCE_D;
 			}else{
-				return Step7ActionType.BOUNCE_H;
+				return Step8ActionType.BOUNCE_H;
 			}
 		}else if(ball.getMinX() < bounds.getMinX()){
 			if(ball.getMaxY() > bounds.getMaxY()){
-				return Step7ActionType.BOUNCE_D;
+				return Step8ActionType.BOUNCE_D;
 			}else if(ball.getMinY() < bounds.getMinY()){
-				return Step7ActionType.BOUNCE_D;
+				return Step8ActionType.BOUNCE_D;
 			}else{
-				return Step7ActionType.BOUNCE_H;
+				return Step8ActionType.BOUNCE_H;
 			}
 		}else{
 			if(ball.getMaxY() > bounds.getMaxY()){
-				return Step7ActionType.BOUNCE_V;
+				return Step8ActionType.BOUNCE_V;
 			}else if(ball.getMinY() < bounds.getMinY()){
-				return Step7ActionType.BOUNCE_V;
+				return Step8ActionType.BOUNCE_V;
 			}else{
 				return null;
 			}
@@ -106,7 +106,7 @@ public class Step7BouncingDecorator extends MergingCollidable<Step7Attributes> {
 	}
 
 	@Override
-	public boolean canMergeWith(MergingCollidable<Step7Attributes> target) {
+	public boolean canMergeWith(MergingCollidable<Step8Attributes> target) {
 		return target.getAttributes().getType() == this.getAttributes().getType();
 	}
 
@@ -117,26 +117,26 @@ public class Step7BouncingDecorator extends MergingCollidable<Step7Attributes> {
 	 * This assumes if A.canMergeWith(B) == true and A.canMergeWith(C) == true then B.canMergeWith(C) can never be false.
 	 */
 	@Override
-	public void merge(Node<Step7Attributes> parent, MergingCollidable<Step7Attributes>... children) {
-		for(MergingCollidable<Step7Attributes> child : children){
+	public void merge(Node<Step8Attributes> parent, MergingCollidable<Step8Attributes>... children) {
+		for(MergingCollidable<Step8Attributes> child : children){
 			if(!canMergeWith(child)){
 				return;
 			}
 		}
 		
-		/*Step7Attributes atts = parent.getAttributes();
+		/*Step8Attributes atts = parent.getAttributes();
 		Area a = new Area(atts.getCollisionSurface());*/
 		Area a = new Area();
 		
-		for(MergingCollidable<Step7Attributes> child : children){
+		for(MergingCollidable<Step8Attributes> child : children){
 			a.add(new Area(child.getAttributes().getCollisionSurface()));
-			child.removeDecorator(Step7BouncingDecorator.class);
+			child.removeDecorator(Step8BouncingDecorator.class);
 		}
 		
-		Step7Attributes atts = parent.getAttributes();
+		Step8Attributes atts = parent.getAttributes();
 		atts.setShape(a);
-		atts.setType(Step7ObjectType.BOX);
-		new Step7BouncingDecorator(parent);
+		atts.setType(Step8ObjectType.BOX);
+		new Step8BouncingDecorator(parent);
 	}
 
 }
