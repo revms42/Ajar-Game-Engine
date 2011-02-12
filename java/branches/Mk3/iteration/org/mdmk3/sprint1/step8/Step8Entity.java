@@ -1,4 +1,4 @@
-package org.mdmk3.sprint1.step7;
+package org.mdmk3.sprint1.step8;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -7,7 +7,7 @@ import org.mdmk3.core.Node;
 import org.mdmk3.core.logic.CompoundEffect;
 import org.mdmk3.core.logic.DefaultEntity;
 
-public class Step7Entity extends DefaultEntity<Step7Attributes> implements KeyListener {
+public class Step8Entity extends DefaultEntity<Step8Attributes> implements KeyListener {
 
 	private boolean up;
 	private boolean down;
@@ -15,47 +15,47 @@ public class Step7Entity extends DefaultEntity<Step7Attributes> implements KeyLi
 	private boolean left;
 	
 	@SuppressWarnings("unchecked")
-	public Step7Entity(Node<Step7Attributes> node) {
+	public Step8Entity(Node<Step8Attributes> node) {
 		super(node);
-		Step7DBounceState d = new Step7DBounceState();
-		Step7HBounceState h = new Step7HBounceState(d);
-		Step7VBounceState v = new Step7VBounceState(d);
-		Step7GameState state = new Step7GameState(h,v,d);
+		Step8DBounceState d = new Step8DBounceState();
+		Step8HBounceState h = new Step8HBounceState(d);
+		Step8VBounceState v = new Step8VBounceState(d);
+		Step8GameState state = new Step8GameState(h,v,d);
 		
-		d.put(new Step7MoveEffect(Step7ActionType.MOVE,state));
-		d.put(new CompoundEffect<Step7Attributes>(
+		d.put(new Step8MoveEffect(Step8ActionType.MOVE,state));
+		d.put(new CompoundEffect<Step8Attributes>(
 				null,
 				state,
-				new Step7MoveEffect(null,state),
-				new Step7AnimateEffect(Step7ActionType.ANIMATE,state)
+				new Step8MoveEffect(null,state),
+				new Step8AnimateEffect(Step8ActionType.ANIMATE,state)
 		));
 		
-		h.put(new Step7MoveEffect(Step7ActionType.MOVE,state));
-		h.put(new CompoundEffect<Step7Attributes>(
+		h.put(new Step8MoveEffect(Step8ActionType.MOVE,state));
+		h.put(new CompoundEffect<Step8Attributes>(
 				null,
 				state,
-				new Step7MoveEffect(null,state),
-				new Step7AnimateEffect(Step7ActionType.ANIMATE,state)
+				new Step8MoveEffect(null,state),
+				new Step8AnimateEffect(Step8ActionType.ANIMATE,state)
 		));
 		
-		v.put(new Step7MoveEffect(Step7ActionType.MOVE,state));
-		v.put(new CompoundEffect<Step7Attributes>(
+		v.put(new Step8MoveEffect(Step8ActionType.MOVE,state));
+		v.put(new CompoundEffect<Step8Attributes>(
 				null,
 				state,
-				new Step7MoveEffect(null,state),
-				new Step7AnimateEffect(Step7ActionType.ANIMATE,state)
+				new Step8MoveEffect(null,state),
+				new Step8AnimateEffect(Step8ActionType.ANIMATE,state)
 		));
 		
 		setState(state);
 	}
 	
 	public void updateState(){
-		//if(up || down || right || left) addAction(Step7ActionType.MOVE);
+		//if(up || down || right || left) addAction(Step8ActionType.MOVE);
 		super.updateState();
-		if(up) addAction(Step7ActionType.ACCELL_YNEG);
-		if(down)addAction(Step7ActionType.ACCELL_YPOS);
-		if(right)addAction(Step7ActionType.ACCELL_XPOS);
-		if(left) addAction(Step7ActionType.ACCELL_XNEG);
+		if(up) addAction(Step8ActionType.ACCELL_YNEG);
+		if(down)addAction(Step8ActionType.ACCELL_YPOS);
+		if(right)addAction(Step8ActionType.ACCELL_XPOS);
+		if(left) addAction(Step8ActionType.ACCELL_XNEG);
 	}
 
 	/* (non-Javadoc)

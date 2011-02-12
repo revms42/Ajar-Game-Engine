@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk3.sprint1.step2
- * Step7Attributes.java
+ * Step8Attributes.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,7 +25,7 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk3.sprint1.step7;
+package org.mdmk3.sprint1.step8;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -37,9 +37,9 @@ import org.mdmk3.core.Attributes;
  * @author mstockbridge
  * Sep 9, 2010
  */
-public class Step7Attributes implements Attributes {
+public class Step8Attributes implements Attributes {
 
-	private Step7ObjectType type;
+	private Step8ObjectType type;
 
 	private Integer currentFrame;
 	
@@ -50,7 +50,7 @@ public class Step7Attributes implements Attributes {
 
 	private AffineTransform at;
 	
-	public Step7Attributes(Shape shape, Step7ObjectType type){
+	public Step8Attributes(Shape shape, Step8ObjectType type){
 		this.type = type;
 		this.shape = shape;
 
@@ -111,11 +111,11 @@ public class Step7Attributes implements Attributes {
 		return at.createTransformedShape(getShape());
 	}
 	
-	public Step7ObjectType getType() {
+	public Step8ObjectType getType() {
 		return type;
 	}
 	
-	public void setType(Step7ObjectType type) {
+	public void setType(Step8ObjectType type) {
 		this.type = type;
 	}
 	
@@ -146,8 +146,8 @@ public class Step7Attributes implements Attributes {
 	}
 
 	@Override
-	public Step7Attributes clone() {
-		Step7Attributes clone = new Step7Attributes(shape,type);
+	public Step8Attributes clone() {
+		Step8Attributes clone = new Step8Attributes(shape,type);
 		clone.setCurrentFrame(currentFrame);
 		return clone;
 	}
