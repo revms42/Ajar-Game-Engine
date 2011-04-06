@@ -59,7 +59,7 @@ public class Step8 extends JFrame {
 	
 	private Step8(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Step8: Mapped Level");
+		this.setTitle("Step8: Changing Sprite State");
 		this.displayPanel = new DisplayPanel();
 		
 		displayPanel.setSize(640, 640);

@@ -13,8 +13,8 @@ public class Step8TilePalette extends TilePalette<Integer> {
 	
 	private final static Dimension d = new Dimension(64,64);
 	
-	private final static String mapTilePath = "iteration/org/mdmk3/sprint1/step7/res/Blocks.png";
-	private final static String unitTilePath = "iteration/org/mdmk3/sprint1/step7/res/Unit.png";
+	private final static String mapTilePath = "iteration/org/mdmk3/sprint1/step8/res/Blocks.png";
+	private final static String unitTilePath = "iteration/org/mdmk3/sprint1/step8/res/BallAnim.png";
 	
 	public Step8TilePalette() throws IOException{
 		super();

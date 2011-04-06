@@ -14,7 +14,7 @@ public class Step8AnimateEffect extends AbstractEffect<Step8Attributes> {
 	@Override
 	protected void doAction(Entity<Step8Attributes> state) {
 		int currentFrame = state.getAttributes().getCurrentFrame();
-		if(currentFrame >= 17){
+		if(currentFrame >= 29){
 			state.getAttributes().setCurrentFrame(10);
 		}else{
 			state.getAttributes().setCurrentFrame(++currentFrame);

@@ -15,6 +15,31 @@ public class Step8GameState extends DefaultState<Step8Attributes> {
 				new Step8VerticalBounceEffect(Step8ActionType.BOUNCE_V,v),
 				new Step8HorizontalBounceEffect(Step8ActionType.BOUNCE_H,h)
 		));
+		
+		this.put(new CompoundEffect<Step8Attributes>(
+				Step8ActionType.POWER_UP_V,
+				v,
+				new Step8PowerUpEffect(Step8ActionType.POWER_UP_V,v),
+				new Step8VerticalBounceEffect(Step8ActionType.BOUNCE_V,v)
+		));
+		this.put(new CompoundEffect<Step8Attributes>(
+				Step8ActionType.POWER_UP_H,
+				h,
+				new Step8PowerUpEffect(Step8ActionType.POWER_UP_H,h),
+				new Step8HorizontalBounceEffect(Step8ActionType.BOUNCE_H,h)
+		));
+		this.put(new CompoundEffect<Step8Attributes>(
+				Step8ActionType.POWER_UP_D,
+				d,
+				new Step8PowerUpEffect(Step8ActionType.POWER_UP_D,d),
+				new CompoundEffect<Step8Attributes>(
+						Step8ActionType.BOUNCE_D,
+						d,
+						new Step8VerticalBounceEffect(Step8ActionType.BOUNCE_V,v),
+						new Step8HorizontalBounceEffect(Step8ActionType.BOUNCE_H,h)
+				)
+		));
+		
 		this.put(new Step8Accell(Step8ActionType.ACCELL_XPOS,this));
 		this.put(new Step8Accell(Step8ActionType.ACCELL_YPOS,this));
 		this.put(new Step8Accell(Step8ActionType.ACCELL_XNEG,this));

@@ -4,6 +4,7 @@ public enum Step8ObjectType {
 
 	BALL,
 	BOX,
+	POWER_UP,
 	DOMAIN,
 	LEVEL;
 }

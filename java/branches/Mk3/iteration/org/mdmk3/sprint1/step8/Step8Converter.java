@@ -32,7 +32,12 @@ public class Step8Converter implements Converter<Integer, Step8Attributes> {
 		Step8Attributes atts = null;
 		
 		if(value != null){
-			atts = new Step8Attributes(new Rectangle(tileSize), Step8ObjectType.BOX);
+			
+			if(value == Color.BLUE.getRGB()){
+				atts = new Step8Attributes(new Rectangle(tileSize), Step8ObjectType.POWER_UP);
+			}else{
+				atts = new Step8Attributes(new Rectangle(tileSize), Step8ObjectType.BOX);
+			}
 			
 			if(value == Color.RED.getRGB()){
 				atts.setCurrentFrame(0);

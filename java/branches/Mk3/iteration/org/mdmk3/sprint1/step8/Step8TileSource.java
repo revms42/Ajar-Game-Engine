@@ -14,8 +14,13 @@ public class Step8TileSource extends BufferedImageTileSource<Integer> {
 
 	@Override
 	protected Point tileIndexForCode(Integer imageCode) {
+		int row = 0;
+		if(imageCode >= 100){
+			row = 1;
+			imageCode = imageCode - 100;
+		}
 		int xcode = imageCode >= 10 ? imageCode - 10 : imageCode;
-		return new Point(xcode,0);
+		return new Point(xcode,row);
 	}
 
 }
