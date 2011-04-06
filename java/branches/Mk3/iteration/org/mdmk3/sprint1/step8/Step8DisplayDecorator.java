@@ -25,7 +25,12 @@ public class Step8DisplayDecorator extends AbstractTileDisplayable<Integer,Step8
 
 	@Override
 	public Integer getImageCode() {
-		return getAttributes().getCurrentFrame();
+		if(getAttributes().isBlue()){
+			return getAttributes().getCurrentFrame() + 100;
+		}else{
+			return getAttributes().getCurrentFrame();
+		}
+		
 	}
 
 	@Override

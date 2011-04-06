@@ -47,6 +47,7 @@ public class Step8Attributes implements Attributes {
 	private int yVel;
 	private Shape shape;
 	private Rectangle2D bounds;
+	private boolean isBlue;
 
 	private AffineTransform at;
 	
@@ -55,6 +56,7 @@ public class Step8Attributes implements Attributes {
 		this.shape = shape;
 
 		at = AffineTransform.getTranslateInstance(0.0d, 0.0d);
+		isBlue = false;
 	}
 
 	public int getXVel() {
@@ -145,10 +147,19 @@ public class Step8Attributes implements Attributes {
 		this.bounds = bounds;
 	}
 
+	public boolean isBlue() {
+		return isBlue;
+	}
+
+	public void setBlue(boolean isBlue) {
+		this.isBlue = isBlue;
+	}
+
 	@Override
 	public Step8Attributes clone() {
 		Step8Attributes clone = new Step8Attributes(shape,type);
 		clone.setCurrentFrame(currentFrame);
+		clone.setBlue(isBlue());
 		return clone;
 	}
 }

@@ -42,5 +42,8 @@ public enum Step8ActionType implements Action {
 	ACCELL_YPOS,
 	ACCELL_YNEG,
 	MOVE,
+	POWER_UP_V,
+	POWER_UP_H,
+	POWER_UP_D,
 	ANIMATE;
 }
