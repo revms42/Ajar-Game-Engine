@@ -47,7 +47,7 @@ public class Step8BouncingDecorator extends MergingCollidable<Step8Attributes> {
 			case POWER_UP:
 				if(ball.intersects(bounds)){
 					return boundryBounce(bounds,ball,true);
-				}else if(!bounds.contains(ball)){
+				}else if(bounds.contains(ball)){
 					return outcodeBounce(bounds,ball,true);
 				}else{
 					return null;
@@ -64,44 +64,44 @@ public class Step8BouncingDecorator extends MergingCollidable<Step8Attributes> {
 		int outcode = bounds.outcode(ball.getCenterX(),ball.getCenterY());
 		switch(outcode){
 			case Rectangle2D.OUT_LEFT: //1
-				return powerUp ? Step8ActionType.BOUNCE_H : Step8ActionType.POWER_UP_H;
+				return powerUp ? Step8ActionType.POWER_UP_H : Step8ActionType.BOUNCE_H;
 			case Rectangle2D.OUT_TOP: //2
-				return powerUp ? Step8ActionType.BOUNCE_V : Step8ActionType.POWER_UP_V;
+				return powerUp ?  Step8ActionType.POWER_UP_V : Step8ActionType.BOUNCE_V;
 			case Rectangle2D.OUT_LEFT + Rectangle2D.OUT_TOP: //3
-				return powerUp ? Step8ActionType.BOUNCE_D : Step8ActionType.POWER_UP_D;
+				return powerUp ? Step8ActionType.POWER_UP_D : Step8ActionType.BOUNCE_D;
 			case Rectangle2D.OUT_RIGHT: //4
-				return powerUp ? Step8ActionType.BOUNCE_H : Step8ActionType.POWER_UP_H;
+				return powerUp ? Step8ActionType.POWER_UP_H : Step8ActionType.BOUNCE_H;
 			case Rectangle2D.OUT_RIGHT + Rectangle2D.OUT_TOP: //6
-				return powerUp ? Step8ActionType.BOUNCE_D : Step8ActionType.POWER_UP_D;
+				return powerUp ? Step8ActionType.POWER_UP_D : Step8ActionType.BOUNCE_D;
 			case Rectangle2D.OUT_BOTTOM: //8
-				return powerUp ? Step8ActionType.BOUNCE_V : Step8ActionType.POWER_UP_V;
+				return powerUp ? Step8ActionType.POWER_UP_V : Step8ActionType.BOUNCE_V;
 			default: //9+
-				return powerUp ? Step8ActionType.BOUNCE_D : Step8ActionType.POWER_UP_D;
+				return powerUp ? Step8ActionType.POWER_UP_D : Step8ActionType.BOUNCE_D;
 		}
 	}
 	
 	private Step8ActionType boundryBounce(Rectangle2D bounds, Rectangle2D ball, boolean powerUp){
 		if(ball.getMaxX() > bounds.getMaxX()){
 			if(ball.getMaxY() > bounds.getMaxY()){
-				return powerUp ? Step8ActionType.BOUNCE_D : Step8ActionType.POWER_UP_D;
+				return powerUp ? Step8ActionType.POWER_UP_D : Step8ActionType.BOUNCE_D;
 			}else if(ball.getMinY() < bounds.getMinY()){
-				return powerUp ? Step8ActionType.BOUNCE_D : Step8ActionType.POWER_UP_D;
+				return powerUp ? Step8ActionType.POWER_UP_D : Step8ActionType.BOUNCE_D;
 			}else{
-				return powerUp ? Step8ActionType.BOUNCE_H : Step8ActionType.POWER_UP_H;
+				return powerUp ? Step8ActionType.POWER_UP_H : Step8ActionType.BOUNCE_H;
 			}
 		}else if(ball.getMinX() < bounds.getMinX()){
 			if(ball.getMaxY() > bounds.getMaxY()){
-				return powerUp ? Step8ActionType.BOUNCE_D : Step8ActionType.POWER_UP_D;
+				return powerUp ? Step8ActionType.POWER_UP_D : Step8ActionType.BOUNCE_D;
 			}else if(ball.getMinY() < bounds.getMinY()){
-				return powerUp ? Step8ActionType.BOUNCE_D : Step8ActionType.POWER_UP_D;
+				return powerUp ? Step8ActionType.POWER_UP_D : Step8ActionType.BOUNCE_D;
 			}else{
-				return powerUp ? Step8ActionType.BOUNCE_H : Step8ActionType.POWER_UP_H;
+				return powerUp ? Step8ActionType.POWER_UP_H : Step8ActionType.BOUNCE_H;
 			}
 		}else{
 			if(ball.getMaxY() > bounds.getMaxY()){
-				return powerUp ? Step8ActionType.BOUNCE_V : Step8ActionType.POWER_UP_V;
+				return powerUp ? Step8ActionType.POWER_UP_V : Step8ActionType.BOUNCE_V;
 			}else if(ball.getMinY() < bounds.getMinY()){
-				return powerUp ? Step8ActionType.BOUNCE_V : Step8ActionType.POWER_UP_V;
+				return powerUp ? Step8ActionType.POWER_UP_V : Step8ActionType.BOUNCE_V;
 			}else{
 				return null;
 			}
