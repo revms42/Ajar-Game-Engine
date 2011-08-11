@@ -89,7 +89,7 @@ public class Step8 extends JFrame {
 		
 		Step8TilePalette palette = new Step8TilePalette();
 		
-		Step8Attributes atts = new Step8Attributes(new Rectangle2D.Double(0.0d,0.0d,64.0d,64.0d), Step8ObjectType.BALL);
+		Step8Attributes atts = new Step8Attributes(new Rectangle2D.Double(20.0d,20.0d,20.0d,20.0d), Step8ObjectType.BALL);
 		atts.setCurrentFrame(10);
 		atts.setPosition(129, 129);
 		DefaultNode<Step8Attributes> sprite = new DefaultNode<Step8Attributes>(atts);
