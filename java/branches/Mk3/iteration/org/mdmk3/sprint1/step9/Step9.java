@@ -17,7 +17,7 @@
  *
  * MDMk2
  * org.mdmk3.sprint1.step2
- * Step8.java
+ * Step9.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,7 +25,7 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.mdmk3.sprint1.step8;
+package org.mdmk3.sprint1.step9;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -45,21 +45,21 @@ import org.mdmk3.core.disp2d.DisplayPanel;
  * @author mstockbridge
  * 15-May-10
  */
-public class Step8 extends JFrame {
+public class Step9 extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private final static String mapPath = "iteration/org/mdmk3/sprint1/step8/res/level.png";
+	private final static String mapPath = "iteration/org/mdmk3/sprint1/step9/res/level.png";
 	private static BufferedImage map;
 
 	private final DisplayPanel displayPanel;
 	
-	private Step8(){
+	private Step9(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Step8: Changing Sprite State");
+		this.setTitle("Step9: Enemy Blockss");
 		this.displayPanel = new DisplayPanel();
 		
 		displayPanel.setSize(640, 640);
@@ -77,24 +77,24 @@ public class Step8 extends JFrame {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		Step8 step8 = (new Step8());
+		Step9 step9 = (new Step9());
 		
-		DefaultNode<Step8Attributes> root = new DefaultNode<Step8Attributes>(null);
+		DefaultNode<Step9Attributes> root = new DefaultNode<Step9Attributes>(null);
 		
-		Rectangle bounds = step8.displayPanel.getVisibleRect();
-		Step8Attributes lvlAtts = new Step8Attributes(bounds,Step8ObjectType.LEVEL);
-		DefaultNode<Step8Attributes> level = new DefaultNode<Step8Attributes>(lvlAtts);
-		new Step8BouncingDecorator(level);
+		Rectangle bounds = step9.displayPanel.getVisibleRect();
+		Step9Attributes lvlAtts = new Step9Attributes(bounds,Step9ObjectType.LEVEL);
+		DefaultNode<Step9Attributes> level = new DefaultNode<Step9Attributes>(lvlAtts);
+		new Step9BouncingDecorator(level);
 		root.addChild(level);
 		
-		Step8TilePalette palette = new Step8TilePalette();
+		Step9TilePalette palette = new Step9TilePalette();
 		
-		Step8Attributes atts = new Step8Attributes(new Rectangle2D.Double(20.0d,20.0d,20.0d,20.0d), Step8ObjectType.BALL);
+		Step9Attributes atts = new Step9Attributes(new Rectangle2D.Double(20.0d,20.0d,20.0d,20.0d), Step9ObjectType.BALL);
 		atts.setCurrentFrame(10);
 		atts.setPosition(129, 129);
-		DefaultNode<Step8Attributes> sprite = new DefaultNode<Step8Attributes>(atts);
-		step8.addKeyListener(new Step8Entity(new Step8BouncingDecorator(new Step8DisplayDecorator(sprite))));
-		sprite.getDecorator(Step8DisplayDecorator.class).setProvider(palette);
+		DefaultNode<Step9Attributes> sprite = new DefaultNode<Step9Attributes>(atts);
+		step9.addKeyListener(new Step9Entity(new Step9BouncingDecorator(new Step9DisplayDecorator(sprite))));
+		sprite.getDecorator(Step9DisplayDecorator.class).setProvider(palette);
 		root.addChild(sprite);
 		
 		try {
@@ -105,24 +105,24 @@ public class Step8 extends JFrame {
 			System.exit(1);
 		}
 		
-		Step8Converter converter = new Step8Converter(palette,new Dimension(64,64));
+		Step9Converter converter = new Step9Converter(palette,new Dimension(64,64));
 		
-		Step8MapLoader loader = new Step8MapLoader();
+		Step9MapLoader loader = new Step9MapLoader();
 		loader.setConverter(converter);
 		
 		root.addChild(loader.loadFromImage(map));
 		
-		Step8GameLoop loop = new Step8GameLoop(root,step8.displayPanel);
-		loop.setDisplayableClass(Step8DisplayDecorator.class);
-		loop.setCollidableClass(Step8BouncingDecorator.class);
-		loop.setEntityClass(Step8Entity.class);
-		loop.setCullingSurface(new Step8CullingSurface(step8.displayPanel));
+		Step9GameLoop loop = new Step9GameLoop(root,step9.displayPanel);
+		loop.setDisplayableClass(Step9DisplayDecorator.class);
+		loop.setCollidableClass(Step9BouncingDecorator.class);
+		loop.setEntityClass(Step9Entity.class);
+		loop.setCullingSurface(new Step9CullingSurface(step9.displayPanel));
 		loop.setUpdatePeriod(10);
 		
 		Thread t = new Thread(loop);
 		
 		t.start();
-		step8.setVisible(true);
+		step9.setVisible(true);
 	}
 
 }
