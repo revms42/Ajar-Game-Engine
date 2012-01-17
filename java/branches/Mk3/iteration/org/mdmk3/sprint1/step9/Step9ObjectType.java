@@ -5,6 +5,7 @@ public enum Step9ObjectType {
 	BALL,
 	BOX,
 	POWER_UP,
+	ENEMY,
 	DOMAIN,
 	LEVEL;
 }

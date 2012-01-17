@@ -45,5 +45,6 @@ public enum Step9ActionType implements Action {
 	POWER_UP_V,
 	POWER_UP_H,
 	POWER_UP_D,
+	GAME_OVER,
 	ANIMATE;
 }

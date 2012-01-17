@@ -51,5 +51,6 @@ public class Step9GameState extends DefaultState<Step9Attributes> {
 				new Step9MoveEffect(null,this),
 				new Step9AnimateEffect(Step9ActionType.ANIMATE,this)
 		));
+		this.put(new Step9GameOverEffect(this));
 	}
 }

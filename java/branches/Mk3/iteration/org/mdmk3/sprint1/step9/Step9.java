@@ -93,9 +93,17 @@ public class Step9 extends JFrame {
 		atts.setCurrentFrame(10);
 		atts.setPosition(129, 129);
 		DefaultNode<Step9Attributes> sprite = new DefaultNode<Step9Attributes>(atts);
-		step9.addKeyListener(new Step9Entity(new Step9BouncingDecorator(new Step9DisplayDecorator(sprite))));
+		step9.addKeyListener(new Step9PlayerEntity(new Step9BouncingDecorator(new Step9DisplayDecorator(sprite))));
 		sprite.getDecorator(Step9DisplayDecorator.class).setProvider(palette);
 		root.addChild(sprite);
+		
+		Step9Attributes atts2 = new Step9Attributes(new Rectangle2D.Double(20.0d,20.0d,20.0d,20.0d), Step9ObjectType.ENEMY);
+		atts2.setCurrentFrame(10);
+		atts2.setPosition(256, 256);
+		DefaultNode<Step9Attributes> enemy = new DefaultNode<Step9Attributes>(atts2);
+		new Step9EnemyEntity(new Step9BouncingDecorator(new Step9DisplayDecorator(enemy)));
+		enemy.getDecorator(Step9DisplayDecorator.class).setProvider(palette);
+		root.addChild(enemy);
 		
 		try {
 			File path = new File(mapPath);
