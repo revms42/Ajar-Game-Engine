@@ -75,6 +75,23 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 	@Override
 	public void addDecorator(Decorator<A> decorator) {
 		decorators.put((Class<Decorator<A>>) decorator.getClass(), decorator);
+		
+		/*
+		 * TODO:
+		 * Step9 has raised an interesting problem. There are two different types of entity: One for a player and one for an enemy.
+		 * Theoretically both need to be getting updates, but they're not going to be powered by the same logic backend.
+		 * So, given that you specify the specific type of Entity that you use in updates, and that is tied to specific class (not
+		 * using "instanceof"), how do you differentiate the two?
+		 */
+		Class<Decorator<A>> supDec = (Class<Decorator<A>>) decorator.getClass();
+		while(true){
+			if(Decorator.class.isAssignableFrom(supDec.getSuperclass())){
+				supDec = (Class<Decorator<A>>) supDec.getSuperclass();
+				decorators.put(supDec, decorator);
+			}else{
+				break;
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")

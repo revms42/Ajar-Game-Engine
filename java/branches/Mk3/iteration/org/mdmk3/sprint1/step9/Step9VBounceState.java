@@ -64,5 +64,6 @@ public class Step9VBounceState extends DefaultState<Step9Attributes> {
 						new Step9HorizontalBounceEffect(Step9ActionType.BOUNCE_H,this)
 				)
 		));
+		this.put(new Step9GameOverEffect(this));
 	}
 }

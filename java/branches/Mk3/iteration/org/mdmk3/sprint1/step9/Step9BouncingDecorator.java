@@ -20,13 +20,12 @@ public class Step9BouncingDecorator extends MergingCollidable<Step9Attributes> {
 	
 	@Override
 	public Action collideWith(Collidable<Step9Attributes> s) {
-		if(hasCapability(Step9Entity.class)){
+		if(hasCapability(Step9PlayerEntity.class)){
 			trans.setToTranslation(getAttributes().getXVel(), getAttributes().getYVel());
 			
 			Rectangle2D bounds = s.getAttributes().getCollisionSurface().getBounds2D();
 			Rectangle2D ball = trans.createTransformedShape(getAttributes().getCollisionSurface()).getBounds2D();
 			
-			//There are two object types to worry about: Walls and boxes.
 			switch(s.getAttributes().getType()){
 			case BOX:
 				if(ball.intersects(bounds)){
@@ -49,6 +48,12 @@ public class Step9BouncingDecorator extends MergingCollidable<Step9Attributes> {
 					return boundryBounce(bounds,ball,true);
 				}else if(bounds.contains(ball)){
 					return outcodeBounce(bounds,ball,true);
+				}else{
+					return null;
+				}
+			case ENEMY:
+				if(ball.intersects(bounds)){
+					return Step9ActionType.GAME_OVER;
 				}else{
 					return null;
 				}
