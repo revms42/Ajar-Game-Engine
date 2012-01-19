@@ -20,7 +20,7 @@ public class Step9BouncingDecorator extends MergingCollidable<Step9Attributes> {
 	
 	@Override
 	public Action collideWith(Collidable<Step9Attributes> s) {
-		if(hasCapability(Step9PlayerEntity.class)){
+		if(hasCapability(Step9Entity.class)){
 			trans.setToTranslation(getAttributes().getXVel(), getAttributes().getYVel());
 			
 			Rectangle2D bounds = s.getAttributes().getCollisionSurface().getBounds2D();

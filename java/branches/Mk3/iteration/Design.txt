@@ -38,4 +38,11 @@ This raises an interesting question: Since the decorators themselves are bridges
 Node? Is there an advantage to having the NodeDecorator interface or not?
 This leads to another question: Currently all the implementations are, themselves, attributed. Do they really need to be, or 
 should they instead refer to the node that they're supposed to be implementing?
+
+-Entities and Polling-
+Entities, which currently have one single method that defines their update behavior, are lacking in a method of requesting input into
+their behavior. For this reason I'm introducing another method, requestInput, which will request input for the given entity from a 
+class designed to handle AI Logic/Human input: Controller. pollForInput, in Controller, will take the entity as it's sole input 
+(I may need to add a reference to some other game items later, but really those should probably be in the controller class) and will 
+add actions to the entity as needed.
  
