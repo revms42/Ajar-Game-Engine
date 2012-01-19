@@ -51,4 +51,32 @@ public interface Entity<A extends Attributes> extends Decorator<A> {
 	 * @return
 	 */
 	public boolean needsStateUpdate();
+	
+	/**
+	 * mstockbridge
+	 * 19-Jan-12
+	 * @return
+	 */
+	public List<Controller<A>> getControllers();
+	
+	/**
+	 * mstockbridge
+	 * 19-Jan-12
+	 * @return
+	 */
+	public void addController(Controller<A> controller);
+	
+	/**
+	 * mstockbridge
+	 * 19-Jan-12
+	 * @return
+	 */
+	public boolean removeController(Controller<A> controller);
+	
+	/**
+	 * mstockbridge
+	 * 19-Jan-12
+	 * @return
+	 */
+	public void requestInput();
 }

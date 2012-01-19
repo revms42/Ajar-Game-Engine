@@ -55,6 +55,7 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 	 * @see org.mdmk2.core.logic.StatedImp#updateState()
 	 */
 	public void updateState() {
+		requestInput();
 		if(actions.size() > 0){
 			for(Action a : actions){
 				state = state.perform(this,a);
@@ -63,5 +64,12 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 		}
 		state = state.perform(this, null);
 		
+	}
+
+	@Override
+	public void requestInput() {
+		for(Controller<A> controller : getControllers()){
+			controller.pollForInput(this);
+		}
 	}
 }

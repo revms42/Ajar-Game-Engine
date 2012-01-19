@@ -93,7 +93,10 @@ public class Step9 extends JFrame {
 		atts.setCurrentFrame(10);
 		atts.setPosition(129, 129);
 		DefaultNode<Step9Attributes> sprite = new DefaultNode<Step9Attributes>(atts);
-		step9.addKeyListener(new Step9PlayerEntity(new Step9BouncingDecorator(new Step9DisplayDecorator(sprite))));
+		Step9Entity player = new Step9Entity(new Step9BouncingDecorator(new Step9DisplayDecorator(sprite)));
+		Step9PlayerController controller = new Step9PlayerController();
+		player.addController(controller);
+		step9.addKeyListener(controller);
 		sprite.getDecorator(Step9DisplayDecorator.class).setProvider(palette);
 		root.addChild(sprite);
 		
@@ -101,7 +104,7 @@ public class Step9 extends JFrame {
 		atts2.setCurrentFrame(10);
 		atts2.setPosition(256, 256);
 		DefaultNode<Step9Attributes> enemy = new DefaultNode<Step9Attributes>(atts2);
-		new Step9EnemyEntity(new Step9BouncingDecorator(new Step9DisplayDecorator(enemy)));
+		new Step9Entity(new Step9BouncingDecorator(new Step9DisplayDecorator(enemy)));
 		enemy.getDecorator(Step9DisplayDecorator.class).setProvider(palette);
 		root.addChild(enemy);
 		
