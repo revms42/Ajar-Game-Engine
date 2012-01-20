@@ -55,7 +55,6 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 	 * @see org.mdmk2.core.logic.StatedImp#updateState()
 	 */
 	public void updateState() {
-		requestInput();
 		if(actions.size() > 0){
 			for(Action a : actions){
 				state = state.perform(this,a);
@@ -63,6 +62,7 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 			actions.removeAllElements();
 		}
 		state = state.perform(this, null);
+		requestInput();
 		
 	}
 

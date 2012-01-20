@@ -16,4 +16,5 @@ public interface Node<A extends Attributes> {
 	public <D extends Decorator<A>> D getDecorator(Class<D> c);
 	public void addDecorator(Decorator<A> decorator);
 	public <D extends Decorator<A>> D removeDecorator(Class<D> c);
+	public Node<A> getUndecoratedNode();
 }

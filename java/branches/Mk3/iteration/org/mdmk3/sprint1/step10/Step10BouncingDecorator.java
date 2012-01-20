@@ -21,40 +21,73 @@ public class Step10BouncingDecorator extends MergingCollidable<Step10Attributes>
 	@Override
 	public Action collideWith(Collidable<Step10Attributes> s) {
 		if(hasCapability(Step10Entity.class)){
-			trans.setToTranslation(getAttributes().getXVel(), getAttributes().getYVel());
 			
 			Rectangle2D bounds = s.getAttributes().getCollisionSurface().getBounds2D();
 			Rectangle2D ball = trans.createTransformedShape(getAttributes().getCollisionSurface()).getBounds2D();
 			
-			switch(s.getAttributes().getType()){
-			case BOX:
-				if(ball.intersects(bounds)){
-					return outcodeBounce(bounds,ball,false);
-				}else if(bounds.contains(ball)){
-					return boundryBounce(bounds,ball,false);
-				}else{
-					return null;
-				}
-			case LEVEL:
-				if(ball.intersects(bounds)){
-					return boundryBounce(bounds,ball,false);
-				}else if(!bounds.contains(ball)){
-					return outcodeBounce(bounds,ball,false);
-				}else{
-					return null;
-				}
-			case POWER_UP:
-				if(ball.intersects(bounds)){
-					return boundryBounce(bounds,ball,true);
-				}else if(bounds.contains(ball)){
-					return outcodeBounce(bounds,ball,true);
-				}else{
+			switch(getAttributes().getType()){
+			case BALL:
+				switch(s.getAttributes().getType()){
+				case BOX:
+					if(ball.intersects(bounds)){
+						return outcodeBounce(bounds,ball,false);
+					}else if(bounds.contains(ball)){
+						return boundryBounce(bounds,ball,false);
+					}else{
+						return null;
+					}
+				case LEVEL:
+					if(ball.intersects(bounds)){
+						return boundryBounce(bounds,ball,false);
+					}else if(!bounds.contains(ball)){
+						return outcodeBounce(bounds,ball,false);
+					}else{
+						return null;
+					}
+				case POWER_UP:
+					if(ball.intersects(bounds)){
+						return boundryBounce(bounds,ball,true);
+					}else if(bounds.contains(ball)){
+						return outcodeBounce(bounds,ball,true);
+					}else{
+						return null;
+					}
+				case ENEMY:
+					if(ball.intersects(bounds)){
+						return Step10ActionType.GAME_OVER;
+					}else{
+						return null;
+					}
+				default:
 					return null;
 				}
 			case ENEMY:
-				if(ball.intersects(bounds)){
-					return Step10ActionType.GAME_OVER;
-				}else{
+				switch(s.getAttributes().getType()){
+				case BULLET:
+					if(ball.intersects(bounds)){
+						return Step10ActionType.DIE;
+					}else{
+						return null;
+					}
+				default:
+					return null;
+				}
+			case BULLET:
+				switch(s.getAttributes().getType()){
+				case POWER_UP:
+				case BOX:
+					if(ball.intersects(bounds)){
+						return Step10ActionType.DIE;
+					}else{
+						return null;
+					}
+				case LEVEL:
+					if(!bounds.contains(ball)){
+						return Step10ActionType.DIE;
+					}else{
+						return null;
+					}
+				default:
 					return null;
 				}
 			default:

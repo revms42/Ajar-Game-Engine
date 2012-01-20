@@ -12,6 +12,7 @@ public class Step10PlayerController implements KeyListener, Controller<Step10Att
 	private boolean down;
 	private boolean right;
 	private boolean left;
+	private boolean shoot;
 
 	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
@@ -30,6 +31,9 @@ public class Step10PlayerController implements KeyListener, Controller<Step10Att
 			break;
 		case KeyEvent.VK_RIGHT:
 			right = true;
+			break;
+		case KeyEvent.VK_SPACE:
+			shoot = true;
 			break;
 		default:
 			break;
@@ -54,6 +58,9 @@ public class Step10PlayerController implements KeyListener, Controller<Step10Att
 		case KeyEvent.VK_RIGHT:
 			right = false;
 			break;
+		case KeyEvent.VK_SPACE:
+			shoot = false;
+			break;
 		default:
 			break;
 		}
@@ -63,10 +70,7 @@ public class Step10PlayerController implements KeyListener, Controller<Step10Att
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent arg0) {}
 
 	@Override
 	public void pollForInput(Entity<Step10Attributes> entity) {
@@ -74,6 +78,10 @@ public class Step10PlayerController implements KeyListener, Controller<Step10Att
 		if(down)entity.addAction(Step10ActionType.ACCELL_YPOS);
 		if(right)entity.addAction(Step10ActionType.ACCELL_XPOS);
 		if(left) entity.addAction(Step10ActionType.ACCELL_XNEG);
+		if(shoot){
+			entity.addAction(Step10ActionType.SHOOT);
+			shoot = false;
+		}
 	}
 
 }

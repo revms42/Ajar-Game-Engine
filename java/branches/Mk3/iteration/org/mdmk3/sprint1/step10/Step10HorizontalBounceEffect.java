@@ -14,6 +14,11 @@ public class Step10HorizontalBounceEffect extends AbstractEffect<Step10Attribute
 	@Override
 	protected void doAction(Entity<Step10Attributes> state) {
 		int dx = state.getAttributes().getXVel();
+		double x = state.getAttributes().getXPos();
+		double y = state.getAttributes().getYPos();
+		
+		state.getAttributes().setPosition(x-dx, y);
+		
 		if(dx > 0){
 			dx = dx - 1;
 		}else if(dx < 0){

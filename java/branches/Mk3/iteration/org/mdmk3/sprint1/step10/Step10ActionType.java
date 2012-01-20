@@ -46,5 +46,7 @@ public enum Step10ActionType implements Action {
 	POWER_UP_H,
 	POWER_UP_D,
 	GAME_OVER,
+	SHOOT,
+	DIE,
 	ANIMATE;
 }
