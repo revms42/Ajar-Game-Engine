@@ -40,6 +40,7 @@ import javax.swing.JFrame;
 
 import org.mdmk3.core.DefaultNode;
 import org.mdmk3.core.disp2d.DisplayPanel;
+import org.mdmk3.core.logic.CompoundEffect;
 
 /**
  * @author mstockbridge
@@ -93,7 +94,7 @@ public class Step10 extends JFrame {
 		atts.setCurrentFrame(10);
 		atts.setPosition(129, 129);
 		DefaultNode<Step10Attributes> sprite = new DefaultNode<Step10Attributes>(atts);
-		Step10Entity player = new Step10Entity(new Step10BouncingDecorator(new Step10DisplayDecorator(sprite)));
+		Step10Entity player = new Step10Entity(new Step10BouncingDecorator(new Step10DisplayDecorator(sprite)),createPlayerState());
 		Step10PlayerController controller = new Step10PlayerController();
 		player.addController(controller);
 		step10.addKeyListener(controller);
@@ -104,7 +105,7 @@ public class Step10 extends JFrame {
 		atts2.setCurrentFrame(10);
 		atts2.setPosition(256, 256);
 		DefaultNode<Step10Attributes> enemy = new DefaultNode<Step10Attributes>(atts2);
-		new Step10Entity(new Step10BouncingDecorator(new Step10DisplayDecorator(enemy)));
+		new Step10Entity(new Step10BouncingDecorator(new Step10DisplayDecorator(enemy)), new Step10EnemyState());
 		enemy.getDecorator(Step10DisplayDecorator.class).setProvider(palette);
 		root.addChild(enemy);
 		
@@ -136,4 +137,38 @@ public class Step10 extends JFrame {
 		step10.setVisible(true);
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	private static Step10GameState createPlayerState() throws IOException{
+		Step10DBounceState d = new Step10DBounceState();
+		Step10HBounceState h = new Step10HBounceState(d);
+		Step10VBounceState v = new Step10VBounceState(d);
+		Step10GameState state = new Step10GameState(h,v,d);
+		
+		d.put(new Step10MoveEffect(Step10ActionType.MOVE,state));
+		d.put(new CompoundEffect<Step10Attributes>(
+				null,
+				state,
+				new Step10MoveEffect(null,state),
+				new Step10AnimateEffect(Step10ActionType.ANIMATE,state)
+		));
+		
+		h.put(new Step10MoveEffect(Step10ActionType.MOVE,state));
+		h.put(new CompoundEffect<Step10Attributes>(
+				null,
+				state,
+				new Step10MoveEffect(null,state),
+				new Step10AnimateEffect(Step10ActionType.ANIMATE,state)
+		));
+		
+		v.put(new Step10MoveEffect(Step10ActionType.MOVE,state));
+		v.put(new CompoundEffect<Step10Attributes>(
+				null,
+				state,
+				new Step10MoveEffect(null,state),
+				new Step10AnimateEffect(Step10ActionType.ANIMATE,state)
+		));
+		
+		return state;
+	}
 }

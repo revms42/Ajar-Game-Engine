@@ -50,4 +50,9 @@ public class DefaultDecorator<A extends Attributes> implements Decorator<A> {
 	public <D extends Decorator<A>> D removeDecorator(Class<D> c) {
 		return node.removeDecorator(c);
 	}
+
+	@Override
+	public Node<A> getUndecoratedNode() {
+		return node.getUndecoratedNode();
+	}
 }

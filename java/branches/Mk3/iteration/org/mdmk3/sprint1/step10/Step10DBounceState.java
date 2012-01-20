@@ -1,5 +1,7 @@
 package org.mdmk3.sprint1.step10;
 
+import java.io.IOException;
+
 import org.mdmk3.core.logic.CompoundEffect;
 import org.mdmk3.core.logic.DefaultState;
 
@@ -11,7 +13,7 @@ public class Step10DBounceState extends DefaultState<Step10Attributes> {
 	 * D|D|D|D
 	 */
 	@SuppressWarnings("unchecked")
-	public Step10DBounceState(){
+	public Step10DBounceState() throws IOException{
 		this.put(new Step10AnimateEffect(Step10ActionType.ANIMATE,this));
 		this.put(new Step10NullEffect(Step10ActionType.BOUNCE_V,this));
 		this.put(new Step10NullEffect(Step10ActionType.BOUNCE_H,this));
@@ -44,5 +46,6 @@ public class Step10DBounceState extends DefaultState<Step10Attributes> {
 				)
 		));
 		this.put(new Step10GameOverEffect(this));
+		this.put(new Step10ShootEffect(this));
 	}
 }

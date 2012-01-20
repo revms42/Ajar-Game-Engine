@@ -68,19 +68,19 @@ public class Step10Attributes implements Attributes {
 	}
 
 	public void setXVel(int xVel) {
-		if(xVel > 10){
-			xVel = 10;
-		}else if(xVel < -10){
-			xVel = -10;
+		if(xVel > 2){
+			xVel = 2;
+		}else if(xVel < -2){
+			xVel = -2;
 		}
 		this.xVel = xVel;
 	}
 
 	public void setYVel(int yVel) {
-		if(yVel > 10){
-			yVel = 10;
-		}else if(yVel < -10){
-			yVel = -10;
+		if(yVel > 2){
+			yVel = 2;
+		}else if(yVel < -2){
+			yVel = -2;
 		}
 		this.yVel = yVel;
 	}

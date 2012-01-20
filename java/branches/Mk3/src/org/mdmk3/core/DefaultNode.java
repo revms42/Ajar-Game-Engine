@@ -26,19 +26,19 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addChild(Node<A> child) {
-		if(child instanceof DefaultNode){
-			((DefaultNode) child).setParent(this);
+		if(child.getUndecoratedNode() instanceof DefaultNode){
+			((DefaultNode) child.getUndecoratedNode()).setParent(this);
 		}
 		children.add(child);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean removeChild(Node<A> child) {
-		if(child.getParent() == this && child instanceof DefaultNode){
-			((DefaultNode) child).setParent(null);
+		if(child.getParent() == this && child.getUndecoratedNode() instanceof DefaultNode){
+			((DefaultNode) child.getUndecoratedNode()).setParent(null);
 		}
-		return children.remove(child);
+		return children.remove(child.getUndecoratedNode());
 	}
 
 	@Override
@@ -81,6 +81,11 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 	@Override
 	public <D extends Decorator<A>> D removeDecorator(Class<D> c) {
 		return (D) decorators.remove(c);
+	}
+
+	@Override
+	public Node<A> getUndecoratedNode() {
+		return this;
 	}
 
 }

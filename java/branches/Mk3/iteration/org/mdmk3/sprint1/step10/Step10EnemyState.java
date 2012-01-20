@@ -6,5 +6,6 @@ public class Step10EnemyState extends DefaultState<Step10Attributes> {
 
 	public Step10EnemyState() {
 		this.put(new Step10AnimateEffect(null,this));
+		this.put(new Step10DieEffect(Step10ActionType.DIE,this));
 	}
 }

@@ -7,5 +7,6 @@ public enum Step10ObjectType {
 	POWER_UP,
 	ENEMY,
 	DOMAIN,
+	BULLET,
 	LEVEL;
 }
