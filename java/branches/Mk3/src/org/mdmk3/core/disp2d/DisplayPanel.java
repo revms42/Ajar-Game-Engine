@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Macchiato Doppio Java Game Framework.
  * Copyright (C) 15-May-10 Matthew Stockbridge
  * 
@@ -15,13 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- * MDMk2
- * org.mdmk2.core.disp2d
+ * MDMk3
+ * org.mdmk3.core.disp2d
  * DisplayPanel.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
- * This file is part of the Mark 2 effort in reorganizing Macchiato Doppio, 
+ * This file is part of the Mark 3 effort in reorganizing Macchiato Doppio, 
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
@@ -38,8 +38,9 @@ import javax.swing.JPanel;
 /**
  * DisplayPanel is meant as a simple implementation of the {@link DisplaySurface2d} interface,
  * with methods tailored toward speedy rendering.
- * @author mstockbridge
- * 15-May-10
+ * <p>
+ * @author revms
+ * @since 0.0.0.153
  */
 public class DisplayPanel extends JPanel implements DisplaySurface2d {
 
@@ -48,7 +49,15 @@ public class DisplayPanel extends JPanel implements DisplaySurface2d {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * BufferedImage used to buffer screen updates.
+	 */
 	protected BufferedImage buffer;
+	
+	/**
+	 * Graphics object onto which <code>Displayable</code> objects draw.
+	 * @see Displayable#updateDisplay(Graphics2D)
+	 */
 	protected Graphics2D bufferGraphics;
 	
 	public DisplayPanel(){
@@ -58,7 +67,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface2d {
 	/* (non-Javadoc)
 	 * This implementation is based heavily on the one from "Killer Game Programming
 	 * with Java" by Andrew Davidson. Copyright 2005 O'Reilly Media, Inc., 0-596-00730-2.
-	 * TODO: This doesn't take into account any insets, etc....
+	 * @TODO This doesn't take into account any insets, etc....
 	 * @see org.mdmk2.core.disp2d.DisplaySurface2d#blitToScreen()
 	 */
 	public void blitToScreen() {
@@ -66,11 +75,8 @@ public class DisplayPanel extends JPanel implements DisplaySurface2d {
 			try {
 				Graphics2D g2 = (Graphics2D)this.getGraphics();
 				
-				//bufferGraphics.finalize();
-				//bufferGraphics.dispose();
 				g2.drawImage(buffer, null, 0, 0);
 				Toolkit.getDefaultToolkit().sync();
-				//bufferGraphics = buffer.createGraphics();
 				
 				g2.dispose();
 			}catch(ClassCastException e){
@@ -84,10 +90,10 @@ public class DisplayPanel extends JPanel implements DisplaySurface2d {
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.disp2d.DisplaySurface2d#drawToBuffer(java.util.List)
 	 */
-	public void drawToBuffer(List<? extends Displayable> nodes) {
+	public void drawToBuffer(List<? extends Displayable<?>> nodes) {
 		Graphics2D bg = getBufferedSurface();
 		if(nodes != null && nodes.size() > 0) bg.clearRect(0, 0, getBufferWidth(), getBufferHeight());
-		for(Displayable node : nodes){
+		for(Displayable<?> node : nodes){
 			node.updateDisplay(bg);
 		}
 	}
@@ -108,9 +114,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface2d {
 	
 	/**
 	 * Gets the width of the back buffer.
-	 * mstockbridge
-	 * 15-May-10
-	 * @return	the width of the back buffer.
+	 * @return	the width of the back buffer in pixels.
 	 */
 	public int getBufferWidth(){
 		return buffer.getWidth();
@@ -118,9 +122,7 @@ public class DisplayPanel extends JPanel implements DisplaySurface2d {
 
 	/**
 	 * Gets the heigth of the back buffer.
-	 * mstockbridge
-	 * 15-May-10
-	 * @return	the height of the back buffer.
+	 * @return	the height of the back buffer in pixels.
 	 */
 	public int getBufferHeight(){
 		return buffer.getHeight();

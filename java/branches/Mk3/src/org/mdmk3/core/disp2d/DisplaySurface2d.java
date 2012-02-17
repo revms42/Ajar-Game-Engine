@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of Macchiato Doppio Java Game Framework.
  * Copyright (C) 15-May-10 Matthew Stockbridge
  * 
@@ -15,13 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- * MDMk2
- * org.mdmk2.core.disp2d
+ * MDMk3
+ * org.mdmk3.core.disp2d
  * DisplaySurface2d.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
- * This file is part of the Mark 2 effort in reorganizing Macchiato Doppio, 
+ * This file is part of the Mark 3 effort in reorganizing Macchiato Doppio, 
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
@@ -33,38 +33,32 @@ import java.util.List;
 /**
  * DisplaySurface2d provides an interface for surfaces that will make display
  * updates.
- * @author mstockbridge
- * 15-May-10
+ * @author revms
+ * @since 0.0.0.153
  */
 public interface DisplaySurface2d {
 
 	/**
 	 * Returns the {@link Graphics2D} display context of the buffered surface for the
 	 * component used for display.
-	 * mstockbridge
-	 * 15-May-10
 	 * @return	the underlying {@link Graphics2D} display context.
 	 */
 	public Graphics2D getBufferedSurface();
 	
 	/**
-	 * Calls on this DisplaySurface2d to render the {@link List} of nodes. Typically,
-	 * this will be called from an implementation of {@link GameLoop}.
-	 * mstockbridge
-	 * 15-May-10
-	 * @param	nodes		the list of {@link Node}s to be displayed.
-	 * @see	{@link Node}
-	 * @see	{@link Displayable}
-	 * @see	{@link GameLoop.render(Node)}
+	 * Calls on this DisplaySurface2d to render the {@link java.util.List} of nodes. Typically,
+	 * this will be called from an implementation of {@link org.mdmk3.core.GameLoop}.
+	 * @param	nodes		the list of {@link org.mdmk3.core.Node}s to be displayed.
+	 * @see	org.mdmk3.core.Node
+	 * @see	org.mdmk3.core.disp2d.Displayable
+	 * @see	org.mdmk3.core.GameLoop#render()
 	 */
-	public void drawToBuffer(List<? extends Displayable> nodes);
+	public void drawToBuffer(List<? extends Displayable<?>> nodes);
 	
 	/**
-	 * Called after {@link DisplaySurface2d.drawToBuffer(List)} to instruct this display
+	 * Called after {@link #drawToBuffer(List)} to instruct this display
 	 * surface that the display update is complete and the buffer is ready to be blitted
 	 * to the screen.
-	 * mstockbridge
-	 * 15-May-10
 	 */
 	public void blitToScreen();
 }
