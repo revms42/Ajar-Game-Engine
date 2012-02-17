@@ -1,5 +1,4 @@
-package org.mdmk3.core;
-/**
+/*
  * This file is part of Macchiato Doppio Java Game Framework.
  * Copyright (C) May 10, 2010 Matthew Stockbridge
  * 
@@ -16,16 +15,17 @@ package org.mdmk3.core;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- * MDMk2
- * org.mdmk2.core.display
- * Displayable.java
+ * MDMk3
+ * org.mdmk3.core
+ * GameLoop.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
- * This file is part of the Mark 2 effort in reorganizing Macchiato Doppio, 
+ * This file is part of the Mark 3 effort in reorganizing Macchiato Doppio, 
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
+package org.mdmk3.core;
 
 import java.util.Vector;
 
@@ -38,11 +38,10 @@ import org.mdmk3.core.logic.Entity;
  * GameLoop is the primary loop for game updates. I performs all the gunt work
  * as far as culling which things need to be updated, but is designed to hand
  * off all the display and logic work to other classes (though you could just
- * as easily implement {@link GameLoop.render(Node<R>)} and {@link GameLoop.logic(Node<R>)}
+ * as easily implement {@link #render()} and {@link #logic()}
  * to do it as well). GameLoop also handles game pause and frameskip.
- * @author mstockbridge
- * 15-May-10
- * @param <R>	the "range" type parameter, indicating the format of the screen's view.
+ * @author revms
+ * @since 0.0.0.153
  */
 public abstract class GameLoop<A extends Attributes> implements Runnable {
 
@@ -71,7 +70,7 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	
 	protected final Node<A> displayRoot;
 	protected final Vector<Entity<A>> needsStatusUpdate;
-	//TODO: This prevents it from working in 3D, so it may need to come out later.
+	//@TODO This prevents it from working in 3D, so it may need to come out later.
 	protected final Vector<Displayable<A>> needsDisplayUpdate;
 	protected final Vector<Collidable<A>> needsCollisionCheck;
 	private CullingSurface<A> cullingSurface;
@@ -92,8 +91,6 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	
 	/**
 	 * Returns the whether the game is paused.
-	 * mstockbridge
-	 * May 10, 2010
 	 * @return	<code>true</code> if the game is paused, else <code>false</code>.
 	 */
 	public boolean isPaused() {
@@ -102,8 +99,6 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 
 	/**
 	 * Toggles the value of <code>isPaused</code>.
-	 * mstockbridge
-	 * May 10, 2010
 	 */
 	public void pause() {
 		isPaused = !isPaused;
@@ -111,13 +106,13 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 
 	/**
 	 * The primary method of the game loop. Recursively updates the game by calling
-	 * the {@link GameLoop.update(Node<R>,R)} method. Allowances are made to attempt
-	 * to maintain the speed specified by the {@link GameLoop.updatePeriod} field, 
+	 * the {@link #update(Node, CullingSurface)} method. Allowances are made to attempt
+	 * to maintain the speed specified by the {@link GameLoop#updatePeriod} field, 
 	 * with sleep added when the loop is running fast. When the loop runs slow this 
 	 * method will attempt to run multiple logic updates without displaying (note that
 	 * in the current configuration this will be limited to just those entities 
 	 * defined to be in range during the last full update). Also, there are 
-	 * periodic {@link Thread.yield()} calls made when the game is running 
+	 * periodic {@link Thread#yield()} calls made when the game is running 
 	 * slow to prevent monopolizing.
 	 * <p>
 	 * This implementation is based heavily on the one from "Killer Game Programming
@@ -169,16 +164,15 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	
 	/**
 	 * This method performs the culling of elements from the display root
-	 * based on the "range", usually obtained via the {@link GameLoop.getRange()} 
-	 * function, then displays and updates as necessary.
+	 * based on the "range", specified via the provided <code>CullingSurface</code>  
+	 * , then displays and updates as necessary.
 	 * <p>
 	 * This function should execute in O=log(n) time.
-	 * mstockbridge
-	 * May 13, 2010
 	 * @param 	root	the {@link Node} representing the root to be updated (
-	 * 					generally the {@link GameLoop.displayRoot} field).
-	 * @param 	range	the <code>R</code> type "range", or area currently in view
-	 * 					or under consideration for update. 
+	 * 					generally the {@link GameLoop#displayRoot} field).
+	 * @param 	culler	the <code>CullingSurface</code> representing what's currently in view
+	 * 					or under consideration for update.
+	 * @see org.mdmk3.core.cull.CullingSurface
 	 */
 	protected void update(Node<A> root, CullingSurface<A> culler){
 		assessUpdate(root,culler);
@@ -234,7 +228,9 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	}
 
 	/**
-	 * @param node
+	 * Checks the provided node to determine if it can collide with other nodes during this update period.
+	 * @param node the node to check for collisions.
+	 * @see org.mdmk3.core.collision.Collidable#needsCollisionCheck()
 	 */
 	protected void checkCollisionUpdate(Node<A> node) {
 		if(node.hasCapability(collClass)){
@@ -247,7 +243,9 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	}
 
 	/**
-	 * @param node
+	 * Checks the provided node to determine if it needs to have it's logic state updated.
+	 * @param node the node to check for a logic update.
+	 * @see org.mdmk3.core.logic.Entity#needsStateUpdate()
 	 */
 	protected void checkStateUpdate(Node<A> node) {
 		if(node.hasCapability(entityClass)){
@@ -260,7 +258,9 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	}
 
 	/**
-	 * @param node
+	 * Checks the provided node to determine if it needs to have itself displayed on the screen.
+	 * @param node the node to check for a display update.
+	 * @see org.mdmk3.core.disp2d.Displayable#needsDisplayUpdate()
 	 */
 	protected void checkDisplayUpdate(Node<A> node) {
 		if(node.hasCapability(dispClass)){
@@ -273,31 +273,25 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	}
 	
 	/**
-	 * mstockbridge
-	 * 13-Jun-10
+	 * Performs the collision checking of {@link Node}s during
+	 * the {@link #update(Node, CullingSurface)} call.
 	 */
 	public abstract void collision();
 
 	/**
 	 * Performs the rendering of {@link Node}s to the screen during
-	 * the {@link GameLoop.update(Node<R>,R)} call.
-	 * mstockbridge
-	 * May 10, 2010
+	 * the {@link #update(Node, CullingSurface)} call.
 	 */
 	public abstract void render();
 	
 	/**
 	 * Performs any logic updates on {@link Node}s identified during
-	 * the {@link GameLoop.update(Node<R>,R)} call.
-	 * mstockbridge
-	 * May 10, 2010
+	 * the {@link #update(Node, CullingSurface)} call.
 	 */
 	public abstract void logic();
 
 	/**
 	 * Returns the current target iteration duration for a game update.
-	 * mstockbridge
-	 * May 10, 2010
 	 * @return	<code>long</code> target duration in milliseconds.
 	 */
 	public long getUpdatePeriod() {
@@ -306,8 +300,6 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	
 	/**
 	 * Sets the current target iteration duration for a game update.
-	 * mstockbridge
-	 * May 13, 2010
 	 * @param 	updatePeriod	<code>long</code> target duration in milliseconds.
 	 */
 	public void setUpdatePeriod(long updatePeriod) {
@@ -315,39 +307,88 @@ public abstract class GameLoop<A extends Attributes> implements Runnable {
 	}
 
 	/**
-	 * @param cullingSurface the cullingSurface to set
+	 * Sets the CullingSurface, used for culling non-active nodes from logic and display updates.
+	 * @param cullingSurface the CullingSurface to use for culling.
+	 * @see #update(Node, CullingSurface)
 	 */
 	public void setCullingSurface(CullingSurface<A> cullingSurface) {
 		this.cullingSurface = cullingSurface;
 	}
 
 	/**
-	 * @return the cullingSurface
+	 * Gets the CullingSurface being used for culling.
+	 * @return the CullingSurface currently being used for culling.
+	 * @see #setCullingSurface(CullingSurface)
 	 */
 	public CullingSurface<A> getCullingSurface() {
 		return cullingSurface;
 	}
 
+	/**
+	 * Gets the <code>Class</code> currently being used for display update checking.
+	 * <p>
+	 * The GameLoop makes use of each Node's <code>hasCapability</code> method to test whether or not they 
+	 * are capable of being displayed. The ones that are get scheduled for a display update.
+	 * @return the Class currently being used for display.
+	 * @see Node#hasCapability(Class)
+	 * @see org.mdmk3.core.disp2d.Displayable
+	 * @see #render()
+	 */
 	public Class<? extends Displayable<A>> getDisplayableClass() {
 		return dispClass;
 	}
 
+	/**
+	 * Sets the <code>Class</code> to be used for display.
+	 * @param dispClass the class to use for display update checking.
+	 * @see #getDisplayableClass()
+	 */
 	public void setDisplayableClass(Class<? extends Displayable<A>> dispClass) {
 		this.dispClass = dispClass;
 	}
 	
+	/**
+	 * Gets the <code>Class</code> currently being used for logic update checking.
+	 * <p>
+	 * The GameLoop makes use of each Node's <code>hasCapability</code> method to test whether or not they 
+	 * are capable of logic updating. The ones that are get scheduled for a logic update.
+	 * @return the class used for logic update checking.
+	 * @see Node#hasCapability(Class)
+	 * @see org.mdmk3.core.logic.Entity
+	 * @see #logic()
+	 */
 	public Class<? extends Entity<A>> getEntityClass() {
 		return entityClass;
 	}
 
+	/**
+	 * Sets the <code>Class</code> to be used for logic update checking.
+	 * @param entityClass the class to use for logic update checking.
+	 * @see #getEntityClass()
+	 */
 	public void setEntityClass(Class<? extends Entity<A>> entityClass) {
 		this.entityClass = entityClass;
 	}
 
+	/**
+	 * Gets the <code>Class</code> to be used for collision checking.
+	 * <p>
+	 * The GameLoop makes use of each Node's <code>hasCapability</code> method to test whether or not they 
+	 * will interact through collision. The ones that are get scheduled for collision checking.
+	 * @return the class used for collision checking.
+	 * @see Node#hasCapability(Class)
+	 * @see org.mdmk3.core.collision.Collidable
+	 * @see #collision()
+	 */
 	public Class<? extends Collidable<A>> getCollidableClass() {
 		return collClass;
 	}
 
+	/**
+	 * Sets the <code>Class</code> to be used for collision checking.
+	 * @param collClass the class to use for collision checking.
+	 * @see #getCollidableClass()
+	 */
 	public void setCollidableClass(Class<? extends Collidable<A>> collClass) {
 		this.collClass = collClass;
 	}

@@ -1,6 +1,6 @@
-/**
+/*
  * This file is part of Macchiato Doppio Java Game Framework.
- * Copyright (C) 30-May-10 Matthew Stockbridge
+ * Copyright (C) 15-May-10 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,13 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- * MDMk2
- * org.mdmk2.core.disp2d
+ * MDMk3
+ * org.mdmk3.core.disp2d
  * GameLoop2d.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
- * This file is part of the Mark 2 effort in reorganizing Macchiato Doppio, 
+ * This file is part of the Mark 3 effort in reorganizing Macchiato Doppio, 
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
@@ -35,14 +35,26 @@ import org.mdmk3.core.logic.Action;
 import org.mdmk3.core.logic.Entity;
 
 /**
- * @author mstockbridge
- * 30-May-10
+ * This class is a partial implementation of {@link org.mdmk3.core.GameLoop} utilizing components in the 
+ * <code>org.mdmk3.core.disp2d</code> package for games in 2D.
+ * <p>
+ * It contains implementations for {@link #logic() logic}, {@link #render() rendering}, and {@link #collision() collision}
+ * detection that should be suitable for most 2D games.
+ * @author revms
+ * @since 0.0.0.153
  */
 public abstract class GameLoop2d<A extends Attributes> extends GameLoop<A> {
 	
-	protected DisplaySurface2d surface;
 	/**
-	 * @param displayRoot
+	 * The surface used to display this game.
+	 */
+	protected DisplaySurface2d surface;
+	
+	/**
+	 * Creates a new GameLoop2d using the provided node as the root node of the node tree and the
+	 * supplied surface as the display surface for the game.
+	 * @param displayRoot the root of the node tree.
+	 * @param surface the surface on which to display this game.
 	 */
 	public GameLoop2d(Node<A> displayRoot, DisplaySurface2d surface) {
 		super(displayRoot);

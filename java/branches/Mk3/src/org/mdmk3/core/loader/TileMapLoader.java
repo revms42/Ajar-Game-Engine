@@ -1,3 +1,30 @@
+/*
+ * This file is part of Macchiato Doppio Java Game Framework.
+ * Copyright (C) Jan 5, 2011 Matthew Stockbridge
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * (but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * MDMk3
+ * org.mdmk3.core.loader
+ * TileMapLoader.java
+ * 
+ * For more information see: https://sourceforge.net/projects/macchiatodoppio/
+ * 
+ * This file is part of the Mark 3 effort in reorganizing Macchiato Doppio, 
+ * and is therefore *non-final* and *not* intended for public use. This code
+ * is strictly experimental.
+ */
 package org.mdmk3.core.loader;
 
 import java.util.Vector;
@@ -5,20 +32,48 @@ import java.util.Vector;
 import org.mdmk3.core.Attributes;
 import org.mdmk3.core.Node;
 
+/**
+ * This class provides useful logic for creating optimized maps from an array of data.
+ * <p>
+ * Currently, this is implemented in such a way that makes it only practically useful to 2D games.
+ * More specifically, those that use tile maps for their terrain.
+ * <p>
+ * The general way in which this is accomplished is through {@link #createDomainNode(Node, Node, Node, Node)}, which 
+ * takes four nodes that share a corner and generates a parent node to contain them. Although there are no restrictions
+ * on how the parent, or "domain", node is created, the general purpose is to have a node that can be used for culling (see
+ * {@link #createDomainNode(Node, Node, Node, Node) createDomainNode} for more info).
+ * @author revms
+ * @since 0.0.0.156
+ * @TODO Determine if this should be part of a utility package.
+ */
 public abstract class TileMapLoader<D,A extends Attributes> {
-
-
-	
 	private Converter<D,A> converter;
 	
+	/**
+	 * Gets the <code>Converter</code> being used to convert tile data into nodes.
+	 * @return the converter currently being used to convert tile data.
+	 */
 	public Converter<D, A> getConverter() {
 		return converter;
 	}
 
+	/**
+	 * Sets the <code>Converter</code> used to convert tile data into nodes.
+	 * @param converter the converter to use to create nodes.
+	 */
 	public void setConverter(Converter<D, A> converter) {
 		this.converter = converter;
 	}
 
+	/**
+	 * Takes an array of convertible data and the width of the map (in tiles) that it represents
+	 * and returns a single domain node with all of the nodes specified by the data housed within
+	 * it in a 2D binary tree arrangement.
+	 * @param array an array of convertible data representing a map.
+	 * @param scansize the width of the map in tiles.
+	 * @return the root of the domain node binary tree representing the map.
+	 * @see #structureMap(Vector, int)
+	 */
 	public Node<A> loadFromArray(D[] array, int scansize){
 		Vector<Node<A>> arrayNodes = new Vector<Node<A>>();
 		for(int y = 0; y < array.length/scansize; y++){
@@ -39,6 +94,17 @@ public abstract class TileMapLoader<D,A extends Attributes> {
 		return structureMap(arrayNodes,scansize);
 	}
 	
+	/**
+	 * Structures the nodes provided into a tree hierarchy with one root node
+	 * that will cause {@link org.mdmk3.core.cull.CullingSurface#isInRange(Node)} to
+	 * return <code>true</code> if any of the supplied nodes in the <code>Vector</code>
+	 * would cause it to return <code>true</code>.
+	 * @param arrayNodes the array of nodes representing the tile map.
+	 * @param scansize the width of a single row of the map, in tiles.
+	 * @return a root domain node containing a 2D binary tree of all the supplied nodes.
+	 * @see #createDomainNode(Node, Node, Node, Node)
+	 * @see #initializePosition(Node, int, int)
+	 */
 	protected Node<A> structureMap(Vector<Node<A>> arrayNodes, int scansize){
 		/*
 		 * ------+------+---
@@ -89,12 +155,40 @@ public abstract class TileMapLoader<D,A extends Attributes> {
 		return structureMap(domainNodes,newScanSize);
 	}
 	
-	
+	/**
+	 * Initializes the position of the given node to the specified x and y coordinates.
+	 * @param node the node whose position is to be initialized.
+	 * @param x the x coordinate of the node.
+	 * @param y the y coordinate of the node.
+	 */
 	public abstract void initializePosition(Node<A> node, int x, int y);
 	
-	/*
-	 * [1][2]
-	 * [3][4]
+	/**
+	 * Creates a domain node containing the four specified nodes that share a common corner.
+	 * <p>
+	 * In general this method should return a node who's area, from a culling point of view, 
+	 * covers all of the nodes "underneath" it.
+	 * Specifically whatever bounds that it has should fulfill the following:
+	 * <p>
+	 * <code>if(CullingSurface.isInRange(first) || CullingSurface.isInRange(second) || CullingSurface.isInRange(third)
+	 * || CullingSurface.isInRange(fourth)) return true;</code>
+	 * <p>
+	 * For example, if the locations of the nodes are {0,0}, {1,0}, {0,1}, and {1,1} (and each has a width and height of 1),
+	 * than the domain node would have a location of {0,0} and a width and height of 2.
+	 * <p>
+	 * The nodes are expected to be passed in with the relative positions:
+	 * <p>
+	 * <code>[1][2]</code><p>
+	 * <code>[3][4]</code>
+	 * <p>
+	 * Note that the typical use of this method is to set up node trees, so that culling can rapidly exclude any nodes that
+	 * are not relevant given the current game state.
+	 * @TODO figure out what the big-o notation time is for the culling and execution of these trees vs asking all nodes.
+	 * @param first the node in the relative top-left position.
+	 * @param second the node in the relative top-right position.
+	 * @param third the node in the relative bottom-left position.
+	 * @param fourth the node in the relative bottom-right position.
+	 * @return a domain node containing all four of the supplied nodes.
 	 */
 	public abstract Node<A> createDomainNode(Node<A> first, Node<A> second, Node<A> third, Node<A> fourth);
 }
