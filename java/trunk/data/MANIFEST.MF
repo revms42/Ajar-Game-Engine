@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Specification-Title: MDJ Core
-Specification-Version: 0.1
-Specification-Vendor: Matt Stockbridge
-Implementation-Title: org
-Implementation-Version: revision 98
-Implementation-Vendor: Matt Stockbridge
-
