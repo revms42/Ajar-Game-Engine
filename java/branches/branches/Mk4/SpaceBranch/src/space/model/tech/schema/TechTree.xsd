@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://sourceforge.net/projects/macchiatodoppio" xmlns:tns="http://sourceforge.net/projects/macchiatodoppio" elementFormDefault="qualified">
+
+    <complexType name="Weapon">
+    	<sequence maxOccurs="6" minOccurs="2">
+    		<element name="Catagory" maxOccurs="1" minOccurs="1">
+    			<complexType>
+    				<choice>
+    					<element name="Beam">
+    						<complexType>
+    							<attribute ref="tns:firingarc" use="required"></attribute>
+    							<attribute ref="tns:accuracy" use="required"></attribute>
+								<attribute ref="tns:reload" use="required"></attribute>
+    						</complexType>
+    					</element>
+    					<element name="Cannon">
+    						<complexType>
+    							<attribute ref="tns:firingarc" use="required"></attribute>
+    							<attribute ref="tns:accuracy" use="required"></attribute>
+    							<attribute ref="tns:speed" use="required"></attribute>
+    							<attribute ref="tns:reload" use="required"></attribute>
+    							<attribute ref="tns:burst" use="required"></attribute>
+    						</complexType>
+    					</element>
+    					<element name="Rockets">
+    						<complexType>
+    							<attribute ref="tns:firingarc" use="required"></attribute>
+    							<attribute ref="tns:accuracy" use="required"></attribute>
+    							<attribute ref="tns:speed" use="required"></attribute>
+    							<attribute ref="tns:hitpoints" use="required"></attribute>
+    							<attribute ref="tns:reload" use="required"></attribute>
+    							<attribute ref="tns:burst" use="required"></attribute>
+    						</complexType>
+    					</element>
+    					<element name="Torpeado">
+    						<complexType>
+    							<attribute ref="tns:firingarc" use="required"></attribute>
+    							<attribute ref="tns:accuracy" use="required"></attribute>
+    							<attribute ref="tns:speed" use="required"></attribute>
+    							<attribute ref="tns:agility" use="required"></attribute>
+    							<attribute ref="tns:hitpoints" use="required"></attribute>
+    							<attribute ref="tns:reload" use="required"></attribute>
+    						</complexType>
+    					</element>
+    					<element name="Bomb">
+    						<complexType>
+    							<attribute ref="tns:accuracy" use="required"></attribute>
+    							<attribute ref="tns:hitpoints" use="required"></attribute>
+    						</complexType>
+    					</element>
+    					<element name="Mine">
+    						<complexType>
+    							<attribute ref="tns:hitpoints" use="required"></attribute>
+    							<attribute ref="tns:radius" use="required"></attribute>
+    						</complexType>
+    					</element>
+    					<element name="Missile">
+    						<complexType>
+    							<attribute ref="tns:firingarc" use="required"></attribute>
+    							<attribute ref="tns:accuracy" use="required"></attribute>
+    							<attribute ref="tns:speed" use="required"></attribute>
+    							<attribute ref="tns:agility" use="required"></attribute>
+    							<attribute ref="tns:hitpoints" use="required"></attribute>
+    							<attribute ref="tns:reload" use="required"></attribute>
+    							<attribute ref="tns:burst" use="required"></attribute>
+    						</complexType>
+    					</element>
+    				</choice>
+    			</complexType>
+    		</element>
+    		<element name="DamageType" maxOccurs="5" minOccurs="1">
+    			<complexType>
+			    	<attribute ref="tns:type" use="required"></attribute>
+			    	<attribute ref="tns:power" use="required"></attribute>
+		    	</complexType>
+    		</element>
+    	</sequence>
+
+		<attribute ref="tns:range" use="required"></attribute>
+    	<attribute ref="tns:energy" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Armor">
+    	<sequence maxOccurs="5" minOccurs="1">
+    		<element name="Section">
+    			<complexType>
+    				<attribute ref="tns:type"></attribute>
+    				<attribute name="rating" type="int"></attribute>
+    			</complexType>
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Shield">
+    	<sequence maxOccurs="5" minOccurs="1">
+    		<element name="Capacity">
+    			<complexType>
+    				<attribute ref="tns:type" use="required"></attribute>
+    				<attribute ref="tns:hitpoints" use="required"></attribute>
+    			</complexType>
+    		</element>
+    	</sequence>
+    	<attribute ref="tns:energy" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Engine">
+    	<choice minOccurs="1" maxOccurs="3">
+    		<element name="Warp">
+    			<complexType>
+    				<attribute ref="tns:speed" use="required"></attribute>
+    			</complexType>
+    		</element>
+    		<element name="Hyperspace">
+    			<complexType>
+    				<attribute ref="tns:speed" use="required"></attribute>
+    			</complexType>
+    		</element>
+    		<element name="Manuever">
+    			<complexType>
+    				<attribute ref="tns:speed" use="required"></attribute>
+    				<attribute ref="tns:agility"></attribute>
+    			</complexType>
+    		</element>
+    	</choice>
+    	<attribute ref="tns:energy" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Bulkhead"></complexType>
+
+    <complexType name="Conduit">
+    	<attribute ref="tns:energy"></attribute>
+    </complexType>
+
+    <complexType name="Bay">
+    	<attribute ref="tns:storage" use="required"></attribute>
+    	<attribute name="type" use="required">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="assault"></enumeration>
+    				<enumeration value="boarding"></enumeration>
+    				<enumeration value="repair"></enumeration>
+    				<enumeration value="carrier"></enumeration>
+    				<enumeration value="cargo"></enumeration>
+    				<enumeration value="colony"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute ref="tns:energy" use="optional"></attribute>
+    	<attribute ref="tns:power" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="Electrical">
+    	<sequence>
+    		<choice>
+    			<element name="Scanner">
+    				<complexType>
+    					<attribute ref="tns:range" use="required"></attribute>
+    					<attribute ref="tns:power" use="required"></attribute>
+    					<attribute ref="tns:radius" use="required"></attribute>
+    				</complexType>
+    			</element>
+    			<element name="Cloak">
+    				<complexType>
+    					<attribute ref="tns:power" use="required"></attribute>
+    				</complexType>
+    			</element>
+    			<element name="Computer">
+    				<complexType>
+    					<attribute ref="tns:power" use="required"></attribute>
+    				</complexType>
+    			</element>
+    			<element name="CounterMeasures">
+    				<complexType>
+    					<attribute ref="tns:power" use="required"></attribute>
+    				</complexType>
+    			</element>
+    			<element name="Overcharger">
+    				<complexType>
+    					<attribute ref="tns:power" use="required"></attribute>
+    				</complexType></element>
+    		</choice>
+    	</sequence>
+    	<attribute ref="tns:energy" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Mechanical">
+    	<choice>
+    		<element name="Thruster">
+    			<complexType>
+    				<attribute ref="tns:agility" use="required"></attribute>
+    			</complexType>
+    		</element>
+    		<element name="Turret">
+    			<complexType>
+    				<attribute ref="tns:firingarc" use="required"></attribute>
+    			</complexType>
+    		</element>
+    		<element name="RangeExtender">
+    			<complexType>
+    				<attribute ref="tns:range" use="required"></attribute>
+    			</complexType>
+    		</element>
+    		<element name="Overdrive">
+    			<complexType>
+    				<attribute ref="tns:speed" use="required"></attribute>
+    			</complexType>
+    		</element>
+    		<element name="Miner">
+    			<complexType>
+    				<attributeGroup ref="tns:mining-rate"></attributeGroup>
+    			</complexType>
+    		</element>
+    		<element name="Terraformer"><complexType><attributeGroup ref="tns:terraform-rate"></attributeGroup></complexType></element>
+    	</choice>
+    	<attribute ref="tns:energy" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Orbital">
+    	<choice>
+    		<element name="HSTerminal">
+    			<complexType></complexType>
+    		</element>
+    		<element name="Stargate">
+    			<complexType></complexType>
+    		</element>
+    		<element name="MassAccelerator">
+    			<complexType></complexType>
+    		</element>
+    		<element name="ConstructionDock">
+    			<complexType>
+    				<attribute name="width" type="int"></attribute>
+    				<attribute name="height" type="int"></attribute>
+    			</complexType></element>
+    	</choice>
+    	<attribute ref="tns:energy"></attribute>
+    </complexType>
+
+    <complexType name="Misc"></complexType>
+    
+    <complexType name="Reactor">
+    	<attribute ref="tns:energy" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Component">
+    	<sequence maxOccurs="unbounded" minOccurs="1">
+    		<element name="Primary" minOccurs="1" maxOccurs="1">
+    			<complexType>
+    				<choice maxOccurs="1" minOccurs="1">
+    					<element name="Armor" type="tns:Armor"></element>
+    					<element name="Bay" type="tns:Bay"></element>
+    					<element name="Bulkhead" type="tns:Bulkhead"></element>
+    					<element name="Conduit" type="tns:Conduit"></element>
+    					<element name="Electrical"
+    						type="tns:Electrical">
+    					</element>
+    					<element name="Engine" type="tns:Engine"></element>
+    					<element name="Mechanical"
+    						type="tns:Mechanical">
+    					</element>
+    					<element name="Misc" type="tns:Misc"></element>
+    					<element name="Orbital" type="tns:Orbital"></element>
+    					<element name="Shield" type="tns:Shield"></element>
+    					<element name="Weapon" type="tns:Weapon"></element>
+    					<element name="Reactor" type="tns:Reactor"></element>
+    				</choice>
+    			</complexType>
+    		</element>
+    		<element name="Secondary" minOccurs="0"
+    			maxOccurs="unbounded">
+    			<complexType>
+    				<choice maxOccurs="1" minOccurs="1">
+    					<element name="Armor" type="tns:Armor"></element>
+    					<element name="Bay" type="tns:Bay"></element>
+    					<element name="Bulkhead" type="tns:Bulkhead"></element>
+    					<element name="Conduit" type="tns:Conduit"></element>
+    					<element name="Electrical"
+    						type="tns:Electrical">
+    					</element>
+    					<element name="Engine" type="tns:Engine"></element>
+    					<element name="Mechanical"
+    						type="tns:Mechanical">
+    					</element>
+    					<element name="Misc" type="tns:Misc"></element>
+    					<element name="Orbital" type="tns:Orbital"></element>
+    					<element name="Shield" type="tns:Shield"></element>
+    					<element name="Weapon" type="tns:Weapon"></element>
+    					<element name="Reactor" type="tns:Reactor"></element>
+    				</choice>
+    			</complexType>
+    		</element>
+    	</sequence>
+    	<attribute ref="tns:hitpoints" use="required"></attribute>
+    	<attributeGroup ref="tns:id"></attributeGroup>
+    	<attributeGroup ref="tns:cost"></attributeGroup>
+    	<attributeGroup ref="tns:reqs"></attributeGroup>
+    	<attribute name="image" type="string" use="required"></attribute>
+    	<attribute name="mass" type="int" use="required"></attribute>
+    	<attribute name="signature" type="int" use="required"></attribute>
+    	<attribute name="description" type="string" use="required"></attribute>
+    </complexType>
+
+    <attributeGroup name="id">
+    	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="javaID" type="string" use="optional"></attribute>
+    	<attribute name="hashCode" type="long" use="optional"></attribute>
+    </attributeGroup>
+
+    <attribute name="type">
+    	<simpleType>
+    		<restriction base="string">
+    			<enumeration value="explosive"></enumeration>
+    			<enumeration value="impact"></enumeration>
+    			<enumeration value="plasma"></enumeration>
+    			<enumeration value="beam"></enumeration>
+    			<enumeration value="acid"></enumeration>
+    		</restriction>
+    	</simpleType>
+    </attribute>
+
+    <attribute name="speed" type="int"></attribute>
+    <attribute name="range" type="int"></attribute>
+    <attribute name="energy" type="int"></attribute>
+    <attribute name="power" type="int"></attribute>
+    <attribute name="storage" type="int"></attribute>
+    <attribute name="hitpoints" type="int"></attribute>
+	<attribute name="agility" type="int"></attribute>
+	<attribute name="firingarc" type="int"></attribute>
+	<attribute name="accuracy" type="int"></attribute>
+	<attribute name="radius" type="int"></attribute>
+	<attribute name="reload" type="int"></attribute>
+	<attribute name="burst" type="int"></attribute>
+
+    <attributeGroup name="reqs">
+    	<attribute name="tech1" type="int" use="required"></attribute>
+    	<attribute name="tech2" type="int" use="required"></attribute>
+    	<attribute name="tech3" type="int" use="required"></attribute>
+    	<attribute name="tech4" type="int" use="required"></attribute>
+    	<attribute name="tech5" type="int" use="required"></attribute>
+    	<attribute name="tech6" type="int" use="required"></attribute>
+    	<attribute name="tech7" type="int" use="required"></attribute>
+    	<attribute name="tech8" type="int" use="required"></attribute>
+    </attributeGroup>
+
+    <attributeGroup name="cost">
+    	<attribute name="costPro" type="int" use="required"></attribute>
+    	<attribute name="costAtm" type="int" use="required"></attribute>
+    	<attribute name="costLth" type="int" use="required"></attribute>
+    	<attribute name="costSid" type="int" use="required"></attribute>
+    	<attribute name="costCha" type="int" use="required"></attribute>
+    	<attribute name="costXen" type="int" use="required"></attribute>
+    </attributeGroup>
+
+    <attributeGroup name="mining-rate">
+    	<attribute name="atm" type="int" use="required"></attribute>
+    	<attribute name="lth" type="int" use="required"></attribute>
+    	<attribute name="sid" type="int" use="required"></attribute>
+    	<attribute name="cha" type="int" use="required"></attribute>
+    	<attribute name="xen" type="int" use="required"></attribute>
+    </attributeGroup>
+
+    <attributeGroup name="terraform-rate">
+    	<attribute name="gravity" type="int" use="required"></attribute>
+    	<attribute name="radiation" type="int" use="required"></attribute>
+    	<attribute name="temperature" type="int" use="required"></attribute>
+    	<attribute name="atmosphere" type="int" use="required"></attribute>
+    </attributeGroup>
+
+    <element name="TechTree" type="tns:TechTree"></element>
+
+    <complexType name="TechTree">
+    	<sequence maxOccurs="unbounded" minOccurs="1">
+    		<element name="Component" type="tns:Component"></element>
+    	</sequence>
+    </complexType>
+</schema>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TechTree type="Standard" name="Standard">
+	<Miscs>
+		<Misc name="Default Component Test" mass="100" sig="100" hitpoints="100" image="">
+			A Default Component made to specify all possible crap.
+			<TechReqs>
+				<AppPhys>1</AppPhys> <!-- +Improve Power: Beams, Stargates, Hyperspace, Cloaks, Shields, Reactors -->
+				<MatSci>1</MatSci> <!-- +Improve Hitpoints: Armor, Bulkhead, Cannons -->
+				<CompSci>1</CompSci> <!-- +Improve Accuracy: Weapons, Computers, TerraPods -->
+				<MechE>1</MechE> <!-- +Improve Agility: MEngines, Weapons, Bays, Turrets, Shipyards, Mining Beams, TerraPods -->
+				<ElecE>1</ElecE> <!-- +Reduce Energy: Computers, Weapons, Jammers, Cloaks, Scanners, Reactors -->
+				<ChemE>1</ChemE> <!-- +Improve Extraction: Weapons, Armor, Reactors -->
+				<BioE>1</BioE> <!-- +Improve Production: TerraPods, Bombs, Colonist Bays, Marine Bays, Assualt Bays -->
+				<XenSci>1</XenSci> <!-- +Improve Spying: +Improve Researching -->
+			</TechReqs>
+			<Cost>
+				<Pro>1</Pro>
+				<Atm>1</Atm>
+				<Lth>1</Lth>
+				<Sid>1</Sid>
+				<Cha>1</Cha>
+				<Xen>1</Xen>
+			</Cost>
+			<Stats>
+				<Energy>1</Energy> <!-- All but bulkhead and armor -->
+				<Power type="energy|impact|explosive|plasma|acid">1</Power> <!-- Weapons -->
+				<Range>1</Range> <!-- Stargates, HEngines, Weapons, Extenders -->
+				<Radius>1</Radius> <!-- Scanners, Mines, Hyperspace terminals, Cloaks -->
+				<Speed>1</Speed> <!-- Missiles, Torpeados, Rockets, Cannons, MEngines, WEngines, HEngines, Mass Flingers -->
+				<Agility>1</Agility> <!-- Missiles, Torpeados, MEngines -->
+				<Firing-arc>1</Firing-arc> <!-- All weps but mine/bomb, Turrets -->
+				<Accuracy>1</Accuracy> <!-- All weps but mine/bomb, Targetting computers -->
+				<Reload>1</Reload> <!-- All weps but mine/bomb -->
+				<Burst>1</Burst> <!-- Missiles, Torps, Rockets, Cannons -->
+				<Width>1</Width> <!-- Construction Dock -->
+				<Height>1</Height> <!-- Construction Dock -->
+				<Storage type="people|colonists|marines|troops|ships|minerals">1</Storage> <!-- Bays -->
+				<Rating type="energy|impact|explosive|plasma|acid">1</Rating> <!-- Armor, Shield -->
+			</Stats>
+		</Misc>
+	</Miscs>
+	<Armors>
+		<Armor name="Rhino Hide Armor" mass="20" sig="10" hitpoints="100" image="">
+			Armor as thick as a Rhino.
+			<TechReqs>
+				<MatSci>1</MatSci>
+				<AppPhys>1</AppPhys>
+			</TechReqs>
+			<Cost>
+				<Pro>10</Pro>
+				<Sid>6</Sid>
+			</Cost>
+			<Stats>
+				<Rating type="acid">10</Rating>
+				<Energy>10</Energy>
+			</Stats>
+			<Secondary type="shield">
+				<Stats>
+					<Rating type="energy">100</Rating>
+				</Stats>
+			</Secondary>
+		</Armor>
+	</Armors>
+	<Weapons>
+		<Beams>
+			<Weapon name="X-Ray Laser" mass="10" sig="15" hitpoints="5" image="" type="Beam">
+				A laser that emits x-rays.
+				<TechReqs>
+					<CompSci>1</CompSci>
+					<AppPhys>2</AppPhys>
+					<ElecE>1</ElecE>
+				</TechReqs>
+				<Cost>
+					<Pro>12</Pro>
+					<Sid>5</Sid>
+					<Xen>1</Xen>
+				</Cost>
+				<Stats>
+					<Power type="energy">10</Power>
+					<Energy>15</Energy>
+					<Range>25</Range>
+					<Accuracy>120</Accuracy>
+					<FiringArc>15</FiringArc>
+					<Reload>2</Reload>
+				</Stats>
+			</Weapon>
+		</Beams>
+		<Cannons>
+		</Cannons>
+		<Rockets>
+		</Rockets>
+		<Torpeados>
+		</Torpeados>
+		<Missiles>
+		</Missiles>
+		<Mines>
+		</Mines>
+		<Bombs>
+		</Bombs>
+	</Weapons>
+	<Shields>
+	</Shields>
+	<Bays>
+		<ColBays>
+		</ColBays>
+		<CBays>
+		</CBays>
+		<MBays>
+		</MBays>
+		<ABays>
+		</ABays>
+		<SBays>
+		</SBays>
+		<RBays>
+		</RBays>
+	</Bays>
+	<Bulkheads>
+	</Bulkheads>
+	<Conduits>
+	</Conduits>
+	<MComps>
+		<Turrets>
+		</Turrets>
+		<MiningBeams>
+		</MiningBeams>
+		<TerraPods>
+		</TerraPods>
+	</MComps>
+	<EComps>
+		<TargetComps>
+		</TargetComps>
+		<Scanners>
+		</Scanners>
+		<Cloaks>
+		</Cloaks>
+		<CMeasures>
+		</CMeasures>
+	</EComps>
+	<OComps>
+		<ShipYards>
+		</ShipYards>
+		<HSpaceTerms>
+		</HSpaceTerms>
+		<StarGates>
+		</StarGates>
+		<MassAccels>
+		</MassAccels>
+	</OComps>
+</TechTree>
+
+

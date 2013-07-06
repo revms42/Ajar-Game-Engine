@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MDMk3" default="main" basedir=".">
+	<target name="include">
+		<property file="build.properties"/>
+	</target>
+			
+	<target name="clean" depends="include">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<delete dir="${doc.dir}"/>
+		<mkdir dir="${doc.dir}"/>
+	</target>
+	
+	<target name="build-source" depends="include">
+		<javac srcdir="${src.dir}" destdir="${build.dir}"/>
+	</target>
+	
+	<target name="package-lean" depends="build-source">
+		<jar destfile="${dist.dir}/${package.name}.jar" basedir="${build.dir}">
+			<manifest>
+				<!-- Who is building this jar? -->
+				<attribute name="Built-By" value="${package.builder}"/>
+				<!-- Information about the program itself -->
+				<attribute name="Specification-Title" value="${specification.title}"/>
+				<attribute name="Specification-Version" value="${specification.version}"/>
+				<attribute name="Specification-Vendor" value="${specification.vendor}"/>
+				<attribute name="Implementation-Title" value="${implementation.title}"/>
+				<attribute name="Implementation-Version" value="${implementation.version}"/>
+				<attribute name="Implementation-Vendor" value="${implementation.vendor}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="package-source" depends="include">
+		<jar destfile="${dist.dir}/${package.name}-src.jar" basedir="${src.dir}">
+			<manifest>
+				<!-- Who is building this jar? -->
+				<attribute name="Built-By" value="${package.builder}"/>
+				<!-- Information about the program itself -->
+				<attribute name="Specification-Title" value="${specification.title}"/>
+				<attribute name="Specification-Version" value="${specification.version}"/>
+				<attribute name="Specification-Vendor" value="${specification.vendor}"/>
+				<attribute name="Implementation-Title" value="${implementation.title}"/>
+				<attribute name="Implementation-Version" value="${implementation.version}"/>
+				<attribute name="Implementation-Vendor" value="${implementation.vendor}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="package-api" depends="build-source,api-doc">
+		<jar destfile="${dist.dir}/${package.name}-api.jar" basedir=".">
+			<fileset dir="${api.dir}"/>
+			<manifest>
+				<!-- Who is building this jar? -->
+				<attribute name="Built-By" value="${package.builder}"/>
+				<!-- Information about the program itself -->
+				<attribute name="Specification-Title" value="${specification.title}"/>
+				<attribute name="Specification-Version" value="${specification.version}"/>
+				<attribute name="Specification-Vendor" value="${specification.vendor}"/>
+				<attribute name="Implementation-Title" value="${implementation.title}"/>
+				<attribute name="Implementation-Version" value="${implementation.version}"/>
+				<attribute name="Implementation-Vendor" value="${implementation.vendor}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="api-doc" depends="include">
+		<javadoc
+			destdir="${api.dir}"
+			author="true"
+			version="true"
+			use="true"
+			windowtitle="${specification.title} API">
+			
+			<fileset dir="src" defaultexcludes="yes">
+				<include name="org/mdmk3/core/**"/>
+			</fileset>
+			
+			<doctitle><![CDATA[<h1>${specification.title}</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2006 Matt Stockbridge. All Rights Reserved.</i>]]></bottom>
+			<tag name="TODO" scope="all" description="To do:"/>
+			<group title="Core Packages" packages="org.mdmk3.core.*"/>
+			<group title="Collision Packages" packages="org.mdmk3.core.collision.*"/>
+			<group title="Culling Packages" packages="org.mdmk3.core.cull.*"/>
+			<group title="Display 2D Packages" packages="org.mdmk3.core.disp2d.*:org.mdmk3.core.disp2d.image.*"/>
+			<group title="Loader Packages" packages="org.mdmk3.core.loader.*"/>
+			<group title="Game Logic Packages" packages="org.mdmk3.core.logic.*"/>
+			<link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
+		</javadoc>
+	</target>
+
+	<target name="main" depends="clean,package-source,package-lean,package-api">
+	</target>
+</project>
