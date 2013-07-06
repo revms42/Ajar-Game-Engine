@@ -1,0 +1,21 @@
+Responsiblities:
+
+CullingVisitor - Determine which nodes need to update.
+InputPoller - Record user input / poll for ui input.
+DisplayVisitor - Display a node.
+LogicVisitor - Perform a logic update on a node.
+State - Record the state of a node.
+Action - Perform an action on a node.
+Play sound associated with a node's state.
+Node - Determine parent child relationship between nodes.
+DisplayDecorator - Determine whether a node needs to update it's display.
+LogicDecorator - Determine whether a node needs to update it's logic.
+SoundDecorator - Determine whether a node needs to update it's sound.
+Visitor - Pull out the required decorator for an update check.
+Game Loop - Synchronize game frames.
+
+CullingVisitor visits a node and determines if it needs to update. If it does the node first
+passes the culling visitor to its children for update. If it has no children, or has already
+iterated them, the node looks at the update package to see what visitors are inside. Each 
+visitor pulls out the applicable decorator and asks it if it needs an update. If it does, 
+the visitor updates it. 
