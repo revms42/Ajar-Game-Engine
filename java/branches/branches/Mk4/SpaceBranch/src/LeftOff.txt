@@ -1,0 +1,10 @@
+Left off:
+-ShipDesigner
+-DesignPanel
+-Fleet
+-SpaceGameManifest
+
+Working on getting the ship designing to work. Need to be able to model the weapons crossing the ship's tilemap (i.e. plasma needs to trace a line through a hull to do damage)
+No current working modelf for this.
+
+Need to change the way weapons work. No more projectile/laser/plasma, needs to be beam/cannon. Also fix the damage types.
