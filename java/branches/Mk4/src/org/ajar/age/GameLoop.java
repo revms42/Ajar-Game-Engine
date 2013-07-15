@@ -188,6 +188,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void assessUpdate(Node<A> root){
 		if(tourGuide == null){
 			tourGuide = new Tourguide<A>(
@@ -201,6 +202,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 		root.accept(tourGuide);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void assessFrameSkipUpdate(Node<A> root){
 		if(budgetGuide == null){
 			budgetGuide = new Tourguide<A>(
@@ -218,7 +220,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
 	public void collision(){
-		collisionVisitor.process();
+		if(collisionVisitor != null) collisionVisitor.process();
 	}
 
 	/**
@@ -227,7 +229,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
 	public void render(){
-		displayVisitor.process();
+		if(displayVisitor != null) displayVisitor.process();
 	}
 	
 	/**
@@ -236,7 +238,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
 	public void logic(){
-		logicVisitor.process();
+		if(logicVisitor != null) logicVisitor.process();
 	}
 
 	/**
@@ -245,7 +247,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
 	public void sound(){
-		soundVisitor.process();
+		if(soundVisitor != null) soundVisitor.process();
 	}
 	
 	/**

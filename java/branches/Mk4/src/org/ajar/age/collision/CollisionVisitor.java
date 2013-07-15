@@ -31,8 +31,8 @@
  */
 package org.ajar.age.collision;
 
-import org.ajar.age.AbstractVisitor;
 import org.ajar.age.Attributes;
+import org.ajar.age.SimpleVisitor;
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Entity;
 
@@ -40,7 +40,7 @@ import org.ajar.age.logic.Entity;
  * @author mstockbr
  *
  */
-public abstract class CollisionVisitor<A extends Attributes> extends AbstractVisitor<A,Collidable<A>> {
+public abstract class CollisionVisitor<A extends Attributes> extends SimpleVisitor<A,Collidable<A>> {
 	private final Class<? extends Entity<A>> entityClass;
 	
 	public CollisionVisitor(
@@ -72,9 +72,5 @@ public abstract class CollisionVisitor<A extends Attributes> extends AbstractVis
 			}
 		}
 		needsUpdate.clear();
-	}
-	
-	public final void update(Collidable<A> collidable){
-		//Do nothing.
 	}
 }

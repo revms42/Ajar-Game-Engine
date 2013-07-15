@@ -1,6 +1,6 @@
 /*
- * This file is part of Ajar Game Engine
- * Copyright (C) Jun 26, 2013 Matthew Stockbridge
+ * This file is part of Ajar Game Engine.
+ * Copyright (C) Jul 5, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,32 +16,58 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.age.disp.awt
- * AWTDisplayable.java
+ * ver.ajar.age.t1
+ * VerAttributes.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
- * This file is part of the Mark 4 effort in reorganizing Macchiato Doppio, 
+ * This file is part of the LWJGL effort in reorganizing Macchiato Doppio, 
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-
-/**
- * @author mstockbr
- */
-package org.ajar.age.disp.awt;
-
-import javax.swing.JComponent;
+package ver.ajar.age.t1;
 
 import org.ajar.age.Attributes;
-import org.ajar.age.disp.Displayable;
 
 /**
- * @author mstockbr
+ * @author reverend
  *
  */
+public class VerAttributes implements Attributes {
 
-
-public interface AWTDisplayable<A extends Attributes> extends Displayable<JComponent,A> {
+	private int xpos;
+	private int ypos;
+	private boolean display;
 	
+	public void xPos(int xpos){
+		this.xpos = xpos;
+	}
+	
+	public void yPos(int ypos){
+		this.ypos = ypos;
+	}
+	
+	public int xPos(){
+		return xpos;
+	}
+	
+	public int yPos() {
+		return ypos;
+	}
+	
+	public VerAttributes clone(){
+		VerAttributes a = new VerAttributes();
+		a.xPos(xpos);
+		a.yPos(ypos);
+		a.setDisplay(display);
+		return a;
+	}
+
+	public boolean isDisplay() {
+		return display;
+	}
+
+	public void setDisplay(boolean display) {
+		this.display = display;
+	}
 }

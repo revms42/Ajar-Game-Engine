@@ -1,6 +1,6 @@
 /*
- * This file is part of Ajar Game Engine
- * Copyright (C) Jun 26, 2013 Matthew Stockbridge
+ * This file is part of Ajar Game Engine.
+ * Copyright (C) Jul 5, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,32 +16,48 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.age.disp.awt
- * AWTDisplayable.java
+ * ver.ajar.age.t1
+ * VerDisplayable.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
- * This file is part of the Mark 4 effort in reorganizing Macchiato Doppio, 
+ * This file is part of the LWJGL effort in reorganizing Macchiato Doppio, 
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
+package ver.ajar.age.t1;
 
-/**
- * @author mstockbr
- */
-package org.ajar.age.disp.awt;
+import java.awt.Rectangle;
+import java.awt.Shape;
 
 import javax.swing.JComponent;
 
-import org.ajar.age.Attributes;
-import org.ajar.age.disp.Displayable;
+import org.ajar.age.Node;
+import org.ajar.age.disp.awt.AbstractAWTDisplayable;
 
 /**
- * @author mstockbr
+ * @author reverend
  *
  */
+public class VerDisplayable extends AbstractAWTDisplayable<VerAttributes> {
 
+	/**
+	 * @param node
+	 */
+	public VerDisplayable(Node<VerAttributes> node) {
+		super(node);
+		node.getAttributes().setDisplay(true);
+	}
 
-public interface AWTDisplayable<A extends Attributes> extends Displayable<JComponent,A> {
-	
+	/* (non-Javadoc)
+	 * @see org.ajar.age.disp.Displayable#onScreen(java.lang.Object)
+	 */
+	@Override
+	public boolean onScreen(JComponent screen) {
+		return this.getAttributes().isDisplay();
+	}
+
+	public Shape drawShape(){
+		return new Rectangle(this.getAttributes().xPos(),this.getAttributes().yPos(),10,10);
+	}
 }
