@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.age.disp.awt
- * GraphicsVisitor.java
+ * AWTGraphicsVisitor.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -31,6 +31,7 @@
  */
 package org.ajar.age.disp.awt;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import org.ajar.age.AbstractVisitor;
@@ -41,26 +42,50 @@ import org.ajar.age.Attributes;
  *
  */
 
-public abstract class GraphicsVisitor<A extends Attributes> extends AbstractVisitor<A,AWTDisplayable<A>> {
+public abstract class AWTGraphicsVisitor<A extends Attributes> extends AbstractVisitor<A,AWTDisplayable<A>> {
 	
-	private Graphics2D surface;
+	private AWTGraphicsPanel surface;
 	
-	public GraphicsVisitor(Class<? extends AWTDisplayable<A>> dispClass){
+	public AWTGraphicsVisitor(AWTGraphicsPanel surface, Class<? extends AWTDisplayable<A>> dispClass){
 		super(dispClass);
+		this.surface = surface;
 	}
 	
 	protected boolean isInView(AWTDisplayable<A> node) {
-		return node.onScreen(getSurface());
+		return node.onScreen(surface);
+	}
+	
+	public AWTGraphicsPanel getPanel(){
+		return surface;
+	}
+	
+	public void setPanel(AWTGraphicsPanel panel){
+		this.surface = panel;
+	}
+	
+	public Graphics2D getSurface(){
+		return surface.getBufferedSurface();
 	}
 	
 	public abstract void update(AWTDisplayable<A> disp);
-
-	public Graphics2D getSurface() {
-		return surface;
+	
+	/* (non-Javadoc)
+	 * @see org.ajar.age.AbstractVisitor#startProcess()
+	 */
+	@Override
+	protected void startProcess() {
+		Graphics2D bufferGraphics = surface.getBufferedSurface();
+		bufferGraphics.setColor(Color.BLUE);
+		bufferGraphics.setBackground(Color.BLACK);
+		bufferGraphics.clearRect(0, 0, surface.getBufferWidth(), surface.getBufferHeight());
 	}
 
-	public void setSurface(Graphics2D surface) {
-		this.surface = surface;
+	/* (non-Javadoc)
+	 * @see org.ajar.age.AbstractVisitor#finishProcess()
+	 */
+	@Override
+	protected void finishProcess() {
+		surface.blitToScreen();
 	}
 
 }

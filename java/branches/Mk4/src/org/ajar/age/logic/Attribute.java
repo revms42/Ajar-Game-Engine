@@ -1,6 +1,6 @@
 /*
- * This file is part of Ajar Game Engine
- * Copyright (C) Jun 26, 2013 Matthew Stockbridge
+ * This file is part of Ajar Game Engine.
+ * Copyright (C) Jul 6, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,32 +16,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.age.disp.awt
- * AWTDisplayable.java
+ * org.ajar.age.logic
+ * Attribute.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
- * This file is part of the Mark 4 effort in reorganizing Macchiato Doppio, 
+ * This file is part of the LWJGL effort in reorganizing Macchiato Doppio, 
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
+package org.ajar.age.logic;
 
 /**
- * @author mstockbr
- */
-package org.ajar.age.disp.awt;
-
-import javax.swing.JComponent;
-
-import org.ajar.age.Attributes;
-import org.ajar.age.disp.Displayable;
-
-/**
- * @author mstockbr
+ * @author reverend
  *
  */
+public interface Attribute<V> {
 
-
-public interface AWTDisplayable<A extends Attributes> extends Displayable<JComponent,A> {
-	
+	public V copy(V value);
 }

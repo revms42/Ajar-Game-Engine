@@ -77,11 +77,17 @@ public abstract class AbstractVisitor<A extends Attributes,D extends Decorator<A
 	 */
 	@Override
 	public void process() {
+		startProcess();
 		for(D disp : needsUpdate){
 			update(disp);
 		}
 		needsUpdate.clear();
+		finishProcess();
 	}
 
 	public abstract void update(D decorator);
+	
+	protected abstract void startProcess();
+	
+	protected abstract void finishProcess();
 }

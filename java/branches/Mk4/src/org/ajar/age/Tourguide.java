@@ -62,7 +62,7 @@ public class Tourguide<A extends Attributes> implements Visitor<A> {
 	public void visit(Node<A> node) {
 		leader.visit(node);
 		for(Visitor<A> visitor : visitors){
-			visitor.visit(node);
+			if(visitor != null) visitor.visit(node);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class Tourguide<A extends Attributes> implements Visitor<A> {
 	public void process() {
 		leader.process();
 		for(Visitor<A> visitor : visitors){
-			visitor.process();
+			if(visitor != null) visitor.process();
 		}
 	}
 
