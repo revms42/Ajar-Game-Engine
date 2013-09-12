@@ -71,14 +71,15 @@ public class VerState implements State<HashAttributes> {
 	 */
 	@Override
 	public State<HashAttributes> perform(Entity<HashAttributes> subject, Action e) {
+		State<HashAttributes> result = null;
 		if(map.containsKey(e)){
 			Effect<HashAttributes> ae = map.get(e);
-			return ae.perform(subject);
+			result = ae.perform(subject);
 		}else if(parentState != null){
-			return parentState.perform(subject, e);
-		}else{
-			return null;
+			result = parentState.perform(subject, e);
 		}
+		
+		return result == null ? this : result;
 	}
 
 }

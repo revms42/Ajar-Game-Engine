@@ -27,61 +27,81 @@
  */
 package ver.ajar.age.t1;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-
 import org.ajar.age.DefaultNode;
-import org.ajar.age.GameLoop;
+import org.ajar.age.Node;
 import org.ajar.age.SimpleVisitor;
-import org.ajar.age.disp.awt.AWTGraphicsPanel;
+import org.ajar.age.Visitor;
+
+import ver.ajar.age.t0.Test;
 
 /**
  * @author reverend
  *
  */
-public class Test1 extends JFrame {
+public class Test1 extends Test<VerAttributes> {
 	private static final long serialVersionUID = -3717777373947866111L;
-
-	private GameLoop<VerAttributes> gameloop;
-	private AWTGraphicsPanel panel;
 	
 	private Test1(){
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		panel = new AWTGraphicsPanel();
-		
-		this.setLayout(new BorderLayout());
-		this.add(panel,BorderLayout.CENTER);
-		panel.setSize(640,480);
-		
-		this.setTitle("Test1");
-		
-		setupGameLoop();
-		this.pack();
-	}
-	
-	private void setupGameLoop(){
-		DefaultNode<VerAttributes> root = new DefaultNode<VerAttributes>(new VerAttributes());
-		root.getAttributes().xPos(200);
-		root.getAttributes().yPos(200);
-		new VerDisplayable(root);
-		gameloop = new GameLoop<VerAttributes>(root);
-		
-		gameloop.setCullingVisitor(new SimpleVisitor<VerAttributes, VerDisplayable>(VerDisplayable.class));
-		gameloop.setDisplayVisitor(new VerDisplayVisitor(panel));
+		super();
 	}
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Test1 test = new Test1();
-		test.setSize(640,480);
-		test.setVisible(true);
-		
-		Thread t = new Thread(test.gameloop);
-		t.start();
+		start(new Test1());
 	}
+
+	/* (non-Javadoc)
+	 * @see ver.ajar.age.t0.Test#setupRootNode()
+	 */
+	@Override
+	protected Node<VerAttributes> setupRootNode() {
+		DefaultNode<VerAttributes> root = new DefaultNode<VerAttributes>(new VerAttributes());
+		root.getAttributes().xPos(200);
+		root.getAttributes().yPos(200);
+		new VerDisplayable(root);
+		return root;
+	}
+
+	/* (non-Javadoc)
+	 * @see ver.ajar.age.t0.Test#getCullingVisitor(org.ajar.age.Node)
+	 */
+	@Override
+	protected Visitor<VerAttributes> getCullingVisitor() {
+		return new SimpleVisitor<VerAttributes, VerDisplayable>(VerDisplayable.class);
+	}
+
+	/* (non-Javadoc)
+	 * @see ver.ajar.age.t0.Test#getDisplayVisitor(org.ajar.age.Node)
+	 */
+	@Override
+	protected Visitor<VerAttributes> getDisplayVisitor() {
+		return new VerDisplayVisitor(panel);
+	}
+
+	/* (non-Javadoc)
+	 * @see ver.ajar.age.t0.Test#getCollisionVisitor(org.ajar.age.Node)
+	 */
+	@Override
+	protected Visitor<VerAttributes> getCollisionVisitor() {return null;}
+
+	/* (non-Javadoc)
+	 * @see ver.ajar.age.t0.Test#getLogicVisitor(org.ajar.age.Node)
+	 */
+	@Override
+	protected Visitor<VerAttributes> getLogicVisitor() {return null;}
+
+	/* (non-Javadoc)
+	 * @see ver.ajar.age.t0.Test#getSoundVisitor(org.ajar.age.Node)
+	 */
+	@Override
+	protected Visitor<VerAttributes> getSoundVisitor() {return null;}
+
+	/* (non-Javadoc)
+	 * @see ver.ajar.age.t0.Test#addNodes(org.ajar.age.Node)
+	 */
+	@Override
+	protected void addNodes(Node<VerAttributes> root) {}
 
 }
