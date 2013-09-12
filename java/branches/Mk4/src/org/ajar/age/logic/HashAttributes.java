@@ -32,6 +32,8 @@ import java.util.HashMap;
 import org.ajar.age.Attributes;
 
 /**
+ * HashAttributes is a simple, versatile implementation of Attributes. It's backed by a 
+ * HashMap and implements several convenience methods.
  * @author reverend
  *
  */
