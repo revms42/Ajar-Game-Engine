@@ -120,7 +120,9 @@ public class GameLoop<A extends Attributes> implements Runnable {
 			
 			end = System.nanoTime();
 			updateInterval = end - start;
-			if(debug)System.out.println(updateInterval/NANO_TO_MILLI);
+			if(debug) log(start,"Total");
+			if(debug)System.out.println("Target: " + updatePeriod/NANO_TO_MILLI + " ms");
+			if(debug)System.out.println();
 			sleepPeriod = (updatePeriod - updateInterval) - oversleepTime;
 			
 			if(sleepPeriod > 0){
@@ -219,8 +221,11 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * Performs the collision checking of {@link Node}s during
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
+	private long collTime;
 	public void collision(){
+		if(debug) collTime = System.nanoTime();
 		if(collisionVisitor != null) collisionVisitor.process();
+		if(debug) log(collTime,"Collision");
 	}
 
 	/**
@@ -228,8 +233,11 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * Performs the rendering of {@link Node}s to the screen during
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
+	private long rendTime;
 	public void render(){
+		if(debug) rendTime = System.nanoTime();
 		if(displayVisitor != null) displayVisitor.process();
+		if(debug) log(rendTime,"Render");
 	}
 	
 	/**
@@ -237,8 +245,11 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * Performs any logic updates on {@link Node}s identified during
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
+	private long logTime;
 	public void logic(){
+		if(debug) logTime = System.nanoTime();
 		if(logicVisitor != null) logicVisitor.process();
+		if(debug) log(logTime,"Logic");
 	}
 
 	/**
@@ -246,8 +257,20 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	 * Performs any sound updates on {@link Node}s identified during
 	 * the {@link #update(Node, CullingSurface)} call.
 	 */
+	private long soundTime;
 	public void sound(){
+		if(debug) soundTime = System.nanoTime();
 		if(soundVisitor != null) soundVisitor.process();
+		if(debug) log(soundTime,"Sound");
+	}
+	
+	private void log(long start, String prefix){
+		long end = System.nanoTime();
+		if(end - start < NANO_TO_MILLI){
+			System.out.println(prefix + ": " + (end - start) + " ns");
+		}else{
+			System.out.println(prefix + ": " + ((end - start)/NANO_TO_MILLI) + " ms");
+		}
 	}
 	
 	/**

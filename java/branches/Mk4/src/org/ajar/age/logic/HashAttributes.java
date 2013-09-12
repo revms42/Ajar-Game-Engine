@@ -52,6 +52,16 @@ public class HashAttributes implements Attributes {
 		attributeMap.put((Attribute<?>) attribute, value);
 	}
 	
+	public <V> void setAttribute(SimpleAttribute<V> attribute){
+		attributeMap.put((Attribute<?>) attribute, attribute.getDefaultValue());
+	}
+	
+	public <V> void setSimpleAttributes(SimpleAttribute<V>... attributes){
+		for(SimpleAttribute<V> attr : attributes){
+			setAttribute(attr);
+		}
+	}
+	
 	public HashAttributes clone(){
 		HashAttributes attrs = new HashAttributes();
 		
