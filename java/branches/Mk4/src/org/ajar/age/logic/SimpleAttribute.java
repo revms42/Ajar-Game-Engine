@@ -28,10 +28,20 @@
 package org.ajar.age.logic;
 
 /**
+ * SimpleAttribute is an interface for an Attribute that isn't expected to require
+ * special initialization. As such, it defines a default value using {@link #getDefaultValue()}.
+ * This value is assigned to the Attribute when it is added to an Attributes object.
+ * 
  * @author reverend
+ * @see org.ajar.age.logic.HashAttributes#setAttribute(SimpleAttribute)
  *
  */
 public interface SimpleAttribute<V> extends Attribute<V> {
 
+	/**
+	 * Gets the default value of this Attribute, used to initialize it when it is added to an
+	 * Attributes object.
+	 * @return	<code>V</code>	the default value of this Attribute.
+	 */
 	public V getDefaultValue();
 }
