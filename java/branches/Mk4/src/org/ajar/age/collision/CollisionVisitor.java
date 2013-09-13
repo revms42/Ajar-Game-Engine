@@ -40,7 +40,7 @@ import org.ajar.age.logic.Entity;
  * @author mstockbr
  *
  */
-public abstract class CollisionVisitor<A extends Attributes> extends SimpleVisitor<A,Collidable<A>> {
+public class CollisionVisitor<A extends Attributes> extends SimpleVisitor<A,Collidable<A>> {
 	private final Class<? extends Entity<A>> entityClass;
 	
 	public CollisionVisitor(

@@ -25,28 +25,33 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t2;
+package ver.ajar.age.t3;
+
+import java.awt.Rectangle;
 
 import org.ajar.age.DefaultNode;
 import org.ajar.age.Node;
 import org.ajar.age.SimpleVisitor;
 import org.ajar.age.Visitor;
+import org.ajar.age.collision.CollisionVisitor;
 import org.ajar.age.logic.HashAttributes;
 
 import ver.ajar.age.t0.Test;
-import ver.ajar.age.t2.display.VerDisplayVisitor;
-import ver.ajar.age.t2.display.VerDisplayable;
-import ver.ajar.age.t2.logic.VerEntity;
+import ver.ajar.age.t3.display.VerDisplayVisitor;
+import ver.ajar.age.t3.display.VerDisplayable;
+import ver.ajar.age.t3.collision.CollisionAttribute;
+import ver.ajar.age.t3.collision.VerCollidable;
+import ver.ajar.age.t3.logic.VerEntity;
 import ver.ajar.age.t2.logic.VerLogicVisitor;
 
 /**
  * @author reverend
  *
  */
-public class Test2 extends Test<HashAttributes> {
+public class Test3 extends Test<HashAttributes> {
 	private static final long serialVersionUID = -3717777373947866111L;
 	
-	private Test2(){
+	private Test3(){
 		super();
 	}
 	
@@ -55,7 +60,7 @@ public class Test2 extends Test<HashAttributes> {
 	 */
 	public static void main(String[] args) {
 		//GameLoop.debug = true;
-		start(new Test2());
+		start(new Test3());
 	}
 
 	/* (non-Javadoc)
@@ -65,10 +70,9 @@ public class Test2 extends Test<HashAttributes> {
 	protected Node<HashAttributes> setupRootNode() {
 		DefaultNode<HashAttributes> root = new DefaultNode<HashAttributes>(new HashAttributes());
 		
-		root.getAttributes().setAttribute(VerAttribute.X_POS);
-		root.getAttributes().setAttribute(VerAttribute.Y_POS);
-		root.getAttributes().setAttribute(VerAttribute.WIDTH, 640);
-		root.getAttributes().setAttribute(VerAttribute.HEIGHT, 480);
+		Rectangle box = new Rectangle(0,0,640,480);
+		root.getAttributes().setAttribute(CollisionAttribute.BOUNDING_BOX,box);
+		root.getAttributes().setAttribute(VerAttribute.TEAM);
 		
 		return new VerDisplayable(root);
 	}
@@ -94,8 +98,7 @@ public class Test2 extends Test<HashAttributes> {
 	 */
 	@Override
 	protected Visitor<HashAttributes> getCollisionVisitor() {
-		// TODO Auto-generated method stub
-		return null;
+		return new CollisionVisitor<HashAttributes>(VerCollidable.class,VerEntity.class);
 	}
 
 	/* (non-Javadoc)
@@ -122,6 +125,8 @@ public class Test2 extends Test<HashAttributes> {
 		node.getAttributes().setSimpleAttributes(VerAttribute.values());
 		node.getAttributes().setAttribute(VerAttribute.X_VEL, 1);
 		node.getAttributes().setAttribute(VerAttribute.Y_VEL, 1);
+		node.getAttributes().setAttribute(VerAttribute.TEAM, 1);
+		node.getAttributes().setAttribute(CollisionAttribute.BOUNDING_BOX);
 		
 		root.addChild(new VerEntity(new VerDisplayable(node)));
 	}
