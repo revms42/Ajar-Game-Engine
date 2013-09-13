@@ -25,7 +25,7 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t3;
+package ver.ajar.age.t3.logic;
 
 import java.util.HashMap;
 
