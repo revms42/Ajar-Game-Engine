@@ -27,14 +27,12 @@
  */
 package ver.ajar.age.t3.logic;
 
-import java.awt.Rectangle;
-
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.age.logic.State;
 
-import ver.ajar.age.t2.VerAttribute;
+import ver.ajar.age.t3.VerAttribute;
 import ver.ajar.age.t3.collision.CollisionAttribute;
 
 /**
@@ -62,23 +60,16 @@ public class VerDefaultEffect extends ChainableEffect<HashAttributes> {
 	 */
 	@Override
 	protected void doAction(Entity<HashAttributes> entity) {
-		Number x = entity.getAttributes().getAttribute(VerAttribute.X_POS);
-		Number y = entity.getAttributes().getAttribute(VerAttribute.Y_POS);
+		int x = entity.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).x;
+		int y = entity.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).y;
 		Number dx = entity.getAttributes().getAttribute(VerAttribute.X_VEL);
 		Number dy = entity.getAttributes().getAttribute(VerAttribute.Y_VEL);
 		
-		boolean moved = false;
-		if(x != null && dx != null){
-			entity.getAttributes().setAttribute(VerAttribute.X_POS, x.intValue() + dx.intValue());
-			moved = true;
-		}
-		if(y != null && dy != null){
-			entity.getAttributes().setAttribute(VerAttribute.Y_POS, y.intValue() + dy.intValue());
-			moved = true;
-		}
-		if(moved && x != null && y != null){
-			Rectangle r = entity.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX);
-			r.setLocation(x.intValue(), y.intValue());
+		if(dx != null && dy != null){
+			entity.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).setLocation(
+					x + dx.intValue(),
+					y + dy.intValue()
+			);
 		}
 		
 		Number i = entity.getAttributes().getAttribute(VerAttribute.IMAGE_X);

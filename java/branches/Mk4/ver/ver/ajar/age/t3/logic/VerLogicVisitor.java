@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Jul 23, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 8, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * ver.ajar.age.t2
- * VerDisplayVisitor.java
+ * VerLogicVisitor.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,44 +25,49 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t3.display;
+package ver.ajar.age.t3.logic;
 
-import java.awt.image.BufferedImage;
-
-import org.ajar.age.disp.awt.AWTDisplayable;
-import org.ajar.age.disp.awt.AWTGraphicsPanel;
-import org.ajar.age.disp.awt.AWTGraphicsVisitor;
+import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
+import org.ajar.age.logic.LogicVisitor;
 
-import ver.ajar.age.t3.collision.CollisionAttribute;
 
 /**
  * @author reverend
  *
  */
-public class VerDisplayVisitor extends AWTGraphicsVisitor<HashAttributes> {
+public class VerLogicVisitor extends LogicVisitor<HashAttributes> {
 
 	/**
-	 * @param surface
-	 * @param dispClass
+	 * @param entityClass
 	 */
-	public VerDisplayVisitor(AWTGraphicsPanel comp) {
-		super(comp,VerDisplayable.class);
+	public VerLogicVisitor() {
+		super(VerEntity.class);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.ajar.age.disp.awt.AWTGraphicsVisitor#update(org.ajar.age.disp.awt.AWTDisplayable)
+	 * @see org.ajar.age.AbstractVisitor#isInView(org.ajar.age.Decorator)
 	 */
 	@Override
-	public void update(AWTDisplayable<HashAttributes> disp) {
-		VerDisplayable vd = disp.getDecorator(VerDisplayable.class);
-		BufferedImage bi = vd.drawImage();
-		
-		if(bi != null){
-			int x = vd.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).x;
-			int y = vd.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).y;
-			this.getSurface().drawImage(bi, null, x, y);
-		}
+	protected boolean isInView(Entity<HashAttributes> decorator) {
+		//Note: This normally would need to be more complex.
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.age.AbstractVisitor#startProcess()
+	 */
+	@Override
+	protected void startProcess() {
+		//If we were having concurrent action required this would be where we start it.
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.age.AbstractVisitor#finishProcess()
+	 */
+	@Override
+	protected void finishProcess() {
+		//If we were having concurrent action required this would be where we'd set everything.
 	}
 
 }
