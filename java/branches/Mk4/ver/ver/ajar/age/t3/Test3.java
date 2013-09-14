@@ -42,7 +42,7 @@ import ver.ajar.age.t3.display.VerDisplayable;
 import ver.ajar.age.t3.collision.CollisionAttribute;
 import ver.ajar.age.t3.collision.VerCollidable;
 import ver.ajar.age.t3.logic.VerEntity;
-import ver.ajar.age.t2.logic.VerLogicVisitor;
+import ver.ajar.age.t3.logic.VerLogicVisitor;
 
 /**
  * @author reverend
@@ -70,11 +70,12 @@ public class Test3 extends Test<HashAttributes> {
 	protected Node<HashAttributes> setupRootNode() {
 		DefaultNode<HashAttributes> root = new DefaultNode<HashAttributes>(new HashAttributes());
 		
-		Rectangle box = new Rectangle(0,0,640,480);
+		//640x480 moved in 8x8 and scaled back to 8x8 from the other edge.
+		Rectangle box = new Rectangle(8,8,608,432);
 		root.getAttributes().setAttribute(CollisionAttribute.BOUNDING_BOX,box);
 		root.getAttributes().setAttribute(VerAttribute.TEAM);
 		
-		return new VerDisplayable(root);
+		return new VerCollidable(new VerDisplayable(root));
 	}
 
 	/* (non-Javadoc)
@@ -123,12 +124,13 @@ public class Test3 extends Test<HashAttributes> {
 		DefaultNode<HashAttributes> node = new DefaultNode<HashAttributes>(new HashAttributes());
 		
 		node.getAttributes().setSimpleAttributes(VerAttribute.values());
-		node.getAttributes().setAttribute(VerAttribute.X_VEL, 1);
-		node.getAttributes().setAttribute(VerAttribute.Y_VEL, 1);
+		node.getAttributes().setAttribute(VerAttribute.X_VEL, 5);
+		node.getAttributes().setAttribute(VerAttribute.Y_VEL, 5);
 		node.getAttributes().setAttribute(VerAttribute.TEAM, 1);
-		node.getAttributes().setAttribute(CollisionAttribute.BOUNDING_BOX);
+		Rectangle bounds = new Rectangle(16,16,16,16);
+		node.getAttributes().setAttribute(CollisionAttribute.BOUNDING_BOX,bounds);
 		
-		root.addChild(new VerEntity(new VerDisplayable(node)));
+		root.addChild(new VerCollidable(new VerEntity(new VerDisplayable(node))));
 	}
 
 }
