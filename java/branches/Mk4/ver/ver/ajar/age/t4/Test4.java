@@ -25,7 +25,7 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t3;
+package ver.ajar.age.t4;
 
 import java.awt.Rectangle;
 
@@ -37,21 +37,23 @@ import org.ajar.age.collision.CollisionVisitor;
 import org.ajar.age.logic.HashAttributes;
 
 import ver.ajar.age.t0.Test;
-import ver.ajar.age.t3.display.VerDisplayVisitor;
-import ver.ajar.age.t3.display.VerDisplayable;
-import ver.ajar.age.t3.collision.CollisionAttribute;
-import ver.ajar.age.t3.collision.VerCollidable;
-import ver.ajar.age.t3.logic.VerEntity;
-import ver.ajar.age.t3.logic.VerLogicVisitor;
+import ver.ajar.age.t4.VerAttribute;
+import ver.ajar.age.t4.display.VerDisplayVisitor;
+import ver.ajar.age.t4.display.VerDisplayable;
+import ver.ajar.age.t4.collision.CollisionAttribute;
+import ver.ajar.age.t4.collision.VerCollidable;
+import ver.ajar.age.t4.logic.VerController;
+import ver.ajar.age.t4.logic.VerEntity;
+import ver.ajar.age.t4.logic.VerLogicVisitor;
 
 /**
  * @author reverend
  *
  */
-public class Test3 extends Test<HashAttributes> {
+public class Test4 extends Test<HashAttributes> {
 	private static final long serialVersionUID = -3717777373947866111L;
 	
-	private Test3(){
+	private Test4(){
 		super();
 	}
 	
@@ -60,7 +62,7 @@ public class Test3 extends Test<HashAttributes> {
 	 */
 	public static void main(String[] args) {
 		//GameLoop.debug = true;
-		start(new Test3());
+		start(new Test4());
 	}
 
 	/* (non-Javadoc)
@@ -131,6 +133,10 @@ public class Test3 extends Test<HashAttributes> {
 		node.getAttributes().setAttribute(CollisionAttribute.BOUNDING_BOX,bounds);
 		
 		root.addChild(new VerCollidable(new VerEntity(new VerDisplayable(node))));
+		
+		VerController controller = new VerController();
+		this.addKeyListener(controller);
+		node.getDecorator(VerEntity.class).addController(controller);
 	}
 
 }
