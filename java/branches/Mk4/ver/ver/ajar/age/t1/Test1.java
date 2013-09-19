@@ -35,6 +35,7 @@ import org.ajar.age.Visitor;
 import ver.ajar.age.t0.Test;
 
 /**
+ * The purpose of this verification step is to test out display.
  * @author reverend
  *
  */

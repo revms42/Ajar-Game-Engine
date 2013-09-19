@@ -32,6 +32,7 @@ import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.age.logic.State;
 
+import ver.ajar.age.t0.ChainableEffect;
 import ver.ajar.age.t4.VerAttribute;
 import ver.ajar.age.t4.collision.CollisionAttribute;
 

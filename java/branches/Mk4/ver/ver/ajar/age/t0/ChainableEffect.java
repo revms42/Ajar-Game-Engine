@@ -25,7 +25,7 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t4.logic;
+package ver.ajar.age.t0;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.logic.AbstractEffect;

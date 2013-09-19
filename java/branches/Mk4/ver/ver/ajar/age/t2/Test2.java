@@ -40,6 +40,7 @@ import ver.ajar.age.t2.logic.VerEntity;
 import ver.ajar.age.t2.logic.VerLogicVisitor;
 
 /**
+ * The purpose of this verification step is to test out animation.
  * @author reverend
  *
  */
