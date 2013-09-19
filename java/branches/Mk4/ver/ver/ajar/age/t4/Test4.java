@@ -47,6 +47,7 @@ import ver.ajar.age.t4.logic.VerEntity;
 import ver.ajar.age.t4.logic.VerLogicVisitor;
 
 /**
+ * The goal of this verification step is to test out keyboard input leading to direct sprite action.
  * @author reverend
  *
  */
