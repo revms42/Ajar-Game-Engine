@@ -25,15 +25,15 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t5.logic;
+package ver.ajar.age.t6.logic;
 
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
 
 import ver.ajar.age.t0.ChainableEffect;
-import ver.ajar.age.t5.VerAttribute;
-import ver.ajar.age.t5.VerAttributes;
+import ver.ajar.age.t6.VerAttribute;
+import ver.ajar.age.t6.VerAttributes;
 
 /**
  * @author reverend

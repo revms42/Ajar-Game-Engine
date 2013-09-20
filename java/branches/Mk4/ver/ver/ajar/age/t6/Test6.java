@@ -25,7 +25,7 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t5;
+package ver.ajar.age.t6;
 
 import java.awt.Rectangle;
 
@@ -37,26 +37,24 @@ import org.ajar.age.Visitor;
 import org.ajar.age.collision.CollisionVisitor;
 
 import ver.ajar.age.t0.Test;
-import ver.ajar.age.t5.VerAttribute;
-import ver.ajar.age.t5.display.VerDisplayVisitor;
-import ver.ajar.age.t5.display.VerDisplayable;
-import ver.ajar.age.t5.collision.CollisionAttribute;
-import ver.ajar.age.t5.collision.VerCollidable;
-import ver.ajar.age.t5.logic.VerController;
-import ver.ajar.age.t5.logic.VerEntity;
-import ver.ajar.age.t5.logic.VerLogicVisitor;
+import ver.ajar.age.t6.VerAttribute;
+import ver.ajar.age.t6.display.VerDisplayVisitor;
+import ver.ajar.age.t6.display.VerDisplayable;
+import ver.ajar.age.t6.collision.CollisionAttribute;
+import ver.ajar.age.t6.collision.VerCollidable;
+import ver.ajar.age.t6.logic.VerController;
+import ver.ajar.age.t6.logic.VerEntity;
+import ver.ajar.age.t6.logic.VerLogicVisitor;
 
 /**
- * The purpose of this verification step is to test out keyboard interaction leading to 
- * delayed sprite interaction (i.e. we press a button and the sprite moves one full square while
- * animating).
+ * The purpose of this verification step is to use mouse input to allow for queued travel.
  * @author reverend
  *
  */
-public class Test5 extends Test<VerAttributes> {
+public class Test6 extends Test<VerAttributes> {
 	private static final long serialVersionUID = -3717777373947866111L;
 	
-	private Test5(){
+	private Test6(){
 		super();
 		this.gameloop.setUpdatePeriod(50);
 	}
@@ -66,7 +64,7 @@ public class Test5 extends Test<VerAttributes> {
 	 */
 	public static void main(String[] args) {
 		//GameLoop.debug = true;
-		start(new Test5());
+		start(new Test6());
 	}
 
 	/* (non-Javadoc)
@@ -136,8 +134,12 @@ public class Test5 extends Test<VerAttributes> {
 		
 		root.addChild(new VerCollidable(new VerEntity(new VerDisplayable(node))));
 		
-		VerController controller = new VerController();
-		this.addKeyListener(controller);
+		VerController controller = new VerController(
+				node.getAttributes(),
+				VerAttribute.X_TILE_DEST,
+				VerAttribute.Y_TILE_DEST);
+		this.panel.addKeyListener(controller);
+		this.panel.addMouseListener(controller);
 		node.getDecorator(VerEntity.class).addController(controller);
 	}
 
