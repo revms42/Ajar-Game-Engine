@@ -28,7 +28,6 @@
 package ver.ajar.age.t4.logic;
 
 import org.ajar.age.logic.AbstractEffect;
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
@@ -48,8 +47,8 @@ public class VerAccEffect extends AbstractEffect<HashAttributes> {
 	 * @param a
 	 * @param result
 	 */
-	public VerAccEffect(Action a, Attribute<Number> attr, int mod, int limit, State<HashAttributes> result) {
-		super(a, result);
+	public VerAccEffect(Attribute<Number> attr, int mod, int limit, State<HashAttributes> result) {
+		super(result);
 		this.attr = attr;
 		this.mod = mod;
 		this.limit = limit;

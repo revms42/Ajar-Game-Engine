@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 16, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 22, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * ver.ajar.age.t4.logic
- * VerAccEffect.java
+ * ver.ajar.age.t8.logic
+ * VerRestState.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,33 +27,24 @@
  */
 package ver.ajar.age.t8.logic;
 
-import org.ajar.age.logic.AbstractEffect;
-import org.ajar.age.logic.Action;
-import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
 
+import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t8.VerAttributes;
 
 /**
  * @author reverend
  *
  */
-public class VerMoveEffect extends AbstractEffect<VerAttributes> {
+public class VerRestState extends AbstractChainableEffect<VerAttributes> {
 
-	
-	private final Attribute<Number> attr;
-	private final int mod;
-	private final int limit;
 	/**
-	 * @param a
 	 * @param result
 	 */
-	public VerMoveEffect(Action a, Attribute<Number> attr, int mod, int limit, State<VerAttributes> result) {
-		super(a, result);
-		this.attr = attr;
-		this.mod = mod;
-		this.limit = limit;
+	public VerRestState(State<VerAttributes> result) {
+		super(result);
+		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -61,19 +52,8 @@ public class VerMoveEffect extends AbstractEffect<VerAttributes> {
 	 */
 	@Override
 	protected void doAction(Entity<VerAttributes> entity) {
-		Number n = entity.getAttributes().getAttribute(attr);
+		// TODO Auto-generated method stub
 		
-		if(n != null){
-			int newVal = n.intValue() + mod;
-			
-			if(newVal > limit){
-				newVal = limit;
-			}else if(newVal < 0){
-				newVal = 0;
-			}
-			
-			entity.getAttributes().setAttribute(attr, newVal);
-		}
 	}
 
 }

@@ -28,7 +28,6 @@
 package ver.ajar.age.t7.logic;
 
 import org.ajar.age.logic.AbstractEffect;
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
@@ -49,8 +48,8 @@ public class VerMoveEffect extends AbstractEffect<VerAttributes> {
 	 * @param a
 	 * @param result
 	 */
-	public VerMoveEffect(Action a, Attribute<Number> attr, int mod, int limit, State<VerAttributes> result) {
-		super(a, result);
+	public VerMoveEffect(Attribute<Number> attr, int mod, int limit, State<VerAttributes> result) {
+		super(result);
 		this.attr = attr;
 		this.mod = mod;
 		this.limit = limit;

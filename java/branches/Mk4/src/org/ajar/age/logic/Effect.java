@@ -45,16 +45,16 @@ public interface Effect<A extends Attributes> {
 	 */
 	public State<A> perform(Entity<A> entity);
 	
-	/**
+	/*
 	 * The <code>Action</code> that is associated with this <code>Effect</code>.
 	 * @return this effect's associated action.
-	 */
 	public Action getAction();
+	 */
 	
-	/**
+	/*
 	 * The <code>State</code> that results from the application of this <code>Effect</code>.
 	 * @return the state resulting from the application of this <code>Effect</code>.
-	 */
 	public State<A> getResultState();
+	 */
 	
 }

@@ -40,7 +40,6 @@ import org.ajar.age.Attributes;
  * @since 0.0.0.153
  */
 public abstract class AbstractEffect<A extends Attributes> implements Effect<A> {
-	private final Action a;
 	private final State<A> result;
 	
 	/**
@@ -48,23 +47,8 @@ public abstract class AbstractEffect<A extends Attributes> implements Effect<A> 
 	 * @param a the action this effect represents.
 	 * @param result the resultant state of this effect.
 	 */
-	public AbstractEffect(Action a, State<A> result){
-		this.a = a;
+	public AbstractEffect(State<A> result){
 		this.result = result;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Effect#getAction()
-	 */
-	public Action getAction() {
-		return a;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.mdmk2.core.logic.Effect#getResultState()
-	 */
-	public State<A> getResultState() {
-		return result;
 	}
 
 	/* (non-Javadoc)

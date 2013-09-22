@@ -35,10 +35,8 @@ import org.ajar.age.logic.Action;
  */
 public enum VerAction implements Action {
 	DAMAGE,
-	MOVE_X_POS,
-	MOVE_Y_POS,
-	MOVE_X_NEG,
-	MOVE_Y_NEG,
+	START_MOVE,
+	START_ATTACK,
 	COLLISION_V,
 	COLLISION_H,
 	COLLISION_D;

@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 21, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 22, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * ver.ajar.age.t8.logic
- * VerSetRangeEffect.java
+ * org.ajar.age.logic
+ * VerCheckArrivedEffect.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,58 +27,50 @@
  */
 package ver.ajar.age.t8.logic;
 
-import org.ajar.age.Node;
+import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
 
-import ver.ajar.age.t0.AbstractChainableEffect;
-import ver.ajar.age.t8.TileMapNode;
 import ver.ajar.age.t8.VerAttribute;
 import ver.ajar.age.t8.VerAttributes;
-import ver.ajar.age.t8.VerMapAttribute;
 
 /**
  * @author reverend
  *
  */
-public class VerSetRangeEffect extends AbstractChainableEffect<VerAttributes> {
+public class VerCheckArrivedEffect implements Effect<VerAttributes> {
 
-	private final int value;
+	private final State<VerAttributes> done;
+	private final State<VerAttributes> notDone;
+	
 	/**
-	 * @param a
 	 * @param result
 	 */
-	public VerSetRangeEffect(State<VerAttributes> result, int value) {
-		super(result);
-		this.value = value;
+	public VerCheckArrivedEffect(State<VerAttributes> done, State<VerAttributes> notDone) {
+		this.done = done;
+		this.notDone = notDone;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
+	 * @see org.ajar.age.logic.Effect#perform(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<VerAttributes> entity) {
-		setRangeTiles(entity,value);
-	}
-
-	public static void setRangeTiles(Entity<VerAttributes> entity, int value){
+	public State<VerAttributes> perform(Entity<VerAttributes> entity) {
+		int xdest = entity.getAttributes().getAttribute(VerAttribute.X_TILE_DEST).intValue();
 		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_POS).intValue();
+		int ydest = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_DEST).intValue();
 		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_POS).intValue();
 		
-		for(Node<VerAttributes> sibling : entity.getParent().getChildren()){
-			if(sibling instanceof TileMapNode){
-				TileMapNode map = (TileMapNode)sibling;
-				int range = entity.getAttributes().getAttribute(VerAttribute.RANGE).intValue();
-				
-				for(int x = -range; x <= range; x++){
-					for(int y = -range; y <= range; y++){
-						if(Math.abs(x) + Math.abs(y) <= range){
-							Node<VerAttributes> tile = map.getChildTile(xtile + x, ytile + y);
-							tile.getAttributes().setAttribute(VerMapAttribute.DISPLAY_MOVE,value);
-						}
-					}
-				}
-			}
+		This is where I left off.
+		I need to refactor this to be chainable, but refactor both this class and
+		set range to extend a binary state effect, that has a true state and a
+		false state specified at the start, and it runs chained effects only on success.
+		
+		if(xdest == xtile && ydest == ytile){
+			return done;
+		}else{
+			return notDone;
 		}
 	}
+
 }
