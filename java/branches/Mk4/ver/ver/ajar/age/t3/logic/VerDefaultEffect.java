@@ -27,11 +27,11 @@
  */
 package ver.ajar.age.t3.logic;
 
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.age.logic.State;
 
+import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t3.VerAttribute;
 import ver.ajar.age.t3.collision.CollisionAttribute;
 
@@ -39,19 +39,10 @@ import ver.ajar.age.t3.collision.CollisionAttribute;
  * @author reverend
  *
  */
-public class VerDefaultEffect extends ChainableEffect<HashAttributes> {
-
-	/**
-	 * @param a
-	 * @param result
-	 */
-	public VerDefaultEffect(Action a, State<HashAttributes> result) {
-		super(a, result);
-		// TODO Auto-generated constructor stub
-	}
+public class VerDefaultEffect extends AbstractChainableEffect<HashAttributes> {
 
 	public VerDefaultEffect(State<HashAttributes> result) {
-		this(null, result);
+		super(result);
 		// TODO Auto-generated constructor stub
 	}
 	

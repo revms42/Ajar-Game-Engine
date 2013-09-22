@@ -28,7 +28,6 @@
 package ver.ajar.age.t3.logic;
 
 import org.ajar.age.logic.AbstractEffect;
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
@@ -45,8 +44,8 @@ public class VerBounceEffect extends AbstractEffect<HashAttributes> {
 	 * @param a
 	 * @param result
 	 */
-	public VerBounceEffect(Action a, State<HashAttributes> result, Attribute<Number>... attributes) {
-		super(a, result);
+	public VerBounceEffect(State<HashAttributes> result, Attribute<Number>... attributes) {
+		super(result);
 		this.attributes = attributes;
 	}
 

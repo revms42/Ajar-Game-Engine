@@ -30,6 +30,7 @@ package ver.ajar.age.t8.logic;
 import java.util.HashMap;
 
 import org.ajar.age.logic.Action;
+import org.ajar.age.logic.DefaultState;
 import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
@@ -48,7 +49,7 @@ import ver.ajar.age.t8.VerAttributes;
  * @author mstockbr
  *
  */
-public class VerState implements State<VerAttributes> {
+public class VerState extends DefaultState<VerAttributes> {
 	
 	private final HashMap<Action, Effect<VerAttributes>> map;
 	private final State<VerAttributes> parentState;

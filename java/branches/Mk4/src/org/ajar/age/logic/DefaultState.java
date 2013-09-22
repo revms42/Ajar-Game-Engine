@@ -66,12 +66,12 @@ public class DefaultState<A extends Attributes> implements State<A> {
 	 * Inserts a new <code>Effect</code> into this <code>State</code>, using the effect's associated action.
 	 * <p>
 	 * Returns any previously mapped effect.
+	 * @param a the action to map to the effect.
 	 * @param arg1 the effect to add to this state.
 	 * @return any effect previously mapped to the new effect's action.
-	 * @see Effect#getAction()
 	 */
-	public Effect<A> put(Effect<A> arg1) {
-		return effectMap.put(arg1.getAction(), arg1);
+	public Effect<A> put(Action a, Effect<A> arg1) {
+		return effectMap.put(a, arg1);
 	}
 	
 	/**

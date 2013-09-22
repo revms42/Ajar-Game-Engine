@@ -47,12 +47,12 @@ public class VerEntity extends DefaultEntity<VerAttributes> {
 		super(node);
 		
 		DefaultState<VerAttributes> state = new DefaultState<VerAttributes>();
-		state.put(new VerDefaultEffect(state));
+		state.put(null,new VerDefaultEffect(state));
 		
-		state.put(new VerMoveEffect(VerAction.MOVE_X_NEG,VerAttribute.X_TILE_DEST,-1,39,state));
-		state.put(new VerMoveEffect(VerAction.MOVE_X_POS,VerAttribute.X_TILE_DEST,1,39,state));
-		state.put(new VerMoveEffect(VerAction.MOVE_Y_NEG,VerAttribute.Y_TILE_DEST,-1,29,state));
-		state.put(new VerMoveEffect(VerAction.MOVE_Y_POS,VerAttribute.Y_TILE_DEST,1,29,state));
+		state.put(VerAction.MOVE_X_NEG,new VerMoveEffect(VerAttribute.X_TILE_DEST,-1,39,state));
+		state.put(VerAction.MOVE_X_POS,new VerMoveEffect(VerAttribute.X_TILE_DEST,1,39,state));
+		state.put(VerAction.MOVE_Y_NEG,new VerMoveEffect(VerAttribute.Y_TILE_DEST,-1,29,state));
+		state.put(VerAction.MOVE_Y_POS,new VerMoveEffect(VerAttribute.Y_TILE_DEST,1,29,state));
 		
 		this.setState(state);
 	}

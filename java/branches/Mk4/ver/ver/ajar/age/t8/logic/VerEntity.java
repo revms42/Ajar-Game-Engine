@@ -46,14 +46,32 @@ public class VerEntity extends DefaultEntity<VerAttributes> {
 	public VerEntity(Node<VerAttributes> node) {
 		super(node);
 		
-		DefaultState<VerAttributes> state = new DefaultState<VerAttributes>();
-		state.put(new VerDefaultEffect(state));
+		//Base state
+		DefaultState<VerAttributes> baseState = new DefaultState<VerAttributes>();
+		baseState.put(null, new VerDefaultEffect(baseState));
 		
-		state.put(new VerMoveEffect(VerAction.MOVE_X_NEG,VerAttribute.X_TILE_DEST,-1,39,state));
-		state.put(new VerMoveEffect(VerAction.MOVE_X_POS,VerAttribute.X_TILE_DEST,1,39,state));
-		state.put(new VerMoveEffect(VerAction.MOVE_Y_NEG,VerAttribute.Y_TILE_DEST,-1,29,state));
-		state.put(new VerMoveEffect(VerAction.MOVE_Y_POS,VerAttribute.Y_TILE_DEST,1,29,state));
+		//Wait state.
+		VerState waitState = new VerState(baseState);
 		
-		this.setState(state);
+		//End Move State.
+		VerState endState = new VerState(baseState);
+		VerSetRangeEffect setRange = new VerSetRangeEffect(waitState,1);
+		setRange.addToChain(new VerDefaultEffect(waitState));
+		endState.put(null, setRange);
+		
+		//Move state.
+		VerState moveState = new VerState(baseState);
+		VerCheckArrivedEffect arrivedCheck = new VerCheckArrivedEffect(endState,moveState);
+		moveState.put(null, new VerDefaultEffect(moveState));
+		
+		//Start Move State.
+		VerState startState = new VerState(baseState);
+		VerStartMoveEffect startMove = new VerStartMoveEffect(moveState,waitState);
+		startMove.addToChain(new VerSetRangeEffect(moveState,0));
+		startState.put(VerAction.START_MOVE,startMove);
+		
+
+		
+		this.setState(waitState);
 	}
 }

@@ -48,15 +48,15 @@ public class VerEntity extends DefaultEntity<HashAttributes> {
 		super(node);
 		
 		DefaultState<HashAttributes> state = new DefaultState<HashAttributes>();
-		state.put(new VerDefaultEffect(state));
-		state.put(new VerBounceEffect(VerAction.BOUNCE_V,state,VerAttribute.Y_VEL));
-		state.put(new VerBounceEffect(VerAction.BOUNCE_H,state,VerAttribute.X_VEL));
-		state.put(new VerBounceEffect(VerAction.BOUNCE_D,state,VerAttribute.X_VEL,VerAttribute.Y_VEL));
+		state.put(null,new VerDefaultEffect(state));
+		state.put(VerAction.BOUNCE_V,new VerBounceEffect(state,VerAttribute.Y_VEL));
+		state.put(VerAction.BOUNCE_H,new VerBounceEffect(state,VerAttribute.X_VEL));
+		state.put(VerAction.BOUNCE_D,new VerBounceEffect(state,VerAttribute.X_VEL,VerAttribute.Y_VEL));
 		
-		state.put(new VerAccEffect(VerAction.ACC_X_NEG,VerAttribute.X_VEL,-1,-10,state));
-		state.put(new VerAccEffect(VerAction.ACC_X_POS,VerAttribute.X_VEL,1,10,state));
-		state.put(new VerAccEffect(VerAction.ACC_Y_NEG,VerAttribute.Y_VEL,-1,-10,state));
-		state.put(new VerAccEffect(VerAction.ACC_Y_POS,VerAttribute.Y_VEL,1,10,state));
+		state.put(VerAction.ACC_X_NEG,new VerAccEffect(VerAttribute.X_VEL,-1,-10,state));
+		state.put(VerAction.ACC_X_POS,new VerAccEffect(VerAttribute.X_VEL,1,10,state));
+		state.put(VerAction.ACC_Y_NEG,new VerAccEffect(VerAttribute.Y_VEL,-1,-10,state));
+		state.put(VerAction.ACC_Y_POS,new VerAccEffect(VerAttribute.Y_VEL,1,10,state));
 		
 		this.setState(state);
 	}

@@ -27,11 +27,10 @@
  */
 package ver.ajar.age.t6.logic;
 
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
 
-import ver.ajar.age.t0.ChainableEffect;
+import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t6.VerAttribute;
 import ver.ajar.age.t6.VerAttributes;
 
@@ -39,7 +38,7 @@ import ver.ajar.age.t6.VerAttributes;
  * @author reverend
  *
  */
-public class VerDefaultEffect extends ChainableEffect<VerAttributes> {
+public class VerDefaultEffect extends AbstractChainableEffect<VerAttributes> {
 
 	
 	private final static int step = 5;
@@ -47,13 +46,8 @@ public class VerDefaultEffect extends ChainableEffect<VerAttributes> {
 	 * @param a
 	 * @param result
 	 */
-	public VerDefaultEffect(Action a, State<VerAttributes> result) {
-		super(a, result);
-		// TODO Auto-generated constructor stub
-	}
-
 	public VerDefaultEffect(State<VerAttributes> result) {
-		this(null, result);
+		super(result);
 		// TODO Auto-generated constructor stub
 	}
 	

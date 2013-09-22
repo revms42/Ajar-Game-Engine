@@ -45,7 +45,7 @@ public class VerEntity extends DefaultEntity<HashAttributes> {
 		super(node);
 		
 		DefaultState<HashAttributes> state = new DefaultState<HashAttributes>();
-		state.put(new VerDefaultEffect(state));
+		state.put(null,new VerDefaultEffect(state));
 		
 		this.setState(state);
 	}

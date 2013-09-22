@@ -28,8 +28,6 @@
 package ver.ajar.age.t8.logic;
 
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -38,7 +36,6 @@ import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Controller;
 import org.ajar.age.logic.DefaultState;
 import org.ajar.age.logic.Entity;
-import org.ajar.age.logic.State;
 
 import ver.ajar.age.t8.VerAttributes;
 
@@ -46,12 +43,12 @@ import ver.ajar.age.t8.VerAttributes;
  * @author reverend
  *
  */
-public class VerController implements Controller<VerAttributes>, KeyListener, MouseListener {
+public class VerController implements Controller<VerAttributes>, MouseListener {
 	
 	private Entity<VerAttributes> target;
 	private Attribute<Number> destX;
 	private Attribute<Number> destY;
-	private int typed;
+	private boolean pressed;
 	private boolean process;
 	
 	
@@ -66,9 +63,9 @@ public class VerController implements Controller<VerAttributes>, KeyListener, Mo
 	@Override
 	public void pollForInput(Entity<VerAttributes> entity) {
 		//TODO: Only one entity takes input right now, otherwise there could be more to this.
-		if(typed != -1){
-			entity.addAction(getAction(typed));
-			typed = -1;
+		if(pressed){
+			entity.addAction(getAction());
+			pressed = false;
 		}
 	}
 
@@ -76,50 +73,8 @@ public class VerController implements Controller<VerAttributes>, KeyListener, Mo
 		process = true;
 	}
 	
-	private Action getAction(int key){
-		switch(key){
-		case KeyEvent.VK_UP:
-			return VerAction.MOVE_Y_NEG;
-		case KeyEvent.VK_DOWN:
-			return VerAction.MOVE_Y_POS;
-		case KeyEvent.VK_RIGHT:
-			return VerAction.MOVE_X_POS;
-		case KeyEvent.VK_LEFT:
-			return VerAction.MOVE_X_NEG;
-		default:
-			return null;
-		}
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-	 */
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		if(process){
-			typed = arg0.getKeyCode();
-			process = false;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-	 */
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		//held = -1;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-	 */
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		if(process){
-			typed = arg0.getKeyCode();
-			process = false;
-		}
+	private Action getAction(){
+		return VerAction.START_MOVE;
 	}
 
 	/* (non-Javadoc)
@@ -138,6 +93,7 @@ public class VerController implements Controller<VerAttributes>, KeyListener, Mo
 			effect.addToChain(new VerSetRangeEffect(null,state,0));
 			
 			process = false;
+			pressed = true;
 		}
 	}
 

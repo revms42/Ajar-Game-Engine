@@ -28,7 +28,6 @@
 package ver.ajar.age.t2.logic;
 
 import org.ajar.age.logic.AbstractEffect;
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.age.logic.State;
@@ -45,13 +44,8 @@ public class VerDefaultEffect extends AbstractEffect<HashAttributes> {
 	 * @param a
 	 * @param result
 	 */
-	public VerDefaultEffect(Action a, State<HashAttributes> result) {
-		super(a, result);
-		// TODO Auto-generated constructor stub
-	}
-
 	public VerDefaultEffect(State<HashAttributes> result) {
-		this(null, result);
+		super(result);
 		// TODO Auto-generated constructor stub
 	}
 	

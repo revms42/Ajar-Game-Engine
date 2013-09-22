@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 13, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 22, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * ver.ajar.age.t3.logic
+ * ver.ajar.age.t0
  * ChainableEffect.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
@@ -28,74 +28,18 @@
 package ver.ajar.age.t0;
 
 import org.ajar.age.Attributes;
-import org.ajar.age.logic.AbstractEffect;
-import org.ajar.age.logic.Action;
-import org.ajar.age.logic.State;
+import org.ajar.age.logic.Effect;
 
 /**
- * @author mstockbr
+ * @author reverend
  *
  */
-public abstract class ChainableEffect<A extends Attributes> extends AbstractEffect<A> {
-
-	private ChainableEffect<A> child;
+public interface ChainableEffect<A extends Attributes> extends Effect<A> {
 	
-	/**
-	 * @param a
-	 * @param result
-	 */
-	public ChainableEffect(Action a, State<A> result) {
-		super(a, result);
-	}
-
-	public ChainableEffect<A> addToChain(ChainableEffect<A> child){
-		if(this.child == null){
-			this.child = child;
-		}else{
-			this.child.addToChain(child);
-		}
-		
-		return child;
-	}
-	
-	public boolean hasChild(){
-		return child != null;
-	}
-	
-	public ChainableEffect<A> getChild(){
-		return child;
-	}
-	
-	public void setChild(ChainableEffect<A> child){
-		this.child = child;
-	}
-	
-	public ChainableEffect<A> removeLastFromChain(){
-		if(this.child != null){
-			if(this.child.hasChild()){
-				return child.removeLastFromChain();
-			}else{
-				ChainableEffect<A> orphan = this.child;
-				this.child = null;
-				return orphan;
-			}
-		}else{
-			return null;
-		}
-	}
-	
-	public ChainableEffect<A> removeFromChain(ChainableEffect<A> effect){
-		if(this.child != null){
-			if(this.child == effect){
-				ChainableEffect<A> grandchild = this.child.getChild();
-				this.child = grandchild;
-				return effect;
-			}else{
-				return this.child.removeFromChain(effect);
-			}
-		}else{
-			return null;
-		}
-	}
-
+	public ChainableEffect<A> addToChain(ChainableEffect<A> child);
+	public boolean hasChild();
+	public ChainableEffect<A> getChild();
+	public void setChild(ChainableEffect<A> child);
+	public ChainableEffect<A> removeLastFromChain();
+	public ChainableEffect<A> removeFromChain(ChainableEffect<A> effect);
 }
