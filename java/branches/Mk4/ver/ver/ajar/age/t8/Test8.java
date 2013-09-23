@@ -134,7 +134,7 @@ public class Test8 extends Test<VerAttributes> {
 	protected void addNodes(Node<VerAttributes> root) {
 		try {
 			BufferedImage bi = ImageIO.read(
-					new File("/home/reverend/workspace/AGE/ver/ver/ajar/age/t8/loader/map.png")
+					new File("/home/mstockbr/private-workspace/AGE/ver/ver/ajar/age/t8/loader/map.png")
 			);
 			
 			int[] array = bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), null, 0, bi.getWidth());
@@ -162,9 +162,8 @@ public class Test8 extends Test<VerAttributes> {
 		
 		VerController controller = new VerController(
 				node.getDecorator(VerEntity.class),
-				VerAttribute.X_TILE_DEST,
-				VerAttribute.Y_TILE_DEST);
-		this.panel.addKeyListener(controller);
+				VerAttribute.X_TILE_REQ,
+				VerAttribute.Y_TILE_REQ);
 		this.panel.addMouseListener(controller);
 		node.getDecorator(VerEntity.class).addController(controller);
 	}

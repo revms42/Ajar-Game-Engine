@@ -31,7 +31,6 @@ import org.ajar.age.Node;
 import org.ajar.age.logic.DefaultEntity;
 import org.ajar.age.logic.DefaultState;
 
-import ver.ajar.age.t8.VerAttribute;
 import ver.ajar.age.t8.VerAttributes;
 
 /**
@@ -48,29 +47,32 @@ public class VerEntity extends DefaultEntity<VerAttributes> {
 		
 		//Base state
 		DefaultState<VerAttributes> baseState = new DefaultState<VerAttributes>();
-		baseState.put(null, new VerDefaultEffect(baseState));
+		baseState.put(null, new VerDefaultEffect(null));
 		
-		//Wait state.
 		VerState waitState = new VerState(baseState);
-		
-		//End Move State.
-		VerState endState = new VerState(baseState);
-		VerSetRangeEffect setRange = new VerSetRangeEffect(waitState,1);
-		setRange.addToChain(new VerDefaultEffect(waitState));
-		endState.put(null, setRange);
+		VerState moveState = new VerState(baseState);
 		
 		//Move state.
-		VerState moveState = new VerState(baseState);
-		VerCheckArrivedEffect arrivedCheck = new VerCheckArrivedEffect(endState,moveState);
-		moveState.put(null, new VerDefaultEffect(moveState));
+		VerSetRangeEffect setRange = new VerSetRangeEffect(waitState,1);
+		VerEnableInputEffect enable = new VerEnableInputEffect(waitState);
+		enable.addToChain(new VerDefaultEffect(waitState));
+		setRange.addToChain(enable);
+		VerCheckArrivedEffect arrivedCheck = new VerCheckArrivedEffect(
+				setRange,
+				new VerDefaultEffect(moveState)
+		);
+		moveState.put(null, arrivedCheck);
 		
-		//Start Move State.
-		VerState startState = new VerState(baseState);
-		VerStartMoveEffect startMove = new VerStartMoveEffect(moveState,waitState);
-		startMove.addToChain(new VerSetRangeEffect(moveState,0));
-		startState.put(VerAction.START_MOVE,startMove);
-		
-
+		//Wait state.
+		VerSetDestEffect setDest = new VerSetDestEffect(moveState);
+		setDest.addToChain(new VerSetRangeEffect(moveState,0));
+		VerResetDestEffect resetDest = new VerResetDestEffect(waitState);
+		resetDest.addToChain(enable);
+		VerStartMoveEffect startMove = new VerStartMoveEffect(
+				setDest,
+				resetDest
+		);
+		waitState.put(VerAction.START_MOVE,startMove);
 		
 		this.setState(waitState);
 	}

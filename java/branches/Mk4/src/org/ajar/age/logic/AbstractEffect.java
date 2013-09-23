@@ -40,7 +40,7 @@ import org.ajar.age.Attributes;
  * @since 0.0.0.153
  */
 public abstract class AbstractEffect<A extends Attributes> implements Effect<A> {
-	private final State<A> result;
+	protected State<A> result;
 	
 	/**
 	 * Constructs a new <code>AbstractEffect</code> by specifying the action it represents and the resultant state.

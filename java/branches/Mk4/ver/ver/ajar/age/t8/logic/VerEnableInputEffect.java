@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 22, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 23, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * ver.ajar.age.t8.logic
- * VerRestState.java
+ * VerEnableInputEffect.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -34,17 +34,16 @@ import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t8.VerAttributes;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public class VerRestState extends AbstractChainableEffect<VerAttributes> {
+public class VerEnableInputEffect extends AbstractChainableEffect<VerAttributes> {
 
 	/**
 	 * @param result
 	 */
-	public VerRestState(State<VerAttributes> result) {
+	public VerEnableInputEffect(State<VerAttributes> result) {
 		super(result);
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -52,8 +51,8 @@ public class VerRestState extends AbstractChainableEffect<VerAttributes> {
 	 */
 	@Override
 	protected void doAction(Entity<VerAttributes> entity) {
-		// TODO Auto-generated method stub
-		
+		VerController controller = (VerController)entity.getControllers().get(0);
+		controller.done();
 	}
 
 }

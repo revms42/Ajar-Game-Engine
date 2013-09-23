@@ -34,7 +34,6 @@ import java.awt.event.MouseListener;
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Controller;
-import org.ajar.age.logic.DefaultState;
 import org.ajar.age.logic.Entity;
 
 import ver.ajar.age.t8.VerAttributes;
@@ -56,6 +55,7 @@ public class VerController implements Controller<VerAttributes>, MouseListener {
 		this.target = target;
 		this.destX = destX;
 		this.destY = destY;
+		this.process = true;
 	}
 	/* (non-Javadoc)
 	 * @see org.ajar.age.logic.Controller#pollForInput(org.ajar.age.logic.Entity)
@@ -86,11 +86,6 @@ public class VerController implements Controller<VerAttributes>, MouseListener {
 			Point p = e.getPoint();
 			target.getAttributes().setAttribute(destX,VerAttributes.coordinateToTile(p.x));
 			target.getAttributes().setAttribute(destY,VerAttributes.coordinateToTile(p.y));
-			
-			DefaultState<VerAttributes> state = (DefaultState<VerAttributes>)target.getState();
-			
-			VerDefaultEffect effect = (VerDefaultEffect)state.getEffectMap().get(null);
-			effect.addToChain(new VerSetRangeEffect(null,state,0));
 			
 			process = false;
 			pressed = true;
