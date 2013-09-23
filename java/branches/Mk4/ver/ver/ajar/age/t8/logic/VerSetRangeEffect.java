@@ -58,23 +58,21 @@ public class VerSetRangeEffect extends AbstractChainableEffect<VerAttributes> {
 	 */
 	@Override
 	protected void doAction(Entity<VerAttributes> entity) {
-		setRangeTiles(entity,value);
-	}
-
-	public static void setRangeTiles(Entity<VerAttributes> entity, int value){
 		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_POS).intValue();
 		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_POS).intValue();
 		
 		for(Node<VerAttributes> sibling : entity.getParent().getChildren()){
-			if(sibling instanceof TileMapNode){
-				TileMapNode map = (TileMapNode)sibling;
+			if(sibling.getUndecoratedNode() instanceof TileMapNode){
+				TileMapNode map = (TileMapNode)sibling.getUndecoratedNode();
 				int range = entity.getAttributes().getAttribute(VerAttribute.RANGE).intValue();
 				
 				for(int x = -range; x <= range; x++){
-					for(int y = -range; y <= range; y++){
-						if(Math.abs(x) + Math.abs(y) <= range){
-							Node<VerAttributes> tile = map.getChildTile(xtile + x, ytile + y);
-							tile.getAttributes().setAttribute(VerMapAttribute.DISPLAY_MOVE,value);
+					if(xtile + x >= 0){
+						for(int y = -range; y <= range; y++){
+							if(ytile + y >=0 && Math.abs(x) + Math.abs(y) <= range){
+								Node<VerAttributes> tile = map.getChildTile(xtile + x, ytile + y);
+								tile.getAttributes().setAttribute(VerMapAttribute.DISPLAY_MOVE,value);
+							}
 						}
 					}
 				}

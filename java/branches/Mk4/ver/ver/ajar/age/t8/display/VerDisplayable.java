@@ -27,6 +27,7 @@
  */
 package ver.ajar.age.t8.display;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -48,9 +49,10 @@ import ver.ajar.age.t8.collision.CollisionAttribute;
  */
 public class VerDisplayable extends AbstractAWTDisplayable<VerAttributes> {
 
-	private final static String imageLoc = "/home/reverend/.minecraft/debug.stitched_terrain.png";
+	private final static String imageLoc = "/home/mstockbr/.minecraft/debug.stitched_terrain.png";
 	
 	private static BufferedImage staticImage;
+	private static BufferedImage moveUnderlay;
 	
 	//Note: In more advanced versions we could either preload all of this or have a hashmap.
 	private BufferedImage previousImage;
@@ -70,6 +72,12 @@ public class VerDisplayable extends AbstractAWTDisplayable<VerAttributes> {
 	 */
 	public VerDisplayable(Node<VerAttributes> node) {
 		super(node);
+		moveUnderlay = staticImage.getSubimage(
+				5 * 16, 
+				11 * 16, 
+				16, 
+				16
+		);
 	}
 	
 	@Override
@@ -80,18 +88,10 @@ public class VerDisplayable extends AbstractAWTDisplayable<VerAttributes> {
 	public BufferedImage drawImage(){
 		int team = this.getAttributes().getAttribute(VerAttribute.TEAM).intValue();
 		int iw = this.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).width;
-		int ih = this.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).height; 
+		int ih = this.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).height;
 		Number ix = this.getAttributes().getAttribute(VerAttribute.IMAGE_X);
 		Number iy = this.getAttributes().getAttribute(VerAttribute.IMAGE_Y);
-		
-		if(team == 0){
-			Number inRange = this.getAttributes().getAttribute(VerMapAttribute.DISPLAY_MOVE);
-			
-			if(inRange != null && inRange.intValue() != 0){
-				ix = 0;
-				iy = 5;
-			}
-		}
+
 		
 		if(ix != null && iy != null && ix.intValue() > 0 && iy.intValue() > 0){
 			if(ix.intValue() != previousImageX || iy.intValue() != previousImageY){
@@ -104,6 +104,23 @@ public class VerDisplayable extends AbstractAWTDisplayable<VerAttributes> {
 				previousImageX = ix.intValue();
 				previousImageY = iy.intValue();
 			}
+			
+			if(team == 0){
+				Number inRange = this.getAttributes().getAttribute(VerMapAttribute.DISPLAY_MOVE);
+				
+				if(inRange != null && inRange.intValue() != 0){
+					//TODO: In an ideal world this would be *FAR* more elegant, but I'm concerned with
+					//efficacy in coding at the moment.
+					BufferedImage underlay = new BufferedImage(16,16,BufferedImage.TYPE_4BYTE_ABGR);
+					underlay.setRGB(0, 0, 16, 16, moveUnderlay.getRGB(0, 0, 16, 16, null, 0, 16), 0, 16);
+					Graphics2D g2 = (Graphics2D)underlay.createGraphics();
+					g2.drawImage(previousImage, null, 0, 0);
+					g2.finalize();
+					g2.dispose();
+					return underlay;
+				}
+			}
+
 			
 			return previousImage;
 		}else{

@@ -29,6 +29,7 @@ package ver.ajar.age.t0;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.logic.AbstractEffect;
+import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
 
 /**
@@ -37,7 +38,7 @@ import org.ajar.age.logic.State;
  */
 public abstract class AbstractChainableEffect<A extends Attributes> extends AbstractEffect<A> implements ChainableEffect<A> {
 
-	private ChainableEffect<A> child;
+	protected ChainableEffect<A> child;
 	
 	/**
 	 * @param a
@@ -45,6 +46,14 @@ public abstract class AbstractChainableEffect<A extends Attributes> extends Abst
 	 */
 	public AbstractChainableEffect(State<A> result) {
 		super(result);
+	}
+	
+	public State<A> perform(Entity<A> entity){
+		State<A> state = super.perform(entity);
+		if(child != null){
+			child.perform(entity);
+		}
+		return state;
 	}
 
 	public ChainableEffect<A> addToChain(ChainableEffect<A> child){

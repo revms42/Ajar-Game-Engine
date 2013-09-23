@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 22, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 23, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.age.logic
- * VerCheckArrivedEffect.java
+ * ver.ajar.age.t8.logic
+ * VerSetDestEffect.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,37 +27,35 @@
  */
 package ver.ajar.age.t8.logic;
 
-import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.Entity;
+import org.ajar.age.logic.State;
 
-import ver.ajar.age.t0.AbstractCondition;
+import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t8.VerAttribute;
 import ver.ajar.age.t8.VerAttributes;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public class VerCheckArrivedEffect extends AbstractCondition<VerAttributes> {
-	
+public class VerSetDestEffect extends AbstractChainableEffect<VerAttributes> {
+
 	/**
 	 * @param result
 	 */
-	public VerCheckArrivedEffect(Effect<VerAttributes> done, Effect<VerAttributes> notDone) {
-		super(done,notDone);
+	public VerSetDestEffect(State<VerAttributes> result) {
+		super(result);
 	}
 
 	/* (non-Javadoc)
-	 * @see ver.ajar.age.t0.Condition#meetsCondition(org.ajar.age.logic.Entity)
+	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	public boolean meetsCondition(Entity<VerAttributes> entity) {
-		int xdest = entity.getAttributes().getAttribute(VerAttribute.X_TILE_DEST).intValue();
-		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_POS).intValue();
-		int ydest = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_DEST).intValue();
-		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_POS).intValue();
-		
-		return xdest == xtile && ydest == ytile;
+	protected void doAction(Entity<VerAttributes> entity) {
+		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_REQ).intValue();
+		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_REQ).intValue();
+		entity.getAttributes().setAttribute(VerAttribute.X_TILE_DEST, xtile);
+		entity.getAttributes().setAttribute(VerAttribute.Y_TILE_DEST, ytile);
 	}
 
 }

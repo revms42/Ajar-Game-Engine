@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 22, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 23, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.age.logic
- * VerCheckArrivedEffect.java
+ * ver.ajar.age.t0
+ * AbstractCondition.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,39 +25,37 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t8.logic;
+package ver.ajar.age.t0;
 
+import org.ajar.age.Attributes;
 import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.Entity;
-
-import ver.ajar.age.t0.AbstractCondition;
-import ver.ajar.age.t8.VerAttribute;
-import ver.ajar.age.t8.VerAttributes;
+import org.ajar.age.logic.State;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public class VerCheckArrivedEffect extends AbstractCondition<VerAttributes> {
+public abstract class AbstractCondition<A extends Attributes> implements Condition<A> {
 	
-	/**
-	 * @param result
-	 */
-	public VerCheckArrivedEffect(Effect<VerAttributes> done, Effect<VerAttributes> notDone) {
-		super(done,notDone);
+	protected Effect<A> falseEffect;
+	protected Effect<A> trueEffect;
+	
+	public AbstractCondition(Effect<A> trueEffect, Effect<A> falseEffect){
+		this.trueEffect = trueEffect;
+		this.falseEffect = falseEffect;
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see ver.ajar.age.t0.Condition#meetsCondition(org.ajar.age.logic.Entity)
+	 * @see org.ajar.age.logic.Effect#perform(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	public boolean meetsCondition(Entity<VerAttributes> entity) {
-		int xdest = entity.getAttributes().getAttribute(VerAttribute.X_TILE_DEST).intValue();
-		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_POS).intValue();
-		int ydest = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_DEST).intValue();
-		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_POS).intValue();
-		
-		return xdest == xtile && ydest == ytile;
+	public State<A> perform(Entity<A> entity) {
+		if(meetsCondition(entity)){
+			return trueEffect.perform(entity);
+		}else{
+			return falseEffect.perform(entity);
+		}
 	}
 
 }

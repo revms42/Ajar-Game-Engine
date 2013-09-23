@@ -27,8 +27,6 @@
  */
 package ver.ajar.age.t8.logic;
 
-import java.util.HashMap;
-
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.DefaultState;
 import org.ajar.age.logic.Effect;
@@ -51,25 +49,16 @@ import ver.ajar.age.t8.VerAttributes;
  */
 public class VerState extends DefaultState<VerAttributes> {
 	
-	private final HashMap<Action, Effect<VerAttributes>> map;
 	private final State<VerAttributes> parentState;
 	
 	public VerState(){
-		this.map = new HashMap<Action,Effect<VerAttributes>>();
+		super();
 		parentState = null;
 	}
 	
 	public VerState(State<VerAttributes> parentState){
-		this.map = new HashMap<Action,Effect<VerAttributes>>();
+		super();
 		this.parentState = parentState;
-	}
-	
-	public void setAction(Action e, Effect<VerAttributes> effect){
-		map.put(e, effect);
-	}
-	
-	public Effect<VerAttributes> getEffect(Action e){
-		return map.get(e);
 	}
 	
 	/* (non-Javadoc)
@@ -78,8 +67,8 @@ public class VerState extends DefaultState<VerAttributes> {
 	@Override
 	public State<VerAttributes> perform(Entity<VerAttributes> subject, Action e) {
 		State<VerAttributes> result = null;
-		if(map.containsKey(e)){
-			Effect<VerAttributes> ae = map.get(e);
+		if(this.getEffectMap().containsKey(e)){
+			Effect<VerAttributes> ae = this.getEffectMap().get(e);
 			result = ae.perform(subject);
 		}else if(parentState != null){
 			result = parentState.perform(subject, e);
