@@ -118,4 +118,12 @@ public class DefaultDecorator<A extends Attributes> implements Decorator<A> {
 	public boolean needsUpdate() {
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.age.Node#getRoot()
+	 */
+	@Override
+	public Node<A> getRoot() {
+		return node.getRoot();
+	}
 }

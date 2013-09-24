@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 22, 2013 Matthew Stockbridge
+ * Copyright (C) Jul 23, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * ver.ajar.age.t0
- * ChainableEffect.java
+ * ver.ajar.age.t2
+ * VerAttribute.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,26 +25,48 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t0;
+package ver.ajar.age.t9;
 
-import org.ajar.age.Attributes;
-import org.ajar.age.logic.Effect;
+import org.ajar.age.logic.SimpleAttribute;
 
 /**
  * @author reverend
  *
  */
-public interface ChainableEffect<A extends Attributes> extends Effect<A> {
+public enum VerAttribute implements SimpleAttribute<Number> {
+	X_DRAW_POS(0),
+	Y_DRAW_POS(0),
+	X_TILE_POS(0),
+	Y_TILE_POS(0),
+	X_MOVE_OFFSET(0),
+	Y_MOVE_OFFSET(0),
+	X_TILE_DEST(0),
+	Y_TILE_DEST(0),
+	X_TILE_REQ(0),
+	Y_TILE_REQ(0),
+	IMAGE_X(16),
+	IMAGE_Y(9),
+	TEAM(0),
+	RANGE(4);
 	
-	/**
-	 * 
-	 * @param child
-	 * @return this chainable effect.
+	private final Number def;
+	
+	private VerAttribute(Number n){
+		def = n;
+	}
+	
+	@Override
+	public Number copy(Number value) {
+		int v = value.intValue();
+		return new Integer(v);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.age.logic.SimpleAttribute#getDefaultValue()
 	 */
-	public ChainableEffect<A> addToChain(ChainableEffect<A> child);
-	public boolean hasChild();
-	public ChainableEffect<A> getChild();
-	public void setChild(ChainableEffect<A> child);
-	public ChainableEffect<A> removeLastFromChain();
-	public ChainableEffect<A> removeFromChain(ChainableEffect<A> effect);
+	@Override
+	public Number getDefaultValue() {
+		int v = def.intValue();
+		return new Integer(v);
+	}
 }

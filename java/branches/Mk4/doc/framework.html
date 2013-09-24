@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AGE Framework</title>
+</head>
+<body>
+<h1>AGE Framework Overview</h1>
+<hr>
+<h3>GameLoop</h3>
+<p>The AGE framework starts with one class: GameLoop. GameLoop is, fundamentally, the only actual class
+in the AGE framework (the rest being interfaces). Within GameLoop is a lot of logic for making sure
+that the game is running at a reasonable clip and there are methods for setting and getting sound,
+logic, culling, and display visitors (more on these shortly).</p>
+<p>The constructor for the GameLoop takes only one argument: The root Node. Nodes represent all the
+interactive parts of the game (more on them shortly too).</p>
+<p>Sneakly codified in this architecture is one
+of the most salient parts of the AGE: Nodes contain and organize the data into a hierarchy that makes
+it easy to process, visitors contain the machinery to actually process the data and drive the 
+mechanics of the game itself</p>
+<h5>Distribution of Responsibility</h5>
+<p>One of the key tenets of AGE is that each interface should define one job that it needs to do.
+The Node interface, for example, defines only those methods that are necessary for a class to work
+as a Node. Visitor defines only methods that are necessary for a class to function as a visitor. In
+this way we avoid having classes that define methods that they will never use. Likewise, it means that
+game writers only ever have to define methods for those aspects they want their classes to use.</p>
+<p>Due to this philosophy, GameLoop doesn't actually do any processing itself. It does the bare 
+minimum required to fulfill it's job as a GameLoop: It calls on the Visitors (which do the actual
+processing) to process the hierarchy of the root Node, and based on how long it takes those processes
+to complete, it attempts to ensure that the update period is kept to a certain speed.</p>
+<h3>Nodes, and the Node Hierarchy</h3>
+<p>The data structure of AGE is a Node tree: The root node contains a number of children, all of which 
+can contain their own children. Nodes themselves contain a data member that defines what they represent:
+Attributes. Attributes itself is merely an interface that defines a clone method, but it represents
+an area where game writers can implement their own representation of the data they need to build the 
+game that they want without having to conform any pre-existing data types.</p>
+<p>Nodes also have methods for getting both specific Decorators or the bare-undecorated Node (this is
+important because Decorators themselves extend node, and you need to be able to drill down to the 
+actual data representation if you've chained a lot of decorators together), as well as methods for
+finding the parent or finding/manipulating children of the node, and methods to determine if the
+this node can accept a certain visitor or is being decorated by a given decorator.</p>
+<h3>Visitors and Decorators</h3>
+<p>Visitors and Decorators form two sides of a contract. Visitors stipulate that an action will be
+performed on the Node, provided it is decorated by a given Decorator, and Decorators guarantee
+that then Node that they decorate contains all the information necessary for the Visitor to do it's
+job.</p>
+<p>For people who are unfamiliar with the Visitor design pattern, Visitors rely on a concept called 
+Double Dispatch, where in the Visitor calls a method on the element in question and asks it if it 
+can accept the Visitor. If it can then the element itself calls the "visit" method of the visitor.</p>
+<p>In this case, Visitors start at the root Node and call accept passing themselves as an argument.
+If the Node itself makes one call back to the Visitor first: A call to determine if it is in the 
+Visitor's "view" (i.e. it determines if it is going to be something that is within the scope of this
+update, which usually means that it's something on the screen). If that call passes, then the node
+iterates over any children that it has calling accept on them and passing them the Visitor. Once it's 
+children are done updating, the Node itself calls the Visitor's visit method.</p>
+<p>The Visitor then looks for the Decorator that it needs in order to proceed on the Node. If it
+finds it then Visitor asks if the Node needs to be updated. If it does, it gets placed in an update
+queue.</p>
+<p>The reason that the Nodes get placed in a queue and not processed immediately is a question of 
+time: Because certain operations (like display) take longer than others (like logic), and a certain
+framerate needs to be achieved, it can become necessary to skip one or two frames (hopefully not more)
+of display in order to keep the game running smoothly. This leads to two different approaches toward
+achieving this (given our model). The first is to call each Visitor to visit the whole hierarchy 
+in turn, leaving off those that take too long till the next frame.</p>
+<p>This can cause problems because it means that certain operations may never be called if the game
+is running slowly. But, more importantly, it wastes time rewalking the Node hierarchy with each
+Visitor, which, with a big enough Node tree, can be very expensive.</p>
+<p>The second approach is what we've termed the "Tourguide". The Tourguide class is a Visitor that 
+wraps a collection of other Visitors, using one Visitor as the "Leader". Generally speaking, the
+Leader is the Visitor that performs the culling operation, or more succinctly, the Visitor that
+determines what is being shown on screen.</p>
+<p>The Tourguide ensures that you walk the Node hierarchy only once, with the Tourguide standing in 
+for all the other Visitors during the accept operation. The Tourguide hands the Node first to the
+Leader, to determine if it should hand it to the other Visitors, then to the remaining Visitors 
+to get evaluated for all the other aspects.</p>
+<p>In this way the hierarchy gets walked only once, and all the Nodes that need to be updated are found.
+At this point, once all the elements that need to be updated have been identified, the list of Nodes
+that needed a particular type of update can be processed by the Visitor's process method, which 
+iterates over the list of Nodes that the Visitor previously made and updates them.</p>
+<p>Another advantage of processing after doing the visiting is that any expensive operations that need
+to be performed, or special setup that needs to be done (like setting up double buffering), can be
+done only after all the elements that will be updated are known. Likewise, if special teardown needs
+to be done, it can wait till after all the elements have been identified (and processed).</p>
+<h3>The Gist of the Framework</h3>
+<p>At this point the groundwork for the Framework has been laid out. If you look at it there really isn't
+a lot of code behind it at this level: There's a GameLoop, which expects a root Node and some
+Decorators and Visitors, and the Tourguide, but not much else. But this is intentional: Although 
+the GameLoop does have methods for getting and setting elements called DisplayVisitor, SoundVisitor,
+etc... no real assumption is made about their content.</p>
+<p>Furthermore, if multiple forms of display are needed, for example, since the setDisplayVisitor 
+method on the GameLoop just takes a Visitor, a Tourguide with multiple display Visitors could be 
+substituted. Where you take it from here is entirely up to you.</p>
+<p>However, as frameworks go, this is a little light, and there are plenty of other classes left to
+introduce.</p>
+<br>
+<h4><a href="extendedframeork.html">The Extended Framework</a></h4>
+<br>
+</body>
+</html>
