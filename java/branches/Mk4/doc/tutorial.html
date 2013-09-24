@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AGE: Ajar Game Engine</title>
+</head>
+<body>
+	<h1>AGE Tutorial</h1>
+	<hr/>
+	<h3>What is the Ajar Game Engine?</h3>
+	<p>The Ajar Game Engine (or AGE) is a lightweight game engine written in Java with the purpose
+	of giving game writers a flexible framework to develop their games in that would give them access
+	to a good selection of actually useful and well written utility classes while allowing them to
+	redefine the parts of the engine that they wanted to modify.</p>
+	<h3>Why do we need another game engine?</h3>
+	<p>Most of the game frameworks and game engines that were around when this project started (and,
+	indeed, those that continue to be popular) tend to fall into two categories:
+	<ol>
+		<li>Those that only define methods for dealing with media (updating display, sound, networking
+		etc...), but provide no help for actually simplifying game creation.</li>
+		<li>Those that rigidly provide methods for everything, but don't allow modification of existing
+		classes to extend behavior.</li>
+	</ol>
+	AGE attempts to unify these two concepts by providing useful defaults that can be easily extended,
+	that integrate together to represent a complete game engine (including such concepts as object
+	state and state interaction), but are defined in such a way that they can be rewritten in part or
+	in whole in order to allow for the maximum in possible versatility.</p>
+	<p>Because of this, games can be developed very rapidly, by starting with pre-existing classes and
+	extending the behavior of the classes (or re-implementing the interfaces of the framework) 
+	in the engine as the need arises.</p>
+	<h3>What's the difference between the engine part of AGE and the framework part?</h3>
+	<p>In many game development platforms these two terms would be analogous, but for AGE there is a
+	clear distinction: The framework consists almost exclusively of interfaces that define the 
+	the relationship that different classes need to have among each other to be processed in the game 
+	loop.</p>
+	<p>The engine consists of implementations of these interfaces (ranging from very basic abstract
+	classes to high-level utility functions) designed to provide the most utility possible by 
+	encompassing what we've identified as the most frequently implemented algorithms.</p>
+	<p>In short, the engine attempts to encompass the code that most programmers using different
+	features of the framework would implemented the same way in a wide variety of games.</p>
+	<p>For instance, the Entity interface defines a "setState" and a "getState" method. While there
+	may be instance in which programmers would want to implement something different here, most cases
+	only require that these methods write and read (respectively) a local "State" variable.</p>
+	<p>In keeping with the previous question (and example above), you could use "DefaultEntity" to
+	start with, when creating your game. Then, if you discovered a need to have different behavior for
+	"setState" and/or "getState" you could either override "DefaultEntity"'s methods, or extend either
+	"AbstractEntity" or re-implement "Entity", to get your desired behavior.</p>
+	<p>Note: This behavior sort of "feature" will seem almost trivial to the point of being laughable
+	to many programmers. However, if you dive into the inner workings of most game engines you'll 
+	quickly discover that many of the core classes are locked, final, or in some other way unmodifiable.</p>
+	<h3>What should I do now?</h3>
+	<ul>
+		<li><a href="framework.html">You can get an idea of how the framework fits together.</a></li>
+		<li><a href="/api/index.html">You can dive right into API documentation.</a></li>
+	</ul>
+</body>
+</html>

@@ -180,4 +180,16 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.ajar.age.Node#getRoot()
+	 */
+	@Override
+	public Node<A> getRoot() {
+		if(getParent() != null){
+			return getParent().getRoot();
+		}else{
+			return this;
+		}
+	}
+
 }

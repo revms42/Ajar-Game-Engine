@@ -63,7 +63,7 @@ public abstract class AbstractChainableEffect<A extends Attributes> extends Abst
 			this.child.addToChain(child);
 		}
 		
-		return child;
+		return this;
 	}
 	
 	public boolean hasChild(){

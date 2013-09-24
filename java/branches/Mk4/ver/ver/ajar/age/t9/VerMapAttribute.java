@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 22, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 20, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * ver.ajar.age.t0
- * ChainableEffect.java
+ * ver.ajar.age.t7
+ * VerMapAttribute.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,26 +25,26 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t0;
+package ver.ajar.age.t9;
 
-import org.ajar.age.Attributes;
-import org.ajar.age.logic.Effect;
+import org.ajar.age.logic.Attribute;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public interface ChainableEffect<A extends Attributes> extends Effect<A> {
-	
-	/**
-	 * 
-	 * @param child
-	 * @return this chainable effect.
+public enum VerMapAttribute implements Attribute<Number> {
+	WIDTH,
+	HEIGHT,
+	DISPLAY_MOVE,
+	CURRENT_PLAYER;
+
+	/* (non-Javadoc)
+	 * @see org.ajar.age.logic.Attribute#copy(java.lang.Object)
 	 */
-	public ChainableEffect<A> addToChain(ChainableEffect<A> child);
-	public boolean hasChild();
-	public ChainableEffect<A> getChild();
-	public void setChild(ChainableEffect<A> child);
-	public ChainableEffect<A> removeLastFromChain();
-	public ChainableEffect<A> removeFromChain(ChainableEffect<A> effect);
+	@Override
+	public Number copy(Number value) {
+		return value.intValue();
+	}
+
 }

@@ -130,4 +130,11 @@ public interface Node<A extends Attributes> {
 	 * @see Decorator
 	 */
 	public Node<A> getUndecoratedNode();
+	
+	/**
+	 * This method will return the root of the Node hierarchy.
+	 * @return the root of the <code>Node</code> hierarchy this Node is a part of.
+	 * @since 186
+	 */
+	public Node<A> getRoot();
 }

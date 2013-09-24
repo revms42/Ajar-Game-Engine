@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 22, 2013 Matthew Stockbridge
+ * Copyright (C) Sep 20, 2013 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * ver.ajar.age.t0
- * ChainableEffect.java
+ * ver.ajar.age.t7
+ * TileMapNode.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,26 +25,41 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t0;
+package ver.ajar.age.t9;
 
-import org.ajar.age.Attributes;
-import org.ajar.age.logic.Effect;
+import org.ajar.age.DefaultNode;
+import org.ajar.age.Node;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public interface ChainableEffect<A extends Attributes> extends Effect<A> {
-	
+public class TileMapNode extends DefaultNode<VerAttributes> {
+
 	/**
-	 * 
-	 * @param child
-	 * @return this chainable effect.
+	 * @param attrs
 	 */
-	public ChainableEffect<A> addToChain(ChainableEffect<A> child);
-	public boolean hasChild();
-	public ChainableEffect<A> getChild();
-	public void setChild(ChainableEffect<A> child);
-	public ChainableEffect<A> removeLastFromChain();
-	public ChainableEffect<A> removeFromChain(ChainableEffect<A> effect);
+	public TileMapNode(VerAttributes attrs) {
+		super(attrs);
+	}
+
+	private int getXScanSize(){
+		return this.getAttributes().getAttribute(VerMapAttribute.WIDTH).intValue();
+	}
+	
+	private int pointToIndex(int x, int y){
+		return (y * getXScanSize()) + x;
+	}
+	
+	public void addChildTile(int x, int y, Node<VerAttributes> child){
+		int index = pointToIndex(x,y);
+		while(index >= this.getChildren().size()){
+			this.getChildren().add(null);
+		}
+		this.getChildren().set(index, child);
+	}
+	
+	public Node<VerAttributes> getChildTile(int x, int y){
+		return this.getChildren().get(pointToIndex(x,y));
+	}
 }
