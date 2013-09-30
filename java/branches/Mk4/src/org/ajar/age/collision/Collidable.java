@@ -39,8 +39,7 @@ import org.ajar.age.logic.Action;
  * TOOD: Rewrite.
  * The Collidable interface defines classes concerned with detecting collisions and determining the results from
  * those collisions.
- * @see org.mdj.core.GameLoop#collision()
- * @see org.mdj.core.GameLoop#getCollidableClass()
+ * @see org.ajar.age.GameLoop#collision()
  * @author revms
  * @since 0.0.0.153
  */

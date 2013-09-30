@@ -44,7 +44,6 @@ public abstract class AbstractEffect<A extends Attributes> implements Effect<A> 
 	
 	/**
 	 * Constructs a new <code>AbstractEffect</code> by specifying the action it represents and the resultant state.
-	 * @param a the action this effect represents.
 	 * @param result the resultant state of this effect.
 	 */
 	public AbstractEffect(State<A> result){

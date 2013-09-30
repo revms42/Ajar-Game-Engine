@@ -37,7 +37,7 @@ import org.ajar.age.Node;
 
 /**
  * TODO: Rewrite.
- * This class provides the default implementation of all of the {@link org.mdj.core.Decorator} methods by extending
+ * This class provides the default implementation of all of the {@link org.ajar.age.Decorator} methods by extending
  * <code>DefaultDecorator</code>, and adds the <code>Collidable</code> interface, making it a suitable
  * starting place for writing most <code>Collidable</code> implementations.
  * @author revms

@@ -51,7 +51,6 @@ public class AWTGraphicsPanel extends JPanel {
 	
 	/**
 	 * Graphics object onto which <code>Displayable</code> objects draw.
-	 * @see Displayable#updateDisplay(Graphics2D)
 	 */
 	protected Graphics2D bufferGraphics;
 	

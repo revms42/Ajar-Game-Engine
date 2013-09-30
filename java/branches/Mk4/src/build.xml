@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AGE" default="clean-dist" basedir="..">
+
+	<property name="version" value="0.0.4.alpha"/>
+	
+	<property name="src" location="src"/>
+	<property name="bin" location="bin"/>
+	<property name="dist" location="dist"/>
+	<property name="docs" location="docs"/>
+	
+	<property name="core-jar" value="AGE_Core"/>
+	<property name="basic-jar" value="AGE_Basic"/>
+	<property name="complete-jar" value="AGE_Complete"/>
+	
+	<patternset id="core">
+
+	</patternset>
+	
+	<patternset id="classes">
+		<!--Core-->
+		<include name="**/org/ajar/age/Attributes.class"/>
+		<include name="**/org/ajar/age/Decorator.class"/>
+		<include name="**/org/ajar/age/GameLoop.class"/>
+		<include name="**/org/ajar/age/Node.class"/>
+		<include name="**/org/ajar/age/Tourguide.class"/>
+		<include name="**/org/ajar/age/Visitor.class"/>
+		<!--Basic-->
+		<include name="**/org/ajar/age/AbstractVisitor.class" unless="core"/>
+		<include name="**/org/ajar/age/DefaultDecorator.class" unless="core"/>
+		<include name="**/org/ajar/age/DefaultNode.class" unless="core"/>
+		<include name="**/org/ajar/age/SimpleVisitor.class" unless="core"/>
+		<include name="**/org/ajar/age/collision/Collidable.class" unless="core"/>
+		<include name="**/org/ajar/age/collision/CollisionVisitor.class" unless="core"/>
+		<include name="**/org/ajar/age/collision/AbstractCollidable.class" unless="core"/>
+		<include name="**/org/ajar/age/disp/Displayable.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/AbstractEffect.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/AbstractEntity.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/Action.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/Controller.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/DefaultEntity.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/DefaultState.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/Effect.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/Entity.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/LogicVisitor.class" unless="core"/>
+		<include name="**/org/ajar/age/logic/State.class" unless="core"/>
+		<!--Complete-->
+		<include name="**/org/ajar/age/disp/awt/AbstractAWTDisplayable.class" if="complete"/>
+		<include name="**/org/ajar/age/disp/awt/AWTDisplayable.class" if="complete"/>
+		<include name="**/org/ajar/age/disp/awt/AWTGraphicsPanel.class" if="complete"/>
+		<include name="**/org/ajar/age/disp/awt/AWTGraphicsVisitor.class" if="complete"/>
+		<include name="**/org/ajar/age/logic/Attribute.class" if="complete"/>
+		<include name="**/org/ajar/age/logic/HashAttributes.class" if="complete"/>
+	</patternset>
+	
+	<target name="clean-dist">
+		<antcall target="clean">
+			<param name="jarname" value="${core-jar}"/>
+		</antcall>
+		<antcall target="dist">
+			<param name="core" value="true"/>
+			<param name="jarname" value="${core-jar}"/>
+		</antcall>
+		<antcall target="dist">
+			<param name="jarname" value="${basic-jar}"/>
+		</antcall>
+		<antcall target="dist">
+			<param name="complete" value="true"/>
+			<param name="jarname" value="${complete-jar}"/>
+		</antcall>
+	</target>
+		
+	<target name="build">
+		<mkdir dir="${bin}"/>
+		<javac srcdir="${src}" destdir="${bin}"/>
+	</target>
+	
+	<target name="dist" depends="build">
+		<fail unless="jarname"/>
+		<fail unless="version"/>
+		<mkdir dir="${dist}"/>
+		<jar jarfile="${dist}/${jarname}.jar" index="true">
+		    <manifest>
+		    	<attribute name="Codebase" value="org.ajar.age"/>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Implementation-Vendor" value="Ajar Game Framework"/>
+				<attribute name="Implementation-Title" value="${jarname}"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+		    </manifest>
+			<fileset dir="${bin}">
+				<patternset refid="classes"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="api-doc">
+		<delete dir="${docs}/api"/>
+		<delete file="${dist}/AGE_api.jar"/>
+		<javadoc packagenames="org.ajar.age.*"
+				sourcepath="${src}"
+				excludepackagenames="ver.ajar.age.*"
+				defaultexcludes="yes"
+				destdir="${docs}/api"
+				author="true"
+				version="true"
+				use="true"
+				windowtitle="Ajar Game Engine API">
+			<doctitle><![CDATA[<h1>Ajar Game Engine API</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2010 Matt Stockbridge. All Rights Reserved.</i>]]></bottom>
+			<tag name="todo" scope="all" description="To do:"/>
+			<group title="Framework" packages="org.ajar.age"/>
+			<group title="Engine" packages="org.ajar.age*"/>
+			<link href="http://docs.oracle.com/javase/7/docs/api/"/>
+		</javadoc>
+		<jar jarfile="${dist}/AGE_api.jar" index="true">
+		    <manifest>
+		    	<attribute name="Codebase" value="org.ajar.age"/>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Implementation-Vendor" value="Ajar Game Framework API"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+		    </manifest>
+			<fileset dir="${docs}/api">
+				<include name="**/*.*"/>
+			</fileset>
+		</jar>
+	</target>
+		
+	<target name="clean">
+		<delete dir="${bin}"/>
+		<delete file="${dist}/${jarname}.jar"/>
+	</target>
+</project>

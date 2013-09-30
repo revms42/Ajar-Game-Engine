@@ -27,17 +27,22 @@
  */
 package org.ajar.age;
 /**
- * TODO: update;
- * The Decorator interface is a convenience class designed to give 
- * seperation between {@link Node} objects, which have their own
- * {@link Attributes} instance, and <code>Decorator</code> objects
- * which reference <code>Nodes</code>.
+ * The Decorator interface provides the ability to create methods that
+ * can be called against {@link Node} objects to conveniently get data
+ * from the <code>Node</code>'s {@link Attributes} and package it (or
+ * otherwise manipulate it) into a form that's more convenient for 
+ * {@link Visitor}s.
+ * <p>
+ * For example, a collision decorator might pull values of a <code>
+ * Node</code>'s position and size to create a bounding box that could
+ * be used for collision detection.
  * <p>
  * Decorators should generally only delegate their inheritated 
  * <code>Node</code> methods to the actual instance of a <code>
  * Node</code> object that they're decorating.
  * @see Attributes
  * @see Node
+ * @see Visitor
  * @see DefaultDecorator
  * @author revms
  * @since 0.0.0.153
