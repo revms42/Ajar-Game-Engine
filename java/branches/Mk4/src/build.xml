@@ -6,7 +6,7 @@
 	<property name="src" location="src"/>
 	<property name="bin" location="bin"/>
 	<property name="dist" location="dist"/>
-	<property name="docs" location="docs"/>
+	<property name="docs" location="doc"/>
 	
 	<property name="core-jar" value="AGE_Core"/>
 	<property name="basic-jar" value="AGE_Basic"/>
