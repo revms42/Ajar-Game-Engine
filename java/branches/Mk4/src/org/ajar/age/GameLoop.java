@@ -95,9 +95,8 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	}
 
 	/**
-	 * TODO: Update;
 	 * The primary method of the game loop. Recursively updates the game by calling
-	 * the {@link #update(Node, CullingSurface)} method. Allowances are made to attempt
+	 * the {@link #update(Node)} method. Allowances are made to attempt
 	 * to maintain the speed specified by the {@link GameLoop#updatePeriod} field, 
 	 * with sleep added when the loop is running fast. When the loop runs slow this 
 	 * method will attempt to run multiple logic updates without displaying (note that
@@ -156,17 +155,11 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	}
 	
 	/**
-	 * TODO: Needs update.
-	 * This method performs the culling of elements from the display root
-	 * based on the "range", specified via the provided <code>CullingSurface</code>  
-	 * , then displays and updates as necessary.
-	 * <p>
+	 * This method performs an update of the entire <code>Node</code> tree starting at the
+	 * root node.
 	 * This function should execute in O=log(n) time.
 	 * @param 	root	the {@link Node} representing the root to be updated (
 	 * 					generally the {@link GameLoop#displayRoot} field).
-	 * @param 	culler	the <code>CullingSurface</code> representing what's currently in view
-	 * 					or under consideration for update.
-	 * @see org.mdj.core.cull.CullingSurface
 	 */
 	protected void update(Node<A> root){
 		assessUpdate(root);
@@ -219,7 +212,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	/**
 	 * TODO: Update.
 	 * Performs the collision checking of {@link Node}s during
-	 * the {@link #update(Node, CullingSurface)} call.
+	 * the {@link #update(Node)} call.
 	 */
 	private long collTime;
 	public void collision(){
@@ -231,7 +224,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	/**
 	 * TODO: Update;
 	 * Performs the rendering of {@link Node}s to the screen during
-	 * the {@link #update(Node, CullingSurface)} call.
+	 * the {@link #update(Node)} call.
 	 */
 	private long rendTime;
 	public void render(){
@@ -243,7 +236,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	/**
 	 * TODO: Update.
 	 * Performs any logic updates on {@link Node}s identified during
-	 * the {@link #update(Node, CullingSurface)} call.
+	 * the {@link #update(Node)} call.
 	 */
 	private long logTime;
 	public void logic(){
@@ -255,7 +248,7 @@ public class GameLoop<A extends Attributes> implements Runnable {
 	/**
 	 * TODO: Update.
 	 * Performs any sound updates on {@link Node}s identified during
-	 * the {@link #update(Node, CullingSurface)} call.
+	 * the {@link #update(Node)} call.
 	 */
 	private long soundTime;
 	public void sound(){

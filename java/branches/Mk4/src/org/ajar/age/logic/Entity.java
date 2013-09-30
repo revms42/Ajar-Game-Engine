@@ -59,7 +59,7 @@ public interface Entity<A extends Attributes> extends Decorator<A> {
 	 * on logic architecture.
 	 * @see #requestInput()
 	 * @see State#perform(Entity, Action)
-	 * @see org.mdj.core.GameLoop#logic()
+	 * @see org.ajar.age.GameLoop#logic()
 	 */
 	public void updateState();
 	

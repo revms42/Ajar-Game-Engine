@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 /**
- * @TODO: Rewrite.
+ * @todo: Rewrite.
  * DefaultNode is a general-purpose implementation of the <code>Node</code> class.
  * For most purposes DefaultNode should provide all the functionality that is
  * required for a node implementation in a game.
