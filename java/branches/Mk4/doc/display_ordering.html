@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Ordering Display Elements Using Visitors</title>
+</head>
+<body>
+<h1>Ordering Display Elements Using Visitors</h1>
+<p>One of the most critical elements of developing the display branch of a game is ensuring that
+all of sprites, background, and other visual elements get displayed correctly. What can be especially
+odious to debug is incorrect display order: When a element meant to be displayed "lower" is instead 
+drawn on top, or vice versa.</p>
+<p>There are a number of strategies for ensuring that this doesn't happen, ranging from having a fixed
+order list of things being displayed, to iteratively querying a set to determine the next element to
+draw, but one method that is extremely easy to implement for AGE games is a composite display visitor.</p>
+<hr/>
+<h3>Background: How does it work?</h3>
+<p>If you think about very simple games there really wouldn't be much need to have more than one 
+display class: All the elements occupy a unique space on the drawing surface and will simply be 
+drawn in place when they need to be displayed. But problems arise if you need to layer things.</p>
+<p>Let's say you want to draw tiles of terrain underneath unit sprites: If all of nodes for the
+terrain and the units are sibblings, and the units and terrain can overlap, how do you make sure that
+the units appear on top of the terrain? You can make the units children of one node and the terrain
+children of another node, then order those nodes so that the terrain is drawn first. You can order
+all the children of the parent node so that terrain is always inserted before sprites. Most of these
+are architectural solutions that follow a format of ensuring that lower batches are processed before 
+higher batches.</p>
+<p>These approaches can work surprisingly well provided the way that things are set up is strictly 
+enforced. This in itself can lead to problems; often there are different code paths for setting up a 
+new game verses a saved game, for instance, and both paths would need to result in identical outputs.</p>
+<p>These approaches also have the disadvantage that they often require special setup code that must
+be maintained and extended to ensure new features don't break the display graph.</p>
+<p>AGE allows for a different approach to this problem.</p>
+<p>Instead of using the architecture of the game graph to dictate the order things are processed the
+display order is set using different display visitors and a tourguide. Each displayable object gets 
+a different display class (they can be functionally identical, they just have to different classes),
+and each of these classes is marked with <code>@DecoragtesFor</code> annotation, pointing to a 
+superclass. Each of these classes has a corresponding visitor class which are bundled into a <code>
+Tourguide</code> in the order you want the elements displayed. By providing one extra display visitor
+that keys off of the super class for the display classes as the leader class for the tour guide, you
+effectively ensure that all of your display graph will be displayed in the correct order.</p>
+<p/>
+<p>Ok, what's going on may not be immediately obvious, so let's walk through the steps that will 
+happen during the display branch of a game turn (note: we'll be assuming that we're making heavy
+use of existing engine features):
+<ol>
+	<li>First, we start with the <code>GameLoop.assessUpdate(Node)</code> call. This call uses the 
+	overall tourguide to traverse the node hierarchy.</li>
+	<li>For each node, the <code>Node.accept(Visitor)</code> method is called. On the <code>
+	DefaultNode</code> this means cascading through all of the node's children calling <code>
+	accept</code> as well.
+	<li>Each node calls <code>Visitor.isInView(Node)</code>, passing itself in as the argument. If
+	the visitor can process them it returns <code>true</code>.</li>
+	<li>Since a <code>Tourguide</code> doesn't process nodes itself,  it hands this code off to the
+	leader of the Tourguide class. If the leader can visit, so do all the visitors in the
+	<code>Tourguide</code>.</li>
+	<li>When <code>Visitor.isInView(Node)</code> returns <code>true</code> the Node knows that it can
+	accept the visitor, and subsequently calls the <code>Tourguide's visit(Node)</code>
+	method, again, passing itself as the argument.</li>
+	<li>The Tourguide then iterates through it's visitors calling the visit method for each one in
+	turn with the node. If the node has the correct <code>Decorator</code> class for the visitor,
+	and the decorator returns <code>true</code> when the <code>Decorator.needsUpdate()</code> 
+	and <code>Decorator.isInView(D)</code> methods are called the node is added to that visitor's
+	"needsUpdate" list.</li>
+</ol>
+<p>At this point people already familiar with the guts of AGE are probably nodding off. But this is
+the point at which things get really interesting, because it's at this point you should realize that
+a Tourguide is a subclass of Visitor, which means Tourguides can have Tourguides in their array of
+Visitors.</p>
+<p>Why does this make a difference? Let's continue:</p>
+<ol start="7">
+	<li>If your display visitor is, in fact, a <code>Tourguide</code> guiding two or more display
+	visitors, consider what happens when visit is called.<br>
+	Each display visitor is called with the node, and each looks for it's own decorator.<br>
+	If that decorator is found, then that node is added to that visitor's "needsUpdate" list.<br>
+	Now, you've effectively split your display graph into different "bins" by letting the visitor
+	mechanism sort for you. Note that you've also done it in linear time.</li>
+	<li>Now, the next thing that happens is that this sorting sticks around till <code>
+	GameLoop.render()</code> is called. At that point the display decorator (which for our purposes is
+	a Tourguide with our display decorators in it) has it's <code>Visitor.process()</code> method
+	called. This method iterates through the needsUpdate list and calls <code>
+	Visitor.update(Decorator)</code> on each decorator it's collected. The update code is
+	typically where the bulk of the work is actually done.</li>
+	<li>In our case, that Visitor is actually a <code>Tourguide</code>. When it's <code>process()
+	</code> method is called, it will iterate over the <code>Visitors</code> in it's internal list 
+	and call each of their <code>process()</code> methods, <b>in the order the that the Visitors
+	were supplied in the constructor.</b></li>
+</ol>
+<p>This means that if you place the terrain visitor in the tourguide first, all the terrain will be
+drawn first. If you place the unit visitor second, all the units will get displayed second; after
+all the terrain has already been drawn.</p>
+<p>As always there are a few gotchas for doing this. If you're subclassing <code>
+AWTGraphicsVisitor</code> be aware that it's <code>startProcess()</code> and <code>finishProcess()
+</code> methods will clear and blit the screen respectively. You don't want that for each display 
+decorator, so you'll want to make sure that only the first one clears and only the last one blits.</p>
+<h4>Example 1: Simple Setup</h4>
+<p>TODO: Left off here. Make an example</p>
+</body>
+</html>
