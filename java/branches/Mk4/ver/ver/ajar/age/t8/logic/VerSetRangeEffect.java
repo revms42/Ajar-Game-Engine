@@ -28,10 +28,10 @@
 package ver.ajar.age.t8.logic;
 
 import org.ajar.age.Node;
+import org.ajar.age.logic.AbstractChainableEffect;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
 
-import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t8.TileMapNode;
 import ver.ajar.age.t8.VerAttribute;
 import ver.ajar.age.t8.VerAttributes;

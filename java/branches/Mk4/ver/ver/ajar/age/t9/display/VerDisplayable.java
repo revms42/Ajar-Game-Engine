@@ -49,7 +49,8 @@ import ver.ajar.age.t9.collision.CollisionAttribute;
  */
 public class VerDisplayable extends AbstractAWTDisplayable<VerAttributes> {
 
-	private final static String imageLoc = "/home/mstockbr/.minecraft/debug.stitched_terrain.png";
+	private final static String imageLoc = "/home/reverend/.minecraft/debug.stitched_terrain.png";
+	//private final static String imageLoc = "/home/mstockbr/.minecraft/debug.stitched_terrain.png";
 	
 	private static BufferedImage staticImage;
 	private static BufferedImage moveUnderlay;

@@ -27,10 +27,10 @@
  */
 package ver.ajar.age.t9.logic.effect;
 
+import org.ajar.age.logic.AbstractChainableEffect;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.State;
 
-import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t9.VerAttribute;
 import ver.ajar.age.t9.VerAttributes;
 

@@ -27,11 +27,11 @@
  */
 package ver.ajar.age.t3.logic;
 
+import org.ajar.age.logic.AbstractChainableEffect;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.age.logic.State;
 
-import ver.ajar.age.t0.AbstractChainableEffect;
 import ver.ajar.age.t3.VerAttribute;
 import ver.ajar.age.t3.collision.CollisionAttribute;
 

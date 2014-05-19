@@ -27,7 +27,8 @@
  */
 package org.ajar.age;
 
-import java.util.Collections;
+import java.lang.annotation.Annotation;
+//import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -99,6 +100,21 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 		}
 		children.add(child);
 	}
+	
+	/**
+	 * Adds the node <code>child</code> to this node's children at the given index.
+	 * <p>
+	 * If the child is an instance of DefaultNode than it will have it's parent variable set to this node.
+	 * @param child the node that this node will be parent to.
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void addChild(int index, Node<A> child) {
+		if(child.getUndecoratedNode() instanceof DefaultNode){
+			((DefaultNode) child.getUndecoratedNode()).setParent(this);
+		}
+		children.add(index,child);
+	}
 
 	/**
 	 * Removes the node <code>child</code> from the list of this node's children.
@@ -118,7 +134,8 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 
 	@Override
 	public List<Node<A>> getChildren() {
-		return Collections.unmodifiableList(children);
+		//return Collections.unmodifiableList(children);
+		return children;
 	}
 
 	@Override
@@ -154,6 +171,14 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 	@Override
 	public void addDecorator(Decorator<A> decorator) {
 		decorators.put((Class<Decorator<A>>) decorator.getClass(), decorator);
+		
+		for(Annotation a : decorator.getClass().getAnnotations()){
+			if(a.annotationType() == DecoratesFor.class){
+				for(@SuppressWarnings("rawtypes") Class<? extends Decorator> c : ((DecoratesFor)a).types()){
+					decorators.put((Class<Decorator<A>>) c, decorator);
+				}
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -172,7 +197,9 @@ public class DefaultNode<A extends Attributes> implements Node<A> {
 		if(visitor.isInView(this)){
 			if(hasChildren()){
 				for(Node<A> child : children){
-					child.accept(visitor);
+					if(child != null){
+						child.accept(visitor);
+					}
 				}
 			}
 			
