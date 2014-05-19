@@ -87,16 +87,20 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 	 * <p>
 	 * Third, <code>requestInput</code> is called, which repopulates the actions list for the next update. This ensures
 	 * that any actions taken this update cycle are applied prior to collision detection next cycle.
+	 * <p>
+	 * In order to avoid problems with poorly initialized states null states returned
+	 * from an effect perform call result in the same state being maintained subsequently.
 	 * @see #requestInput()
 	 */
 	public void updateState() {
+		State<A> result = null;
 		if(actions.size() > 0){
 			for(Action a : actions){
-				state = state.perform(this,a);
+				state = (result = state.perform(this,a)) == null ? state : result;
 			}
 			actions.removeAllElements();
 		}
-		state = state.perform(this, null);
+		state = (result = state.perform(this, null)) == null ? state : result;
 		requestInput();
 		
 	}

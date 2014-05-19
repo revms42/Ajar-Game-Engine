@@ -27,10 +27,10 @@
  */
 package ver.ajar.age.t8.logic;
 
+import org.ajar.age.logic.AbstractCondition;
 import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.Entity;
 
-import ver.ajar.age.t0.AbstractCondition;
 import ver.ajar.age.t8.VerAttribute;
 import ver.ajar.age.t8.VerAttributes;
 

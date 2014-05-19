@@ -65,6 +65,11 @@ public class DefaultDecorator<A extends Attributes> implements Decorator<A> {
 	}
 	
 	@Override
+	public void addChild(int index, Node<A> child) {
+		node.addChild(index, child);
+	}
+	
+	@Override
 	public boolean removeChild(Node<A> child) {
 		return node.removeChild(child);
 	}

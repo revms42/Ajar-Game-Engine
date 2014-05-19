@@ -60,6 +60,14 @@ public interface Node<A extends Attributes> {
 	public void addChild(Node<A> child);
 	
 	/**
+	 * Adds the node <code>child</code> to this node's children at the given index.
+	 * <p>
+	 * If the child is an instance of DefaultNode than it will have it's parent variable set to this node.
+	 * @param index the index to insert the child at.
+	 * @param child the node that this node will be parent to.
+	 */
+	public void addChild(int index, Node<A> child);
+	/**
 	 * Removes the node <code>child</code> from the list of this node's children.
 	 * @param child the node to remove from the list of this node's children.
 	 * @return <code>true</code> if the child node was removed.
