@@ -27,15 +27,24 @@
  */
 package org.ajar.logic.loader.capsule;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
+
 import org.ajar.age.logic.Effect;
+import org.ajar.age.logic.State;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
+import org.ajar.logic.loader.LogicParserException;
 
 /**
  * @author reverend
  *
  */
 public class EffectObject<A extends Effect<?>> extends ParsedObject<A> {
-
+	
 	private StateObject<?> resultantState;
 	/**
 	 * @param line
@@ -51,5 +60,60 @@ public class EffectObject<A extends Effect<?>> extends ParsedObject<A> {
 	
 	public void setResultantState(StateObject<?> resultantState) {
 		this.resultantState = resultantState;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.IParsedObject#getParsedObject()
+	 */
+	@Override
+	public A getParsedObject() throws LogicParserException{
+		if(getInstance() == null){
+			Constructor<A> con = null;
+			List<Class<?>> argTypes = getArgTypes();
+			//TODO: We can get the argument types, we need the objects too.
+			Vector<Object> args = new Vector<Object>();
+			Collections.addAll(args, getArguments());
+			try {
+				con = super.constructorFor(argTypes);
+			} catch (LogicParserException e) {
+				State<?> result = parseResultantState();
+				for(int i = 0; i < argTypes.size(); i++){
+					argTypes.add(i, State.class);
+					args.add(i,result);
+					try{
+						con = super.constructorFor(argTypes);
+						break;
+					}catch(LogicParserException e2){
+						argTypes.remove(State.class);
+						args.remove(result);
+					}
+				}
+			}
+			try {
+				this.instance = con.newInstance(args);
+			} catch (InstantiationException e) {
+				throw new LogicParserException("Error constructing new instance.",e);
+			} catch (IllegalAccessException e) {
+				throw new LogicParserException("Error constructing new instance.",e);
+			} catch (IllegalArgumentException e) {
+				throw new LogicParserException("Error constructing new instance.",e);
+			} catch (InvocationTargetException e) {
+				throw new LogicParserException("Error constructing new instance.",e);
+			}
+		}
+		return super.getInstance();
+	}
+	
+	protected State<?> parseResultantState() throws LogicParserException{
+		if(resultantState == null){
+			//TODO: This assumes that we're only getting a effect=state
+			String[] effectState = this.lineDefinition().split("=");
+			if(effectState.length > 1){
+				resultantState = LogicLoader.findState(effectState[1]);
+			}
+		}
+		return (State<?>)resultantState.getParsedObject();
+
+		
 	}
 }
