@@ -10,5 +10,6 @@
 			<attribute name="javadoc_location" value="file:/home/reverend/java-libs/lwjgl/lwjgl-2.9.0/javadoc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

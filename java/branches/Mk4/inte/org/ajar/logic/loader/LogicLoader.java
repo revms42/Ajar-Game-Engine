@@ -29,6 +29,8 @@ package org.ajar.logic.loader;
 
 import java.util.Vector;
 
+import org.ajar.logic.loader.capsule.StateObject;
+
 /**
  * @author reverend
  *
@@ -113,5 +115,9 @@ public class LogicLoader {
 	
 	public static void addTopLevelParser(IParser<?> p){
 		topLevelParsers.add(p);
+	}
+	
+	public static StateObject<?> findState(String name){
+		//TODO: Find state.
 	}
 }

@@ -45,7 +45,7 @@ import org.ajar.logic.loader.LogicParserException;
  * @author reverend
  *
  */
-public abstract class ParsedObject<A extends Object> implements IParsedObject<A> {
+public class ParsedObject<A extends Object> implements IParsedObject<A> {
 
 	private final static HashMap<String,ParsedObject<?>> namedObjects;
 	
@@ -60,7 +60,7 @@ public abstract class ParsedObject<A extends Object> implements IParsedObject<A>
 	
 	private Vector<Object> arguments;
 	private Vector<Class<?>> argTypes;
-	private A instance;
+	protected A instance;
 	
 	public ParsedObject(String line, IParsedClass<A> c){
 		this.line = line;
@@ -112,6 +112,9 @@ public abstract class ParsedObject<A extends Object> implements IParsedObject<A>
 		return instance;
 	}
 	
+	protected A getInstance() {
+		return instance;
+	}
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.IParsedClass#constructorFor(java.util.List)
 	 */
