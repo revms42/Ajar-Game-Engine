@@ -27,8 +27,11 @@
  */
 package org.ajar.logic.loader.parser;
 
+import java.util.regex.Matcher;
+
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.IParser;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ParsedClass;
 
@@ -36,18 +39,21 @@ import org.ajar.logic.loader.capsule.ParsedClass;
  * @author reverend
  *
  */
-public abstract class AbstractClassParser<A extends Object> implements IParser<Class<A>> {
+public abstract class AbstractClassParser<A extends Object> implements IParser<A> {
 
+	public static String GROUP_NAME="name";
+	public static String GROUP_CLASS="class";
+	
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.IParser#getParsedClass(java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public IParsedClass<Class<A>> getParsedClass(String line) throws LogicParserException {
+	public IParsedClass<A> getParsedClass(String line) throws LogicParserException {
 		if(isNamed(line)){
 			String name = getName(line);
-			ParsedClass<Class<A>> p = 
-					(ParsedClass<Class<A>>) ParsedClass.getNamedClass(name);
+			ParsedClass<A> p = 
+					(ParsedClass<A>) ParsedClass.getNamedClass(name);
 			
 			if(p == null){
 				Class<A> c = parseClass(line);
@@ -63,11 +69,51 @@ public abstract class AbstractClassParser<A extends Object> implements IParser<C
 		}
 	}
 	
-	protected abstract String getName(String line);
+	protected abstract Matcher getMatcher(String line);
 	
-	protected abstract boolean isNamed(String line);
+	protected String getNameGroup(){
+		return GROUP_NAME;
+	}
 	
-	protected abstract Class<A> parseClass(String line);
+	protected String getClassGroup(){
+		return GROUP_CLASS;
+	}
+	
+	@Override
+	public boolean canParse(String line) {
+		return getMatcher(line).find();
+	}
+	
+	protected String getName(String line){
+		Matcher m = getMatcher(line);
+		if(m.find()){
+			return m.group(getNameGroup());
+		}else{
+			return null;
+		}
+	}
+	
+	protected boolean isNamed(String line){
+		return getName(line) != null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <E extends A> Class<E> parseClass(String line) throws LogicParserException{
+		Matcher m = getMatcher(line);
+		if(m.find()){
+			String className = m.group(getClassGroup());
+			try {
+				Class<E> myClass = 
+						(Class<E>) LogicLoader.class.getClassLoader().loadClass(className);
+				
+				return myClass;
+			} catch (ClassNotFoundException e) {
+				throw new LogicParserException("Cannot find class " + className,e);
+			}
+		}else{
+			throw new LogicParserException("Cannot find class in line " + line);
+		}
+	}
 
-	protected abstract ParsedClass<Class<A>> makeParsedClass(String line, Class<A> c);
+	protected abstract <E extends A> ParsedClass<E> makeParsedClass(String line, Class<E> c);
 }

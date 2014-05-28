@@ -49,7 +49,7 @@ public class ParsedClass<A extends Object> implements IParsedClass<A> {
 	private final String lineDefinition;
 	private final Class<A> objectClass;
 	
-	protected ParsedClass(String line, Class<A> clazz){
+	public ParsedClass(String line, Class<A> clazz){
 		this.lineDefinition = line;
 		this.objectClass = clazz;
 		mappedClasses.put(objectClass.getCanonicalName(), this);
