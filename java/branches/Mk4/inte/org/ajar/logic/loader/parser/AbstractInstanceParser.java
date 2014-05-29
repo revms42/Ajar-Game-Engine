@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 18, 2014 Matthew Stockbridge
+ * Copyright (C) May 29, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser
- * AbstractClassParser.java
+ * AbstractInstanceParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -32,14 +32,22 @@ import java.util.regex.Matcher;
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ParsedClass;
+import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public abstract class AbstractClassParser<A extends Object> extends AbstractParser<A> {
-	
+public abstract class AbstractInstanceParser<A extends Object> extends AbstractParser<A> {
+
+	public static String GROUP_NAME="name";
 	public static String GROUP_CLASS="class";
+	
+	private final AbstractClassParser<A> classParser;
+	
+	public AbstractInstanceParser(AbstractClassParser<A> classParser){
+		this.classParser = classParser;
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.IParser#getParsedClass(java.lang.String)
@@ -49,48 +57,55 @@ public abstract class AbstractClassParser<A extends Object> extends AbstractPars
 	public <E extends A> IParsedClass<E> getParsedClass(String line) throws LogicParserException {
 		if(isNamed(line)){
 			String name = getName(line);
-			ParsedClass<E> p = 
-					(ParsedClass<E>) ParsedClass.getNamedClass(name);
+			ParsedObject<E> p = (ParsedObject<E>) ParsedObject.getNamedObject(name);
 			
 			if(p == null){
-				Class<E> c = parseClass(line);
-				p = makeParsedClass(line, c);
+				p = produceObject(line);
 				
-				ParsedClass.putNamedClass(name, p);
+				ParsedObject.putNamedObject(name, p);
 			}
+			
 			return p;
 		}else{
-			Class<E> c = parseClass(line);
-			
-			return makeParsedClass(line,c);
+			return produceObject(line);
 		}
 	}
 	
-	protected <E extends A> Class<E> parseClass(String line) throws LogicParserException{
-		Matcher m = getMatcher(line);
-		if(m.find()){
-			String className = m.group(getClassGroup());
-			return loadClass(className);
-		}else{
-			throw new LogicParserException("Cannot find class in line " + line);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected <E extends A> Class<E> loadClass(String className) throws LogicParserException{
-		try {
-			Class<E> myClass = 
-					(Class<E>) this.getClass().getClassLoader().loadClass(className);
-			
-			return myClass;
-		} catch (ClassNotFoundException e) {
-			throw new LogicParserException("Cannot find class " + className,e);
-		}
+	private <E extends A> ParsedObject<E> produceObject(String line) throws LogicParserException {
+		ParsedClass<E> pc = parseClass(line);
+		
+		return makeParsedObject(pc,line);
 	}
 	
 	protected String getClassGroup(){
 		return GROUP_CLASS;
 	}
 	
-	protected abstract <E extends A> ParsedClass<E> makeParsedClass(String line, Class<E> c);
+	protected abstract <E extends A> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line);
+
+	@SuppressWarnings("unchecked")
+	protected <E extends A> ParsedClass<E> parseClass(String line) throws LogicParserException{
+		Matcher m = getMatcher(line);
+		if(m.find()){
+			String className = m.group(getClassGroup());
+			
+			ParsedClass<?> p = ParsedClass.getNamedClass(className);
+			
+			if(p == null){
+				Class<E> c = classParser.loadClass(className);
+				
+				if(c != null){
+					p = classParser.makeParsedClass(line, c);
+				}
+			}
+			
+			if(p == null){
+				throw new LogicParserException("Cannot parse class '" + className + "' for instance!");
+			}
+			
+			return (ParsedClass<E>)p;
+		}else{
+			throw new LogicParserException("Cannot find class in line " + line);
+		}
+	}
 }

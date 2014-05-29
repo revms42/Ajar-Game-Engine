@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 18, 2014 Matthew Stockbridge
+ * Copyright (C) May 29, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.logic.loader
- * IParser.java
+ * org.ajar.logic.loader.parser.test
+ * StateClassParserTest.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,20 +25,36 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.ajar.logic.loader;
+package org.ajar.logic.loader.parser.test;
 
+import static org.junit.Assert.*;
+
+import org.ajar.logic.loader.parser.StateClassParser;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public interface IParser<A extends Object> {
+public class StateClassParserTest {
+	private final static String valid1 = "State:state1{com.state.State1}";
+	
+	private final static String invalid1 = "State:state1{Action1->Effect1=state1}";
+	private StateClassParser parser;
+	
+	@Before
+	public void setup() throws Exception {
+		parser = new StateClassParser();
+	}
 
-	public boolean canParse(String line);
 	/**
-	 * Can supply line or pass <code>null</code>. <code>null</code> will get you the base class.
-	 * @param line
-	 * @return
+	 * Test method for {@link org.ajar.logic.loader.parser.AbstractClassParser#canParse(java.lang.String)}.
 	 */
-	public <E extends A> IParsedClass<E> getParsedClass(String line) throws LogicParserException ;
+	@Test
+	public void testCanParse() {
+		assertTrue("Valid input returned false!",parser.canParse(valid1));
+		assertFalse("Invalid input returned true!", parser.canParse(invalid1));
+	}
+
 }

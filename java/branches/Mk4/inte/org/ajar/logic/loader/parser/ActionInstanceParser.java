@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 28, 2014 Matthew Stockbridge
+ * Copyright (C) May 29, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser
- * ActionClassParser.java
+ * ActionObjectParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -31,31 +31,40 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ajar.age.logic.Action;
-import org.ajar.logic.loader.capsule.ActionClass;
+import org.ajar.logic.loader.capsule.ActionObject;
 import org.ajar.logic.loader.capsule.ParsedClass;
+import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
  * @author mstockbr
  *
  */
-public class ActionClassParser extends AbstractClassParser<Action> {
+public class ActionInstanceParser extends AbstractInstanceParser<Action> {
 
-	private final static Pattern actionPattern = 
-			Pattern.compile("[aA]ction\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractClassParser#getMatcher(java.lang.String)
+	private final static Pattern instancePattern = 
+			Pattern.compile("[aA]ction:(?<" + GROUP_NAME +">\\w+)\\{\\*(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)((?:\\().*?(?:\\)))?\\}");
+	/**
+	 * @param classParser
 	 */
-	@Override
-	protected Matcher getMatcher(String line) {
-		return actionPattern.matcher(line);
+	public ActionInstanceParser(ActionClassParser classParser) {
+		super(classParser);
+		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractClassParser#makeParsedClass(java.lang.String, java.lang.Class)
+	 * @see org.ajar.logic.loader.parser.AbstractInstanceParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.util.List, java.lang.String)
 	 */
 	@Override
-	protected <E extends Action> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
-		return new ActionClass<E>(line,c);
+	protected <E extends Action> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) {
+		return new ActionObject<E>(line,type);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractParser#getMatcher(java.lang.String)
+	 */
+	@Override
+	protected Matcher getMatcher(String line) {
+		return instancePattern.matcher(line);
 	}
 
 }

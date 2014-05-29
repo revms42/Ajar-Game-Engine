@@ -41,7 +41,7 @@ import org.ajar.logic.loader.capsule.ParsedClass;
 public class ChainClassParser extends AbstractClassParser<ChainableEffect<?>> {
 
 	private final static Pattern chainPattern = 
-			Pattern.compile("[cC]hain\\:(?<" + GROUP_NAME +">\\w+)=(?<" + GROUP_CLASS + ">.+)");
+			Pattern.compile("[cC]hain\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
 	
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.parser.AbstractClassParser#getMatcher(java.lang.String)

@@ -38,19 +38,20 @@ import org.ajar.logic.loader.capsule.StateObject;
 public class LogicLoader {
 	private final static Vector<IParser<?>> topLevelParsers;
 	private final static Vector<IParser<?>> memberParsers;
-	private final static Vector<IParser<?>> argumentParsers;
+	private final static Vector<IArgParser<?>> argumentParsers;
 	
 	static {
 		topLevelParsers = new Vector<IParser<?>>();
 		memberParsers = new Vector<IParser<?>>();
-		argumentParsers = new Vector<IParser<?>>();
+		argumentParsers = new Vector<IArgParser<?>>();
 	}
 
 	public static void parseFile(String data){
-		String[] lines = data.split("\\;|\\}");
+		String[] lines = data.split("\\}");
 		
 		parseLines:
 		for(String line : lines){
+			line = line + "}";
 			for(IParser<?> p : topLevelParsers){
 				if(p.canParse(line)){
 					try{
@@ -88,8 +89,25 @@ public class LogicLoader {
 		return null;
 	}
 	
-	public static IParser<?> findArgumentParser(String line, Class<?> type){
-		for(IParser<?> p : argumentParsers){
+	public static IParser<?> findTopLevelParser(String line, Class<?> type){
+		for(IParser<?> p : topLevelParsers){
+			if(p.canParse(line)){
+				if(type != null){
+					try {
+						if(p.getParsedClass(null).assignableFrom(type)){
+							return p;
+						}
+					} catch (LogicParserException e) {}
+				}else{
+					return p;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static IArgParser<?> findArgumentParser(String line, Class<?> type){
+		for(IArgParser<?> p : argumentParsers){
 			if(p.canParse(line)){
 				if(type != null){
 					try {
@@ -109,7 +127,7 @@ public class LogicLoader {
 		memberParsers.add(p);
 	}
 	
-	public static void addArgumentParser(IParser<?> p){
+	public static void addArgumentParser(IArgParser<?> p){
 		argumentParsers.add(p);
 	}
 	

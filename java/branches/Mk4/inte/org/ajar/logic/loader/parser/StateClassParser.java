@@ -41,7 +41,7 @@ import org.ajar.logic.loader.capsule.StateClass;
 public class StateClassParser extends AbstractClassParser<State<?>> {
 
 	private final static Pattern statePattern = 
-			Pattern.compile("[sS]tate\\:(?<" + GROUP_NAME +">\\w+)=(?<" + GROUP_CLASS + ">.+)");
+			Pattern.compile("[sS]tate\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
 	
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.parser.AbstractClassParser#getMatcher(java.lang.String)
