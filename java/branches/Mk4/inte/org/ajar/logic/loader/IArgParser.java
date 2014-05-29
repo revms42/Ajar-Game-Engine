@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 18, 2014 Matthew Stockbridge
+ * Copyright (C) May 29, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader
- * IParser.java
+ * IArgParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,18 +27,11 @@
  */
 package org.ajar.logic.loader;
 
-
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public interface IParser<A extends Object> {
+public interface IArgParser<A extends Object> extends IParser<A>{
 
-	public boolean canParse(String line);
-	/**
-	 * Can supply line or pass <code>null</code>. <code>null</code> will get you the base class.
-	 * @param line
-	 * @return
-	 */
-	public <E extends A> IParsedClass<E> getParsedClass(String line) throws LogicParserException ;
+	public A parse(String line); 
 }

@@ -1,0 +1,52 @@
+Action:Action1{org.ajar.age.logic.loader.test.TestAction.ACTION_1}
+Action:Action2{org.ajar.age.logic.loader.test.TestAction.ACTION_2}
+Action:Action3{org.ajar.age.logic.loader.test.TestAction.ACTION_3}
+
+Action:InstanceAction1{*Action1}
+
+Effect:Effect1{org.ajar.age.logic.loader.test.TestEffect1}
+Effect:Effect2{org.ajar.age.logic.loader.test.TestEffect2}
+Effect:Effect3{org.ajar.age.logic.loader.test.TestEffect3}
+
+Chain:Chain1{org.ajar.age.logic.loader.test.TestChainable1}
+Chain:Chain2{org.ajar.age.logic.loader.test.TestChainable2}
+Chain:Chain3{org.ajar.age.logic.loader.test.TestChainable3}
+
+Condition:Condition1{org.ajar.age.logic.loader.test.TestCondition1}
+Condition:Condition2{org.ajar.age.logic.loader.test.TestCondition2}
+Condition:Condition3{org.ajar.age.logic.loader.test.TestCondition3}
+
+State:SimpleEffect{
+	Action1->Effect1=SimpleEffect
+	Action2->Effect2=SimpleEffect
+	Action3->Effect3=SimpleEffect
+}
+
+State:SimpleChain{
+	Action1->Effect1=SimpleChain
+	Action2->Chain2&Chain1=SimpleChain
+	Action3->Chain3&Chain2&Chain1=SimpleChain
+}
+
+State:SimpleCondition{
+	Action1->Condition1?Effect1=SimpleCondition|Effect2=SimpleEffect
+	Action2->Condition2?Effect2=SimpleCondition|Effect3=SimpleEffect
+	Action3->Condition3?Effect3=SimpleCondition|Effect1=SimpleEffect
+}
+
+State:First{
+	Action1->Effect1=null
+}
+
+State:Second(^First){
+	Action2->Effect2=null
+}
+
+State:Third(^Second){
+	Action3->Effect3=no-change
+	Action1->Effect3=Second
+}
+
+State:InitEffect{
+	Action1->Effect3(1,2l,3f,4d,org.ajar.age.logic.loader.test.TestEnum.B)=InitEffect
+}

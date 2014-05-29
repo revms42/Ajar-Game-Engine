@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 18, 2014 Matthew Stockbridge
+ * Copyright (C) May 29, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser
- * AbstractObjectParser.java
+ * AbstractParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -27,41 +27,39 @@
  */
 package org.ajar.logic.loader.parser;
 
-import org.ajar.logic.loader.IParsedObject;
+import java.util.regex.Matcher;
+
 import org.ajar.logic.loader.IParser;
-import org.ajar.logic.loader.LogicParserException;
-import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
- * @author reverend
+ * @author mstockbr
  *
  */
-public abstract class AbstractObjectParser<A extends Object> implements IParser<A> {
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.IParser#getParsedClass(java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")
+public abstract class AbstractParser<A extends Object> implements IParser<A> {
+	
+	public static String GROUP_NAME="name";
+	
+	protected abstract Matcher getMatcher(String line);
+	
+	protected String getNameGroup(){
+		return GROUP_NAME;
+	}
+	
 	@Override
-	public IParsedObject<A> getParsedClass(String line) throws LogicParserException {
-		if(isNamed(line)){
-			String name = getName(line);
-			ParsedObject<A> p = (ParsedObject<A>) ParsedObject.getNamedObject(name);
-			
-			if(p == null){
-				p = makeParsedObject(line);
-				
-				ParsedObject.putNamedObject(name, p);
-			}
-			
-			return p;
+	public boolean canParse(String line) {
+		return getMatcher(line).find();
+	}
+	
+	protected String getName(String line){
+		Matcher m = getMatcher(line);
+		if(m.find()){
+			return m.group(getNameGroup());
 		}else{
-			return makeParsedObject(line);
+			return null;
 		}
 	}
-
-	protected abstract boolean isObject(String line);
-	protected abstract boolean isNamed(String line);
-	protected abstract String getName(String line);
-	protected abstract ParsedObject<A> makeParsedObject(String line);
+	
+	protected boolean isNamed(String line){
+		return getName(line) != null;
+	}
 }

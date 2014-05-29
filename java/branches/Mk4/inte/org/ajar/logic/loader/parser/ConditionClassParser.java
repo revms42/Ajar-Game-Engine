@@ -41,7 +41,7 @@ import org.ajar.logic.loader.capsule.ParsedClass;
 public class ConditionClassParser extends AbstractClassParser<Condition<?>> {
 
 	private final static Pattern conditionPattern = 
-			Pattern.compile("[cC]ondition\\:(?<" + GROUP_NAME +">\\w+)=(?<" + GROUP_CLASS + ">.+)");
+			Pattern.compile("[cC]ondition\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.parser.AbstractClassParser#getMatcher(java.lang.String)
 	 */

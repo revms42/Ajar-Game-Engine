@@ -110,6 +110,8 @@ public class EffectObject<A extends Effect<?>> extends ParsedObject<A> {
 			String[] effectState = this.lineDefinition().split("=");
 			if(effectState.length > 1){
 				resultantState = LogicLoader.findState(effectState[1]);
+			}else{
+				return null;
 			}
 		}
 		return (State<?>)resultantState.getParsedObject();

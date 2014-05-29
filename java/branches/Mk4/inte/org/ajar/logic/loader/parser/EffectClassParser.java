@@ -41,7 +41,7 @@ import org.ajar.logic.loader.capsule.ParsedClass;
 public class EffectClassParser extends AbstractClassParser<Effect<?>> {
 
 	private final static Pattern effectPattern = 
-			Pattern.compile("[eE]ffect\\:(?<" + GROUP_NAME +">\\w+)=(?<" + GROUP_CLASS + ">.+)");
+			Pattern.compile("[eE]ffect\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
 
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.parser.AbstractClassParser#getMatcher(java.lang.String)
