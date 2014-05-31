@@ -30,6 +30,7 @@ package org.ajar.logic.loader.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.ajar.age.Attributes;
 import org.ajar.age.logic.Effect;
 import org.ajar.logic.loader.capsule.EffectClass;
 import org.ajar.logic.loader.capsule.ParsedClass;
@@ -38,7 +39,7 @@ import org.ajar.logic.loader.capsule.ParsedClass;
  * @author mstockbr
  *
  */
-public class EffectClassParser extends AbstractClassParser<Effect<?>> {
+public class EffectClassParser<A extends Attributes> extends AbstractClassParser<Effect<A>> {
 
 	private final static Pattern effectPattern = 
 			Pattern.compile("[eE]ffect\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
@@ -55,7 +56,7 @@ public class EffectClassParser extends AbstractClassParser<Effect<?>> {
 	 * @see org.ajar.logic.loader.parser.AbstractClassParser#makeParsedClass(java.lang.String, java.lang.Class)
 	 */
 	@Override
-	protected <E extends Effect<?>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
+	protected <E extends Effect<A>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
 		return new EffectClass<E>(line,c);
 	}
 

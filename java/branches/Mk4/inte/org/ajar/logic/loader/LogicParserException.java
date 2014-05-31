@@ -45,4 +45,8 @@ public class LogicParserException extends Exception {
 	public LogicParserException(String string, Exception original) {
 		super(string,original);
 	}
+	
+	public LogicParserException(Exception original) {
+		super(original);
+	}
 }

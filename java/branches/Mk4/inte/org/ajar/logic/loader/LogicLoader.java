@@ -30,6 +30,13 @@ package org.ajar.logic.loader;
 import java.util.Vector;
 
 import org.ajar.logic.loader.capsule.StateObject;
+import org.ajar.logic.loader.parser.BooleanParser;
+import org.ajar.logic.loader.parser.CharParser;
+import org.ajar.logic.loader.parser.FloatParser;
+import org.ajar.logic.loader.parser.IntParser;
+import org.ajar.logic.loader.parser.LongParser;
+import org.ajar.logic.loader.parser.DoubleParser;
+import org.ajar.logic.loader.parser.StringParser;
 
 /**
  * @author reverend
@@ -43,7 +50,15 @@ public class LogicLoader {
 	static {
 		topLevelParsers = new Vector<IParser<?>>();
 		memberParsers = new Vector<IParser<?>>();
+		
 		argumentParsers = new Vector<IArgParser<?>>();
+		addArgumentParser(new IntParser());
+		addArgumentParser(new LongParser());
+		addArgumentParser(new FloatParser());
+		addArgumentParser(new DoubleParser());
+		addArgumentParser(new CharParser());
+		addArgumentParser(new BooleanParser());
+		addArgumentParser(new StringParser());
 	}
 
 	public static void parseFile(String data){
@@ -110,11 +125,9 @@ public class LogicLoader {
 		for(IArgParser<?> p : argumentParsers){
 			if(p.canParse(line)){
 				if(type != null){
-					try {
-						if(p.getParsedClass(null).assignableFrom(type)){
-							return p;
-						}
-					} catch (LogicParserException e) {}
+					if(p.assignableFrom(type)){
+						return p;
+					}
 				}else{
 					return p;
 				}

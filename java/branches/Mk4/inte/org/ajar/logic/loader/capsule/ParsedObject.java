@@ -28,6 +28,7 @@
 package org.ajar.logic.loader.capsule;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +36,9 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.ajar.logic.loader.IArgParser;
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.IParsedObject;
-import org.ajar.logic.loader.IParser;
 import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 
@@ -131,12 +132,10 @@ public class ParsedObject<A extends Object> implements IParsedObject<A> {
 			while(m.find()){
 				String arg = m.group(1);
 				
-				IParser<?> p = LogicLoader.findArgumentParser(arg, null);
-				IParsedClass<?> pc = p.getParsedClass(arg);
+				IArgParser<?> p = LogicLoader.findArgumentParser(arg, null);
+				Object a = p.parse(arg);
 				
-				if(pc instanceof IParsedObject){
-					args.add(((IParsedObject<?>)pc).getParsedObject());
-				}
+				args.add(a);
 			}
 			
 			arguments = args;
@@ -151,7 +150,22 @@ public class ParsedObject<A extends Object> implements IParsedObject<A> {
 			
 			argTypes = new Vector<Class<?>>();
 			for(Object o : arguments){
-				argTypes.add(o.getClass());
+				if(o instanceof Number || o instanceof Boolean || o instanceof Character){
+					try{
+						Field f = o.getClass().getField("TYPE");
+						argTypes.add((Class<?>)f.get(o));
+					} catch(IllegalAccessException e){
+						throw new LogicParserException(e);
+					} catch (NoSuchFieldException e) {
+						throw new LogicParserException(e);
+					} catch (SecurityException e) {
+						throw new LogicParserException(e);
+					}
+
+				}else{
+					argTypes.add(o.getClass());
+				}
+				
 			}
 		}
 		
