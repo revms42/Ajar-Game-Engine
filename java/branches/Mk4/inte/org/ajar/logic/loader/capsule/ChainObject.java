@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 28, 2014 Matthew Stockbridge
+ * Copyright (C) May 30, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.logic.loader.parser
- * ChainClassParser.java
+ * org.ajar.logic.loader.capsule
+ * ChainObject.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,39 +25,41 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.ajar.logic.loader.parser;
+package org.ajar.logic.loader.capsule;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.ajar.age.Attributes;
 import org.ajar.age.logic.ChainableEffect;
-import org.ajar.logic.loader.capsule.ChainClass;
-import org.ajar.logic.loader.capsule.ParsedClass;
+import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicParserException;
 
 /**
  * @author mstockbr
  *
  */
-public class ChainClassParser<A extends Attributes> extends AbstractClassParser<ChainableEffect<A>> {
+public class ChainObject<A extends ChainableEffect<?>> extends EffectObject<A> {
 
-	private final static Pattern chainPattern = 
-			Pattern.compile("[cC]hain\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
+	private ChainObject<?> child;
+	/**
+	 * @param line
+	 * @param c
+	 */
+	public ChainObject(String line, IParsedClass<A> c) {
+		super(line, c);
+	}
+	
+	public <E extends A> void addChild(ChainObject<E> child){
+		this.child = child;
+	}
 	
 	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractClassParser#getMatcher(java.lang.String)
+	 * @see org.ajar.logic.loader.IParsedObject#getParsedObject()
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected Matcher getMatcher(String line) {
-		return chainPattern.matcher(line);
+	public A getParsedObject() throws LogicParserException{
+		A a = super.getParsedObject();
+		if(this.child != null){
+			a.addToChain((ChainableEffect)child.getParsedObject());
+		}
+		return a;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractClassParser#makeParsedClass(java.lang.String, java.lang.Class)
-	 */
-	@Override
-	protected <E extends ChainableEffect<A>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
-		return new ChainClass<E>(line,c);
-	}
-
 }

@@ -78,13 +78,18 @@ public abstract class AbstractClassParser<A extends Object> extends AbstractPars
 	
 	@SuppressWarnings("unchecked")
 	protected <E extends A> Class<E> loadClass(String className) throws LogicParserException{
-		try {
-			Class<E> myClass = 
-					(Class<E>) this.getClass().getClassLoader().loadClass(className);
-			
-			return myClass;
-		} catch (ClassNotFoundException e) {
-			throw new LogicParserException("Cannot find class " + className,e);
+		ParsedClass<E> pc = (ParsedClass<E>)ParsedClass.getNamedClass(className);
+		if(pc != null){
+			return pc.objectClass();
+		}else{
+			try {
+				Class<E> myClass = 
+						(Class<E>) this.getClass().getClassLoader().loadClass(className);
+				
+				return myClass;
+			} catch (ClassNotFoundException e) {
+				throw new LogicParserException("Cannot find class " + className,e);
+			}
 		}
 	}
 	

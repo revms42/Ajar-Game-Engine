@@ -81,7 +81,7 @@ public abstract class AbstractInstanceParser<A extends Object> extends AbstractP
 		return GROUP_CLASS;
 	}
 	
-	protected abstract <E extends A> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line);
+	protected abstract <E extends A> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException;
 
 	@SuppressWarnings("unchecked")
 	protected <E extends A> ParsedClass<E> parseClass(String line) throws LogicParserException{
@@ -104,6 +104,8 @@ public abstract class AbstractInstanceParser<A extends Object> extends AbstractP
 			}
 			
 			return (ParsedClass<E>)p;
+		}else if(ParsedClass.getNamedClass(line) != null){
+			return (ParsedClass<E>) ParsedClass.getNamedClass(line);
 		}else{
 			throw new LogicParserException("Cannot find class in line " + line);
 		}

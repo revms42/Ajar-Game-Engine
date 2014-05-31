@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 29, 2014 Matthew Stockbridge
+ * Copyright (C) May 30, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser
- * EffectInstanceParser.java
+ * ChainInstanceParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -31,9 +31,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
-import org.ajar.age.logic.Effect;
+import org.ajar.age.logic.ChainableEffect;
 import org.ajar.logic.loader.LogicParserException;
-import org.ajar.logic.loader.capsule.EffectObject;
+import org.ajar.logic.loader.capsule.ChainObject;
 import org.ajar.logic.loader.capsule.ParsedClass;
 import org.ajar.logic.loader.capsule.ParsedObject;
 
@@ -41,15 +41,15 @@ import org.ajar.logic.loader.capsule.ParsedObject;
  * @author mstockbr
  *
  */
-public class EffectInstanceParser<A extends Attributes> extends AbstractInstanceParser<Effect<A>> {
+public class ChainInstanceParser<A extends Attributes> extends AbstractInstanceParser<ChainableEffect<A>> {
 
 	private final static Pattern instancePattern = 
-			Pattern.compile("[eE]ffect:(?<" + GROUP_NAME +">\\w+)\\{\\*(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)(\\(.*?\\))?(=\\w+)?\\}");
+			Pattern.compile("[cC]hain:(?<" + GROUP_NAME +">\\w+)\\{\\*(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\&?|(\\(.*?\\))?(=\\w+)?\\&?.*\\}");
 	
 	/**
 	 * @param classParser
 	 */
-	public EffectInstanceParser(EffectClassParser<A> classParser) {
+	public ChainInstanceParser(ChainClassParser<A> classParser) {
 		super(classParser);
 	}
 
@@ -64,9 +64,39 @@ public class EffectInstanceParser<A extends Attributes> extends AbstractInstance
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.parser.AbstractInstanceParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.lang.String)
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected <E extends Effect<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
-		return new EffectObject<E>(line,type);
+	protected <E extends ChainableEffect<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
+		String[] nextLine = line.split("\\&",2);
+		
+		ChainObject<E> first = new ChainObject<E>(nextLine[0],type);
+		
+		//TODO: This skips the last chain element because it doesn't have a '&'
+		boo
+		if(nextLine.length > 1){
+			line = nextLine[1];
+			ChainObject last = first;
+			ChainObject next = null;
+			while(line.contains("&")){
+				nextLine = line.split("\\&",2);
+				ParsedObject<?> po = ParsedObject.getNamedObject(nextLine[0]);
+				if(po != null && po instanceof ChainObject){
+					next = (ChainObject)po;
+				}else if(nextLine[0].startsWith("*")){
+					String newLine = nextLine[0].substring(1);
+					next = new ChainObject(newLine,parseClass(newLine));
+				}else{
+					throw new LogicParserException("Couldn't find chain class " + nextLine[0]);
+				}
+				
+				last.addChild(next);
+				last = next;
+				
+				line = nextLine[1];
+			}
+		}
+
+		return first;
 	}
 
 }

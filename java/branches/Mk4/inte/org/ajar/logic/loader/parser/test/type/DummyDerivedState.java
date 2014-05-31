@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 29, 2014 Matthew Stockbridge
+ * Copyright (C) May 30, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.logic.loader
- * IArgParser.java
+ * org.ajar.logic.loader.parser.test.type
+ * DummyDerivedState.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,15 +25,15 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.ajar.logic.loader;
+package org.ajar.logic.loader.parser.test.type;
+
+import org.ajar.age.logic.DerivedState;
+import org.ajar.age.logic.HashAttributes;
 
 /**
  * @author mstockbr
  *
  */
-public interface IArgParser<A extends Object>{
+public class DummyDerivedState extends DerivedState<HashAttributes> {
 
-	public boolean canParse(String line);
-	public boolean assignableFrom(Class<?> c);
-	public A parse(String line); 
 }

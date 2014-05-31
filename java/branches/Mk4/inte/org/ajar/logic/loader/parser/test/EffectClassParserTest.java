@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 29, 2014 Matthew Stockbridge
+ * Copyright (C) May 30, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser.test
- * StateClassParserTest.java
+ * EffectClassParserTest.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -29,11 +29,12 @@ package org.ajar.logic.loader.parser.test;
 
 import static org.junit.Assert.*;
 
+import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.LogicParserException;
-import org.ajar.logic.loader.capsule.StateClass;
-import org.ajar.logic.loader.parser.StateClassParser;
-import org.ajar.logic.loader.parser.test.type.DummyState;
+import org.ajar.logic.loader.capsule.EffectClass;
+import org.ajar.logic.loader.parser.EffectClassParser;
+import org.ajar.logic.loader.parser.test.type.DummyEffect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,19 +42,21 @@ import org.junit.Test;
  * @author mstockbr
  *
  */
-public class StateClassParserTest {
-	private final static String goodClass = 
-			"State:Dummy{org.ajar.logic.loader.parser.test.type.DummyState}";
+public class EffectClassParserTest {
+
+	public final static String goodClass = 
+			"Effect:Dummy{org.ajar.logic.loader.parser.test.type.DummyEffect}";
 	
-	private final static String badClass = 
-			"State:Dummy{Action->Effect1=org.ajar.logic.loader.parser.test.type.DummyState}";
-	private StateClassParser parser;
+	private EffectClassParser<HashAttributes> parser;
 	
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@Before
-	public void setup() throws Exception {
-		parser = new StateClassParser();
+	public void setUp() throws Exception {
+		parser = new EffectClassParser<HashAttributes>();
 	}
-	
+
 	/**
 	 * Test method for {@link org.ajar.logic.loader.parser.AbstractClassParser#getParsedClass(java.lang.String)}.
 	 */
@@ -62,20 +65,19 @@ public class StateClassParserTest {
 		try{
 			IParsedClass<?> pc = parser.getParsedClass(goodClass);
 			assertNotNull("No output for good class!",pc);
-			assertTrue("Parsed Class is not an State class!", pc.getClass() == StateClass.class);
-			assertTrue("Parsed Class is not Dummy State!", pc.objectClass() == DummyState.class);
+			assertTrue("Parsed Class is not an Effect class!", pc.getClass() == EffectClass.class);
+			assertTrue("Parsed Class is not Dummy Effect!", pc.objectClass() == DummyEffect.class);
 		}catch(LogicParserException e){
 			fail(e.getMessage());
 		}
 	}
 
 	/**
-	 * Test method for {@link org.ajar.logic.loader.parser.AbstractClassParser#canParse(java.lang.String)}.
+	 * Test method for {@link org.ajar.logic.loader.parser.AbstractParser#canParse(java.lang.String)}.
 	 */
 	@Test
 	public void testCanParse() {
-		assertTrue("Valid input returned false!",parser.canParse(goodClass));
-		assertFalse("Invalid input returned true!", parser.canParse(badClass));
+		assertTrue("Cannot parse good class!",parser.canParse(goodClass));
 	}
 
 }
