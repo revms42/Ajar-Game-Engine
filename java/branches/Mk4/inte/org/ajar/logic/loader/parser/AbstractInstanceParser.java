@@ -28,10 +28,10 @@
 package org.ajar.logic.loader.parser;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.LogicParserException;
-import org.ajar.logic.loader.capsule.ParsedClass;
 import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
@@ -39,14 +39,16 @@ import org.ajar.logic.loader.capsule.ParsedObject;
  *
  */
 public abstract class AbstractInstanceParser<A extends Object> extends AbstractParser<A> {
-
+	
 	public static String GROUP_NAME="name";
-	public static String GROUP_CLASS="class";
+	public static String GROUP_DEFINITION="definition";
 	
-	private final AbstractClassParser<A> classParser;
+	protected final static Pattern definition = Pattern.compile("\\{(?<" + GROUP_DEFINITION + ">.+)\\}$");
 	
-	public AbstractInstanceParser(AbstractClassParser<A> classParser){
-		this.classParser = classParser;
+	private final AbstractMemberParser<A> memberParser;
+	
+	public AbstractInstanceParser(AbstractMemberParser<A> memberParser){
+		this.memberParser = memberParser;
 	}
 	
 	/* (non-Javadoc)
@@ -60,54 +62,27 @@ public abstract class AbstractInstanceParser<A extends Object> extends AbstractP
 			ParsedObject<E> p = (ParsedObject<E>) ParsedObject.getNamedObject(name);
 			
 			if(p == null){
-				p = produceObject(line);
+				String definition = getDefinition(line);
+				
+				p = (ParsedObject<E>) memberParser.getParsedClass(definition);
 				
 				ParsedObject.putNamedObject(name, p);
 			}
 			
 			return p;
 		}else{
-			return produceObject(line);
+			String definition = getDefinition(line);
+			return (ParsedObject<E>) memberParser.getParsedClass(definition);
 		}
 	}
 	
-	private <E extends A> ParsedObject<E> produceObject(String line) throws LogicParserException {
-		ParsedClass<E> pc = parseClass(line);
+	protected String getDefinition(String line) throws LogicParserException {
+		Matcher m = definition.matcher(line);
 		
-		return makeParsedObject(pc,line);
-	}
-	
-	protected String getClassGroup(){
-		return GROUP_CLASS;
-	}
-	
-	protected abstract <E extends A> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException;
-
-	@SuppressWarnings("unchecked")
-	protected <E extends A> ParsedClass<E> parseClass(String line) throws LogicParserException{
-		Matcher m = getMatcher(line);
 		if(m.find()){
-			String className = m.group(getClassGroup());
-			
-			ParsedClass<?> p = ParsedClass.getNamedClass(className);
-			
-			if(p == null){
-				Class<E> c = classParser.loadClass(className);
-				
-				if(c != null){
-					p = classParser.makeParsedClass(line, c);
-				}
-			}
-			
-			if(p == null){
-				throw new LogicParserException("Cannot parse class '" + className + "' for instance!");
-			}
-			
-			return (ParsedClass<E>)p;
-		}else if(ParsedClass.getNamedClass(line) != null){
-			return (ParsedClass<E>) ParsedClass.getNamedClass(line);
+			return m.group(GROUP_DEFINITION);
 		}else{
-			throw new LogicParserException("Cannot find class in line " + line);
+			throw new LogicParserException("Cannot find definition in line " + line);
 		}
 	}
 }
