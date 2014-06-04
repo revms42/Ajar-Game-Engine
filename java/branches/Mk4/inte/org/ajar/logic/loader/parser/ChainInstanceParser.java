@@ -64,39 +64,53 @@ public class ChainInstanceParser<A extends Attributes> extends AbstractInstanceP
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.parser.AbstractInstanceParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.lang.String)
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected <E extends ChainableEffect<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
+		//Get the guts of the chain.
+		line = line.split("\\{",2)[1];
+		if(line.endsWith("}")) line = line.substring(0, line.length()-1);
+		
 		String[] nextLine = line.split("\\&",2);
 		
-		ChainObject<E> first = new ChainObject<E>(nextLine[0],type);
+		ChainObject<E> first = makeChainObject(nextLine[0],null,type);
 		
-		//TODO: This skips the last chain element because it doesn't have a '&'
-		boo
 		if(nextLine.length > 1){
 			line = nextLine[1];
 			ChainObject last = first;
-			ChainObject next = null;
 			while(line.contains("&")){
 				nextLine = line.split("\\&",2);
-				ParsedObject<?> po = ParsedObject.getNamedObject(nextLine[0]);
-				if(po != null && po instanceof ChainObject){
-					next = (ChainObject)po;
-				}else if(nextLine[0].startsWith("*")){
-					String newLine = nextLine[0].substring(1);
-					next = new ChainObject(newLine,parseClass(newLine));
-				}else{
-					throw new LogicParserException("Couldn't find chain class " + nextLine[0]);
-				}
 				
-				last.addChild(next);
-				last = next;
+				last = makeChainObject(nextLine[0],last,null);
 				
 				line = nextLine[1];
 			}
+			last = makeChainObject(nextLine[1],last,null);
 		}
 
 		return first;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private ChainObject makeChainObject(String line, ChainObject last, ParsedClass<?> type) throws LogicParserException {
+		ParsedObject<?> po = ParsedObject.getNamedObject(line);
+		ChainObject next = null;
+		if(po != null && po instanceof ChainObject){
+			next = (ChainObject)po;
+		}else if(line.startsWith("*")){
+			String newLine = line.substring(1);
+			if(type == null){
+				next = new ChainObject(newLine, parseClass(newLine));
+			}else{
+				next = new ChainObject(newLine,type);
+			}
+		}else{
+			throw new LogicParserException("Couldn't find chain class " + line);
+		}
+		if(last != null){
+			last.addChild(next);
+		}
+		
+		return next;
+	}
 }
