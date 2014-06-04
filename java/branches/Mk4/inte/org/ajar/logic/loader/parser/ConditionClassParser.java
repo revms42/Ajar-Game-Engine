@@ -30,6 +30,7 @@ package org.ajar.logic.loader.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.ajar.age.Attributes;
 import org.ajar.age.logic.Condition;
 import org.ajar.logic.loader.capsule.ConditionClass;
 import org.ajar.logic.loader.capsule.ParsedClass;
@@ -38,7 +39,7 @@ import org.ajar.logic.loader.capsule.ParsedClass;
  * @author mstockbr
  *
  */
-public class ConditionClassParser extends AbstractClassParser<Condition<?>> {
+public class ConditionClassParser<A extends Attributes> extends AbstractClassParser<Condition<A>> {
 
 	private final static Pattern conditionPattern = 
 			Pattern.compile("[cC]ondition\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
@@ -54,7 +55,7 @@ public class ConditionClassParser extends AbstractClassParser<Condition<?>> {
 	 * @see org.ajar.logic.loader.parser.AbstractClassParser#makeParsedClass(java.lang.String, java.lang.Class)
 	 */
 	@Override
-	protected <E extends Condition<?>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
+	protected <E extends Condition<A>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
 		return new ConditionClass<E>(line,c);
 	}
 

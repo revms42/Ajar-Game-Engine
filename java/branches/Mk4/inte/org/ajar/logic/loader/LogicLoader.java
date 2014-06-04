@@ -49,7 +49,6 @@ public class LogicLoader {
 	
 	static {
 		topLevelParsers = new Vector<IParser<?>>();
-		memberParsers = new Vector<IParser<?>>();
 		
 		argumentParsers = new Vector<IArgParser<?>>();
 		addArgumentParser(new IntParser());
@@ -59,6 +58,8 @@ public class LogicLoader {
 		addArgumentParser(new CharParser());
 		addArgumentParser(new BooleanParser());
 		addArgumentParser(new StringParser());
+		
+		memberParsers = new Vector<IParser<?>>();
 	}
 
 	public static void parseFile(String data){

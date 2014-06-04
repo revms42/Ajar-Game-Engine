@@ -37,7 +37,7 @@ import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
  * @author mstockbr
- *
+ * TODO: Rewriting to use member parsers instead of class parsers.
  */
 public class ActionInstanceParser extends AbstractInstanceParser<Action> {
 
