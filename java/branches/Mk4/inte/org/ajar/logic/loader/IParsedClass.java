@@ -38,6 +38,6 @@ public interface IParsedClass<A extends Object> {
 
 	public String lineDefinition();
 	public Class<A> objectClass();
-	public boolean assignableFrom(Class<?> clazz);
+	public boolean isSubClassOf(Class<?> clazz);
 	public Constructor<A> constructorFor(List<Class<?>> args) throws LogicParserException;
 }

@@ -29,6 +29,7 @@ package org.ajar.logic.loader.capsule;
 
 import org.ajar.age.logic.State;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicParserException;
 
 /**
  * @author reverend
@@ -36,6 +37,8 @@ import org.ajar.logic.loader.IParsedClass;
  */
 public class StateObject<A extends State<?>> extends ParsedObject<A> {
 
+	private StateObject<A> superState;
+	
 	/**
 	 * @param line
 	 * @param c
@@ -44,4 +47,27 @@ public class StateObject<A extends State<?>> extends ParsedObject<A> {
 		super(line, c);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.IParsedObject#getParsedObject()
+	 */
+	@Override
+	public A getParsedObject() throws LogicParserException{
+		//TODO: You need to be able to figure out your super state and find it.
+	}
+	
+	/**
+	 * @return the superState
+	 */
+	public StateObject<A> getSuperState() {
+		return superState;
+	}
+
+	/**
+	 * @param superState the superState to set
+	 */
+	public void setSuperState(StateObject<A> superState) {
+		this.superState = superState;
+	}
+
+	
 }

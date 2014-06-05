@@ -32,15 +32,6 @@ import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.logic.Condition;
-import org.ajar.age.logic.Effect;
-import org.ajar.logic.loader.IParsedClass;
-import org.ajar.logic.loader.IParser;
-import org.ajar.logic.loader.LogicLoader;
-import org.ajar.logic.loader.LogicParserException;
-import org.ajar.logic.loader.capsule.ConditionObject;
-import org.ajar.logic.loader.capsule.EffectObject;
-import org.ajar.logic.loader.capsule.ParsedClass;
-import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
  * @author mstockbr
@@ -48,69 +39,18 @@ import org.ajar.logic.loader.capsule.ParsedObject;
  */
 public class ConditionInstanceParser<A extends Attributes> extends AbstractInstanceParser<Condition<A>> {
 	
-	public static final String GROUP_TRUE = "true";
-	public static final String GROUP_FALSE = "false";
-	
-	private final static Pattern instancePattern = 
-			Pattern.compile("[cC]ondition:(?<" + GROUP_NAME +">\\w+)\\{\\*(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\?" + 
-					"(?<" + GROUP_TRUE + ">.+?)\\|(?<" + GROUP_FALSE + ">.+?)\\}");
+	private final Pattern instancePattern;
 	
 	/**
 	 * @param classParser
 	 */
-	public ConditionInstanceParser(ConditionClassParser<A> classParser) {
-		super(classParser);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractInstanceParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.lang.String)
-	 */
-	@Override
-	protected <E extends Condition<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
-		ConditionObject<E> condition = new ConditionObject<E>(line,type);
-		
-		Matcher m = getMatcher(line);
-		
-		if(m.find()){
-			String trueGroup = m.group(GROUP_TRUE);
-			
-			if(trueGroup != null){
-				IParser<?> trueParser = LogicLoader.findMemberParser(trueGroup, Effect.class);
-				
-				if(trueParser != null){
-					IParsedClass<?> trueClass = trueParser.getParsedClass(trueGroup);
-					
-					if(trueClass instanceof EffectObject){
-						condition.setTrueEffect((EffectObject<?>)trueClass);
-					}else{
-						condition.setTrueEffect(createNewInstance(trueClass,trueGroup));
-					}
-				}else{
-					throw new LogicParserException("A parser for '" + trueGroup + "' could not be located!");
-				}
-			}
-			
-			String falseGroup = m.group(GROUP_FALSE);
-			
-			if(falseGroup != null){
-				IParser<?> trueParser = LogicLoader.findMemberParser(falseGroup, Effect.class);
-				
-				if(trueParser != null){
-					IParsedClass<?> falseClass = trueParser.getParsedClass(falseGroup);
-					
-					if(falseClass instanceof EffectObject){
-						condition.setFalseEffect((EffectObject<?>)falseClass);
-					}else{
-						condition.setFalseEffect(createNewInstance(falseClass,trueGroup));
-					}
-					
-				}else{
-					throw new LogicParserException("A parser for '" + falseGroup + "' could not be located!");
-				}
-			}
-		}
-		
-		return condition;
+	public ConditionInstanceParser(ConditionMemberParser<A> memberParser) {
+		super(memberParser);
+		instancePattern = Pattern.compile(
+				"[cC]ondition:(?<" + GROUP_NAME +">\\w+)\\{\\*" +
+				memberParser.getMatcherPattern() +
+				"\\}"
+		);
 	}
 
 	/* (non-Javadoc)
@@ -119,9 +59,5 @@ public class ConditionInstanceParser<A extends Attributes> extends AbstractInsta
 	@Override
 	protected Matcher getMatcher(String line) {
 		return instancePattern.matcher(line);
-	}
-
-	private EffectObject<?> createNewInstance(IParsedClass<?> protoType, String line){
-		//TODO: Before we can do this right we need member parsers.
 	}
 }

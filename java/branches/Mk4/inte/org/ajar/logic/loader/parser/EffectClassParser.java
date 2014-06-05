@@ -60,4 +60,13 @@ public class EffectClassParser<A extends Attributes> extends AbstractClassParser
 		return new EffectClass<E>(line,c);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractClassParser#defaultClass()
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	protected ParsedClass<Effect> defaultClass() {
+		return new EffectClass<Effect>(null,Effect.class);
+	}
+
 }

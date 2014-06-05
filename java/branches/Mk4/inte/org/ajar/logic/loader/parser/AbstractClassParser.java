@@ -47,6 +47,8 @@ public abstract class AbstractClassParser<A extends Object> extends AbstractPars
 	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends A> IParsedClass<E> getParsedClass(String line) throws LogicParserException {
+		if(line == null) return (IParsedClass<E>) defaultClass();
+		
 		if(isNamed(line)){
 			String name = getName(line);
 			ParsedClass<E> p = 
@@ -65,6 +67,8 @@ public abstract class AbstractClassParser<A extends Object> extends AbstractPars
 			return makeParsedClass(line,c);
 		}
 	}
+	
+	protected abstract ParsedClass<?> defaultClass();
 	
 	protected <E extends A> Class<E> parseClass(String line) throws LogicParserException{
 		Matcher m = getMatcher(line);

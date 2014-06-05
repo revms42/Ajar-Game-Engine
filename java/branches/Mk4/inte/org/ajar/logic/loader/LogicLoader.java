@@ -29,9 +29,23 @@ package org.ajar.logic.loader;
 
 import java.util.Vector;
 
+import org.ajar.age.Attributes;
 import org.ajar.logic.loader.capsule.StateObject;
+import org.ajar.logic.loader.parser.AbstractMemberParser;
+import org.ajar.logic.loader.parser.ActionClassParser;
+import org.ajar.logic.loader.parser.ActionInstanceParser;
+import org.ajar.logic.loader.parser.ActionMemberParser;
 import org.ajar.logic.loader.parser.BooleanParser;
+import org.ajar.logic.loader.parser.ChainClassParser;
+import org.ajar.logic.loader.parser.ChainInstanceParser;
+import org.ajar.logic.loader.parser.ChainMemberParser;
 import org.ajar.logic.loader.parser.CharParser;
+import org.ajar.logic.loader.parser.ConditionClassParser;
+import org.ajar.logic.loader.parser.ConditionInstanceParser;
+import org.ajar.logic.loader.parser.ConditionMemberParser;
+import org.ajar.logic.loader.parser.EffectClassParser;
+import org.ajar.logic.loader.parser.EffectInstanceParser;
+import org.ajar.logic.loader.parser.EffectMemberParser;
 import org.ajar.logic.loader.parser.FloatParser;
 import org.ajar.logic.loader.parser.IntParser;
 import org.ajar.logic.loader.parser.LongParser;
@@ -48,7 +62,7 @@ public class LogicLoader {
 	private final static Vector<IArgParser<?>> argumentParsers;
 	
 	static {
-		topLevelParsers = new Vector<IParser<?>>();
+		
 		
 		argumentParsers = new Vector<IArgParser<?>>();
 		addArgumentParser(new IntParser());
@@ -60,6 +74,27 @@ public class LogicLoader {
 		addArgumentParser(new StringParser());
 		
 		memberParsers = new Vector<IParser<?>>();
+		topLevelParsers = new Vector<IParser<?>>();
+		
+		ActionClassParser acp = new ActionClassParser();
+		ActionMemberParser amp = new ActionMemberParser(acp);
+		ActionInstanceParser aip = new ActionInstanceParser(amp);
+		addTopLevelParser(acp);addMemberParser(amp);addTopLevelParser(aip);
+		
+		EffectClassParser<Attributes> ecp = new EffectClassParser<Attributes>();
+		EffectMemberParser<Attributes> emp = new EffectMemberParser<Attributes>(ecp);
+		EffectInstanceParser<Attributes> eip = new EffectInstanceParser<Attributes>(emp);
+		addTopLevelParser(ecp);addMemberParser(emp);addTopLevelParser(eip);
+		
+		ChainClassParser<Attributes> ccp = new ChainClassParser<Attributes>();
+		ChainMemberParser<Attributes> cmp = new ChainMemberParser<Attributes>(ccp);
+		ChainInstanceParser<Attributes> cip = new ChainInstanceParser<Attributes>(cmp);
+		addTopLevelParser(ccp);addMemberParser(cmp);addTopLevelParser(cip);
+		
+		ConditionClassParser<Attributes> ocp = new ConditionClassParser<Attributes>();
+		ConditionMemberParser<Attributes> omp = new ConditionMemberParser<Attributes>(ocp);
+		ConditionInstanceParser<Attributes> oip = new ConditionInstanceParser<Attributes>(omp);
+		addTopLevelParser(ocp);addMemberParser(omp);addTopLevelParser(oip);
 	}
 
 	public static void parseFile(String data){
@@ -87,13 +122,14 @@ public class LogicLoader {
 			return;
 		}
 	}
+
 	
 	public static IParser<?> findMemberParser(String line, Class<?> type){
 		for(IParser<?> p : memberParsers){
 			if(p.canParse(line)){
 				if(type != null){
 					try {
-						if(p.getParsedClass(null).assignableFrom(type)){
+						if(type.isAssignableFrom(p.getParsedClass(null).objectClass())){
 							return p;
 						}
 					} catch (LogicParserException e) {}
@@ -110,7 +146,7 @@ public class LogicLoader {
 			if(p.canParse(line)){
 				if(type != null){
 					try {
-						if(p.getParsedClass(null).assignableFrom(type)){
+						if(p.getParsedClass(null).isSubClassOf(type)){
 							return p;
 						}
 					} catch (LogicParserException e) {}

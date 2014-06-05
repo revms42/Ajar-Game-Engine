@@ -60,4 +60,13 @@ public class ChainClassParser<A extends Attributes> extends AbstractClassParser<
 		return new ChainClass<E>(line,c);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractClassParser#defaultClass()
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	protected ParsedClass<ChainableEffect> defaultClass() {
+		return new ChainClass<ChainableEffect>(null,ChainableEffect.class);
+	}
+
 }

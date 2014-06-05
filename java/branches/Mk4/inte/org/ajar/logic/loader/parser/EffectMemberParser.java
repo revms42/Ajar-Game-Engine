@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 29, 2014 Matthew Stockbridge
+ * Copyright (C) Jun 5, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser
- * EffectInstanceParser.java
+ * EffectMemberParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -32,25 +32,46 @@ import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.logic.Effect;
+import org.ajar.logic.loader.LogicParserException;
+import org.ajar.logic.loader.capsule.EffectObject;
+import org.ajar.logic.loader.capsule.ParsedClass;
+import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
  * @author mstockbr
- * TODO: Rewriting to use member parsers instead of class parsers.
+ *
  */
-public class EffectInstanceParser<A extends Attributes> extends AbstractInstanceParser<Effect<A>> {
+public class EffectMemberParser<A extends Attributes> extends AbstractMemberParser<Effect<A>> {
 
-	private final Pattern instancePattern;
+//	private final static String patternString =
+//			"(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)(\\(.*?\\))?(=\\w+)?(?!\\&|\\?)";
+	private final static String patternString =
+			"(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)(\\(.*?\\))?(=\\w+)?";
+	
+	private final static Pattern instancePattern = 
+			Pattern.compile("^(?<!\\&|\\?|\\|)\\*?" + patternString + "(?!\\&|\\?|\\|)$");
 	
 	/**
 	 * @param classParser
 	 */
-	public EffectInstanceParser(EffectMemberParser<A> memberParser) {
-		super(memberParser);
-		instancePattern = Pattern.compile(
-				"[eE]ffect:(?<" + GROUP_NAME +">\\w+)\\{\\*" +
-				memberParser.getMatcherPattern() + 
-				"\\}"
-		);
+	public EffectMemberParser(EffectClassParser<A> classParser) {
+		super(classParser);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractMemberParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.lang.String)
+	 */
+	@Override
+	protected <E extends Effect<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
+		return new EffectObject<E>(line,type);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractMemberParser#getMatcherPattern()
+	 */
+	@Override
+	protected String getMatcherPattern() {
+		return patternString;
 	}
 
 	/* (non-Javadoc)
