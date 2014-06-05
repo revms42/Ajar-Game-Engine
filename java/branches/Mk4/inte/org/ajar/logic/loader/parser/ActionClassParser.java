@@ -58,4 +58,12 @@ public class ActionClassParser extends AbstractClassParser<Action> {
 		return new ActionClass<E>(line,c);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractClassParser#defaultClass()
+	 */
+	@Override
+	protected ParsedClass<Action> defaultClass() {
+		return new ActionClass<Action>(null,Action.class);
+	}
+
 }

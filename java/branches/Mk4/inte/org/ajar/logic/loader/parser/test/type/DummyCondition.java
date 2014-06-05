@@ -38,12 +38,16 @@ import org.ajar.age.logic.HashAttributes;
  */
 public class DummyCondition extends AbstractCondition<HashAttributes> {
 
+	public final Effect<HashAttributes> trueEffect;
+	public final Effect<HashAttributes> falseEffect;
 	/**
 	 * @param trueEffect
 	 * @param falseEffect
 	 */
 	public DummyCondition(Effect<HashAttributes> trueEffect, Effect<HashAttributes> falseEffect) {
 		super(trueEffect, falseEffect);
+		this.trueEffect = trueEffect;
+		this.falseEffect = falseEffect;
 	}
 
 	/* (non-Javadoc)

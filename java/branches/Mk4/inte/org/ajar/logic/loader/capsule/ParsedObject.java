@@ -87,8 +87,8 @@ public class ParsedObject<A extends Object> implements IParsedObject<A> {
 	 * @see org.ajar.logic.loader.IParsedClass#assignableFrom(java.lang.Class)
 	 */
 	@Override
-	public boolean assignableFrom(Class<?> clazz) {
-		return this.clazz.assignableFrom(clazz);
+	public boolean isSubClassOf(Class<?> clazz) {
+		return this.clazz.isSubClassOf(clazz);
 	}
 
 	/* (non-Javadoc)

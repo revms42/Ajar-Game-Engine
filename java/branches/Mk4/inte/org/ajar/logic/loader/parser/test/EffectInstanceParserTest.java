@@ -36,6 +36,7 @@ import org.ajar.logic.loader.capsule.EffectObject;
 import org.ajar.logic.loader.capsule.ParsedObject;
 import org.ajar.logic.loader.parser.EffectClassParser;
 import org.ajar.logic.loader.parser.EffectInstanceParser;
+import org.ajar.logic.loader.parser.EffectMemberParser;
 import org.ajar.logic.loader.parser.test.type.DummyEffect;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +56,7 @@ public class EffectInstanceParserTest {
 			"Effect:Dummy{*org.ajar.logic.loader.parser.test.type.DummyEffect}";
 	
 	private EffectClassParser<HashAttributes> classParser;
+	private EffectMemberParser<HashAttributes> memberParser;
 	private EffectInstanceParser<HashAttributes> parser;
 	/**
 	 * @throws java.lang.Exception
@@ -63,7 +65,10 @@ public class EffectInstanceParserTest {
 	public void setUp() throws Exception {
 		classParser = new EffectClassParser<HashAttributes>();
 		classParser.getParsedClass(namedClass);
-		parser = new EffectInstanceParser<HashAttributes>(classParser);
+		
+		memberParser = new EffectMemberParser<HashAttributes>(classParser);
+		
+		parser = new EffectInstanceParser<HashAttributes>(memberParser);
 	}
 
 	/**

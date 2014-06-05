@@ -63,8 +63,8 @@ public class ParsedClass<A extends Object> implements IParsedClass<A> {
 		return objectClass;
 	}
 	
-	public boolean assignableFrom(Class<?> clazz){
-		return objectClass.isAssignableFrom(clazz);
+	public boolean isSubClassOf(Class<?> clazz){
+		return clazz.isAssignableFrom(objectClass);
 	}
 	
 	public static ParsedClass<?> getParsedClass(Class<?> c){

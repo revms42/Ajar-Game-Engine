@@ -36,6 +36,7 @@ import org.ajar.logic.loader.capsule.ChainObject;
 import org.ajar.logic.loader.capsule.ParsedObject;
 import org.ajar.logic.loader.parser.ChainClassParser;
 import org.ajar.logic.loader.parser.ChainInstanceParser;
+import org.ajar.logic.loader.parser.ChainMemberParser;
 import org.ajar.logic.loader.parser.test.type.DummyChain;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +58,7 @@ public class ChainInstanceParserTest {
 			"Chain:Dummy{*org.ajar.logic.loader.parser.test.type.DummyChain}";
 	
 	private ChainClassParser<HashAttributes> classParser;
+	private ChainMemberParser<HashAttributes> memberParser;
 	private ChainInstanceParser<HashAttributes> parser;
 	/**
 	 * @throws java.lang.Exception
@@ -65,7 +67,10 @@ public class ChainInstanceParserTest {
 	public void setUp() throws Exception {
 		classParser = new ChainClassParser<HashAttributes>();
 		classParser.getParsedClass(namedClass);
-		parser = new ChainInstanceParser<HashAttributes>(classParser);
+		
+		memberParser = new ChainMemberParser<HashAttributes>(classParser);
+		
+		parser = new ChainInstanceParser<HashAttributes>(memberParser);
 	}
 
 	/**

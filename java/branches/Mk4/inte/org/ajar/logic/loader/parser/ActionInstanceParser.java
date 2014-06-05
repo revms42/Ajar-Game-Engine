@@ -31,9 +31,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ajar.age.logic.Action;
-import org.ajar.logic.loader.capsule.ActionObject;
-import org.ajar.logic.loader.capsule.ParsedClass;
-import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
  * @author mstockbr
@@ -41,22 +38,17 @@ import org.ajar.logic.loader.capsule.ParsedObject;
  */
 public class ActionInstanceParser extends AbstractInstanceParser<Action> {
 
-	private final static Pattern instancePattern = 
-			Pattern.compile("[aA]ction:(?<" + GROUP_NAME +">\\w+)\\{\\*(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)((?:\\().*?(?:\\)))?\\}");
+	private final Pattern instancePattern;
+	
 	/**
 	 * @param classParser
 	 */
-	public ActionInstanceParser(ActionClassParser classParser) {
-		super(classParser);
-		// TODO Auto-generated constructor stub
-	}
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractInstanceParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.util.List, java.lang.String)
-	 */
-	@Override
-	protected <E extends Action> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) {
-		return new ActionObject<E>(line,type);
+	public ActionInstanceParser(ActionMemberParser memberParser) {
+		super(memberParser);
+		instancePattern = Pattern.compile(
+				"[aA]ction:(?<" + GROUP_NAME +">\\w+)\\{\\*" +
+				memberParser.getMatcherPattern() + "\\}"
+		);
 	}
 
 	/* (non-Javadoc)

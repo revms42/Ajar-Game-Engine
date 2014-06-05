@@ -59,13 +59,11 @@ public abstract class AbstractMemberParser<A extends Object> extends AbstractPar
 		}
 		
 		if(line.startsWith("*")){
-			if(ParsedClass.getNamedClass(line.substring(1)) != null){
-				return produceObject(line);
-			}
+			return produceObject(line);
 		}else if(ParsedObject.getNamedObject(line) != null){
 			ParsedObject<?>  obj = ParsedObject.getNamedObject(line);
 			
-			if(obj.assignableFrom(classParser.getParsedClass(null).objectClass())){
+			if(obj.isSubClassOf(classParser.getParsedClass(null).objectClass())){
 				return (IParsedClass<E>) obj;
 			}
 		}
@@ -116,4 +114,5 @@ public abstract class AbstractMemberParser<A extends Object> extends AbstractPar
 		return GROUP_CLASS;
 	}
 
+	protected abstract String getMatcherPattern();
 }

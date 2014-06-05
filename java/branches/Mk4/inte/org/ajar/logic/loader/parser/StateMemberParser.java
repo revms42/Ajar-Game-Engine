@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 28, 2014 Matthew Stockbridge
+ * Copyright (C) Jun 5, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser
- * ConditionClassParser.java
+ * StateMemberParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -31,41 +31,53 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
-import org.ajar.age.logic.Condition;
-import org.ajar.logic.loader.capsule.ConditionClass;
+import org.ajar.age.logic.State;
+import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ParsedClass;
+import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
  * @author mstockbr
  *
  */
-public class ConditionClassParser<A extends Attributes> extends AbstractClassParser<Condition<A>> {
+public class StateMemberParser<A extends Attributes> extends AbstractMemberParser<State<A>> {
 
-	private final static Pattern conditionPattern = 
-			Pattern.compile("[cC]ondition\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
+	private final static String patternString = ".+";
+	
+	private final static Pattern instancePattern = 
+			Pattern.compile(patternString);
+	
+	/**
+	 * @param classParser
+	 */
+	public StateMemberParser(StateClassParser<A> classParser) {
+		super(classParser);
+	}
+
 	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractClassParser#getMatcher(java.lang.String)
+	 * @see org.ajar.logic.loader.parser.AbstractMemberParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.lang.String)
+	 */
+	@Override
+	protected <E extends State<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
+		//Should only ever get what's between the {}'s
+		
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractMemberParser#getMatcherPattern()
+	 */
+	@Override
+	protected String getMatcherPattern() {
+		return patternString;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractParser#getMatcher(java.lang.String)
 	 */
 	@Override
 	protected Matcher getMatcher(String line) {
-		return conditionPattern.matcher(line);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractClassParser#makeParsedClass(java.lang.String, java.lang.Class)
-	 */
-	@Override
-	protected <E extends Condition<A>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
-		return new ConditionClass<E>(line,c);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractClassParser#defaultClass()
-	 */
-	@SuppressWarnings("rawtypes")
-	@Override
-	protected ParsedClass<Condition> defaultClass() {
-		return new ConditionClass<Condition>(null,Condition.class);
+		return instancePattern.matcher(line);
 	}
 
 }

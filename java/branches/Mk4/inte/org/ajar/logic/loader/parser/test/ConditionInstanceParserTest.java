@@ -34,10 +34,14 @@ import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ConditionObject;
 import org.ajar.logic.loader.capsule.ParsedObject;
+import org.ajar.logic.loader.parser.ChainClassParser;
 import org.ajar.logic.loader.parser.ConditionClassParser;
 import org.ajar.logic.loader.parser.ConditionInstanceParser;
+import org.ajar.logic.loader.parser.ConditionMemberParser;
 import org.ajar.logic.loader.parser.EffectClassParser;
+import org.ajar.logic.loader.parser.test.type.DummyChain;
 import org.ajar.logic.loader.parser.test.type.DummyCondition;
+import org.ajar.logic.loader.parser.test.type.DummyEffect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,19 +53,35 @@ public class ConditionInstanceParserTest {
 
 	public final static String effectClass = 
 			"Effect:DummyEffect{org.ajar.logic.loader.parser.test.type.DummyEffect}";
+	public final static String chainClass = 
+			"Chain:DummyChain{org.ajar.logic.loader.parser.test.type.DummyChain}";
 	public final static String effectInstance = 
-			"Effect:DummyEffect{org.ajar.logic.loader.parser.test.type.DummyEffect}";
+			"Effect:DummyEffect{*org.ajar.logic.loader.parser.test.type.DummyEffect}";
 	
 	public final static String namedClass = 
 			"Condition:DummyCondition{org.ajar.logic.loader.parser.test.type.DummyCondition}";
 	//Conditions with no = sign will be treated as returning null, or remaining in the same state.
 	public final static String namedNewCondition = 
-			"Condition:DummyNamedChain{*DummyCondition?*DummyEffect|*DummyEffect}";
+			"Condition:DummyNamedCondition{*DummyCondition?*DummyEffect|*DummyEffect}";
+	
+	public final static String namedFullCondition = 
+			"Condition:DummyFullCondition{*org.ajar.logic.loader.parser.test.type.DummyCondition?" +
+			"*org.ajar.logic.loader.parser.test.type.DummyEffect|" +
+			"*org.ajar.logic.loader.parser.test.type.DummyEffect}";
+	
+	public final static String namedComplicatedCondition = 
+			"Condition:DummyComplicatedCondition{*DummyCondition?" +
+			"*DummyCondition?" +
+			"*DummyEffect|" +
+			"*DummyEffect|" +
+			"*DummyChain&*DummyChain}";
 	
 	private ConditionClassParser<HashAttributes> classParser;
+	private ConditionMemberParser<HashAttributes> memberParser;
 	private ConditionInstanceParser<HashAttributes> parser;
 	
 	private EffectClassParser<HashAttributes> effectClassParser;
+	private ChainClassParser<HashAttributes> chainClassParser;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -71,9 +91,15 @@ public class ConditionInstanceParserTest {
 		effectClassParser = new EffectClassParser<HashAttributes>();
 		effectClassParser.getParsedClass(effectClass);
 		
+		chainClassParser = new ChainClassParser<HashAttributes>();
+		chainClassParser.getParsedClass(chainClass);
+		
 		classParser = new ConditionClassParser<HashAttributes>();
 		classParser.getParsedClass(namedClass);
-		parser = new ConditionInstanceParser<HashAttributes>(classParser);
+		
+		memberParser = new ConditionMemberParser<HashAttributes>(classParser);
+		
+		parser = new ConditionInstanceParser<HashAttributes>(memberParser);
 	}
 
 	/**
@@ -88,10 +114,46 @@ public class ConditionInstanceParserTest {
 			assertNotNull("No output for full-path-null!",pc);
 			assertTrue("Full-path-null is not an Condition object!", pc.getClass() == ConditionObject.class);
 			assertTrue("Full-path-null is not Dummy Condition!", pc.objectClass() == DummyCondition.class);
-			assertEquals(pc,ParsedObject.getNamedObject("Dummy"));
+			assertEquals(pc,ParsedObject.getNamedObject("DummyNamedCondition"));
 			DummyCondition d = ((ConditionObject<DummyCondition>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
 			assertNull(d.perform(null));
+			assertTrue(d.trueEffect instanceof DummyEffect);
+			assertTrue(d.falseEffect instanceof DummyEffect);
+			assertTrue(d.trueEffect != d.falseEffect);
+			
+			//Named full condition
+			pc = parser.getParsedClass(namedFullCondition);
+			assertNotNull("No output for full-path-null!",pc);
+			assertTrue("Full-path-null is not an Condition object!", pc.getClass() == ConditionObject.class);
+			assertTrue("Full-path-null is not Dummy Condition!", pc.objectClass() == DummyCondition.class);
+			assertEquals(pc,ParsedObject.getNamedObject("DummyFullCondition"));
+			d = ((ConditionObject<DummyCondition>)pc).getParsedObject();
+			assertNotNull("Parsed object is null!",d);
+			assertNull(d.perform(null));
+			assertTrue(d.trueEffect instanceof DummyEffect);
+			assertTrue(d.falseEffect instanceof DummyEffect);
+			assertTrue(d.trueEffect != d.falseEffect);
+			
+			//Named complicated condition
+			pc = parser.getParsedClass(namedComplicatedCondition);
+			assertNotNull("No output for full-path-null!",pc);
+			assertTrue("Full-path-null is not an Condition object!", pc.getClass() == ConditionObject.class);
+			assertTrue("Full-path-null is not Dummy Condition!", pc.objectClass() == DummyCondition.class);
+			assertEquals(pc,ParsedObject.getNamedObject("DummyComplicatedCondition"));
+			d = ((ConditionObject<DummyCondition>)pc).getParsedObject();
+			assertNotNull("Parsed object is null!",d);
+			assertNull(d.perform(null));
+			assertTrue(d.trueEffect instanceof DummyCondition);
+			assertTrue(d.falseEffect instanceof DummyChain);
+			
+			DummyCondition t = (DummyCondition) d.trueEffect;
+			assertTrue(t.trueEffect instanceof DummyEffect);
+			assertTrue(t.falseEffect instanceof DummyEffect);
+			assertTrue(t.trueEffect != t.falseEffect);
+			
+			DummyChain f = (DummyChain) d.falseEffect;
+			assertNotNull(f.getChild());
 		}catch(LogicParserException e){
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -104,6 +166,8 @@ public class ConditionInstanceParserTest {
 	@Test
 	public void testCanParse() {
 		assertTrue("Cannot parse good instance!",parser.canParse(namedNewCondition));
+		assertTrue("Cannot parse good instance!",parser.canParse(namedFullCondition));
+		assertTrue("Cannot parse good instance!",parser.canParse(namedComplicatedCondition));
 	}
 
 }

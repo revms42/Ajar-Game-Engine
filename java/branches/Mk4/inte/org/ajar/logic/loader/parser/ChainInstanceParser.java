@@ -32,10 +32,6 @@ import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.logic.ChainableEffect;
-import org.ajar.logic.loader.LogicParserException;
-import org.ajar.logic.loader.capsule.ChainObject;
-import org.ajar.logic.loader.capsule.ParsedClass;
-import org.ajar.logic.loader.capsule.ParsedObject;
 
 /**
  * @author mstockbr
@@ -43,14 +39,18 @@ import org.ajar.logic.loader.capsule.ParsedObject;
  */
 public class ChainInstanceParser<A extends Attributes> extends AbstractInstanceParser<ChainableEffect<A>> {
 
-	private final static Pattern instancePattern = 
-			Pattern.compile("[cC]hain:(?<" + GROUP_NAME +">\\w+)\\{\\*(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\&?|(\\(.*?\\))?(=\\w+)?\\&?.*\\}");
+	private final Pattern instancePattern;
 	
 	/**
 	 * @param classParser
 	 */
-	public ChainInstanceParser(ChainClassParser<A> classParser) {
-		super(classParser);
+	public ChainInstanceParser(ChainMemberParser<A> memberParser) {
+		super(memberParser);
+		instancePattern = Pattern.compile(
+				"[cC]hain:(?<" + GROUP_NAME +">\\w+)\\{\\*" + 
+				memberParser.getMatcherPattern() + 
+				"\\}"
+		);
 	}
 
 	/* (non-Javadoc)
@@ -59,58 +59,5 @@ public class ChainInstanceParser<A extends Attributes> extends AbstractInstanceP
 	@Override
 	protected Matcher getMatcher(String line) {
 		return instancePattern.matcher(line);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.parser.AbstractInstanceParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.lang.String)
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	protected <E extends ChainableEffect<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
-		//Get the guts of the chain.
-		line = line.split("\\{",2)[1];
-		if(line.endsWith("}")) line = line.substring(0, line.length()-1);
-		
-		String[] nextLine = line.split("\\&",2);
-		
-		ChainObject<E> first = makeChainObject(nextLine[0],null,type);
-		
-		if(nextLine.length > 1){
-			line = nextLine[1];
-			ChainObject last = first;
-			while(line.contains("&")){
-				nextLine = line.split("\\&",2);
-				
-				last = makeChainObject(nextLine[0],last,null);
-				
-				line = nextLine[1];
-			}
-			last = makeChainObject(nextLine[1],last,null);
-		}
-
-		return first;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private ChainObject makeChainObject(String line, ChainObject last, ParsedClass<?> type) throws LogicParserException {
-		ParsedObject<?> po = ParsedObject.getNamedObject(line);
-		ChainObject next = null;
-		if(po != null && po instanceof ChainObject){
-			next = (ChainObject)po;
-		}else if(line.startsWith("*")){
-			String newLine = line.substring(1);
-			if(type == null){
-				next = new ChainObject(newLine, parseClass(newLine));
-			}else{
-				next = new ChainObject(newLine,type);
-			}
-		}else{
-			throw new LogicParserException("Couldn't find chain class " + line);
-		}
-		if(last != null){
-			last.addChild(next);
-		}
-		
-		return next;
 	}
 }

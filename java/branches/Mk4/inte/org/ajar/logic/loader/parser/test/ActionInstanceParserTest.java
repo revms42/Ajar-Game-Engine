@@ -35,6 +35,7 @@ import org.ajar.logic.loader.capsule.ActionObject;
 import org.ajar.logic.loader.capsule.ParsedObject;
 import org.ajar.logic.loader.parser.ActionClassParser;
 import org.ajar.logic.loader.parser.ActionInstanceParser;
+import org.ajar.logic.loader.parser.ActionMemberParser;
 import org.ajar.logic.loader.parser.test.type.DummyAction;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +71,7 @@ public class ActionInstanceParserTest {
 			"Action:Dummy9{*org.ajar.logic.loader.parser.test.type.DummyAction(\"Dummy\")}";
 	
 	private ActionClassParser classParser;
+	private ActionMemberParser memberParser;
 	private ActionInstanceParser parser;
 	/**
 	 * @throws java.lang.Exception
@@ -78,7 +80,10 @@ public class ActionInstanceParserTest {
 	public void setUp() throws Exception {
 		classParser = new ActionClassParser();
 		classParser.getParsedClass(namedClass);
-		parser = new ActionInstanceParser(classParser);
+		
+		memberParser = new ActionMemberParser(classParser);
+		
+		parser = new ActionInstanceParser(memberParser);
 	}
 
 	/**
