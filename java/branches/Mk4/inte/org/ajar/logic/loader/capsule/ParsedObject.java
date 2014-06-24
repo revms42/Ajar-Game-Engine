@@ -56,11 +56,11 @@ public class ParsedObject<A extends Object> implements IParsedObject<A> {
 	
 	protected final static Pattern args = Pattern.compile("(?>\\()(.+)\\s?,?(?>\\))");
 	
-	private final String line;
-	private final IParsedClass<A> clazz;
+	protected String line;
+	protected IParsedClass<A> clazz;
 	
-	private Vector<Object> arguments;
-	private Vector<Class<?>> argTypes;
+	protected Vector<Object> arguments;
+	protected Vector<Class<?>> argTypes;
 	protected A instance;
 	
 	public ParsedObject(String line, IParsedClass<A> c){

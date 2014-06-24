@@ -27,19 +27,28 @@
  */
 package org.ajar.logic.loader.capsule;
 
-import org.ajar.age.logic.State;
+import org.ajar.age.logic.DefaultState;
 
 /**
  * @author reverend
  *
  */
-public class StateClass<A extends State<?>> extends ParsedClass<A> {
-
+public class StateClass<A extends DefaultState<?>> extends ParsedClass<A> {
+	
 	/**
 	 * @param line
 	 * @param clazz
 	 */
 	public StateClass(String line, Class<A> clazz) {
 		super(line, clazz);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Class<A> objectClass(){
+		if(super.objectClass() == null){
+			return (Class<A>) DefaultState.class;
+		}else{
+			return super.objectClass();
+		}
 	}
 }

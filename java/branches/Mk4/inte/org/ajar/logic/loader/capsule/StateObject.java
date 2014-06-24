@@ -27,17 +27,20 @@
  */
 package org.ajar.logic.loader.capsule;
 
-import org.ajar.age.logic.State;
+import java.util.Vector;
+import java.util.regex.Matcher;
+
+import org.ajar.age.logic.DefaultState;
+import org.ajar.logic.loader.IArgParser;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 
 /**
  * @author reverend
  *
  */
-public class StateObject<A extends State<?>> extends ParsedObject<A> {
-
-	private StateObject<A> superState;
+public class StateObject<A extends DefaultState<?>> extends ParsedObject<A> {
 	
 	/**
 	 * @param line
@@ -46,28 +49,34 @@ public class StateObject<A extends State<?>> extends ParsedObject<A> {
 	public StateObject(String line, IParsedClass<A> c) {
 		super(line, c);
 	}
-
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.IParsedObject#getParsedObject()
-	 */
-	@Override
-	public A getParsedObject() throws LogicParserException{
-		//TODO: You need to be able to figure out your super state and find it.
+	
+	public StateObject(){
+		super(null,null);
 	}
 	
-	/**
-	 * @return the superState
-	 */
-	public StateObject<A> getSuperState() {
-		return superState;
-	}
+	//TODO: It would be good to figure out how to merge this with the parent class definition.
+	protected Object[] getArguments() throws LogicParserException{
+		if(arguments == null){
+			Matcher m = args.matcher(lineDefinition());
+			
+			Vector<Object> args = new Vector<Object>();
+			while(m.find()){
+				String arg = m.group(1);
+				
+				if(arg.startsWith("^")){
+					args.add(LogicLoader.findState(arg.substring(1)));
+				}else{
+					IArgParser<?> p = LogicLoader.findArgumentParser(arg, null);
+					Object a = p.parse(arg);
+					
+					args.add(a);
+				}
+			}
+			
+			arguments = args;
+		}
 
-	/**
-	 * @param superState the superState to set
-	 */
-	public void setSuperState(StateObject<A> superState) {
-		this.superState = superState;
+		return arguments.toArray(new Object[arguments.size()]);
 	}
-
 	
 }

@@ -31,7 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
-import org.ajar.age.logic.State;
+import org.ajar.age.logic.DefaultState;
 import org.ajar.logic.loader.capsule.ParsedClass;
 import org.ajar.logic.loader.capsule.StateClass;
 
@@ -39,7 +39,7 @@ import org.ajar.logic.loader.capsule.StateClass;
  * @author mstockbr
  *
  */
-public class StateClassParser<A extends Attributes> extends AbstractClassParser<State<A>> {
+public class StateClassParser<A extends Attributes> extends AbstractClassParser<DefaultState<A>> {
 
 	private final static Pattern statePattern = 
 			Pattern.compile("[sS]tate\\:(?<" + GROUP_NAME +">\\w+)\\{(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)\\}");
@@ -56,7 +56,7 @@ public class StateClassParser<A extends Attributes> extends AbstractClassParser<
 	 * @see org.ajar.logic.loader.parser.AbstractClassParser#makeParsedClass(java.lang.String, java.lang.Class)
 	 */
 	@Override
-	protected <E extends State<A>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
+	protected <E extends DefaultState<A>> ParsedClass<E> makeParsedClass(String line, Class<E> c) {
 		return new StateClass<E>(line,c);
 	}
 
@@ -65,8 +65,8 @@ public class StateClassParser<A extends Attributes> extends AbstractClassParser<
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	protected ParsedClass<State> defaultClass() {
-		return new StateClass<State>(null,State.class);
+	protected ParsedClass<DefaultState> defaultClass() {
+		return new StateClass<DefaultState>(null,DefaultState.class);
 	}
 
 }

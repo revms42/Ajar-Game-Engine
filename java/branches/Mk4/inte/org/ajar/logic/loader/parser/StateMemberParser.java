@@ -31,16 +31,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
-import org.ajar.age.logic.State;
+import org.ajar.age.logic.DefaultState;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ParsedClass;
 import org.ajar.logic.loader.capsule.ParsedObject;
+import org.ajar.logic.loader.capsule.StateObject;
 
 /**
  * @author mstockbr
  *
  */
-public class StateMemberParser<A extends Attributes> extends AbstractMemberParser<State<A>> {
+public class StateMemberParser<A extends Attributes> extends AbstractMemberParser<DefaultState<A>> {
 
 	private final static String patternString = ".+";
 	
@@ -58,10 +59,10 @@ public class StateMemberParser<A extends Attributes> extends AbstractMemberParse
 	 * @see org.ajar.logic.loader.parser.AbstractMemberParser#makeParsedObject(org.ajar.logic.loader.capsule.ParsedClass, java.lang.String)
 	 */
 	@Override
-	protected <E extends State<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
+	protected <E extends DefaultState<A>> ParsedObject<E> makeParsedObject(ParsedClass<E> type, String line) throws LogicParserException {
 		//Should only ever get what's between the {}'s
-		
-		return null;
+		//TODO: Figure out if we need to parse out the guts here or hand them to the object.
+		return new StateObject<E>(line,type);
 	}
 
 	/* (non-Javadoc)
