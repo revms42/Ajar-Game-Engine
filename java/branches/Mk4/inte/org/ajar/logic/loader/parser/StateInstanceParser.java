@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 29, 2014 Matthew Stockbridge
+ * Copyright (C) Jun 30, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  * AGE
  * org.ajar.logic.loader.parser
- * AbstractInstanceParser.java
+ * StateInstanceParser.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -30,25 +30,32 @@ package org.ajar.logic.loader.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.ajar.age.Attributes;
+import org.ajar.age.logic.DefaultState;
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ParsedObject;
+import org.ajar.logic.loader.capsule.StateObject;
 
 /**
- * @author mstockbr
+ * @author reverend
  *
  */
-public abstract class AbstractInstanceParser<A extends Object> extends AbstractParser<A> {
+public class StateInstanceParser<A extends Attributes> extends AbstractInstanceParser<DefaultState<A>> {
+
+	private final static String GROUP_ARGS = "args";
 	
-	public static String GROUP_NAME="name";
-	public static String GROUP_DEFINITION="definition";
-	
-	protected final static Pattern definition = Pattern.compile("\\{(?<" + GROUP_DEFINITION + ">.+)\\}$");
-	
-	protected final AbstractMemberParser<A> memberParser;
-	
-	public AbstractInstanceParser(AbstractMemberParser<A> memberParser){
-		this.memberParser = memberParser;
+	private final Pattern instancePattern;
+	/**
+	 * @param memberParser
+	 */
+	public StateInstanceParser(StateMemberParser<A> memberParser) {
+		super(memberParser);
+		instancePattern = Pattern.compile(
+				"[sS]tate:(?<" + GROUP_NAME +">\\w+)(\\((?<" + GROUP_ARGS + ">[\\w,\\s]+)\\))?\\s*\\{\\s*" +
+				memberParser.getMapPattern() +
+				"\\s*\\}"
+		);
 	}
 	
 	/* (non-Javadoc)
@@ -56,37 +63,35 @@ public abstract class AbstractInstanceParser<A extends Object> extends AbstractP
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <E extends A> IParsedClass<E> getParsedClass(String line) throws LogicParserException {
+	public IParsedClass<A> getParsedClass(String line) throws LogicParserException {
 		if(isNamed(line)){
 			String name = getName(line);
-			ParsedObject<E> p = (ParsedObject<E>) ParsedObject.getNamedObject(name);
+			StateObject<A,?> p = (StateObject<A,?>) ParsedObject.getNamedObject(name);
 			
 			if(p == null){
 				String definition = getDefinition(line);
 				
-				p = (ParsedObject<E>) memberParser.getParsedClass(definition);
+				p = (StateObject<A,?>) memberParser.getParsedClass(definition);
 				
 				ParsedObject.putNamedObject(name, p);
+			}else if(p.lineDefinition() == null){
+				String definition = getDefinition(line);
+				
+				p.setLineDefinition(definition);
 			}
 			
-			return p;
+			return (IParsedClass<A>) p;
 		}else{
-			String definition = getDefinition(line);
-			return (IParsedClass<E>) memberParser.getParsedClass(definition);
+			throw new LogicParserException("States must all be named! State: " + line);
 		}
 	}
-	
-	protected String getDefinition(String line) throws LogicParserException {
-		if(line != null){
-			Matcher m = definition.matcher(line);
-			
-			if(m.find()){
-				return m.group(GROUP_DEFINITION);
-			}else{
-				throw new LogicParserException("Cannot find definition in line " + line);
-			}
-		}else{
-			return null;
-		}
+
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.parser.AbstractParser#getMatcher(java.lang.String)
+	 */
+	@Override
+	protected Matcher getMatcher(String line) {
+		return instancePattern.matcher(line);
 	}
+
 }

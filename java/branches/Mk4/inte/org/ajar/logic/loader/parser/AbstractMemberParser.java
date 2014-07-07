@@ -42,7 +42,7 @@ public abstract class AbstractMemberParser<A extends Object> extends AbstractPar
 
 	public static String GROUP_CLASS="class";
 	
-	private final AbstractClassParser<A> classParser;
+	protected final AbstractClassParser<A> classParser;
 	
 	public AbstractMemberParser(AbstractClassParser<A> classParser){
 		this.classParser = classParser;
@@ -71,7 +71,7 @@ public abstract class AbstractMemberParser<A extends Object> extends AbstractPar
 		throw new LogicParserException("Cannot handle member '" + line + "'!");
 	}
 	
-	private <E extends A> ParsedObject<E> produceObject(String line) throws LogicParserException {
+	protected <E extends A> ParsedObject<E> produceObject(String line) throws LogicParserException {
 		ParsedClass<E> pc = parseClass(line);
 		
 		return makeParsedObject(pc,line);
@@ -86,6 +86,8 @@ public abstract class AbstractMemberParser<A extends Object> extends AbstractPar
 			String className = m.group(getClassGroup());
 			
 			ParsedClass<?> p = ParsedClass.getNamedClass(line);
+			
+			if(p == null) p = ParsedClass.getNamedClass(className);
 			
 			if(p == null){
 				Class<E> c = classParser.loadClass(className);

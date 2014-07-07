@@ -51,4 +51,7 @@ public class DummyEffect extends AbstractEffect<HashAttributes> {
 	@Override
 	protected void doAction(Entity<HashAttributes> entity) {}
 
+	public State<HashAttributes> getResultantState(){
+		return this.result;
+	}
 }
