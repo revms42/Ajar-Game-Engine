@@ -45,7 +45,7 @@ import org.ajar.logic.loader.LogicParserException;
  */
 public class EffectObject<A extends Effect<?>> extends ParsedObject<A> {
 	
-	private StateObject<?> resultantState;
+	private StateObject<?,?> resultantState;
 	/**
 	 * @param line
 	 * @param c
@@ -54,11 +54,11 @@ public class EffectObject<A extends Effect<?>> extends ParsedObject<A> {
 		super(line, c);
 	}
 	
-	public StateObject<?> getResultantState() {
+	public StateObject<?,?> getResultantState() {
 		return resultantState;
 	}
 	
-	public void setResultantState(StateObject<?> resultantState) {
+	public void setResultantState(StateObject<?,?> resultantState) {
 		this.resultantState = resultantState;
 	}
 	

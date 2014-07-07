@@ -30,6 +30,8 @@ package org.ajar.logic.loader;
 import java.util.Vector;
 
 import org.ajar.age.Attributes;
+import org.ajar.age.logic.DefaultState;
+import org.ajar.logic.loader.capsule.ParsedObject;
 import org.ajar.logic.loader.capsule.StateObject;
 import org.ajar.logic.loader.parser.AbstractMemberParser;
 import org.ajar.logic.loader.parser.ActionClassParser;
@@ -50,6 +52,9 @@ import org.ajar.logic.loader.parser.FloatParser;
 import org.ajar.logic.loader.parser.IntParser;
 import org.ajar.logic.loader.parser.LongParser;
 import org.ajar.logic.loader.parser.DoubleParser;
+import org.ajar.logic.loader.parser.StateClassParser;
+import org.ajar.logic.loader.parser.StateInstanceParser;
+import org.ajar.logic.loader.parser.StateMemberParser;
 import org.ajar.logic.loader.parser.StringParser;
 
 /**
@@ -95,6 +100,11 @@ public class LogicLoader {
 		ConditionMemberParser<Attributes> omp = new ConditionMemberParser<Attributes>(ocp);
 		ConditionInstanceParser<Attributes> oip = new ConditionInstanceParser<Attributes>(omp);
 		addTopLevelParser(ocp);addMemberParser(omp);addTopLevelParser(oip);
+		
+		StateClassParser<Attributes> scp = new StateClassParser<Attributes>();
+		StateMemberParser<Attributes> smp = new StateMemberParser<Attributes>(scp);
+		StateInstanceParser<Attributes> sip = new StateInstanceParser<Attributes>(smp);
+		addTopLevelParser(scp);/*addMemberParser(omp);*/addTopLevelParser(sip);
 	}
 
 	public static void parseFile(String data){
@@ -146,7 +156,8 @@ public class LogicLoader {
 			if(p.canParse(line)){
 				if(type != null){
 					try {
-						if(p.getParsedClass(null).isSubClassOf(type)){
+						IParsedClass<?> pc = p.getParsedClass(null);
+						if(pc != null && pc.isSubClassOf(type)){
 							return p;
 						}
 					} catch (LogicParserException e) {}
@@ -185,7 +196,12 @@ public class LogicLoader {
 		topLevelParsers.add(p);
 	}
 	
-	public static StateObject<?> findState(String name){
-		//TODO: Find state.
+	public static StateObject<?,?> findState(String name) throws LogicParserException{
+		StateObject<?,?> object = (StateObject<?, ?>) ParsedObject.getNamedObject(name);
+		if(object == null){
+			object = new StateObject<Attributes,DefaultState<Attributes>>();
+			ParsedObject.putNamedObject(name, object);
+		}
+		return object;
 	}
 }

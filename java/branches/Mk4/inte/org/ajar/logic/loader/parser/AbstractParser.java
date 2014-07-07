@@ -51,9 +51,13 @@ public abstract class AbstractParser<A extends Object> implements IParser<A> {
 	}
 	
 	protected String getName(String line){
-		Matcher m = getMatcher(line);
-		if(m.find()){
-			return m.group(getNameGroup());
+		if(line != null){
+			Matcher m = getMatcher(line);
+			if(m.find()){
+				return m.group(getNameGroup());
+			}else{
+				return null;
+			}
 		}else{
 			return null;
 		}
