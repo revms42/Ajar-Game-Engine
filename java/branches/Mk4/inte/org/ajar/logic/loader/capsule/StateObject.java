@@ -79,7 +79,7 @@ public class StateObject<H extends Attributes, A extends DefaultState<H>> extend
 				String arg = m.group(1);
 				
 				if(arg.startsWith("^")){
-					args.add(LogicLoader.findState(arg.substring(1)));
+					args.add(LogicLoader.findState(arg.substring(1)).getParsedObject());
 				}else{
 					IArgParser<?> p = LogicLoader.findArgumentParser(arg, null);
 					Object a = p.parse(arg);
@@ -111,6 +111,10 @@ public class StateObject<H extends Attributes, A extends DefaultState<H>> extend
 	private void populateState() throws LogicParserException{
 		this.populated = true;
 		String[] mappings = lineDefinition().split("\n");
+		
+		if(mappings[0].startsWith("(^")){
+			mappings[0] = mappings[0].split("\\)")[1];
+		}
 		
 		for(String line : mappings){
 			String[] actionEffect = line.split("\\Q->\\E");

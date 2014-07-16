@@ -67,6 +67,10 @@ public class ParsedObject<A extends Object> implements IParsedObject<A> {
 		this.line = line;
 		this.clazz = c;
 	}
+	
+	public static void clearCache(){
+		namedObjects.clear();
+	}
 	/* (non-Javadoc)
 	 * @see org.ajar.logic.loader.IParsedClass#lineDefinition()
 	 */

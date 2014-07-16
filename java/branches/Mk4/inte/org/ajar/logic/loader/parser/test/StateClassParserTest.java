@@ -29,7 +29,9 @@ package org.ajar.logic.loader.parser.test;
 
 import static org.junit.Assert.*;
 
+import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.StateClass;
 import org.ajar.logic.loader.parser.StateClassParser;
@@ -47,11 +49,12 @@ public class StateClassParserTest {
 	
 	private final static String badClass = 
 			"State:Dummy{Action->Effect1=org.ajar.logic.loader.parser.test.type.DummyState}";
-	private StateClassParser parser;
+	private StateClassParser<HashAttributes> parser;
 	
 	@Before
 	public void setup() throws Exception {
-		parser = new StateClassParser();
+		LogicLoader.clearCaches();
+		parser = new StateClassParser<HashAttributes>();
 	}
 	
 	/**

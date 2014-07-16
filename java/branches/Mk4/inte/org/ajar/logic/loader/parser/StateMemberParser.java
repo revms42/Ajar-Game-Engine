@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.logic.DefaultState;
+import org.ajar.age.logic.DerivedState;
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ParsedClass;
@@ -44,8 +45,8 @@ import org.ajar.logic.loader.capsule.StateObject;
  */
 public class StateMemberParser<A extends Attributes> extends AbstractMemberParser<DefaultState<A>> {
 	
-	private final static String patternString = "(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)?";
-	private final static String mapString = "(\\s*\\w+\\Q->\\E.+?\\=.+\\n?)+";
+	private final static String patternString = "(?<" + GROUP_CLASS + ">[" + CHARS + "]+)?";
+	private final static String mapString = "(\\s*[" + CHARS + "]+\\Q->\\E.+?(\\=.+)?\\n?)+";
 	
 	private final static Pattern instancePattern = 
 			Pattern.compile(patternString);
@@ -136,6 +137,10 @@ public class StateMemberParser<A extends Attributes> extends AbstractMemberParse
 				className = m.group(getClassGroup());
 			}catch(IllegalArgumentException iae){
 				return (ParsedClass<E>) new ParsedClass<DefaultState>(line,DefaultState.class);
+			}
+			
+			if(className == null && line.contains("(^")){
+				return (ParsedClass<E>) new ParsedClass<DerivedState>(line,DerivedState.class);
 			}
 			
 			ParsedClass<?> p = ParsedClass.getNamedClass(line);

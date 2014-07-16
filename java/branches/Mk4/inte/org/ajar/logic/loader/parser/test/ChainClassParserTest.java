@@ -29,7 +29,9 @@ package org.ajar.logic.loader.parser.test;
 
 import static org.junit.Assert.*;
 
+import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ChainClass;
 import org.ajar.logic.loader.parser.ChainClassParser;
@@ -46,13 +48,14 @@ public class ChainClassParserTest {
 	public final static String goodClass = 
 			"Chain:Dummy{org.ajar.logic.loader.parser.test.type.DummyChain}";
 	
-	private ChainClassParser parser;
+	private ChainClassParser<HashAttributes> parser;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		parser = new ChainClassParser();
+		LogicLoader.clearCaches();
+		parser = new ChainClassParser<HashAttributes>();
 	}
 
 	/**

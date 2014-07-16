@@ -52,7 +52,7 @@ public class StateInstanceParser<A extends Attributes> extends AbstractInstanceP
 	public StateInstanceParser(StateMemberParser<A> memberParser) {
 		super(memberParser);
 		instancePattern = Pattern.compile(
-				"[sS]tate:(?<" + GROUP_NAME +">\\w+)(\\((?<" + GROUP_ARGS + ">[\\w,\\s]+)\\))?\\s*\\{\\s*" +
+				"[sS]tate:(?<" + GROUP_NAME +">[" + CHARS + "]+)(\\((?<" + GROUP_ARGS + ">[" + CHARS + "\\s\\^\\,]+)\\))?\\s*\\{\\s*" +
 				memberParser.getMapPattern() +
 				"\\s*\\}"
 		);
@@ -70,6 +70,11 @@ public class StateInstanceParser<A extends Attributes> extends AbstractInstanceP
 			
 			if(p == null){
 				String definition = getDefinition(line);
+				
+				String args = getArgs(line);
+				if(args != null){
+					definition = "(" + args + ")" + definition;
+				}
 				
 				p = (StateObject<A,?>) memberParser.getParsedClass(definition);
 				
@@ -94,4 +99,17 @@ public class StateInstanceParser<A extends Attributes> extends AbstractInstanceP
 		return instancePattern.matcher(line);
 	}
 
+	protected String getArgs(String line) {
+		if(line != null){
+			Matcher m = getMatcher(line);
+			
+			if(m.find()){
+				try{
+					return m.group(GROUP_ARGS);
+				}catch(IllegalArgumentException iae){};
+			}
+		}
+		
+		return null;
+	}
 }

@@ -30,6 +30,7 @@ package org.ajar.logic.loader.parser.test;
 import static org.junit.Assert.*;
 
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ActionClass;
 import org.ajar.logic.loader.parser.ActionClassParser;
@@ -53,6 +54,7 @@ public class ActionClassParserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		LogicLoader.clearCaches();
 		parser = new ActionClassParser();
 	}
 

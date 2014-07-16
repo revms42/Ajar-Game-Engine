@@ -31,6 +31,7 @@ import static org.junit.Assert.*;
 
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ConditionObject;
 import org.ajar.logic.loader.capsule.ParsedObject;
@@ -74,7 +75,7 @@ public class ConditionInstanceParserTest {
 			"*DummyCondition?" +
 			"*DummyEffect|" +
 			"*DummyEffect|" +
-			"*DummyChain&*DummyChain}";
+			"*DummyChain&*DummyChain&}";
 	
 	private ConditionClassParser<HashAttributes> classParser;
 	private ConditionMemberParser<HashAttributes> memberParser;
@@ -88,6 +89,7 @@ public class ConditionInstanceParserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		LogicLoader.clearCaches();
 		effectClassParser = new EffectClassParser<HashAttributes>();
 		effectClassParser.getParsedClass(effectClass);
 		

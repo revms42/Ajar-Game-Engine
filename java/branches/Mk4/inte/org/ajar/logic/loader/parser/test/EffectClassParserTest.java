@@ -31,6 +31,7 @@ import static org.junit.Assert.*;
 
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.EffectClass;
 import org.ajar.logic.loader.parser.EffectClassParser;
@@ -54,6 +55,7 @@ public class EffectClassParserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		LogicLoader.clearCaches();
 		parser = new EffectClassParser<HashAttributes>();
 	}
 

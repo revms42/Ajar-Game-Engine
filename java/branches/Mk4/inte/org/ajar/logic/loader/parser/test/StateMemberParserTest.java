@@ -30,6 +30,7 @@ package org.ajar.logic.loader.parser.test;
 import static org.junit.Assert.*;
 
 import org.ajar.age.logic.HashAttributes;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.parser.StateClassParser;
 import org.ajar.logic.loader.parser.StateMemberParser;
 import org.junit.Before;
@@ -53,6 +54,7 @@ public class StateMemberParserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		LogicLoader.clearCaches();
 		classParser = new StateClassParser<HashAttributes>();
 		classParser.getParsedClass(namedClass);
 		

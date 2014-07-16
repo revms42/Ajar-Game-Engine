@@ -93,6 +93,8 @@ public abstract class AbstractClassParser<A extends Object> extends AbstractPars
 				return myClass;
 			} catch (ClassNotFoundException e) {
 				throw new LogicParserException("Cannot find class " + className,e);
+			} catch (NullPointerException e) {
+				throw new LogicParserException("Cannot find class " + className,e);
 			}
 		}
 	}

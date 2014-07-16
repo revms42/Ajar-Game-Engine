@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 29, 2014 Matthew Stockbridge
+ * Copyright (C) Jul 15, 2014 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.logic.loader.parser
- * AbstractParser.java
+ * org.ajar.logic.loader.parser.test
+ * AllTests.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,46 +25,24 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.ajar.logic.loader.parser;
+package org.ajar.logic.loader.parser.test;
 
-import java.util.regex.Matcher;
-
-import org.ajar.logic.loader.IParser;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * @author mstockbr
  *
  */
-public abstract class AbstractParser<A extends Object> implements IParser<A> {
-	
-	public static String GROUP_NAME="name";
-	public static String CHARS = "a-zA-Z0-9_\\-\\.";
-	
-	protected abstract Matcher getMatcher(String line);
-	
-	protected String getNameGroup(){
-		return GROUP_NAME;
-	}
-	
-	@Override
-	public boolean canParse(String line) {
-		return getMatcher(line).find();
-	}
-	
-	protected String getName(String line){
-		if(line != null){
-			Matcher m = getMatcher(line);
-			if(m.find()){
-				return m.group(getNameGroup());
-			}else{
-				return null;
-			}
-		}else{
-			return null;
-		}
-	}
-	
-	protected boolean isNamed(String line){
-		return getName(line) != null;
-	}
+@RunWith(Suite.class)
+@SuiteClasses({ ActionClassParserTest.class, ActionInstanceParserTest.class,
+		ChainClassParserTest.class, ChainInstanceParserTest.class,
+		ChainMemberParserTest.class, ConditionClassParserTest.class,
+		ConditionInstanceParserTest.class, EffectClassParserTest.class,
+		EffectInstanceParserTest.class, EffectMemberParserTest.class,
+		StateClassParserTest.class, StateInstanceParserTest.class,
+		StateMemberParserTest.class })
+public class AllTests {
+
 }

@@ -47,12 +47,16 @@ public class ParsedClass<A extends Object> implements IParsedClass<A> {
 	}
 	
 	private final String lineDefinition;
-	private final Class<A> objectClass;
+	protected final Class<A> objectClass;
 	
 	public ParsedClass(String line, Class<A> clazz){
 		this.lineDefinition = line;
 		this.objectClass = clazz;
 		mappedClasses.put(objectClass.getCanonicalName(), this);
+	}
+	
+	public static void clearCache(){
+		mappedClasses.clear();
 	}
 
 	public String lineDefinition(){
@@ -83,20 +87,73 @@ public class ParsedClass<A extends Object> implements IParsedClass<A> {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.ajar.logic.loader.IParsedClass#constructorFor(java.util.List)
-	 */
+//	/* (non-Javadoc)
+//	 * @see org.ajar.logic.loader.IParsedClass#constructorFor(java.util.List)
+//	 */
+//	@Override
+//	public Constructor<A> constructorFor(List<Class<?>> args) throws LogicParserException {
+//		try {
+//			return objectClass.getConstructor(args.toArray(new Class<?>[args.size()]));
+//		} catch (Exception e) {
+//			String msg = "Could not get constructor for " + objectClass.getCanonicalName() + 
+//					" with arg types ";
+//			for(Class<?> c : args){
+//				msg = msg + c.getName() + ", ";
+//			}
+//			throw new LogicParserException(msg,e);
+//		}
+//	}
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Constructor<A> constructorFor(List<Class<?>> args) throws LogicParserException {
-		try {
-			return objectClass.getConstructor(args.toArray(new Class<?>[args.size()]));
-		} catch (Exception e) {
-			String msg = "Could not get constructor for " + objectClass.getCanonicalName() + 
-					" with arg types ";
-			for(Class<?> c : args){
-				msg = msg + c.getName() + ", ";
+		search:
+		for(Constructor<?> con : objectClass.getConstructors()){
+			Class<?>[] params = con.getParameterTypes();
+			
+			if(con.isVarArgs()){
+				int i = 0;
+				for(; i < params.length; i++){
+					if(!params[i].isAssignableFrom(args.get(i))){
+						continue search;
+					}
+				}
+				for(int j = i; j < args.size(); j++){
+					if(!params[i].isAssignableFrom(args.get(j))){
+						continue search;
+					}
+				}
+				return (Constructor<A>) con;
+			}else{
+				if(args.size() == params.length){
+					for(int i = 0; i < params.length; i++){
+						if(!params[i].isAssignableFrom(args.get(i))){
+							continue search;
+						}
+					}
+					return (Constructor<A>) con;
+				}
 			}
-			throw new LogicParserException(msg,e);
 		}
+		String msg = "Could not get constructor for " + objectClass.getCanonicalName() + " with arg types ";
+		for(Class<?> c : args){
+			msg = msg + c.getName() + ", ";
+		}
+		throw new LogicParserException(msg);
+//		try {
+//			return objectClass.getConstructor(args.toArray(new Class<?>[args.size()]));
+//		} catch (Exception e) {
+//			try {
+//				fixStateClass(args);
+//				return objectClass.getConstructor(args.toArray(new Class<?>[args.size()]));
+//			} catch (Exception e2) {
+//				String msg = "Could not get constructor for " + objectClass.getCanonicalName() + 
+//						" with arg types ";
+//				for(Class<?> c : args){
+//					msg = msg + c.getName() + ", ";
+//				}
+//				throw new LogicParserException(msg,e);
+//			}
+//		}
 	}
 }
