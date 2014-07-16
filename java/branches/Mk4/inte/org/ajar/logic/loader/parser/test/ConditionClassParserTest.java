@@ -29,7 +29,9 @@ package org.ajar.logic.loader.parser.test;
 
 import static org.junit.Assert.*;
 
+import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ConditionClass;
 import org.ajar.logic.loader.parser.ConditionClassParser;
@@ -46,14 +48,15 @@ public class ConditionClassParserTest {
 	public final static String goodClass = 
 			"Condition:Dummy{org.ajar.logic.loader.parser.test.type.DummyCondition}";
 	
-	private ConditionClassParser parser;
+	private ConditionClassParser<HashAttributes> parser;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		parser = new ConditionClassParser();
+		LogicLoader.clearCaches();
+		parser = new ConditionClassParser<HashAttributes>();
 	}
 
 	/**

@@ -33,29 +33,18 @@ import org.ajar.age.logic.Action;
 import org.ajar.age.logic.ChainableEffect;
 import org.ajar.age.logic.Condition;
 import org.ajar.age.logic.DefaultState;
+import org.ajar.age.logic.DerivedState;
 import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
 import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
-import org.ajar.logic.loader.capsule.ConditionObject;
 import org.ajar.logic.loader.capsule.ParsedObject;
 import org.ajar.logic.loader.capsule.StateObject;
-import org.ajar.logic.loader.parser.ActionClassParser;
-import org.ajar.logic.loader.parser.ActionInstanceParser;
-import org.ajar.logic.loader.parser.ActionMemberParser;
-import org.ajar.logic.loader.parser.ChainClassParser;
-import org.ajar.logic.loader.parser.ChainMemberParser;
-import org.ajar.logic.loader.parser.ConditionClassParser;
-import org.ajar.logic.loader.parser.ConditionMemberParser;
-import org.ajar.logic.loader.parser.EffectClassParser;
-import org.ajar.logic.loader.parser.EffectMemberParser;
 import org.ajar.logic.loader.parser.StateClassParser;
 import org.ajar.logic.loader.parser.StateInstanceParser;
 import org.ajar.logic.loader.parser.StateMemberParser;
-import org.ajar.logic.loader.parser.test.type.DummyCondition;
 import org.ajar.logic.loader.parser.test.type.DummyEffect;
-import org.ajar.logic.loader.parser.test.type.DummyState;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -90,13 +79,14 @@ public class StateInstanceParserTest {
 	public final static String effectInstance2 =
 			"Effect:DummyEffect2{*DummyEffect=DummyNamed2}";
 	
+	
 	public final static String chainInstance1 = 
-			"Chain:DummyChain1{*DummyChain}";
+			"Chain:DummyChain1{*DummyChain&}";
 	public final static String chainInstance2 = 
 			"Chain:DummyChain2{*DummyChain&*DummyChain&*DummyChain=DummyNamed2}";
 	
-	public final static String conditionInstance1 = 
-			"Condition:DummyCondition1{*DummyCondition}";
+//	public final static String conditionInstance1 = 
+//			"Condition:DummyCondition1{*DummyCondition}";
 	public final static String conditionInstance2 = 
 			"Condition:DummyCondition2{*DummyCondition?*DummyEffect=DummyNamed2|*DummyEffect=DummyNamed3}";
 	
@@ -104,17 +94,21 @@ public class StateInstanceParserTest {
 			"State:DummyState{org.ajar.logic.loader.parser.test.type.DummyState}";
 	
 	public final static String namedEState = 
-			"State:" + actionName1 + "{" + actionName1 + "->*DummyEffect=DummyNamed\n"
-			+ actionName2 + "->DummyEffect1=DummyNamed2\n"
+			"State:DummyNamed1{" + actionName1 + "->*DummyEffect=DummyNamed1\n"
+			+ actionName2 + "->DummyEffect1\n"
 			+ actionName3 + "->DummyEffect2}";
 	public final static String namedCState = 
 			"State:DummyNamed2{" + actionName1 + "->*DummyChain&*DummyChain&*DummyChain=DummyNamed2\n"
-			+ actionName2 + "->DummyChain1=DummyNamed1\n"
+			+ actionName2 + "->DummyChain1\n"
 			+ actionName3 + "->DummyChain2}";
 	public final static String namedNState = 
 			"State:DummyNamed3{" + actionName1 + "->*DummyCondition?*DummyEffect=DummyNamed2|*DummyEffect=DummyNamed3\n"
-			+ actionName2 + "->DummyCondition1?*DummyEffect=DummyNamed2|*DummyEffect=DummyNamed3\n"
+			+ actionName2 + "->*DummyCondition?*DummyEffect=DummyNamed2|*DummyEffect=DummyNamed3\n"
 			+ actionName3 + "->DummyCondition2}";
+	//State:DummyNamed4(^DummyNamed1){DummyAction1->*DummyEffect=DummyNamed3}
+	public final static String namedDState = 
+			"State:DummyNamed4(^DummyNamed1){" 
+			+ actionName1 + "->*DummyEffect=DummyNamed3}";
 	
 	private StateClassParser<HashAttributes> classParser;
 	private StateMemberParser<HashAttributes> memberParser;
@@ -125,6 +119,7 @@ public class StateInstanceParserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		LogicLoader.clearCaches();
 		classParser = new StateClassParser<HashAttributes>();
 		classParser.getParsedClass(namedClass);
 		
@@ -146,7 +141,7 @@ public class StateInstanceParserTest {
 		LogicLoader.findTopLevelParser(chainInstance2, ChainableEffect.class).getParsedClass(chainInstance2);
 		
 		LogicLoader.findTopLevelParser(conditionClass, Condition.class).getParsedClass(conditionClass);
-		LogicLoader.findTopLevelParser(conditionInstance1, Condition.class).getParsedClass(conditionInstance1);
+//		LogicLoader.findTopLevelParser(conditionInstance1, Condition.class).getParsedClass(conditionInstance1);
 		LogicLoader.findTopLevelParser(conditionInstance2, Condition.class).getParsedClass(conditionInstance2);
 	}
 
@@ -158,22 +153,33 @@ public class StateInstanceParserTest {
 	@Test
 	public void testGetParsedClass() throws LogicParserException {
 		try {
+			//Effect State
 			IParsedClass<?> pc = parser.getParsedClass(namedEState);
+			parser.getParsedClass(namedCState);
+			parser.getParsedClass(namedNState);
 			assertNotNull("No output for full-path-null!",pc);
-			assertTrue("Full-path-null is not an Condition object!", pc.getClass() == StateObject.class);
-			assertTrue("Full-path-null is not Default State!", pc.objectClass() == DefaultState.class);
-			assertEquals(pc,ParsedObject.getNamedObject("DummyNamed"));
+			assertTrue("Named Effect State is not an State object!", pc.getClass() == StateObject.class);
+			assertTrue("Named Effect State is not Default State!", pc.objectClass() == DefaultState.class);
+			assertEquals(pc,ParsedObject.getNamedObject("DummyNamed1"));
 			DefaultState<HashAttributes> d = 
 					((StateObject<HashAttributes,DefaultState<HashAttributes>>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.getEffectMap());
+			assertNotNull(d.getEffectMap());
 			
-			Action action1 = (Action) ParsedObject.getNamedObject(actionName1);
-			Action action2 = (Action) ParsedObject.getNamedObject(actionName2);
-			Action action3 = (Action) ParsedObject.getNamedObject(actionName3);
-			
-			assertEquals(d.getEffectMap().get(action1),DummyEffect.class);
+			Action action1 = (Action) ParsedObject.getNamedObject(actionName1).getParsedObject();
+			assertEquals(d.getEffectMap().get(action1).getClass(),DummyEffect.class);
 			assertEquals(((DummyEffect)d.getEffectMap().get(action1)).getResultantState(), d);
+			
+			Action action2 = (Action) ParsedObject.getNamedObject(actionName2).getParsedObject();
+			assertEquals(d.getEffectMap().get(action2).getClass(),DummyEffect.class);
+			assertEquals(((DummyEffect)d.getEffectMap().get(action2)).getResultantState(), null);
+			
+			Action action3 = (Action) ParsedObject.getNamedObject(actionName3).getParsedObject();
+			DefaultState<HashAttributes> state2 = 
+					(DefaultState<HashAttributes>) ParsedObject.getNamedObject("DummyNamed2").getParsedObject();
+			assertEquals(d.getEffectMap().get(action3).getClass(),DummyEffect.class);
+			assertEquals(((DummyEffect)d.getEffectMap().get(action3)).getResultantState(), state2);
+
 		} catch (LogicParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -181,6 +187,50 @@ public class StateInstanceParserTest {
 		}
 	}
 
+	/**
+	 * Test method for {@link org.ajar.logic.loader.parser.AbstractInstanceParser#getParsedClass(java.lang.String)}.
+	 * @throws LogicParserException 
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetParsedClassDerived() throws LogicParserException {
+		try {
+			//Derived State
+			parser.getParsedClass(namedEState);
+			IParsedClass<?> pc = parser.getParsedClass(namedDState);
+			parser.getParsedClass(namedCState);
+			parser.getParsedClass(namedNState);
+			assertNotNull("No output for full-path-null!",pc);
+			assertTrue("Named Derived State is not an State object!", pc.getClass() == StateObject.class);
+			assertTrue("Named Derived State is not Derived State!", pc.objectClass() == DerivedState.class);
+			assertEquals(pc,ParsedObject.getNamedObject("DummyNamed4"));
+			DerivedState<HashAttributes> d = 
+					((StateObject<HashAttributes,DerivedState<HashAttributes>>)pc).getParsedObject();
+			assertNotNull("Parsed object is null!",d);
+			assertNotNull(d.getEffectMap());
+			
+			Action action2 = (Action) ParsedObject.getNamedObject(actionName2).getParsedObject();
+			//assertEquals(d.getEffectMap().get(action2).getClass(),DummyEffect.class);
+			assertEquals(d.perform(null, action2), null);
+			
+			Action action3 = (Action) ParsedObject.getNamedObject(actionName3).getParsedObject();
+			DefaultState<HashAttributes> state2 = 
+					(DefaultState<HashAttributes>) ParsedObject.getNamedObject("DummyNamed2").getParsedObject();
+			//assertEquals(d.getEffectMap().get(action3).getClass(),DummyEffect.class);
+			assertEquals(d.perform(null, action3), state2);
+			
+			Action action1 = (Action) ParsedObject.getNamedObject(actionName1).getParsedObject();
+			DefaultState<HashAttributes> state3 = 
+					(DefaultState<HashAttributes>) ParsedObject.getNamedObject("DummyNamed3").getParsedObject();
+			assertEquals(d.getEffectMap().get(action1).getClass(),DummyEffect.class);
+			assertEquals(((DummyEffect)d.getEffectMap().get(action1)).getResultantState(), state3);
+
+		} catch (LogicParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+	}
 	/**
 	 * Test method for {@link org.ajar.logic.loader.parser.AbstractParser#canParse(java.lang.String)}.
 	 */

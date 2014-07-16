@@ -43,7 +43,7 @@ public abstract class AbstractInstanceParser<A extends Object> extends AbstractP
 	public static String GROUP_NAME="name";
 	public static String GROUP_DEFINITION="definition";
 	
-	protected final static Pattern definition = Pattern.compile("\\{(?<" + GROUP_DEFINITION + ">.+)\\}$");
+	protected final static Pattern definition = Pattern.compile("\\{(?<" + GROUP_DEFINITION + ">(.|\\n)+)\\}$");
 	
 	protected final AbstractMemberParser<A> memberParser;
 	

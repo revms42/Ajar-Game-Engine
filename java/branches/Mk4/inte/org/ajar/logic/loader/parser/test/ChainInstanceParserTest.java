@@ -31,6 +31,7 @@ import static org.junit.Assert.*;
 
 import org.ajar.age.logic.HashAttributes;
 import org.ajar.logic.loader.IParsedClass;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.LogicParserException;
 import org.ajar.logic.loader.capsule.ChainObject;
 import org.ajar.logic.loader.capsule.ParsedObject;
@@ -49,13 +50,14 @@ public class ChainInstanceParserTest {
 	
 	public final static String namedClass = 
 			"Chain:DummyChain{org.ajar.logic.loader.parser.test.type.DummyChain}";
+
 	public final static String namedNull = 
-			"Chain:DummyNamed{*DummyChain}";
+			"Chain:DummyNamed{*DummyChain&}";
 	public final static String namedNewChain = 
-			"Chain:DummyNamedChain{*DummyChain&*DummyChain&*DummyChain}";
+			"Chain:DummyNamedChain{*DummyChain&*DummyChain&*DummyChain&}";
 	
 	public final static String fullPathNull = 
-			"Chain:Dummy{*org.ajar.logic.loader.parser.test.type.DummyChain}";
+			"Chain:Dummy{*org.ajar.logic.loader.parser.test.type.DummyChain&*org.ajar.logic.loader.parser.test.type.DummyChain&}";
 	
 	private ChainClassParser<HashAttributes> classParser;
 	private ChainMemberParser<HashAttributes> memberParser;
@@ -65,6 +67,7 @@ public class ChainInstanceParserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		LogicLoader.clearCaches();
 		classParser = new ChainClassParser<HashAttributes>();
 		classParser.getParsedClass(namedClass);
 		

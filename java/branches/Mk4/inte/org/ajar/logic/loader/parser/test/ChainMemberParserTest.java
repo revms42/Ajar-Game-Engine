@@ -30,6 +30,7 @@ package org.ajar.logic.loader.parser.test;
 import static org.junit.Assert.*;
 
 import org.ajar.age.logic.HashAttributes;
+import org.ajar.logic.loader.LogicLoader;
 import org.ajar.logic.loader.parser.ChainClassParser;
 import org.ajar.logic.loader.parser.ChainMemberParser;
 import org.junit.Before;
@@ -56,6 +57,7 @@ public class ChainMemberParserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		LogicLoader.clearCaches();
 		classParser = new ChainClassParser<HashAttributes>();
 		classParser.getParsedClass(namedClass);
 		

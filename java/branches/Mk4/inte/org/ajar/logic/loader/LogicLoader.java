@@ -31,9 +31,9 @@ import java.util.Vector;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.logic.DefaultState;
+import org.ajar.logic.loader.capsule.ParsedClass;
 import org.ajar.logic.loader.capsule.ParsedObject;
 import org.ajar.logic.loader.capsule.StateObject;
-import org.ajar.logic.loader.parser.AbstractMemberParser;
 import org.ajar.logic.loader.parser.ActionClassParser;
 import org.ajar.logic.loader.parser.ActionInstanceParser;
 import org.ajar.logic.loader.parser.ActionMemberParser;
@@ -67,9 +67,13 @@ public class LogicLoader {
 	private final static Vector<IArgParser<?>> argumentParsers;
 	
 	static {
-		
-		
 		argumentParsers = new Vector<IArgParser<?>>();
+		memberParsers = new Vector<IParser<?>>();
+		topLevelParsers = new Vector<IParser<?>>();
+		addDefaultParsers();
+	}
+
+	private static void addDefaultParsers(){
 		addArgumentParser(new IntParser());
 		addArgumentParser(new LongParser());
 		addArgumentParser(new FloatParser());
@@ -77,9 +81,6 @@ public class LogicLoader {
 		addArgumentParser(new CharParser());
 		addArgumentParser(new BooleanParser());
 		addArgumentParser(new StringParser());
-		
-		memberParsers = new Vector<IParser<?>>();
-		topLevelParsers = new Vector<IParser<?>>();
 		
 		ActionClassParser acp = new ActionClassParser();
 		ActionMemberParser amp = new ActionMemberParser(acp);
@@ -106,7 +107,7 @@ public class LogicLoader {
 		StateInstanceParser<Attributes> sip = new StateInstanceParser<Attributes>(smp);
 		addTopLevelParser(scp);/*addMemberParser(omp);*/addTopLevelParser(sip);
 	}
-
+	
 	public static void parseFile(String data){
 		String[] lines = data.split("\\}");
 		
@@ -156,7 +157,7 @@ public class LogicLoader {
 			if(p.canParse(line)){
 				if(type != null){
 					try {
-						IParsedClass<?> pc = p.getParsedClass(null);
+						IParsedClass<?> pc = p.getParsedClass(line);
 						if(pc != null && pc.isSubClassOf(type)){
 							return p;
 						}
@@ -203,5 +204,24 @@ public class LogicLoader {
 			ParsedObject.putNamedObject(name, object);
 		}
 		return object;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <A extends Object> A read(Class<A> c, String name){
+		ParsedObject<?> o = ParsedObject.getNamedObject(name);
+		if(o.isSubClassOf(c)){
+			return (A) o;
+		}else{
+			return null;
+		}
+	}
+	
+	public static void clearCaches(){
+		ParsedObject.clearCache();
+		ParsedClass.clearCache();
+		topLevelParsers.clear();
+		memberParsers.clear();
+		argumentParsers.clear();
+		addDefaultParsers();
 	}
 }

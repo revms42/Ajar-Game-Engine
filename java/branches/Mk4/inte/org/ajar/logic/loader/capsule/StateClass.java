@@ -27,7 +27,12 @@
  */
 package org.ajar.logic.loader.capsule;
 
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 import org.ajar.age.logic.DefaultState;
+import org.ajar.age.logic.State;
+import org.ajar.logic.loader.LogicParserException;
 
 /**
  * @author reverend
@@ -49,6 +54,36 @@ public class StateClass<A extends DefaultState<?>> extends ParsedClass<A> {
 			return (Class<A>) DefaultState.class;
 		}else{
 			return super.objectClass();
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.ajar.logic.loader.IParsedClass#constructorFor(java.util.List)
+	 */
+	@Override
+	public Constructor<A> constructorFor(List<Class<?>> args) throws LogicParserException {
+		try {
+			return objectClass.getConstructor(args.toArray(new Class<?>[args.size()]));
+		} catch (Exception e) {
+			try {
+				fixStateClass(args);
+				return objectClass.getConstructor(args.toArray(new Class<?>[args.size()]));
+			} catch (Exception e2) {
+				String msg = "Could not get constructor for " + objectClass.getCanonicalName() + 
+						" with arg types ";
+				for(Class<?> c : args){
+					msg = msg + c.getName() + ", ";
+				}
+				throw new LogicParserException(msg,e);
+			}
+		}
+	}
+	
+	private void fixStateClass(List<Class<?>> args) {
+		for(int i = 0; i < args.size(); i++){
+			if(args.get(i).isAssignableFrom(State.class)){
+				args.set(i, State.class);
+			}
 		}
 	}
 }
