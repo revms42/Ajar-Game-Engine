@@ -109,11 +109,20 @@ public class LogicLoader {
 	}
 	
 	public static void parseFile(String data){
-		String[] lines = data.split("\\}");
+		StringBuilder noComment = new StringBuilder();
+		for(String line : data.split("\n")){
+			if(!line.startsWith("#")){
+				noComment.append(line);
+				noComment.append("\n");
+			}
+		}
+		
+		String[] lines = noComment.toString().split("\\}");
 		
 		parseLines:
 		for(String line : lines){
-			line = line + "}";
+			line = line.trim() + "}";
+			if(line.length() == 1) continue parseLines;
 			for(IParser<?> p : topLevelParsers){
 				if(p.canParse(line)){
 					try{
@@ -207,10 +216,10 @@ public class LogicLoader {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <A extends Object> A read(Class<A> c, String name){
+	public static <A extends Object> A read(Class<A> c, String name) throws LogicParserException{
 		ParsedObject<?> o = ParsedObject.getNamedObject(name);
 		if(o.isSubClassOf(c)){
-			return (A) o;
+			return (A) o.getParsedObject();
 		}else{
 			return null;
 		}

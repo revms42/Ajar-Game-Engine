@@ -75,19 +75,35 @@ public class StateObject<H extends Attributes, A extends DefaultState<H>> extend
 			Matcher m = args.matcher(lineDefinition());
 			
 			Vector<Object> args = new Vector<Object>();
-			while(m.find()){
-				String arg = m.group(1);
+			
+//			while(m.find()){
+//				String arg = m.group(1);
+//				
+//				if(arg.startsWith("^")){
+//					args.add(LogicLoader.findState(arg.substring(1)).getParsedObject());
+//				}else{
+//					IArgParser<?> p = LogicLoader.findArgumentParser(arg, null);
+//					Object a = p.parse(arg);
+//					
+//					args.add(a);
+//				}
+//			}
+			if(m.find()){
+				String[] argStrings = m.group(1).split(",");
 				
-				if(arg.startsWith("^")){
-					args.add(LogicLoader.findState(arg.substring(1)).getParsedObject());
-				}else{
-					IArgParser<?> p = LogicLoader.findArgumentParser(arg, null);
-					Object a = p.parse(arg);
+				for(String arg : argStrings){
+					arg = arg.trim();
 					
-					args.add(a);
+					if(arg.startsWith("^")){
+						args.add(LogicLoader.findState(arg.substring(1)).getParsedObject());
+					}else{
+						IArgParser<?> p = LogicLoader.findArgumentParser(arg, null);
+						Object a = p.parse(arg);
+						
+						args.add(a);
+					}
 				}
 			}
-			
 			arguments = args;
 		}
 
@@ -116,17 +132,13 @@ public class StateObject<H extends Attributes, A extends DefaultState<H>> extend
 			mappings[0] = mappings[0].split("\\)")[1];
 		}
 		
+		mappings:
 		for(String line : mappings){
+			line = line.trim();
+			if(line.length() == 0) continue mappings;
 			String[] actionEffect = line.split("\\Q->\\E");
 			
-			IParser<Action> actionParser = 
-				(IParser<Action>) LogicLoader.findMemberParser(actionEffect[0], Action.class);
-			
-			if(actionParser != null){
-				IParsedObject<Action> a = (IParsedObject<Action>) actionParser.getParsedClass(actionEffect[0]);
-				
-				if(a == null) throw new LogicParserException(actionEffect[0] + " is parsed to null!");
-				
+			if(actionEffect[0].equalsIgnoreCase("null")){
 				IParser<Effect<?>> effectParser = 
 					(IParser<Effect<?>>) LogicLoader.findMemberParser(actionEffect[1], Effect.class);
 				
@@ -135,13 +147,36 @@ public class StateObject<H extends Attributes, A extends DefaultState<H>> extend
 					
 					if(e == null) throw new LogicParserException(actionEffect[1] + " is parsed to null!");
 					
-					instance.put(a.getParsedObject(), (Effect<H>) e.getParsedObject());
+					instance.put(null, (Effect<H>) e.getParsedObject());
 				}else{
 					throw new LogicParserException(actionEffect[0] + " is not a recognized effect mapping!");
 				}
 			}else{
-				throw new LogicParserException(actionEffect[0] + " is not a recognized action!");
+				IParser<Action> actionParser = 
+						(IParser<Action>) LogicLoader.findMemberParser(actionEffect[0], Action.class);
+				
+				if(actionParser != null){
+					IParsedObject<Action> a = (IParsedObject<Action>) actionParser.getParsedClass(actionEffect[0]);
+					
+					if(a == null) throw new LogicParserException(actionEffect[0] + " is parsed to null!");
+					
+					IParser<Effect<?>> effectParser = 
+						(IParser<Effect<?>>) LogicLoader.findMemberParser(actionEffect[1], Effect.class);
+					
+					if(effectParser != null){
+						IParsedObject<Effect<?>> e = (IParsedObject<Effect<?>>) effectParser.getParsedClass(actionEffect[1]);
+						
+						if(e == null) throw new LogicParserException(actionEffect[1] + " is parsed to null!");
+						
+						instance.put(a.getParsedObject(), (Effect<H>) e.getParsedObject());
+					}else{
+						throw new LogicParserException(actionEffect[0] + " is not a recognized effect mapping!");
+					}
+				}else{
+					throw new LogicParserException(actionEffect[0] + " is not a recognized action!");
+				}
 			}
+
 		}
 	}
 }
