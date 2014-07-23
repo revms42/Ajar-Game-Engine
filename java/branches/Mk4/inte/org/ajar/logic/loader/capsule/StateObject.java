@@ -129,7 +129,8 @@ public class StateObject<H extends Attributes, A extends DefaultState<H>> extend
 		String[] mappings = lineDefinition().split("\n");
 		
 		if(mappings[0].startsWith("(^")){
-			mappings[0] = mappings[0].split("\\)")[1];
+			String[] split = mappings[0].split("\\)");
+			mappings[0] = split.length > 1 ? split[1] : "";
 		}
 		
 		mappings:

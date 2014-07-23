@@ -48,7 +48,8 @@ public abstract class AbstractChainableEffect<A extends Attributes> extends Abst
 	public State<A> perform(Entity<A> entity){
 		State<A> state = super.perform(entity);
 		if(child != null){
-			child.perform(entity);
+			State<A> cState = child.perform(entity);
+			if(state == null) state = cState;
 		}
 		return state;
 	}

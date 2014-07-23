@@ -39,7 +39,7 @@ public class DummyAction implements Action {
 	public final long b;
 	public final float c;
 	public final double d;
-	public final short e;
+//	public final short e;
 	public final char f;
 	public final boolean g;
 	public final String h;
@@ -49,7 +49,7 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = -1;
 		this.d = -1;
-		this.e = -1;
+		//this.e = -1;
 		this.f = '-';
 		this.g = false;
 		this.h = null;
@@ -60,7 +60,7 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = -1;
 		this.d = -1;
-		this.e = -1;
+		//this.e = -1;
 		this.f = '-';
 		this.g = false;
 		this.h = null;
@@ -71,7 +71,7 @@ public class DummyAction implements Action {
 		this.b = b;
 		this.c = -1;
 		this.d = -1;
-		this.e = -1;
+		//this.e = -1;
 		this.f = '-';
 		this.g = false;
 		this.h = null;
@@ -82,7 +82,7 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = c;
 		this.d = -1;
-		this.e = -1;
+		//this.e = -1;
 		this.f = '-';
 		this.g = false;
 		this.h = null;
@@ -93,7 +93,7 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = -1;
 		this.d = d;
-		this.e = -1;
+		//this.e = -1;
 		this.f = '-';
 		this.g = false;
 		this.h = null;
@@ -104,7 +104,7 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = -1;
 		this.d = -1;
-		this.e = e;
+		//this.e = e;
 		this.f = '-';
 		this.g = false;
 		this.h = null;
@@ -115,7 +115,7 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = -1;
 		this.d = -1;
-		this.e = -1;
+		//this.e = -1;
 		this.f = f;
 		this.g = false;
 		this.h = null;
@@ -126,7 +126,7 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = -1;
 		this.d = -1;
-		this.e = -1;
+		//this.e = -1;
 		this.f = '-';
 		this.g = g;
 		this.h = null;
@@ -137,18 +137,18 @@ public class DummyAction implements Action {
 		this.b = -1;
 		this.c = -1;
 		this.d = -1;
-		this.e = -1;
+		//this.e = -1;
 		this.f = '-';
 		this.g = false;
 		this.h = h;
 	}
 	
-	public DummyAction(int a, long b, float c, double d, short e, char f, boolean g, String h){
+	public DummyAction(int a, long b, float c, double d, /*short e,*/ char f, boolean g, String h){
 		this.a = a;
 		this.b = b;
 		this.c = c;
 		this.d = d;
-		this.e = e;
+		//this.e = e;
 		this.f = f;
 		this.g = g;
 		this.h = h;
