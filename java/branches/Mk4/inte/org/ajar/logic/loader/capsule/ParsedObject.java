@@ -136,10 +136,14 @@ public class ParsedObject<A extends Object> implements IParsedObject<A> {
 			while(m.find()){
 				String arg = m.group(1);
 				
-				IArgParser<?> p = LogicLoader.findArgumentParser(arg, null);
-				Object a = p.parse(arg);
-				
-				args.add(a);
+				//TODO: This will prevent use of comma in strings and chars. Need better split.
+				for(String subArg : arg.split("\\,")){
+					subArg = subArg.trim();
+					IArgParser<?> p = LogicLoader.findArgumentParser(subArg, null);
+					Object a = p.parse(subArg);
+					
+					args.add(a);
+				}
 			}
 			
 			arguments = args;
