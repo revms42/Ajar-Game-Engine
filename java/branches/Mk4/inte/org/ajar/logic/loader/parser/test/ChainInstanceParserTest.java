@@ -53,8 +53,12 @@ public class ChainInstanceParserTest {
 
 	public final static String namedNull = 
 			"Chain:DummyNamed{*DummyChain&}";
+	public final static String namedArgs = 
+			"Chain:DummyNamedArgs{*DummyChain(\"DummyNamedArgs\")&}";
 	public final static String namedNewChain = 
 			"Chain:DummyNamedChain{*DummyChain&*DummyChain&*DummyChain&}";
+	public final static String namedNewChainArgs = 
+			"Chain:DummyNamedChainArgs{*DummyChain(\"D1\")&*DummyChain(\"D2\")&*DummyChain(\"D3\")&}";
 	
 	public final static String fullPathNull = 
 			"Chain:Dummy{*org.ajar.logic.loader.parser.test.type.DummyChain&*org.ajar.logic.loader.parser.test.type.DummyChain&}";
@@ -103,6 +107,17 @@ public class ChainInstanceParserTest {
 			assertNotNull("Parsed object is null!",d);
 			assertNull(d.perform(null));
 			
+			//NamedArgs
+			pc = parser.getParsedClass(namedArgs);
+			assertNotNull("No output for named args!",pc);
+			assertTrue("Named-null is not an Chain object!", pc.getClass() == ChainObject.class);
+			assertTrue("Named-null is not Dummy Chain!", pc.objectClass() == DummyChain.class);
+			assertEquals(pc,ParsedObject.getNamedObject("DummyNamedArgs"));
+			d = ((ChainObject<DummyChain>)pc).getParsedObject();
+			assertNotNull("Parsed object is null!",d);
+			assertNull(d.perform(null));
+			assertEquals("DummyNamedArgs",d.arg1);
+			
 			//NamedNewChain
 			pc = parser.getParsedClass(namedNewChain);
 			assertNotNull("No output for named new chain!",pc);
@@ -117,6 +132,22 @@ public class ChainInstanceParserTest {
 			assertNotNull(d.getChild().getChild());
 			assertEquals(DummyChain.class,d.getChild().getChild().getClass());
 			
+			//NamedNewChainArgs
+			pc = parser.getParsedClass(namedNewChainArgs);
+			assertNotNull("No output for named new chain args!",pc);
+			assertTrue("Named new chain is not an Chain object!", pc.getClass() == ChainObject.class);
+			assertTrue("Named new chain is not Dummy Chain!", pc.objectClass() == DummyChain.class);
+			assertEquals(pc,ParsedObject.getNamedObject("DummyNamedChainArgs"));
+			d = ((ChainObject<DummyChain>)pc).getParsedObject();
+			assertNotNull("Parsed object is null!",d);
+			assertNull(d.perform(null));
+			assertEquals("D1",d.arg1);
+			assertNotNull(d.getChild());
+			assertEquals(DummyChain.class,d.getChild().getClass());
+			assertEquals("D2",((DummyChain)d.getChild()).arg1);
+			assertNotNull(d.getChild().getChild());
+			assertEquals(DummyChain.class,d.getChild().getChild().getClass());
+			assertEquals("D3",((DummyChain)d.getChild().getChild()).arg1);
 		}catch(LogicParserException e){
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -130,6 +161,8 @@ public class ChainInstanceParserTest {
 	public void testCanParse() {
 		assertTrue("Cannot parse good instance!",parser.canParse(fullPathNull));
 		assertTrue("Cannot parse good instance!",parser.canParse(namedNull));
+		assertTrue("Cannot parse good instance!",parser.canParse(namedArgs));
 		assertTrue("Cannot parse good instance!",parser.canParse(namedNewChain));
+		assertTrue("Cannot parse good instance!",parser.canParse(namedNewChainArgs));
 	}
 }

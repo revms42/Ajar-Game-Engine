@@ -38,14 +38,23 @@ import org.ajar.age.logic.State;
  */
 public class DummyChain extends AbstractChainableEffect<HashAttributes> {
 
+	public final String arg1;
 	/**
 	 * @param result
 	 */
 	public DummyChain(State<HashAttributes> result) {
 		super(result);
-		// TODO Auto-generated constructor stub
+		arg1 = null;
 	}
 
+	/**
+	 * @param result
+	 */
+	public DummyChain(String string, State<HashAttributes> result) {
+		super(result);
+		arg1 = string;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */

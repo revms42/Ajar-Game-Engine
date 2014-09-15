@@ -46,6 +46,7 @@ public class ChainMemberParserTest {
 			"Chain:DummyChain{org.ajar.logic.loader.parser.test.type.DummyChain}";
 	
 	public final static String goodPath = "*DummyChain1&*DummyChain2";
+	public final static String goodPath2 = "*DummyChain1(\"Dummy1\")&*DummyChain2(\"Dummy2\")";
 
 	public final static String bad2Path = "*DummyChain?*DummyChain|*DummyChain";
 	
@@ -70,6 +71,7 @@ public class ChainMemberParserTest {
 	@Test
 	public void testCanParse() {
 		assertTrue("Cannot parse good instance!",memberParser.canParse(goodPath));
+		assertTrue("Cannot parse good instance!",memberParser.canParse(goodPath2));
 		assertFalse("Parsed bad instance!",memberParser.canParse(bad2Path));
 	}
 

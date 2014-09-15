@@ -78,7 +78,7 @@ public class EffectObject<A extends Effect<?>> extends ParsedObject<A> {
 			} catch (LogicParserException e) {
 				State<?> result = parseResultantState();
 				if(args.size() > 0){
-					for(int i = 0; i < argTypes.size(); i++){
+					for(int i = 0; i <= argTypes.size(); i++){
 						argTypes.add(i, State.class);
 						args.add(i,(State<?>)result);
 						try{
@@ -100,18 +100,23 @@ public class EffectObject<A extends Effect<?>> extends ParsedObject<A> {
 					}
 				}
 			}
-			try {
-				this.instance = con.newInstance(args.toArray(new Object[args.size()]));
-			} catch (InstantiationException e) {
-				throw new LogicParserException("Error constructing new instance.",e);
-			} catch (IllegalAccessException e) {
-				throw new LogicParserException("Error constructing new instance.",e);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				throw new LogicParserException("Error constructing new instance.",e);
-			} catch (InvocationTargetException e) {
-				throw new LogicParserException("Error constructing new instance.",e);
+			if(con != null){
+				try {
+					this.instance = con.newInstance(args.toArray(new Object[args.size()]));
+				} catch (InstantiationException e) {
+					throw new LogicParserException("Error constructing new instance.",e);
+				} catch (IllegalAccessException e) {
+					throw new LogicParserException("Error constructing new instance.",e);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+					throw new LogicParserException("Error constructing new instance.",e);
+				} catch (InvocationTargetException e) {
+					throw new LogicParserException("Error constructing new instance.",e);
+				}
+			}else{
+				throw new LogicParserException("Could not find a constructor for " + this.objectClass() + "!");
 			}
+
 		}
 		return super.getInstance();
 	}
