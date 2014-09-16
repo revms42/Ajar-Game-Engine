@@ -46,7 +46,7 @@ public class ChainMemberParserTest {
 			"Chain:DummyChain{org.ajar.logic.loader.parser.test.type.DummyChain}";
 	
 	public final static String goodPath = "*DummyChain1&*DummyChain2";
-	public final static String goodPath2 = "*DummyChain1(\"Dummy1\")&*DummyChain2(\"Dummy2\")";
+	public final static String goodPath2 = "*DummyChain1(\"Dummy1\")&*DummyChain2(\"Dummy2\")=DummyState";
 
 	public final static String bad2Path = "*DummyChain?*DummyChain|*DummyChain";
 	
