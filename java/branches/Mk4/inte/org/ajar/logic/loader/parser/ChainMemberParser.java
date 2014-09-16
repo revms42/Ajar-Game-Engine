@@ -45,7 +45,7 @@ import org.ajar.logic.loader.capsule.ParsedObject;
  */
 public class ChainMemberParser<A extends Attributes> extends AbstractMemberParser<ChainableEffect<A>> {
 
-	private final static String patternString = "(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)(\\&|(\\(.*?\\))\\&|\\=).*";
+	private final static String patternString = "(?<" + GROUP_CLASS + ">[a-zA-Z0-9_\\-\\.]+)(\\&|(\\(.*?\\))(\\&|\\=)|\\=).*";
 	
 	private final static Pattern instancePattern = 
 			Pattern.compile("^(?<!\\||\\?)\\*?" + patternString + "(?!\\||\\?)$");
