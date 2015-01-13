@@ -52,11 +52,11 @@ public class DerivedState<A extends Attributes> extends DefaultState<A> {
 	 * @see org.ajar.age.logic.State#perform(org.ajar.age.logic.Entity, org.ajar.age.logic.Action)
 	 */
 	@Override
-	public State<A> perform(Entity<A> subject, Action e) {
+	public State<A> perform(Entity<A> subject, Event<A> e) {
 		State<A> result = null;
 		if(this.getEffectMap().containsKey(e)){
-			Effect<A> ae = this.getEffectMap().get(e);
-			result = ae.perform(subject);
+			//Effect<A> ae = this.getEffectMap().get(e);
+			result = super.perform(subject, e);
 		}else if(parentState != null){
 			result = parentState.perform(subject, e);
 		}

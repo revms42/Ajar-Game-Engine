@@ -36,6 +36,7 @@ import java.awt.event.MouseListener;
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Controller;
+import org.ajar.age.logic.DefaultEvent;
 import org.ajar.age.logic.Entity;
 import org.ajar.age.logic.HashAttributes;
 
@@ -66,7 +67,7 @@ public class VerController implements Controller<VerAttributes>, KeyListener, Mo
 	public void pollForInput(Entity<VerAttributes> entity) {
 		//TODO: Only one entity takes input right now, otherwise there could be more to this.
 		if(typed != -1){
-			entity.addAction(getAction(typed));
+			entity.addEvent(new DefaultEvent<VerAttributes>(getAction(typed),null));
 			typed = -1;
 		}
 	}

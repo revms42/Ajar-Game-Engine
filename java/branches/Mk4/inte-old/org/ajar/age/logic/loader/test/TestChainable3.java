@@ -12,7 +12,7 @@ public class TestChainable3 extends AbstractChainableEffect<HashAttributes> {
 	}
 
 	@Override
-	protected void doAction(Entity<HashAttributes> entity) {}
+	protected void doAction(Entity<HashAttributes> entity, HashAttributes a) {}
 
 	public State<HashAttributes> getResult() {
 		return this.result;

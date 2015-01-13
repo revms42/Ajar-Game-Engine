@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) May 30, 2014 Matthew Stockbridge
+ * Copyright (C) Jan 12, 2015 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * org.ajar.logic.loader.parser.test.type
- * DummyChain.java
+ * org.ajar.age.logic
+ * Event.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,40 +25,16 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package org.ajar.logic.loader.parser.test.type;
+package org.ajar.age.logic;
 
-import org.ajar.age.logic.AbstractChainableEffect;
-import org.ajar.age.logic.Entity;
-import org.ajar.age.logic.HashAttributes;
-import org.ajar.age.logic.State;
+import org.ajar.age.Attributes;
 
 /**
  * @author mstockbr
- *
+ * @since 0.0.0.207
  */
-public class DummyChain extends AbstractChainableEffect<HashAttributes> {
+public interface Event<A extends Attributes> {
 
-	public final String arg1;
-	/**
-	 * @param result
-	 */
-	public DummyChain(State<HashAttributes> result) {
-		super(result);
-		arg1 = null;
-	}
-
-	/**
-	 * @param result
-	 */
-	public DummyChain(String string, State<HashAttributes> result) {
-		super(result);
-		arg1 = string;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
-	 */
-	@Override
-	protected void doAction(Entity<HashAttributes> entity, HashAttributes a) {}
-
+	public Action getAction();
+	public A getAttributes();
 }

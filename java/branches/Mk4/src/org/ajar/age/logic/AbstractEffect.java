@@ -53,8 +53,9 @@ public abstract class AbstractEffect<A extends Attributes> implements Effect<A> 
 	/* (non-Javadoc)
 	 * @see org.mdmk2.core.logic.Effect#perform(org.mdmk2.core.logic.StatedImp)
 	 */
-	public State<A> perform(Entity<A> state) {
-		doAction(state);
+	@Override
+	public State<A> perform(Entity<A> state, A attributes) {
+		doAction(state,attributes);
 		return result;
 	}
 
@@ -63,5 +64,5 @@ public abstract class AbstractEffect<A extends Attributes> implements Effect<A> 
 	 * method.
 	 * @param entity the entity on which the effect is being performed.
 	 */
-	protected abstract void doAction(Entity<A> entity);
+	protected abstract void doAction(Entity<A> entity, A attributes);
 }

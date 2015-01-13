@@ -50,7 +50,7 @@ public class VerEnableInputEffect extends AbstractChainableEffect<VerAttributes>
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<VerAttributes> entity) {
+	protected void doAction(Entity<VerAttributes> entity, VerAttributes attrs) {
 		VerController controller = (VerController)entity.getControllers().get(0);
 		controller.done();
 	}

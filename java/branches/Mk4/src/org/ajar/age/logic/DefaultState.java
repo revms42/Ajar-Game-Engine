@@ -50,8 +50,15 @@ public class DefaultState<A extends Attributes> implements State<A> {
 		effectMap = new HashMap<Action,Effect<A>>();
 	}
 	
-	public State<A> perform(Entity<A> subject, Action e) {
-		return effectMap.get(e).perform(subject);
+	/**
+	 * {@inheritDoc}
+	 */
+	public State<A> perform(Entity<A> subject, Event<A> e) {
+		if(e == null){
+			return effectMap.get(null).perform(subject,null);
+		}else{
+			return effectMap.get(e.getAction()).perform(subject,e.getAttributes());
+		}
 	}
 	
 	/**
@@ -63,6 +70,14 @@ public class DefaultState<A extends Attributes> implements State<A> {
 	}
 	
 	/**
+	 * Returns the <code>HashMap</code> that contains all the Action<->Effect mappings.
+	 * @return the wrapped <code>HashMap</code>.
+	 */
+	public HashMap<Action,Effect<A>> getEffectMap() {
+		return effectMap;
+	}
+
+	/**
 	 * Inserts a new <code>Effect</code> into this <code>State</code>, using the effect's associated action.
 	 * <p>
 	 * Returns any previously mapped effect.
@@ -73,13 +88,4 @@ public class DefaultState<A extends Attributes> implements State<A> {
 	public Effect<A> put(Action a, Effect<A> arg1) {
 		return effectMap.put(a, arg1);
 	}
-	
-	/**
-	 * Returns the <code>HashMap</code> that backs this state.
-	 * @return the wrapped <code>HashMap</code>.
-	 */
-	public HashMap<Action,Effect<A>> getEffectMap() {
-		return effectMap;
-	}
-
 }

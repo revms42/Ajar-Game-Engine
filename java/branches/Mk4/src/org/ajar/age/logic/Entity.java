@@ -64,16 +64,16 @@ public interface Entity<A extends Attributes> extends Decorator<A> {
 	public void updateState();
 	
 	/**
-	 * Adds an action to the list of actions to perform this update period
-	 * @param action the action to be added to the actions list.
+	 * Adds an event to the list of events to process this update period
+	 * @param event the event to be added to the events list.
 	 */
-	public void addAction(Action action);
+	public void addEvent(Event<A> event);
 	
 	/**
-	 * Retrieves the current list of actions to be performed this update period. 
-	 * @return the current list of actions.
+	 * Retrieves the current list of events to process this update period. 
+	 * @return the current list of events.
 	 */
-	public List<Action> getActions();
+	public List<Event<A>> getEvents();
 	
 	/**
 	 * Returns this <code>Entity</code>'s current state.

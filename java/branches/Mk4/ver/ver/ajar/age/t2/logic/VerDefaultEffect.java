@@ -53,7 +53,7 @@ public class VerDefaultEffect extends AbstractEffect<HashAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<HashAttributes> entity) {
+	protected void doAction(Entity<HashAttributes> entity, HashAttributes attributes) {
 		Number x = entity.getAttributes().getAttribute(VerAttribute.X_POS);
 		Number y = entity.getAttributes().getAttribute(VerAttribute.Y_POS);
 		Number dx = entity.getAttributes().getAttribute(VerAttribute.X_VEL);

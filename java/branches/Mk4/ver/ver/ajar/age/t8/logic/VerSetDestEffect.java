@@ -51,7 +51,7 @@ public class VerSetDestEffect extends AbstractChainableEffect<VerAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<VerAttributes> entity) {
+	protected void doAction(Entity<VerAttributes> entity, VerAttributes attrs) {
 		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_REQ).intValue();
 		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_REQ).intValue();
 		entity.getAttributes().setAttribute(VerAttribute.X_TILE_DEST, xtile);

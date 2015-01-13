@@ -45,15 +45,17 @@ public abstract class AbstractChainableEffect<A extends Attributes> extends Abst
 		super(result);
 	}
 	
-	public State<A> perform(Entity<A> entity){
-		State<A> state = super.perform(entity);
+	@Override
+	public State<A> perform(Entity<A> entity, A attributes){
+		State<A> state = super.perform(entity,attributes);
 		if(child != null){
-			State<A> cState = child.perform(entity);
+			State<A> cState = child.perform(entity,attributes);
 			if(state == null) state = cState;
 		}
 		return state;
 	}
 
+	@Override
 	public ChainableEffect<A> addToChain(ChainableEffect<A> child){
 		if(this.child == null){
 			this.child = child;
@@ -64,18 +66,22 @@ public abstract class AbstractChainableEffect<A extends Attributes> extends Abst
 		return this;
 	}
 	
+	@Override
 	public boolean hasChild(){
 		return child != null;
 	}
 	
+	@Override
 	public ChainableEffect<A> getChild(){
 		return child;
 	}
 	
+	@Override
 	public void setChild(ChainableEffect<A> child){
 		this.child = child;
 	}
 	
+	@Override
 	public ChainableEffect<A> removeLastFromChain(){
 		if(this.child != null){
 			if(this.child.hasChild()){
@@ -90,6 +96,7 @@ public abstract class AbstractChainableEffect<A extends Attributes> extends Abst
 		}
 	}
 	
+	@Override
 	public ChainableEffect<A> removeFromChain(ChainableEffect<A> effect){
 		if(this.child != null){
 			if(this.child == effect){

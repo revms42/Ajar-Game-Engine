@@ -14,7 +14,7 @@ public class TestEffect2 extends AbstractEffect<HashAttributes> {
 	}
 
 	@Override
-	protected void doAction(Entity<HashAttributes> entity) {
+	protected void doAction(Entity<HashAttributes> entity, HashAttributes a) {
 		target = entity;
 	}
 	

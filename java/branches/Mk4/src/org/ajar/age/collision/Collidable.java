@@ -33,7 +33,7 @@ package org.ajar.age.collision;
 
 import org.ajar.age.Attributes;
 import org.ajar.age.Decorator;
-import org.ajar.age.logic.Action;
+import org.ajar.age.logic.Event;
 
 /**
  * TOOD: Rewrite.
@@ -46,10 +46,10 @@ import org.ajar.age.logic.Action;
 public interface Collidable<A extends Attributes> extends Decorator<A> {
 
 	/**
-	 * Asks this object to provide the <code>Action</code> outcome from a collision with the supplied object.
+	 * Asks this object to provide the <code>Event</code> outcome from a collision with the supplied object.
 	 * @param s the <code>Collidable</code> to check for collision with.
-	 * @return the <code>Action</code> outcome of the collision, or <code>null</code> if nothing happened.
+	 * @return the <code>Event</code> outcome of the collision, or <code>null</code> if nothing happened.
 	 */
-	public Action collideWith(Collidable<A> s);
+	public Event<A> collideWith(Collidable<A> s);
 	
 }

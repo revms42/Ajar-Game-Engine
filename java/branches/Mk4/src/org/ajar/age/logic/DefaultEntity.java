@@ -36,13 +36,13 @@ import org.ajar.age.Node;
 /**
  * TODO: Rewrite.
  * This class is a default implementation of <code>AbstractEntity</code>, which provides the anticipated behavior for
- * actions to be performed and state access.
+ * events to be performed and state access.
  * @author revms
  * @since 0.0.0.153
  */
 public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 	
-	private final Vector<Action> actions;
+	private final Vector<Event<A>> events;
 	private State<A> state;
 	
 	/**
@@ -51,25 +51,30 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 	 */
 	public DefaultEntity(Node<A> node) {
 		super(node);
-		actions = new Vector<Action>();
+		events = new Vector<Event<A>>();
 	}
 	
-	public void addAction(Action action) {
-		actions.add(action);
+	@Override
+	public void addEvent(Event<A> action) {
+		events.add(action);
 	}
 	
-	public List<Action> getActions() {
-		return actions;
+	@Override
+	public List<Event<A>> getEvents() {
+		return events;
 	}
 	
+	@Override
 	public State<A> getState() {
 		return state;
 	}
 	
+	@Override
 	public boolean needsStateUpdate() {
 		return true;
 	}
 	
+	@Override
 	public void setState(State<A> s) {
 		this.state = s;
 	}
@@ -77,28 +82,29 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 	/**
 	 * Performs the following actions.
 	 * <p>
-	 * First, if there are actions in the actions list, these are iterated over. Each action is used to retrieve an
+	 * First, if there are events in the events list, these are iterated over. Each action is used to retrieve an
 	 * effect from the current state. The effect is called to perform its logic on this entity, and the resultant state 
-	 * becomes the current state. When all actions have been completed, the actions list is cleared.
+	 * becomes the current state. When all events have been completed, the events list is cleared.
 	 * <p>
-	 * Second, regardless of whether there are actions in the actions list, the effect mapped to <code>null</code> is 
+	 * Second, regardless of whether there are events in the events list, the effect mapped to <code>null</code> is 
 	 * retrieved and asked to perform an update on this entity. Note, for this reason logic that should be handled every 
 	 * turn for a given state (such as animation) should always be included in the <code>null</code> mapped effect.
 	 * <p>
 	 * Third, <code>requestInput</code> is called, which repopulates the actions list for the next update. This ensures
-	 * that any actions taken this update cycle are applied prior to collision detection next cycle.
+	 * that any events taken this update cycle are applied prior to collision detection next cycle.
 	 * <p>
 	 * In order to avoid problems with poorly initialized states null states returned
 	 * from an effect perform call result in the same state being maintained subsequently.
 	 * @see #requestInput()
 	 */
+	@Override
 	public void updateState() {
 		State<A> result = null;
-		if(actions.size() > 0){
-			for(Action a : actions){
+		if(events.size() > 0){
+			for(Event<A> a : events){
 				state = (result = state.perform(this,a)) == null ? state : result;
 			}
-			actions.removeAllElements();
+			events.removeAllElements();
 		}
 		state = (result = state.perform(this, null)) == null ? state : result;
 		requestInput();
@@ -107,7 +113,7 @@ public class DefaultEntity<A extends Attributes> extends AbstractEntity<A> {
 
 	/**
 	 * Iterates over each controller in the controllers list calling {@link Controller#pollForInput(Entity) pollForInput} in
-	 * order to populate the actions list with actions being taken by this entity.
+	 * order to populate the events list with events being taken by this entity.
 	 * @see Controller#pollForInput(Entity)
 	 */
 	@Override

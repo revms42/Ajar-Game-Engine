@@ -88,7 +88,7 @@ public class EffectInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("Dummy"));
 			DummyEffect d = ((EffectObject<DummyEffect>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			
 			//NamedNull
 			pc = parser.getParsedClass(namedNull);
@@ -98,7 +98,7 @@ public class EffectInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyNamed"));
 			d = ((EffectObject<DummyEffect>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 		}catch(LogicParserException e){
 			fail(e.getMessage());
 		}

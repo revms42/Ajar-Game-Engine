@@ -39,11 +39,14 @@ import org.ajar.age.Attributes;
 public interface Effect<A extends Attributes> {
 
 	/**
-	 * Updates the attributes of the provided <code>Entity</code>, and returns the resultant state. 
+	 * Updates the attributes of the provided <code>Entity</code>, using values derived
+	 * from the <code>parameters</code> argument, and returns the resultant state.
 	 * @param entity the entity whose attributes will be modified.
+	 * @param parameters the <code>Attributes</code> to use to derive the magnitude of the effect.
 	 * @return the <code>State</code> of the entity after the update.
+	 * @since 0.0.0.207
 	 */
-	public State<A> perform(Entity<A> entity);
+	public State<A> perform(Entity<A> entity, A parameters);
 	
 	/*
 	 * The <code>Action</code> that is associated with this <code>Effect</code>.

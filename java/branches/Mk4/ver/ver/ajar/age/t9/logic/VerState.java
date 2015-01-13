@@ -27,10 +27,10 @@
  */
 package ver.ajar.age.t9.logic;
 
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.DefaultState;
 import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.Entity;
+import org.ajar.age.logic.Event;
 import org.ajar.age.logic.State;
 
 import ver.ajar.age.t9.VerAttributes;
@@ -65,11 +65,11 @@ public class VerState extends DefaultState<VerAttributes> {
 	 * @see org.ajar.age.logic.State#perform(org.ajar.age.logic.Entity, org.ajar.age.logic.Action)
 	 */
 	@Override
-	public State<VerAttributes> perform(Entity<VerAttributes> subject, Action e) {
+	public State<VerAttributes> perform(Entity<VerAttributes> subject, Event<VerAttributes> e) {
 		State<VerAttributes> result = null;
 		if(this.getEffectMap().containsKey(e)){
 			Effect<VerAttributes> ae = this.getEffectMap().get(e);
-			result = ae.perform(subject);
+			result = ae.perform(subject,null);
 		}else if(parentState != null){
 			result = parentState.perform(subject, e);
 		}

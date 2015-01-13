@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.ChainableEffect;
 import org.ajar.age.logic.Condition;
+import org.ajar.age.logic.DefaultEvent;
 import org.ajar.age.logic.DefaultState;
 import org.ajar.age.logic.DerivedState;
 import org.ajar.age.logic.Effect;
@@ -211,13 +212,13 @@ public class StateInstanceParserTest {
 			
 			Action action2 = (Action) ParsedObject.getNamedObject(actionName2).getParsedObject();
 			//assertEquals(d.getEffectMap().get(action2).getClass(),DummyEffect.class);
-			assertEquals(d.perform(null, action2), null);
+			assertEquals(d.perform(null, new DefaultEvent<HashAttributes>(action2,null)), null);
 			
 			Action action3 = (Action) ParsedObject.getNamedObject(actionName3).getParsedObject();
 			DefaultState<HashAttributes> state2 = 
 					(DefaultState<HashAttributes>) ParsedObject.getNamedObject("DummyNamed2").getParsedObject();
 			//assertEquals(d.getEffectMap().get(action3).getClass(),DummyEffect.class);
-			assertEquals(d.perform(null, action3), state2);
+			assertEquals(d.perform(null, new DefaultEvent<HashAttributes>(action3,null)), state2);
 			
 			Action action1 = (Action) ParsedObject.getNamedObject(actionName1).getParsedObject();
 			DefaultState<HashAttributes> state3 = 

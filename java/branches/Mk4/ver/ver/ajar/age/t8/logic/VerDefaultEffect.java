@@ -55,7 +55,7 @@ public class VerDefaultEffect extends AbstractChainableEffect<VerAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<VerAttributes> entity) {
+	protected void doAction(Entity<VerAttributes> entity, VerAttributes attrs) {
 		int xdest = entity.getAttributes().getAttribute(VerAttribute.X_TILE_DEST).intValue();
 		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_POS).intValue();
 		int ydest = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_DEST).intValue();

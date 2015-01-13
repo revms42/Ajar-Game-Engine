@@ -1,6 +1,6 @@
 /*
  * This file is part of Ajar Game Engine.
- * Copyright (C) Sep 23, 2013 Matthew Stockbridge
+ * Copyright (C) Jan 12, 2015 Matthew Stockbridge
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * AGE
- * ver.ajar.age.t8.logic
- * VerResetDestEffect.java
+ * org.ajar.age.logic
+ * DefaultEvent.java
  * 
  * For more information see: https://sourceforge.net/projects/macchiatodoppio/
  * 
@@ -25,37 +25,38 @@
  * and is therefore *non-final* and *not* intended for public use. This code
  * is strictly experimental.
  */
-package ver.ajar.age.t8.logic;
+package org.ajar.age.logic;
 
-import org.ajar.age.logic.AbstractChainableEffect;
-import org.ajar.age.logic.Entity;
-import org.ajar.age.logic.State;
-
-import ver.ajar.age.t8.VerAttribute;
-import ver.ajar.age.t8.VerAttributes;
+import org.ajar.age.Attributes;
 
 /**
  * @author mstockbr
- *
+ * @see 0.0.0.207
  */
-public class VerResetDestEffect extends AbstractChainableEffect<VerAttributes> {
+public class DefaultEvent<A extends Attributes> implements Event<A> {
 
-	/**
-	 * @param result
+	protected Action action;
+	protected A attributes;
+	
+	public DefaultEvent(Action action, A attributes){
+		this.action = action;
+		this.attributes = attributes;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.ajar.age.logic.Event#getAction()
 	 */
-	public VerResetDestEffect(State<VerAttributes> result) {
-		super(result);
+	@Override
+	public Action getAction() {
+		return action;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
+	 * @see org.ajar.age.logic.Event#getAttributes()
 	 */
 	@Override
-	protected void doAction(Entity<VerAttributes> entity, VerAttributes attrs) {
-		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_POS).intValue();
-		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_POS).intValue();
-		entity.getAttributes().setAttribute(VerAttribute.X_TILE_DEST, xtile);
-		entity.getAttributes().setAttribute(VerAttribute.Y_TILE_DEST, ytile);
+	public A getAttributes() {
+		return attributes;
 	}
 
 }

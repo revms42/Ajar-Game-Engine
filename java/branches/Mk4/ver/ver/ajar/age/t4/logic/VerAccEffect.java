@@ -58,7 +58,7 @@ public class VerAccEffect extends AbstractEffect<HashAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<HashAttributes> entity) {
+	protected void doAction(Entity<HashAttributes> entity, HashAttributes attrs) {
 		Number n = entity.getAttributes().getAttribute(attr);
 		
 		if(n != null){

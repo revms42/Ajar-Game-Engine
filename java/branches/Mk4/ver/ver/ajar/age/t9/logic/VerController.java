@@ -35,6 +35,7 @@ import org.ajar.age.Node;
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Attribute;
 import org.ajar.age.logic.Controller;
+import org.ajar.age.logic.DefaultEvent;
 import org.ajar.age.logic.Entity;
 
 import ver.ajar.age.t9.VerAttributes;
@@ -70,7 +71,7 @@ public class VerController implements Controller<VerAttributes>, MouseListener {
 		if(pressed && target.getUndecoratedNode() == entity.getUndecoratedNode()){
 			entity.getAttributes().setAttribute(destX,VerAttributes.coordinateToTile(position.x));
 			entity.getAttributes().setAttribute(destY,VerAttributes.coordinateToTile(position.y));
-			entity.addAction(getAction());
+			entity.addEvent(new DefaultEvent<VerAttributes>(getAction(),null));
 			pressed = false;
 		}
 	}
