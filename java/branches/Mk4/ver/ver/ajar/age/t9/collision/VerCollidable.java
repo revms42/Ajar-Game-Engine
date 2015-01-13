@@ -34,6 +34,8 @@ import org.ajar.age.Node;
 import org.ajar.age.collision.AbstractCollidable;
 import org.ajar.age.collision.Collidable;
 import org.ajar.age.logic.Action;
+import org.ajar.age.logic.DefaultEvent;
+import org.ajar.age.logic.Event;
 
 import ver.ajar.age.t9.VerAttribute;
 import ver.ajar.age.t9.VerAttributes;
@@ -57,7 +59,7 @@ public class VerCollidable extends AbstractCollidable<VerAttributes> {
 	 * @see org.ajar.age.collision.Collidable#collideWith(org.ajar.age.collision.Collidable)
 	 */
 	@Override
-	public Action collideWith(Collidable<VerAttributes> s) {
+	public Event<VerAttributes> collideWith(Collidable<VerAttributes> s) {
 		//TODO: Actually figure out if the two things collide.
 		Number thisTeam = this.getAttributes().getAttribute(VerAttribute.TEAM);
 		
@@ -65,7 +67,7 @@ public class VerCollidable extends AbstractCollidable<VerAttributes> {
 			Number sTeam = s.getAttributes().getAttribute(VerAttribute.TEAM);
 			
 			if(sTeam != null && sTeam.intValue() == 0){
-				return findBoundryCollision(s.getAttributes());
+				return new DefaultEvent<VerAttributes>(findBoundryCollision(s.getAttributes()),null);
 			}
 		}
 		

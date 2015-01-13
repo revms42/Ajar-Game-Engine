@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.ajar.age.logic.Action;
+import org.ajar.age.logic.DefaultEvent;
 import org.ajar.age.logic.DefaultState;
 import org.ajar.age.logic.Effect;
 import org.ajar.age.logic.HashAttributes;
@@ -208,7 +209,7 @@ public class StateLoaderTest {
 			//Because this is a default state we allow null return on perform.
 			assertEquals(
 					null,
-					state.perform(null, TestAction.ACTION_1)
+					state.perform(null, new DefaultEvent<HashAttributes>(TestAction.ACTION_1,null))
 			);
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -230,14 +231,14 @@ public class StateLoaderTest {
 			assertTrue(e2 instanceof TestEffect2);
 			TestEffect2 te2 = (TestEffect2)e2;
 			assertEquals(null,te2.getResult());
-			State<HashAttributes> result = state.perform(null, TestAction.ACTION_1);
+			State<HashAttributes> result = state.perform(null, new DefaultEvent<HashAttributes>(TestAction.ACTION_1,null));
 			assertEquals(
 					null,
 					result
 			);
 			assertEquals(
 					null,
-					state.perform(null, TestAction.ACTION_2)
+					state.perform(null, new DefaultEvent<HashAttributes>(TestAction.ACTION_2,null))
 			);
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -265,15 +266,15 @@ public class StateLoaderTest {
 			assertEquals(loader.getLoadedState("Second"),te1.getResult());
 			assertEquals(
 					null,
-					state.perform(null, TestAction.ACTION_3)
+					state.perform(null, new DefaultEvent<HashAttributes>(TestAction.ACTION_3,null))
 			);
 			assertEquals(
 					null,
-					state.perform(null, TestAction.ACTION_2)
+					state.perform(null, new DefaultEvent<HashAttributes>(TestAction.ACTION_2,null))
 			);
 			assertEquals(
 					loader.getLoadedState("Second"),
-					state.perform(null, TestAction.ACTION_1)
+					state.perform(null, new DefaultEvent<HashAttributes>(TestAction.ACTION_1,null))
 			);
 		} catch (Exception e) {
 			fail(e.getMessage());

@@ -51,7 +51,7 @@ public class VerResetDestEffect extends AbstractChainableEffect<VerAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<VerAttributes> entity) {
+	protected void doAction(Entity<VerAttributes> entity, VerAttributes attrs) {
 		//System.out.println("ResetDest" + entity.hashCode());
 		int xtile = entity.getAttributes().getAttribute(VerAttribute.X_TILE_POS).intValue();
 		int ytile = entity.getAttributes().getAttribute(VerAttribute.Y_TILE_POS).intValue();

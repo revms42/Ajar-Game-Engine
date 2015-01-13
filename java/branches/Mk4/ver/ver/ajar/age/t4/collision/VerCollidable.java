@@ -33,7 +33,8 @@ import java.awt.geom.Point2D;
 import org.ajar.age.Node;
 import org.ajar.age.collision.AbstractCollidable;
 import org.ajar.age.collision.Collidable;
-import org.ajar.age.logic.Action;
+import org.ajar.age.logic.DefaultEvent;
+import org.ajar.age.logic.Event;
 import org.ajar.age.logic.HashAttributes;
 
 import ver.ajar.age.t4.VerAttribute;
@@ -57,7 +58,7 @@ public class VerCollidable extends AbstractCollidable<HashAttributes> {
 	 * @see org.ajar.age.collision.Collidable#collideWith(org.ajar.age.collision.Collidable)
 	 */
 	@Override
-	public Action collideWith(Collidable<HashAttributes> s) {
+	public Event<HashAttributes> collideWith(Collidable<HashAttributes> s) {
 		//TODO: Actually figure out if the two things collide.
 		Number thisTeam = this.getAttributes().getAttribute(VerAttribute.TEAM);
 		
@@ -72,7 +73,7 @@ public class VerCollidable extends AbstractCollidable<HashAttributes> {
 		return null;
 	}
 
-	private Action findBoundryCollision(HashAttributes target){
+	private Event<HashAttributes> findBoundryCollision(HashAttributes target){
 		Rectangle myRect = this.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX);
 		Rectangle theirRect = target.getAttribute(CollisionAttribute.BOUNDING_BOX);
 		
@@ -81,21 +82,21 @@ public class VerCollidable extends AbstractCollidable<HashAttributes> {
 			
 			switch(oc){
 			case Rectangle.OUT_TOP:
-				return VerAction.BOUNCE_V;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_V,null);
 			case Rectangle.OUT_RIGHT | Rectangle.OUT_TOP:
-				return VerAction.BOUNCE_D;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_D,null);
 			case Rectangle.OUT_RIGHT:
-				return VerAction.BOUNCE_H;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_H,null);
 			case Rectangle.OUT_RIGHT | Rectangle.OUT_BOTTOM:
-				return VerAction.BOUNCE_D;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_D,null);
 			case Rectangle.OUT_BOTTOM:
-				return VerAction.BOUNCE_V;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_V,null);
 			case Rectangle.OUT_BOTTOM | Rectangle.OUT_LEFT:
-				return VerAction.BOUNCE_D;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_D,null);
 			case Rectangle.OUT_LEFT:
-				return VerAction.BOUNCE_H;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_H,null);
 			case Rectangle.OUT_LEFT | Rectangle.OUT_TOP:
-				return VerAction.BOUNCE_D;
+				return new DefaultEvent<HashAttributes>(VerAction.BOUNCE_D,null);
 			default:
 				return null;
 			}

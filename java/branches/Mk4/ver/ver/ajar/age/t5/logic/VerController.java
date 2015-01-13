@@ -32,6 +32,7 @@ import java.awt.event.KeyListener;
 
 import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Controller;
+import org.ajar.age.logic.DefaultEvent;
 import org.ajar.age.logic.Entity;
 
 import ver.ajar.age.t5.VerAttributes;
@@ -52,7 +53,7 @@ public class VerController implements Controller<VerAttributes>, KeyListener {
 	public void pollForInput(Entity<VerAttributes> entity) {
 		//TODO: Only one entity takes input right now, otherwise there could be more to this.
 		if(typed != -1){
-			entity.addAction(getAction(typed));
+			entity.addEvent(new DefaultEvent<VerAttributes>(getAction(typed),null));
 			typed = -1;
 		}
 	}

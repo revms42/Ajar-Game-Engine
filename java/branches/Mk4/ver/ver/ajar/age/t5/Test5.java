@@ -30,7 +30,6 @@ package ver.ajar.age.t5;
 import java.awt.Rectangle;
 
 import org.ajar.age.DefaultNode;
-import org.ajar.age.GameLoop;
 import org.ajar.age.Node;
 import org.ajar.age.SimpleVisitor;
 import org.ajar.age.Visitor;

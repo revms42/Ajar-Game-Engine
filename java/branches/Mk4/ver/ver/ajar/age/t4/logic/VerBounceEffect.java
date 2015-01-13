@@ -53,7 +53,7 @@ public class VerBounceEffect extends AbstractEffect<HashAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<HashAttributes> entity) {
+	protected void doAction(Entity<HashAttributes> entity, HashAttributes attrs) {
 		for(Attribute<Number> attribute : attributes){
 			Number n = entity.getAttributes().getAttribute(attribute);
 			

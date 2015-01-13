@@ -38,7 +38,6 @@ import ver.ajar.age.t7.VerAttribute;
 import ver.ajar.age.t7.VerAttributes;
 import ver.ajar.age.t7.VerMapAttribute;
 import ver.ajar.age.t7.collision.CollisionAttribute;
-import ver.ajar.age.t7.collision.VerCollidable;
 import ver.ajar.age.t7.display.VerDisplayable;
 
 /**

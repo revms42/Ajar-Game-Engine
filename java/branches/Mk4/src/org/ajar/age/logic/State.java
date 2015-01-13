@@ -32,7 +32,7 @@ import org.ajar.age.Attributes;
 /**
  * TODO: Rewrite
  * Classes that implement this interface provide mappings from one state to another, given 
- * an <code>Action</code> input.
+ * an <code>Event</code> input.
  * <p>
  * Typically, a single state will map a variety of actions to a variety of new states by 
  * performing an <code>Effect</code>, determined by the input action, on an <code>Entity</code> and then
@@ -40,18 +40,18 @@ import org.ajar.age.Attributes;
  * @author revms
  * @since 0.0.0.153
  * @see Effect
- * @see Effect#perform(Entity)
+ * @see Effect#perform(Entity, Attributes)
  * @see Entity
  */
 public interface State<A extends Attributes> {
 
 	/**
 	 * Performs a given <code>Effect</code> on the provided <code>Entity</code> by selecting the effect
-	 * associated by the provided <code>Action</code>.
+	 * associated by the provided <code>Event</code>.
 	 * @param subject the entity on which the effect will be performed
-	 * @param e the action indicating the effect to perform
+	 * @param e the event indicating the effect to perform
 	 * @return the resultant <code>State</code> specified by the <code>Effect</code> that was performed.
-	 * @see Effect#perform(Entity)
+	 * @see Effect#perform(Entity, Attributes)
 	 */
-	public State<A> perform(Entity<A> subject, Action e);
+	public State<A> perform(Entity<A> subject, Event<A> e);
 }

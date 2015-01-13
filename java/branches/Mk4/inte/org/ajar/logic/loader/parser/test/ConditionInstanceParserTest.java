@@ -119,7 +119,7 @@ public class ConditionInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyNamedCondition"));
 			DummyCondition d = ((ConditionObject<DummyCondition>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			assertTrue(d.trueEffect instanceof DummyEffect);
 			assertTrue(d.falseEffect instanceof DummyEffect);
 			assertTrue(d.trueEffect != d.falseEffect);
@@ -132,7 +132,7 @@ public class ConditionInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyFullCondition"));
 			d = ((ConditionObject<DummyCondition>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			assertTrue(d.trueEffect instanceof DummyEffect);
 			assertTrue(d.falseEffect instanceof DummyEffect);
 			assertTrue(d.trueEffect != d.falseEffect);
@@ -145,7 +145,7 @@ public class ConditionInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyComplicatedCondition"));
 			d = ((ConditionObject<DummyCondition>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			assertTrue(d.trueEffect instanceof DummyCondition);
 			assertTrue(d.falseEffect instanceof DummyChain);
 			

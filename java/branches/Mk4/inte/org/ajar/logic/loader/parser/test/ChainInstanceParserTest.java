@@ -95,7 +95,7 @@ public class ChainInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("Dummy"));
 			DummyChain d = ((ChainObject<DummyChain>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			
 			//NamedNull
 			pc = parser.getParsedClass(namedNull);
@@ -105,7 +105,7 @@ public class ChainInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyNamed"));
 			d = ((ChainObject<DummyChain>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			
 			//NamedArgs
 			pc = parser.getParsedClass(namedArgs);
@@ -115,7 +115,7 @@ public class ChainInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyNamedArgs"));
 			d = ((ChainObject<DummyChain>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			assertEquals("DummyNamedArgs",d.arg1);
 			
 			//NamedNewChain
@@ -126,7 +126,7 @@ public class ChainInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyNamedChain"));
 			d = ((ChainObject<DummyChain>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			assertNotNull(d.getChild());
 			assertEquals(DummyChain.class,d.getChild().getClass());
 			assertNotNull(d.getChild().getChild());
@@ -140,7 +140,7 @@ public class ChainInstanceParserTest {
 			assertEquals(pc,ParsedObject.getNamedObject("DummyNamedChainArgs"));
 			d = ((ChainObject<DummyChain>)pc).getParsedObject();
 			assertNotNull("Parsed object is null!",d);
-			assertNull(d.perform(null));
+			assertNull(d.perform(null,null));
 			assertEquals("D1",d.arg1);
 			assertNotNull(d.getChild());
 			assertEquals(DummyChain.class,d.getChild().getClass());

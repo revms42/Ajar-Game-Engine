@@ -50,11 +50,11 @@ public abstract class AbstractCondition<A extends Attributes> implements Conditi
 	 * @see org.ajar.age.logic.Effect#perform(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	public State<A> perform(Entity<A> entity) {
+	public State<A> perform(Entity<A> entity, A attributes) {
 		if(meetsCondition(entity)){
-			return trueEffect.perform(entity);
+			return trueEffect.perform(entity,attributes);
 		}else{
-			return falseEffect.perform(entity);
+			return falseEffect.perform(entity,attributes);
 		}
 	}
 

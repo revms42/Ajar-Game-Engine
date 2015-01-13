@@ -32,9 +32,10 @@
 package org.ajar.age.collision;
 
 import org.ajar.age.Attributes;
+import org.ajar.age.Node;
 import org.ajar.age.SimpleVisitor;
-import org.ajar.age.logic.Action;
 import org.ajar.age.logic.Entity;
+import org.ajar.age.logic.Event;
 
 /**
  * @author mstockbr
@@ -52,22 +53,34 @@ public class CollisionVisitor<A extends Attributes> extends SimpleVisitor<A,Coll
 	}
 
 	@Override
+	public boolean isInView(Node<A> node) {
+		boolean isInView = super.isInView(node);
+		System.out.println(isInView);
+		return isInView;
+	}
+	
+	@Override
+	public void visit(Node<A> node) {
+		super.visit(node);
+	}
+	
+	@Override
 	public void process() {
 		for(int start = 0; start < needsUpdate.size(); start++){
 			for(int i = start+1; i < needsUpdate.size(); i++){
 				Collidable<A> c = (Collidable<A>) needsUpdate.get(start);
 				Collidable<A> d = (Collidable<A>) needsUpdate.get(i);
 				
-				Action a = c.collideWith(d);
-				Action b = d.collideWith(c);
+				Event<A> a = c.collideWith(d);
+				Event<A> b = d.collideWith(c);
 				
 				if(a != null && c.hasCapability(entityClass)){
 					Entity<A> s = c.getDecorator(entityClass);
-					s.addAction(a);
+					s.addEvent(a);
 				}
 				if(b != null && d.hasCapability(entityClass)){
 					Entity<A> s = d.getDecorator(entityClass);
-					s.addAction(b);
+					s.addEvent(b);
 				}
 			}
 		}

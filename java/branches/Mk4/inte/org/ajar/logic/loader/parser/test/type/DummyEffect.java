@@ -49,7 +49,7 @@ public class DummyEffect extends AbstractEffect<HashAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<HashAttributes> entity) {}
+	protected void doAction(Entity<HashAttributes> entity, HashAttributes a) {}
 
 	public State<HashAttributes> getResultantState(){
 		return this.result;

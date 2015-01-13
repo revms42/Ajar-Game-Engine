@@ -50,7 +50,7 @@ public class VerDefaultEffect extends AbstractChainableEffect<HashAttributes> {
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity)
 	 */
 	@Override
-	protected void doAction(Entity<HashAttributes> entity) {
+	protected void doAction(Entity<HashAttributes> entity, HashAttributes attributes) {
 		int x = entity.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).x;
 		int y = entity.getAttributes().getAttribute(CollisionAttribute.BOUNDING_BOX).y;
 		Number dx = entity.getAttributes().getAttribute(VerAttribute.X_VEL);
