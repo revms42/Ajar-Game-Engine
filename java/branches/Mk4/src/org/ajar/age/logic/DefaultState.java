@@ -54,10 +54,21 @@ public class DefaultState<A extends Attributes> implements State<A> {
 	 * {@inheritDoc}
 	 */
 	public State<A> perform(Entity<A> subject, Event<A> e) {
+		Effect<A> eff = null;
 		if(e == null){
-			return effectMap.get(null).perform(subject,null);
+			eff = effectMap.get(null);
 		}else{
-			return effectMap.get(e.getAction()).perform(subject,e.getAttributes());
+			eff = effectMap.get(e.getAction());
+		}
+		
+		if(eff != null){
+			if(e == null){
+				return eff.perform(subject, null);
+			}else{
+				return eff.perform(subject, e.getAttributes());
+			}
+		}else{
+			return null;
 		}
 	}
 	
