@@ -43,12 +43,13 @@ import java.util.Vector;
 
 public class Tourguide<A extends Attributes> implements Visitor<A> {
 
+	private TourLeader<A> tourLeader;
 	private Visitor<A> leader;
 	private final Vector<Visitor<A>> visitors;
 	
 	//@SafeVarargs
 	public Tourguide(Visitor<A> leader, Visitor<A>... visitors){
-		this.leader = leader;
+		setLeader(leader);
 		this.visitors = new Vector<Visitor<A>>();
 		this.visitors.addAll(Arrays.asList(visitors));
 	}
@@ -68,9 +69,17 @@ public class Tourguide<A extends Attributes> implements Visitor<A> {
 
 	@Override
 	public void process() {
+		if(tourLeader != null){
+			tourLeader.startProcess();
+		}
+		
 		leader.process();
 		for(Visitor<A> visitor : visitors){
 			if(visitor != null) visitor.process();
+		}
+		
+		if(tourLeader != null){
+			tourLeader.finishProcess();
 		}
 	}
 
@@ -116,7 +125,10 @@ public class Tourguide<A extends Attributes> implements Visitor<A> {
 
 	public void setLeader(Visitor<A> leader) {
 		this.leader = leader;
+		
+		if(leader.getClass().isAssignableFrom(TourLeader.class)){
+			tourLeader = (TourLeader<A>)leader;
+		}
 	}
 
 }
-

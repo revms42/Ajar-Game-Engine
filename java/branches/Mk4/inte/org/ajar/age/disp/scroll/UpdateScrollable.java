@@ -60,6 +60,7 @@ public class UpdateScrollable<A extends Attributes> extends AbstractChainableEff
 	}
 
 	/* (non-Javadoc)
+	 * TODO: This method may need optimizing. I suspect that it may result in slow-down.
 	 * @see org.ajar.age.logic.AbstractEffect#doAction(org.ajar.age.logic.Entity, org.ajar.age.Attributes)
 	 */
 	@SuppressWarnings("unchecked")
@@ -80,11 +81,24 @@ public class UpdateScrollable<A extends Attributes> extends AbstractChainableEff
 				map.setScrolledBounds((Rectangle)screenBounds.clone());
 			}
 			
-			if(x > offsetX && x < width-offsetX){
-				map.setScrollX((int)(x - offsetX));
+			if(x > offsetX){
+				if(x < width-offsetX){
+					map.setScrollX((int)(x - offsetX));
+				}else{
+					map.setScrollX(width-(2*offsetX));
+				}
+			}else{
+				map.setScrollX(0);
 			}
-			if(y > offsetY && y < height-offsetY){
-				map.setScrollY((int)(y - offsetY));
+			
+			if(y > offsetY){
+				if(y < height-offsetY){
+					map.setScrollY((int)(y - offsetY));
+				}else{
+					map.setScrollY(height-(2*offsetY));
+				}
+			}else{
+				map.setScrollY(0);
 			}
 		}
 	}
