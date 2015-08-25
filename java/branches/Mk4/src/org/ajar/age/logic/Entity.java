@@ -58,7 +58,7 @@ public interface Entity<A extends Attributes> extends Decorator<A> {
 	 * Also, typically the controller (or controllers) is queried for input, either before iteration, or after, depending
 	 * on logic architecture.
 	 * @see #requestInput()
-	 * @see State#perform(Entity, Action)
+	 * @see State#perform(Entity,Event)
 	 * @see org.ajar.age.GameLoop#logic()
 	 */
 	public void updateState();

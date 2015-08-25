@@ -42,7 +42,7 @@ public interface Controller<A extends Attributes> {
 
 	/**
 	 * This method indicates that the provided entity is looking for input from this controller, which will be added to
-	 * its action map via the {@link Entity#addEvent(Action) addAction} method in Entity.
+	 * its action map via the {@link Entity#addEvent(Event) addEvent} method in Entity.
 	 * @param entity the entity requesting controller input.
 	 */
 	public void pollForInput(Entity<A> entity);
