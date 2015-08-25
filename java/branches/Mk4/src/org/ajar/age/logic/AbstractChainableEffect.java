@@ -38,7 +38,6 @@ public abstract class AbstractChainableEffect<A extends Attributes> extends Abst
 	protected ChainableEffect<A> child;
 	
 	/**
-	 * @param a
 	 * @param result
 	 */
 	public AbstractChainableEffect(State<A> result) {

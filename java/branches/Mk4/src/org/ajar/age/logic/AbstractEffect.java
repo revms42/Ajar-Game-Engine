@@ -32,7 +32,7 @@ import org.ajar.age.Attributes;
 /**
  * TODO: Rewrite.
  * This class is a partial implementation of <code>Effect</code> that takes care of the implementation of the data methods
- * and abstracts the {@link #perform(Entity) perform} method into {@link #doAction(Entity)} (and subsequent returns the
+ * and abstracts the {@link #perform(Entity,org.ajar.age.Attributes) perform} method into {@link #doAction(Entity,org.ajar.age.Attributes)} (and subsequent returns the
  * result state specified during construction).
  * <p>
  * This class is meant as a simple implementation for effects that don't require a lot of special logic.
@@ -60,7 +60,7 @@ public abstract class AbstractEffect<A extends Attributes> implements Effect<A> 
 	}
 
 	/**
-	 * Performs any modification to the entity that needs to be performed as part of the {@link #perform(Entity) perform}
+	 * Performs any modification to the entity that needs to be performed as part of the {@link #perform(Entity,org.ajar.age.Attributes) perform}
 	 * method.
 	 * @param entity the entity on which the effect is being performed.
 	 */
