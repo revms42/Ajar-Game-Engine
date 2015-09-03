@@ -36,7 +36,7 @@ import org.ajar.age.Attributes;
  *
  */
 public class DerivedState<A extends Attributes> extends DefaultState<A> {
-	private final State<A> parentState;
+	protected final State<A> parentState;
 	
 	public DerivedState(){
 		super();

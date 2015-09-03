@@ -44,17 +44,24 @@
 		<include name="**/org/ajar/age/logic/LogicVisitor.class" unless="core"/>
 		<include name="**/org/ajar/age/logic/State.class" unless="core"/>
 		<!--Complete-->
-		<include name="**/org/ajar/age/disp/awt/AbstractAWTDisplayable.class" if="complete"/>
+		<!--<include name="**/org/ajar/age/disp/awt/AbstractAWTDisplayable.class" if="complete"/>
 		<include name="**/org/ajar/age/disp/awt/AWTDisplayable.class" if="complete"/>
 		<include name="**/org/ajar/age/disp/awt/AWTGraphicsPanel.class" if="complete"/>
 		<include name="**/org/ajar/age/disp/awt/AWTGraphicsVisitor.class" if="complete"/>
 		<include name="**/org/ajar/age/logic/Attribute.class" if="complete"/>
-		<include name="**/org/ajar/age/logic/HashAttributes.class" if="complete"/>
+		<include name="**/org/ajar/age/logic/HashAttributes.class" if="complete"/>-->
+		<include name="**/org/ajar/age/**/*.class"/>
 	</patternset>
 	
 	<target name="clean-dist">
 		<antcall target="clean">
 			<param name="jarname" value="${core-jar}"/>
+		</antcall>
+		<antcall target="clean">
+			<param name="jarname" value="${basic-jar}"/>
+		</antcall>
+		<antcall target="clean">
+			<param name="jarname" value="${complete-jar}"/>
 		</antcall>
 		<antcall target="dist">
 			<param name="core" value="true"/>
