@@ -70,7 +70,7 @@ public class EffectInstance {
      * @return the resultant<code>State</code> of the subject.
      */
     public State perform(Entity subject, Entity initiator) {
-        effect.perform(subject, initiator);
+        if(effect != null) effect.perform(subject, initiator);
         return getResult(subject, initiator);
     }
 }
