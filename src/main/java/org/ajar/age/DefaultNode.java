@@ -81,7 +81,7 @@ public class DefaultNode implements Node {
         if(child.getUndecoratedNode() instanceof DefaultNode){
             ((DefaultNode) child.getUndecoratedNode()).setParent(this);
         }
-        children.add(child);
+        children.add(child.getUndecoratedNode());
     }
 
     /**
@@ -95,7 +95,7 @@ public class DefaultNode implements Node {
         if(child.getUndecoratedNode() instanceof DefaultNode){
             ((DefaultNode) child.getUndecoratedNode()).setParent(this);
         }
-        children.add(index,child);
+        children.add(index, child.getUndecoratedNode());
     }
 
     /**
@@ -127,7 +127,7 @@ public class DefaultNode implements Node {
      * Sets the parent member variable to the supplied node.
      * @param parent the parent of this node.
      */
-    private void setParent(Node parent){
+    public void setParent(Node parent){
         this.parent = parent;
     }
 
