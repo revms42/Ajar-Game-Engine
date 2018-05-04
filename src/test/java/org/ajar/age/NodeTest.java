@@ -16,8 +16,6 @@ public abstract class NodeTest {
 
     protected Node node;
 
-    public abstract void setup() throws Exception;
-
     @Test
     public void testAddChildNode() {
         Node child = mock(Node.class);

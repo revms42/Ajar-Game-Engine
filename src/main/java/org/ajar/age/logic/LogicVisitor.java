@@ -52,7 +52,7 @@ public class LogicVisitor<E extends Entity> extends AbstractVisitor<E> {
     public void visit(E decorator) {
         Queue<Event> events = decorator.getEventQueue();
         State currentState = decorator.getState();
-        while(!events.isEmpty()){
+        while(events != null && !events.isEmpty()){
             currentState = currentState.perform(decorator, events.poll());
         }
         decorator.setState(currentState);
