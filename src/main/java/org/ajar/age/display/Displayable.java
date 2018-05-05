@@ -28,7 +28,7 @@ import org.ajar.age.Decorator;
  * by a display loop (actual implementation of which can vary).
  * @param <S> the type of the culling surface used to determine whether this object is in the
  *           field of view.
- * @see DisplayVisitor
+ * @see AbstractDisplayVisitor
  * @author revms42
  */
 public interface Displayable<S> extends Decorator {
