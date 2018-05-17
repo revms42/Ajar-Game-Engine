@@ -1,16 +1,11 @@
 package org.ajar.age.logic;
 
-import org.ajar.age.Node;
 import org.ajar.age.VisitorTest;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Queue;
 
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

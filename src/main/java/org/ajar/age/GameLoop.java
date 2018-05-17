@@ -23,6 +23,7 @@ package org.ajar.age;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * GameLoop is the primary loop for game updates. I performs all the gunt work
@@ -69,8 +70,9 @@ public class GameLoop implements Runnable {
     //Used to enable debugging messages.
     public static boolean debug = false;
 
-    public GameLoop(Node displayRoot){
+    protected GameLoop(Node displayRoot){
         this.rootNode = displayRoot;
+        this.logger = new StreamLogger();
     }
 
     /**
@@ -155,33 +157,42 @@ public class GameLoop implements Runnable {
      * 					generally the {@link GameLoop#rootNode} field).
      */
     protected void update(Node root){
-        assessUpdate(root);
         if(running){
+            logger.log(LogWrapper.LogLevel.VERBOSE, "Starting update");
             if(isPaused){
+                assessUpdate(root, pausedGuide);
+                if(debug) logTime(start, "Finished assessment (paused) in");
                 pausedGuide.visit();
+                if(debug) logTime(start, "Finished pass (paused) in");
             }else{
+                assessUpdate(root, tourGuide);
+                if(debug) logTime(start, "Finished assessment in");
                 tourGuide.visit();
+                if(debug) logTime(start, "Finished pass in");
             }
         }
     }
 
     protected void frameSkipUpdate(Node root){
-        assessFrameSkipUpdate(root);
         if(running){
+            logger.log(LogWrapper.LogLevel.VERBOSE, "Starting frameskip update");
+            if(debug) start = System.nanoTime();
             if(isPaused){
+                assessUpdate(root, pausedBudgetGuide);
+                if(debug) logTime(start, "Finished assessment (paused) in");
                 pausedBudgetGuide.visit();
+                if(debug) logTime(start, "Finished pass (paused) in");
             }else{
+                assessUpdate(root, budgetGuide);
+                if(debug) logTime(start, "Finished assessment in");
                 budgetGuide.visit();
+                if(debug) logTime(start, "Finished pass in");
             }
         }
     }
 
-    protected void assessUpdate(Node root){
-        if(tourGuide != null) root.accept(tourGuide);
-    }
-
-    protected void assessFrameSkipUpdate(Node root){
-        if(budgetGuide != null) root.accept(budgetGuide);
+    protected void assessUpdate(Node root, Visitor assessor){
+        if(assessor != null) root.accept(assessor);
     }
 
     private void logTime(long start, String prefix){
@@ -217,63 +228,94 @@ public class GameLoop implements Runnable {
         this.logger = logger;
     }
 
-    public class GameLoopBuilder {
-        //TODO: Replace this with one list that has a wrapper that takes a value determining when it can be skipped.
-        protected Visitor culling;
-        protected List<Visitor> always;
-        protected List<Visitor> pauseSkip;
-        protected List<Visitor> frameSkip;
+    public enum UpdateMode {
+        NODE_CULLING(1),
+        SKIPPABLE(2),
+        PAUSABLE(4);
+
+        private final int flag;
+
+        UpdateMode(int flag) {
+            this.flag = flag;
+        }
+    }
+
+    public static class GameLoopBuilder {
+        private final class OrderedVisitorEntry {
+
+            private final Visitor visitor;
+            private final int flags;
+
+            private OrderedVisitorEntry(Visitor visitor, int flags) {
+                this.visitor = visitor;
+                this.flags = flags;
+            }
+        }
+
+        protected List<OrderedVisitorEntry> visitors;
 
         public GameLoopBuilder() {
-            always = new ArrayList<>();
-            pauseSkip = new ArrayList<>();
-            frameSkip = new ArrayList<>();
+            visitors = new ArrayList<>();
         }
 
-        public GameLoopBuilder culling(Visitor visitor){
-            culling = visitor;
-            return this;
-        }
+        /**
+         * Adds a new visitor with the specified <code>UpdateMode</code> flags.
+         * <p>
+         * There are three important things to realize about this method. The first is that order
+         * is preserved for the visitors added. This means that they will be called for execution
+         * in the order they are added. The second is that if no flags are specified the visitor
+         * will be called at every execution, regardless of whether the game is paused or is lagging.
+         * Finally, at least one visitor should be specified {@link UpdateMode#NODE_CULLING} in
+         * order for the finished GameLoop to work correctly.
+         * @param visitor
+         * @param flags
+         * @return this <code>GameLoopBuilder</code>
+         */
+        public GameLoopBuilder add(Visitor visitor, UpdateMode... flags){
+            int combined = 0;
+            for(UpdateMode i : flags) combined = combined | i.flag;
 
-        public GameLoopBuilder always(Visitor visitor){
-            always.add(visitor);
-            return this;
-        }
-
-        public GameLoopBuilder canFrameskip(Visitor visitor){
-            frameSkip.add(visitor);
-            return this;
-        }
-
-        public GameLoopBuilder skipDuringPause(Visitor visitor){
-            pauseSkip.add(visitor);
+            visitors.add(new OrderedVisitorEntry(visitor,combined));
             return this;
         }
 
         public GameLoop build(Node root) {
-            //TODO: As noted above, this doesn't give the layout options we want.
-            List<Visitor> skipPause = new ArrayList<>();
-            skipPause.add(culling);
-            skipPause.addAll(always);
+            List<Visitor> runInSkipWhilePaused = new ArrayList<>();
+            List<Visitor> runWhilePaused = new ArrayList<>();
+            List<Visitor> runInFrameSkip = new ArrayList<>();
+            List<Visitor> runInSmoothSailing = new ArrayList<>();
 
-            List<Visitor> paused = new ArrayList<>();
-            paused.addAll(skipPause);
-            paused.addAll(frameSkip);
+            Visitor culling = visitors.stream().filter(v -> (v.flags & UpdateMode.NODE_CULLING.flag) > 0).findFirst().get().visitor;
 
-            List<Visitor> skipped = new ArrayList<>();
-            skipped.addAll(skipPause);
-            skipped.addAll(pauseSkip);
+            runInSkipWhilePaused.add(culling);
+            runWhilePaused.add(culling);
+            runInFrameSkip.add(culling);
+            runInSmoothSailing.add(culling);
 
-            List<Visitor> all = new ArrayList<>();
-            all.addAll(skipPause);
-            all.addAll(pauseSkip);
-            all.addAll(frameSkip);
+            for(OrderedVisitorEntry ove : visitors) {
+                if(ove.visitor == culling) continue;
+
+                runInSmoothSailing.add(ove.visitor);
+
+                boolean unSkippable = false;
+                if((ove.flags & UpdateMode.SKIPPABLE.flag) < 0) {
+                    runInFrameSkip.add(ove.visitor);
+                    unSkippable = true;
+                }
+                if((ove.flags & UpdateMode.PAUSABLE.flag) < 0) {
+                    runWhilePaused.add(ove.visitor);
+
+                    if(unSkippable) {
+                        runInSkipWhilePaused.add(ove.visitor);
+                    }
+                }
+            }
 
             GameLoop loop = new GameLoop(root);
-            loop.tourGuide = new CompositeVisitor(all);
-            loop.budgetGuide = new CompositeVisitor(skipped);
-            loop.pausedGuide = new CompositeVisitor(paused);
-            loop.pausedBudgetGuide = new CompositeVisitor(skipPause);
+            loop.tourGuide = new CompositeVisitor(runInSmoothSailing);
+            loop.budgetGuide = new CompositeVisitor(runInFrameSkip);
+            loop.pausedGuide = new CompositeVisitor(runWhilePaused);
+            loop.pausedBudgetGuide = new CompositeVisitor(runInSkipWhilePaused);
 
             return loop;
         }

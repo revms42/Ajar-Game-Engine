@@ -1,4 +1,3 @@
-package org.ajar.age;
 /*
  * This file is part of Ajar Game Engine.
  * Copyright (C) May 16th, 2018 Matthew Stockbridge
@@ -20,6 +19,7 @@ package org.ajar.age;
  * org.ajar.age
  * LogWrapper.java
  */
+package org.ajar.age;
 
 /**
  * A basic interface to allow wrapping of native loggers (e.g. Android or Java) within the game engine, without having

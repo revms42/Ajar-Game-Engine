@@ -21,6 +21,7 @@
  */
 package org.ajar.age;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,6 +45,7 @@ import java.util.List;
 public class CompositeVisitor implements Visitor {
 
     private final List<Visitor> visitors;
+    private final List<Visitor> scheduled;
 
     public CompositeVisitor(Visitor... visitors) {
         this(Arrays.asList(visitors));
@@ -54,6 +56,7 @@ public class CompositeVisitor implements Visitor {
         for(Visitor visitor : visitors) {
             if(visitor == null) throw new IllegalArgumentException("Visitor values cannot be null");
         }
+        this.scheduled = new ArrayList<>();
     }
 
     @Override
@@ -64,16 +67,20 @@ public class CompositeVisitor implements Visitor {
     @Override
     public void scheduleVisit(Node node) {
         for(Visitor visitor : visitors) {
+            boolean scheduled = false;
             if(visitor.shouldVisit(node)){
                 visitor.scheduleVisit(node);
+                scheduled = true;
             }
+            if(scheduled) this.scheduled.add(visitor);
         }
     }
 
     @Override
     public void visit() {
-        for(Visitor visitor : visitors) {
+        for(Visitor visitor : scheduled) {
             visitor.visit();
         }
+        scheduled.clear();
     }
 }
