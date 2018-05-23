@@ -16,12 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * age
- * org.ajar.age
+ * org.ajar.age.lwjgl.display
  * LWJGLDisplayable.java
  */
 package org.ajar.age.lwjgl.display;
 
-import org.ajar.age.Decorator;
 import org.ajar.age.DefaultDecorator;
 import org.ajar.age.Node;
 import org.ajar.age.display.Displayable;

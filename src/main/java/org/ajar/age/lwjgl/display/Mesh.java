@@ -1,3 +1,24 @@
+/*
+ * This file is part of Ajar Game Engine
+ * Copyright (C) May 23rd, 2018 Matthew Stockbridge
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * (but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * age
+ * org.ajar.age.lwjgl.display
+ * Mesh.java
+ */
 package org.ajar.age.lwjgl.display;
 
 import java.nio.*;
@@ -15,6 +36,12 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 
+/**
+ * The Mesh class provides a way of loading geometry for displayable objects into the framework and encapsulates the
+ * methods needed by lwjgl to load in that data and have it bound in a way that makes it easy to display.
+ * @see LWJGLDisplayable
+ * @author revms42
+ */
 public class Mesh implements GLGeometry {
 
     private int vaoId;
