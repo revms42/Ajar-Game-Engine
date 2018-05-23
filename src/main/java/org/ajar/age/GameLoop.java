@@ -298,11 +298,11 @@ public class GameLoop implements Runnable {
                 runInSmoothSailing.add(ove.visitor);
 
                 boolean unSkippable = false;
-                if((ove.flags & UpdateMode.SKIPPABLE.flag) < 0) {
+                if((ove.flags & UpdateMode.SKIPPABLE.flag) == 0) {
                     runInFrameSkip.add(ove.visitor);
                     unSkippable = true;
                 }
-                if((ove.flags & UpdateMode.PAUSABLE.flag) < 0) {
+                if((ove.flags & UpdateMode.PAUSABLE.flag) == 0) {
                     runWhilePaused.add(ove.visitor);
 
                     if(unSkippable) {

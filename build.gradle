@@ -82,6 +82,8 @@ dependencies {
     compile "org.lwjgl:lwjgl-yoga:$lwjglVersion:$lwjglNatives"
     compile "org.lwjgl:lwjgl-zstd:$lwjglVersion:$lwjglNatives"
 
+    compile "org.joml:joml:$joml_version"
+
     testCompile group: 'junit', name: 'junit', version: "$junit_version"
     testCompile group: 'org.mockito', name: 'mockito-core', version: "$mockito_version"
 }
