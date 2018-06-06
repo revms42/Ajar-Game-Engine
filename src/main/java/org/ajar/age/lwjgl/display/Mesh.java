@@ -22,6 +22,7 @@
 package org.ajar.age.lwjgl.display;
 
 import java.nio.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,38 +46,33 @@ import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 public class Mesh implements GLGeometry {
 
     private int vaoId;
-
     private int vboId;
+
+    private int idxVboId;
 
     private int vertexCount;
 
-    public <N extends Number> Mesh(boolean dynamic, Point<N>... positions) {
-        this(dynamic, Arrays.asList(positions));
-    }
-
-    public <N extends Number> Mesh(boolean dynamic, List<Point<N>> positions) {
+    protected <N extends Number> Mesh(boolean dynamic, List<Point<N>> positions, List<Integer> indicies) {
         this(
             dynamic,
             positions.stream()
                 .flatMap(
                     p -> p.getComponents().stream()
                 ).collect(Collectors.toList()),
-            positions.get(0).getDimension()
+            positions.get(0).getDimension(),
+            indicies
         );
     }
 
-    public <N extends Number> Mesh(boolean dynamic, int pointsPerVert, N... positions) {
-        this(dynamic, Arrays.asList(positions), pointsPerVert);
-    }
-
-    private <N extends Number> Mesh(boolean dynamic, List<N> positions, int pointsPerVert) {
+    private <N extends Number> Mesh(boolean dynamic, List<N> positions, int pointsPerVert, List<Integer> indices) {
         if(positions == null || positions.isEmpty()) throw new IllegalArgumentException("Null values are not excepted");
+        if(indices == null || indices.isEmpty()) throw new IllegalArgumentException("Null values are not excepted");
 
         Class<? extends Number> c = positions.get(0).getClass();
 
         if(c == Long.class) throw new IllegalArgumentException("Long values not supported in LWJGL Meshes");
 
-        vertexCount = positions.size() / pointsPerVert;
+        vertexCount = indices.size();
         int mode = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
 
         Buffer verticesBuffer = null;
@@ -118,6 +114,20 @@ public class Mesh implements GLGeometry {
                 MemoryUtil.memFree(verticesBuffer);
             }
         }
+
+        // TODO: Maybe make this optional, so if you're not doing it with indices we don't make you?
+        Buffer indicesBuffer = null;
+        try {
+            idxVboId = glGenBuffers();
+
+            indicesBuffer = GLGeometry.bufferInt(indices);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) indicesBuffer, GL_STATIC_DRAW);
+        } finally {
+            if (indicesBuffer != null) {
+                MemoryUtil.memFree(indicesBuffer);
+            }
+        }
     }
 
     public int getVaoId() {
@@ -134,9 +144,48 @@ public class Mesh implements GLGeometry {
         // Delete the VBO
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(vboId);
+        glDeleteBuffers(idxVboId);
 
         // Delete the VAO
         glBindVertexArray(0);
         glDeleteVertexArrays(vaoId);
+    }
+
+    public class MeshBuilder<N extends Number> {
+        private List<Point<N>> vertices;
+        private List<Integer> indices;
+        private boolean isDynamic;
+
+        public MeshBuilder() {
+            vertices = new ArrayList<>();
+            indices = new ArrayList<>();
+        }
+
+        public MeshBuilder<N> addVerticies(List<Point<N>> points) {
+            vertices.addAll(points);
+            return this;
+        }
+
+        public MeshBuilder<N> addVerticies(Point<N>... points) {
+            return addVerticies(Arrays.asList(points));
+        }
+
+        public MeshBuilder<N> addIndicies(List<Integer> points) {
+            indices.addAll(points);
+            return this;
+        }
+
+        public MeshBuilder<N> addIndicies(Integer... points) {
+            return addIndicies(Arrays.asList(points));
+        }
+
+        public MeshBuilder setDynamic(boolean dynamic) {
+            this.isDynamic = dynamic;
+            return this;
+        }
+
+        public Mesh build() {
+            return new Mesh(isDynamic, vertices, indices);
+        }
     }
 }
