@@ -45,41 +45,72 @@ import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
  */
 public class Mesh implements GLGeometry {
 
-    private int vaoId;
-    private int vboId;
+    // Note: not sure if these need to be final....
+    private final int vaoId;
+    private final int vboId;
 
-    private int idxVboId;
+    private final int idxVboId;
 
-    private int vertexCount;
+    private final int vertexCount;
 
-    protected <N extends Number> Mesh(boolean dynamic, List<Point<N>> positions, List<Integer> indicies) {
-        this(
-            dynamic,
-            positions.stream()
-                .flatMap(
-                    p -> p.getComponents().stream()
-                ).collect(Collectors.toList()),
-            positions.get(0).getDimension(),
-            indicies
-        );
-    }
-
-    private <N extends Number> Mesh(boolean dynamic, List<N> positions, int pointsPerVert, List<Integer> indices) {
+    protected <N extends Number> Mesh(boolean dynamic, List<Point<N>> positions, List<Integer> indices) {
         if(positions == null || positions.isEmpty()) throw new IllegalArgumentException("Null values are not excepted");
         if(indices == null || indices.isEmpty()) throw new IllegalArgumentException("Null values are not excepted");
 
+        vaoId = glGenVertexArrays();
+
+        glBindVertexArray(vaoId);
+        vboId = bufferPositionArrayData(positions, dynamic);
+        glBindVertexArray(0);
+
+        // You don't have to use indices if you don't want... TODO: It will mean we have to make a different draw call.
+        if(indices != null && indices.size() > 0) {
+            vertexCount = indices.size();
+            idxVboId = bufferIndicesArrayData(indices);
+            //TODO: Note: draw using glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
+        }else{
+            vertexCount = positions.size();
+            idxVboId = 0;
+            //TODO: Note: draw using glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
+        }
+
+        //TODO: The next step should be color VBO arrays (https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/chapter05/chapter5.html) but it seems it could be sticky....
+    }
+
+    /**
+     * Uses glBufferData to load a set of points into memory.
+     * @param positions
+     * @param dynamic
+     * @param <N>
+     * @return
+     */
+    public static <N extends Number> int bufferPositionArrayData(List<Point<N>> positions, boolean dynamic) {
+        return Mesh.bufferPositionArrayData(
+                positions.stream()
+                        .flatMap(
+                                p -> p.getComponents().stream()
+                        ).collect(Collectors.toList()),
+                positions.get(0).getDimension(),
+                dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW
+        );
+    }
+
+    /**
+     * Uses glBufferData to load a set of positions into memory.
+     * @param positions
+     * @param pointsPerVert
+     * @param mode
+     * @param <N>
+     * @return
+     */
+    private static <N extends Number> int bufferPositionArrayData(List<N> positions, int pointsPerVert, int mode) {
         Class<? extends Number> c = positions.get(0).getClass();
 
         if(c == Long.class) throw new IllegalArgumentException("Long values not supported in LWJGL Meshes");
 
-        vertexCount = indices.size();
-        int mode = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
-
+        int vboId;
         Buffer verticesBuffer = null;
         try {
-            vaoId = glGenVertexArrays();
-            glBindVertexArray(vaoId);
-
             vboId = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
 
@@ -104,32 +135,40 @@ public class Mesh implements GLGeometry {
                 glBufferData(GL_ARRAY_BUFFER, (ByteBuffer) verticesBuffer, mode);
                 glVertexAttribPointer(0, pointsPerVert, GL_BYTE, false, 0, 0);
             }
-
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-            glBindVertexArray(0);
         } finally {
             if (verticesBuffer != null) {
                 MemoryUtil.memFree(verticesBuffer);
             }
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindVertexArray(0);
         }
 
-        // You don't have to use indices if you don't want... TODO: It will mean we have to make a different draw call.
-        if(indices != null && indices.size() > 0) {
-            Buffer indicesBuffer = null;
-            try {
-                idxVboId = glGenBuffers();
+        return vboId;
+    }
 
-                indicesBuffer = GLGeometry.bufferInt(indices);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) indicesBuffer, GL_STATIC_DRAW);
-            } finally {
-                if (indicesBuffer != null) {
-                    MemoryUtil.memFree(indicesBuffer);
-                }
+    /**
+     * Use glBufferData to load a series of vertex indices for a mesh into memory.
+     * @param indices
+     * @return
+     */
+    public static int bufferIndicesArrayData(List<Integer> indices) {
+        int idxVboId;
+        Buffer indicesBuffer = null;
+        try {
+            idxVboId = glGenBuffers();
+
+            indicesBuffer = GLGeometry.bufferInt(indices);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) indicesBuffer, GL_STATIC_DRAW);
+        } finally {
+            if (indicesBuffer != null) {
+                MemoryUtil.memFree(indicesBuffer);
             }
+            // Not explicity shown, but probably needed.
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
+
+        return idxVboId;
     }
 
     public int getVaoId() {
