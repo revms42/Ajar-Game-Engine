@@ -115,17 +115,19 @@ public class Mesh implements GLGeometry {
             }
         }
 
-        // TODO: Maybe make this optional, so if you're not doing it with indices we don't make you?
-        Buffer indicesBuffer = null;
-        try {
-            idxVboId = glGenBuffers();
+        // You don't have to use indices if you don't want... TODO: It will mean we have to make a different draw call.
+        if(indices != null && indices.size() > 0) {
+            Buffer indicesBuffer = null;
+            try {
+                idxVboId = glGenBuffers();
 
-            indicesBuffer = GLGeometry.bufferInt(indices);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) indicesBuffer, GL_STATIC_DRAW);
-        } finally {
-            if (indicesBuffer != null) {
-                MemoryUtil.memFree(indicesBuffer);
+                indicesBuffer = GLGeometry.bufferInt(indices);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer) indicesBuffer, GL_STATIC_DRAW);
+            } finally {
+                if (indicesBuffer != null) {
+                    MemoryUtil.memFree(indicesBuffer);
+                }
             }
         }
     }
