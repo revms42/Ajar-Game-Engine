@@ -51,9 +51,21 @@ public class Mesh implements GLGeometry {
 
     private final int idxVboId;
 
+    private final int colorsVboId;
+
     private final int vertexCount;
 
-    protected <N extends Number> Mesh(boolean dynamic, List<Point<N>> positions, List<Integer> indices) {
+    /*
+     * There is a really big caveat here: This is all dependent on getting the right shaders set up.
+     * Right now there are all sorts of assumptions being made about how things are organized and laid out,
+     * which may be what we want, or we may not... but before some testing is completed it's a little hard to tell.
+     * <p>
+     * There is a very good case to be made here that you should be allowing N lists of data and that you should
+     * allow people to associate them directly to a shader. It remains to be seen if that is the way we'll take this,
+     * but until we know we can use more than position, index, color, and texture for meshes it's really just
+     * hypothetical.
+     */
+    protected <N extends Number> Mesh(boolean dynamic, List<Point<N>> positions, List<Integer> indices, List<Integer> colors) {
         if(positions == null || positions.isEmpty()) throw new IllegalArgumentException("Null values are not excepted");
         if(indices == null || indices.isEmpty()) throw new IllegalArgumentException("Null values are not excepted");
 
@@ -63,10 +75,12 @@ public class Mesh implements GLGeometry {
         vboId = bufferPositionArrayData(positions, dynamic);
         glBindVertexArray(0);
 
+        int mode = dynamic? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
+
         // You don't have to use indices if you don't want... TODO: It will mean we have to make a different draw call.
         if(indices != null && indices.size() > 0) {
             vertexCount = indices.size();
-            idxVboId = bufferIndicesArrayData(indices);
+            idxVboId = bufferIndicesArrayData(indices, mode);
             //TODO: Note: draw using glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
         }else{
             vertexCount = positions.size();
@@ -74,7 +88,12 @@ public class Mesh implements GLGeometry {
             //TODO: Note: draw using glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
         }
 
-        //TODO: The next step should be color VBO arrays (https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/chapter05/chapter5.html) but it seems it could be sticky....
+        // You don't have to use colors if you don't want...
+        if(colors != null && colors.size() > 0) {
+            colorsVboId = bufferColorsArrayData(colors);
+        }else{
+            colorsVboId = 0;
+        }
     }
 
     /**
@@ -151,7 +170,7 @@ public class Mesh implements GLGeometry {
      * @param indices
      * @return
      */
-    public static int bufferIndicesArrayData(List<Integer> indices) {
+    public static int bufferIndicesArrayData(List<Integer> indices, int mode) {
         int idxVboId;
         Buffer indicesBuffer = null;
         try {
@@ -171,6 +190,31 @@ public class Mesh implements GLGeometry {
         return idxVboId;
     }
 
+    /**
+     * Use glBufferData to load a series of vertex colors (Int) for a mesh into memory.
+     * @param indices
+     * @return
+     */
+    public static int bufferColorsArrayData(List<Integer> indices) {
+        int colorsId;
+        Buffer indicesBuffer = null;
+        try {
+            colorsId = glGenBuffers();
+
+            indicesBuffer = GLGeometry.bufferInt(indices);
+            glBindBuffer(GL_ARRAY_BUFFER, colorsId);
+            glBufferData(GL_ARRAY_BUFFER, (IntBuffer) indicesBuffer, GL_STATIC_DRAW);
+        } finally {
+            if (indicesBuffer != null) {
+                MemoryUtil.memFree(indicesBuffer);
+            }
+            // Not explicity shown, but probably needed.
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+        }
+
+        return colorsId;
+    }
+
     public int getVaoId() {
         return vaoId;
     }
@@ -186,6 +230,7 @@ public class Mesh implements GLGeometry {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(vboId);
         glDeleteBuffers(idxVboId);
+        glDeleteBuffers(colorsVboId);
 
         // Delete the VAO
         glBindVertexArray(0);
@@ -193,13 +238,15 @@ public class Mesh implements GLGeometry {
     }
 
     public class MeshBuilder<N extends Number> {
-        private List<Point<N>> vertices;
-        private List<Integer> indices;
+        private final List<Point<N>> vertices;
+        private final List<Integer> indices;
+        private final List<Integer> colors;
         private boolean isDynamic;
 
         public MeshBuilder() {
             vertices = new ArrayList<>();
             indices = new ArrayList<>();
+            colors = new ArrayList<>();
         }
 
         public MeshBuilder<N> addVerticies(List<Point<N>> points) {
@@ -220,13 +267,22 @@ public class Mesh implements GLGeometry {
             return addIndicies(Arrays.asList(points));
         }
 
+        public MeshBuilder<N> addColors(List<Integer> c) {
+            colors.addAll(c);
+            return this;
+        }
+
+        public MeshBuilder<N> addColors(Integer... c) {
+            return addColors(Arrays.asList(c));
+        }
+
         public MeshBuilder setDynamic(boolean dynamic) {
             this.isDynamic = dynamic;
             return this;
         }
 
         public Mesh build() {
-            return new Mesh(isDynamic, vertices, indices);
+            return new Mesh(isDynamic, vertices, indices, colors);
         }
     }
 }
