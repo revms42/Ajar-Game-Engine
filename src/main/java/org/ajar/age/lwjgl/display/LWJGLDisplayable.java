@@ -34,6 +34,8 @@ import org.ajar.age.display.Displayable;
  */
 public class LWJGLDisplayable extends DefaultDecorator implements Displayable<LWJGLSurface> {
 
+    private Mesh mesh;
+
     public LWJGLDisplayable(Node node) {
         super(node);
     }
@@ -41,5 +43,13 @@ public class LWJGLDisplayable extends DefaultDecorator implements Displayable<LW
     @Override
     public boolean isInView(LWJGLSurface cullingSurface) {
         return false;
+    }
+
+    public void setMesh(Mesh mesh) {
+        this.mesh = mesh;
+    }
+
+    public Mesh getMesh() {
+        return this.mesh;
     }
 }

@@ -20,6 +20,7 @@ package org.ajar.age.lwjgl.display;
  * org.ajar.age.lwjgl.display
  * LWJGLSurface.java
  */
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -40,8 +41,14 @@ public class LWJGLSurface {
 
     private long window;
 
-    protected LWJGLSurface(long window) {
+    int width;
+    int height;
+    private boolean resized;
+    private Matrix4f projectionMatrix;
+
+    protected LWJGLSurface(long window, Matrix4f projectionMatrix) {
         this.window = window;
+        this.projectionMatrix = projectionMatrix;
     }
 
     public void setVisable(boolean visible){
@@ -62,45 +69,15 @@ public class LWJGLSurface {
     }
 
     public void clearSurface() {
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
-        GL.createCapabilities();
-
-        // Set the clear color TODO: Make this configurable.
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+    }
 
-        //TODO: Figure out which of these need to be done last.
+    public void update() {
         glfwSwapBuffers(window); // swap the color buffers
 
         // Poll for window events. The key callback above will only be
         // invoked during this call.
         glfwPollEvents();
-    }
-
-    public void pushFrame() {
-        // Get the thread stack and push a new frame
-        try ( MemoryStack stack = stackPush() ) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
-
-            // Get the window size passed to glfwCreateWindow
-            glfwGetWindowSize(window, pWidth, pHeight);
-
-            // Get the resolution of the primary monitor
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            // Center the window
-            glfwSetWindowPos(
-                    window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
-        } // the stack frame is popped automatically
     }
 
     public void dispose() {
@@ -113,7 +90,32 @@ public class LWJGLSurface {
         glfwSetErrorCallback(null).free();
     }
 
+    public void setProjectionMatrix(Matrix4f projectionMatrix) {
+        this.projectionMatrix = projectionMatrix;
+    }
+
+    public Matrix4f getProjectionMatrix() {
+        return projectionMatrix;
+    }
+
+    void setResized(boolean value) {
+        this.resized = value;
+    }
+
+    boolean isResized() {
+        return resized;
+    }
+
+    public static Matrix4f createProjectionMatrix(float fov, float aspectRatio, float nearLimit, float farLimit) {
+        return new Matrix4f().perspective(fov, aspectRatio, nearLimit, farLimit);
+    }
+
     public static class LWJGLSurfaceBuilder {
+
+        // Sensible default values;
+        private static final float FOV = (float) Math.toRadians(60.0f);
+        private static final float Z_NEAR = 0.01f;
+        private static final float Z_FAR = 1000.f;
 
         private boolean windowHints = true;
         private Map<Integer, Integer> glfwWindowHints = new HashMap<>();
@@ -123,6 +125,9 @@ public class LWJGLSurface {
         private long monitor = NULL;
         private long share = NULL;
         private GLFWKeyCallbackI keyCallback;
+        private float nearField = Z_NEAR;
+        private float farField = Z_FAR;
+        private float fov = FOV;
 
         public LWJGLSurfaceBuilder() {
             addGlfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
@@ -174,6 +179,21 @@ public class LWJGLSurface {
             return this;
         }
 
+        public LWJGLSurfaceBuilder nearViewLimit(float near){
+            this.nearField = near;
+            return this;
+        }
+
+        public LWJGLSurfaceBuilder farViewLimit(float far){
+            this.farField = far;
+            return this;
+        }
+
+        public LWJGLSurfaceBuilder fieldOfView(float fov){
+            this.fov = (float) Math.toRadians(fov);
+            return this;
+        }
+
         public LWJGLSurface build() {
             // Setup an error callback. The default implementation
             // will print the error message in System.err.
@@ -204,7 +224,52 @@ public class LWJGLSurface {
                 glfwSetKeyCallback(window,keyCallback);
             }
 
-            return new LWJGLSurface(window);
+            float aspectRatio = 16.0f/9.0f;
+
+            // Get the thread stack and push a new frame
+            try ( MemoryStack stack = stackPush() ) {
+                IntBuffer pWidth = stack.mallocInt(1); // int*
+                IntBuffer pHeight = stack.mallocInt(1); // int*
+
+                // Get the window size passed to glfwCreateWindow
+                glfwGetWindowSize(window, pWidth, pHeight);
+
+                // Get the resolution of the primary monitor
+                GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+                // Center the window
+                glfwSetWindowPos(
+                        window,
+                        (vidmode.width() - pWidth.get(0)) / 2,
+                        (vidmode.height() - pHeight.get(0)) / 2
+                );
+
+                // Get the actual aspect ratio.
+                aspectRatio = ((float) pWidth.get(0))/((float) pHeight.get(0));
+            } // the stack frame is popped automatically
+
+            Matrix4f projectionMatrix = createProjectionMatrix(fov, aspectRatio, nearField, farField);
+
+            // This line is critical for LWJGL's interoperation with GLFW's
+            // OpenGL context, or any context that is managed externally.
+            // LWJGL detects the context that is current in the current thread,
+            // creates the GLCapabilities instance and makes the OpenGL
+            // bindings available for use.
+            GL.createCapabilities();
+
+            final LWJGLSurface surface = new LWJGLSurface(window, projectionMatrix);
+
+            // Setup resize callback
+            glfwSetFramebufferSizeCallback(window, (nWindow, width, height) -> {
+                surface.width = width;
+                surface.height = height;
+                surface.setResized(true);
+            });
+
+            //TODO: Make this configurable at some point.
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+            return surface;
         }
     }
 }

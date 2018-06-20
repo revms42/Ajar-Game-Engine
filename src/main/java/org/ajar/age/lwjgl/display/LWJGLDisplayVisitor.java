@@ -24,6 +24,9 @@ import org.ajar.age.display.AbstractDisplayVisitor;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class LWJGLDisplayVisitor extends AbstractDisplayVisitor<LWJGLSurface, LWJGLDisplayable> {
 
@@ -52,26 +55,40 @@ public class LWJGLDisplayVisitor extends AbstractDisplayVisitor<LWJGLSurface, LW
         surface.enableVsync();
         surface.setVisable(true);
         initialized = true;
+        //TODO: At this point we may need to know which uniform(s) to use.
     }
 
     @Override
     public void visit(LWJGLDisplayable decorator) {
-
+        glBindVertexArray(decorator.getMesh().getVaoId());
+        glEnableVertexAttribArray(0);
+        glDrawElements(GL_TRIANGLES, decorator.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
     }
 
     @Override
     protected void startProcess() {
         if(!initialized) init();
         surface.makeContextCurrent();
-        surface.pushFrame();
         surface.clearSurface();
 
+        if(surface.isResized()) {
+            glViewport(0, 0, surface.width, surface.height);
+            surface.setResized(false);
+        }
+
         shaderProgram.bind();
+        shaderProgram.setUniform(surface.getProjectionMatrix());
     }
 
     @Override
     protected void finishProcess() {
+        //TODO: These first two might have to be called after each visit.
+        glDisableVertexAttribArray(0);
+        glBindVertexArray(0);
         shaderProgram.unbind();
+
+        //TODO: I think this is where this goes.
+        surface.update();
     }
 
     public LWJGLSurface getSurface() {

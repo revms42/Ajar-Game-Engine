@@ -20,24 +20,38 @@ package org.ajar.age.lwjgl.display;
  * org.ajar.age.lwjgl.display
  * LWJGLShaderProgram.java
  */
+import org.joml.Matrix4f;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.lwjgl.opengl.GL20.*;
 
 public class LWJGLShaderProgram implements GLShaderProgram {
 
+    private String selectedUniform;
+
     private final int programId;
+    private final Map<String, Integer> uniforms;
 
     protected LWJGLShaderProgram(int programId) {
         this.programId = programId;
+        this.uniforms = new HashMap<>();
     }
 
+    @Override
     public void bind() {
         glUseProgram(programId);
     }
 
+    @Override
     public void unbind() {
         glUseProgram(0);
     }
 
+    @Override
     public void cleanup() {
         unbind();
         if (programId != 0) {
@@ -45,10 +59,40 @@ public class LWJGLShaderProgram implements GLShaderProgram {
         }
     }
 
-    public class LWJGLShaderProgramBuilder {
+    @Override
+    public void createUniform(String uniformName) throws Exception {
+        int uniformLocation = glGetUniformLocation(programId, uniformName);
+        if (uniformLocation < 0) {
+            throw new Exception("Could not find uniform:" + uniformName);
+        }
+        uniforms.put(uniformName, uniformLocation);
+
+        if(selectedUniform == null) selectedUniform = uniformName;
+    }
+
+    @Override
+    public void setUniform(Matrix4f value) {
+        // Dump the matrix into a float buffer
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = stack.mallocFloat(16);
+            value.get(fb);
+            glUniformMatrix4fv(uniforms.get(selectedUniform), false, fb);
+        }
+    }
+
+    @Override
+    public void selectUniform(String selectedUniform) throws Exception {
+        if(!uniforms.containsKey(selectedUniform)) {
+            createUniform(selectedUniform);
+        }
+        this.selectedUniform = selectedUniform;
+    }
+
+    public static class LWJGLShaderProgramBuilder {
 
         private String vertexShader;
         private String fragmentShader;
+        private String projMatrixShader;
 
         private int createProgram() throws Exception {
             int programId = glCreateProgram();
@@ -60,15 +104,15 @@ public class LWJGLShaderProgram implements GLShaderProgram {
             return programId;
         }
 
-        private int createVertexShader() throws Exception {
-            return createShader(vertexShader, GL_VERTEX_SHADER);
+        private int createVertexShader(int programId) throws Exception {
+            return createShader(vertexShader, GL_VERTEX_SHADER, programId);
         }
 
-        private int createFragmentShader() throws Exception {
-            return createShader(fragmentShader, GL_FRAGMENT_SHADER);
+        private int createFragmentShader(int programId) throws Exception {
+            return createShader(fragmentShader, GL_FRAGMENT_SHADER, programId);
         }
 
-        private int createShader(String shaderCode, int shaderType) throws Exception {
+        private int createShader(String shaderCode, int shaderType, int programId) throws Exception {
             int shaderId = glCreateShader(shaderType);
             if (shaderId == 0) {
                 throw new Exception("Error creating shader. Type: " + shaderType);
@@ -86,14 +130,15 @@ public class LWJGLShaderProgram implements GLShaderProgram {
             return shaderId;
         }
 
+
         private void link(int programId) throws Exception {
             glLinkProgram(programId);
             if (glGetProgrami(programId, GL_LINK_STATUS) == 0) {
                 throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));
             }
 
-            int vertexShaderId = createVertexShader();
-            int fragmentShaderId = createFragmentShader();
+            int vertexShaderId = createVertexShader(programId);
+            int fragmentShaderId = createFragmentShader(programId);
 
             if (vertexShaderId != 0) {
                 glDetachShader(programId, vertexShaderId);
@@ -118,10 +163,21 @@ public class LWJGLShaderProgram implements GLShaderProgram {
             return this;
         }
 
+        public LWJGLShaderProgramBuilder setProjectionMatrixShader(String projMatrixShader) {
+            this.projMatrixShader = projMatrixShader;
+            return this;
+        }
+
         public LWJGLShaderProgram build() throws Exception {
             int program = createProgram();
             link(program);
-            return new LWJGLShaderProgram(program);
+            LWJGLShaderProgram shader = new LWJGLShaderProgram(program);
+
+            if(projMatrixShader != null) {
+                shader.createUniform(projMatrixShader);
+            }
+
+            return shader;
         }
     }
 }
